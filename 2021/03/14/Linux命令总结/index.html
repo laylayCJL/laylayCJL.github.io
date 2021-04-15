@@ -31,7 +31,7 @@
 <meta property="og:description" content="1、绝对定位1&#x2F;home&#x2F;laylay&#x2F;filename 2、touch命令建立新文件、更新时间情况 1touch &#x2F;home&#x2F;laylay&#x2F;filename">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-14T10:23:12.000Z">
-<meta property="article:modified_time" content="2021-03-30T10:32:01.409Z">
+<meta property="article:modified_time" content="2021-04-08T15:36:56.827Z">
 <meta property="article:author" content="laylayCJL">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -90,9 +90,9 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -192,7 +192,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">1、绝对定位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81touch%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">2、touch命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">3、编译命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%A4%8D%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">4、复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E6%96%B0%E5%BB%BA%E7%9B%AE%E5%BD%95-%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">5、新建目录&#x2F;删除目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">6、新建文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%E3%80%81%E5%8F%AA%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">7、只读文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8%E3%80%81%E7%BC%96%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">8、编写文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9%E3%80%81%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84"><span class="nav-number">9.</span> <span class="nav-text">9、查看当前路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10%E3%80%81%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E7%BA%A7%E7%9B%AE%E5%BD%95"><span class="nav-number">10.</span> <span class="nav-text">10、返回到上级目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11%E3%80%81%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%BB%A5%E5%8F%8A%E7%9B%AE%E5%BD%95%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">11.</span> <span class="nav-text">11、删除目录以及目录中的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12%E3%80%81"><span class="nav-number">12.</span> <span class="nav-text">12、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13%E3%80%81"><span class="nav-number">13.</span> <span class="nav-text">13、</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14%E3%80%81"><span class="nav-number">14.</span> <span class="nav-text">14、</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E7%BB%9D%E5%AF%B9%E5%AE%9A%E4%BD%8D"><span class="nav-number">1.</span> <span class="nav-text">1、绝对定位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81touch%E5%91%BD%E4%BB%A4"><span class="nav-number">2.</span> <span class="nav-text">2、touch命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E7%BC%96%E8%AF%91%E5%91%BD%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">3、编译命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%A4%8D%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">4、复制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E6%96%B0%E5%BB%BA%E7%9B%AE%E5%BD%95-%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95"><span class="nav-number">5.</span> <span class="nav-text">5、新建目录&#x2F;删除目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">6、新建文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%E3%80%81%E5%8F%AA%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">7、只读文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8%E3%80%81%E7%BC%96%E5%86%99%E6%96%87%E4%BB%B6"><span class="nav-number">8.</span> <span class="nav-text">8、编写文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9%E3%80%81%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84"><span class="nav-number">9.</span> <span class="nav-text">9、查看当前路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10%E3%80%81%E8%BF%94%E5%9B%9E%E5%88%B0%E4%B8%8A%E7%BA%A7%E7%9B%AE%E5%BD%95"><span class="nav-number">10.</span> <span class="nav-text">10、返回到上级目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11%E3%80%81%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E4%BB%A5%E5%8F%8A%E7%9B%AE%E5%BD%95%E4%B8%AD%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-number">11.</span> <span class="nav-text">11、删除目录以及目录中的文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12%E3%80%81%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%B7%AF%E5%BE%84%E4%B8%8B%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">12.</span> <span class="nav-text">12、查看当前路径下的目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13%E3%80%81%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E8%B7%AF%E5%BE%84%E4%B8%8B%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="nav-number">13.</span> <span class="nav-text">13、查看指定路径下的目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14%E3%80%81%E7%BC%96%E8%AF%91%E8%84%9A%E6%9C%AC%E6%96%87%E4%BB%B6%EF%BC%88%E6%94%B9%E5%8F%98%E6%9D%83%E9%99%90%EF%BC%89"><span class="nav-number">14.</span> <span class="nav-text">14、编译脚本文件（改变权限）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15%E3%80%81%E7%A7%BB%E5%8A%A8-amp-amp-%E6%8D%A2%E5%90%8D"><span class="nav-number">15.</span> <span class="nav-text">15、移动&amp;&amp;换名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16%E3%80%81%E8%AE%A1%E7%AE%97%E8%BF%90%E8%A1%8C%E6%97%B6%E9%97%B4"><span class="nav-number">16.</span> <span class="nav-text">16、计算运行时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#17%E3%80%81%E6%9F%A5%E7%9C%8B%E8%AF%A6%E7%BB%86%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%83%85%E5%86%B5"><span class="nav-number">17.</span> <span class="nav-text">17、查看详细文件存储情况</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -208,7 +208,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -221,7 +221,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -305,7 +305,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-30 18:32:01" itemprop="dateModified" datetime="2021-03-30T18:32:01+08:00">2021-03-30</time>
+        <time title="修改时间：2021-04-08 23:36:56" itemprop="dateModified" datetime="2021-04-08T23:36:56+08:00">2021-04-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -332,7 +332,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -350,26 +350,32 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+        <h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
 <span id="more"></span>
-<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
 <p>filepath是决定把编译生成的可执行文件放在哪里</p>
 <p>执行生成的可执行文件：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
 <p>vi可读可写，cat只能读取</p>
-<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="12、"><a href="#12、" class="headerlink" title="12、"></a>12、</h4><h4 id="13、"><a href="#13、" class="headerlink" title="13、"></a>13、</h4><h4 id="14、"><a href="#14、" class="headerlink" title="14、"></a>14、</h4>
+<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="12、查看当前路径下的目录"><a href="#12、查看当前路径下的目录" class="headerlink" title="12、查看当前路径下的目录"></a>12、查看当前路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="13、查看指定路径下的目录"><a href="#13、查看指定路径下的目录" class="headerlink" title="13、查看指定路径下的目录"></a>13、查看指定路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -l 路径</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="14、编译脚本文件（改变权限）"><a href="#14、编译脚本文件（改变权限）" class="headerlink" title="14、编译脚本文件（改变权限）"></a>14、编译脚本文件（改变权限）</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 exp1.sh</span><br><span class="line">Linux档案的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限</span><br><span class="line">owner：文件的属主（拥有者）group：用户组内成员other：其他用户</span><br><span class="line">r:4 w:2 x:1</span><br><span class="line">r (read)：可读取此一档案的实际内容，如读取文本文件的文字内容等；</span><br><span class="line">w (write)：可以编辑、新增戒者是修改该档案的内容(但丌吨删除该档案)；</span><br><span class="line">x (eXecute)：该档案具有可以被系统执行的权限。</span><br><span class="line">owner=4+2+1=7</span><br><span class="line">group=4+2+1=7</span><br><span class="line">others=4+2+1=7</span><br><span class="line">也就是修改exp1.sh的权限为owner/group/others均可读可写可执行</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="15、移动-amp-amp-换名"><a href="#15、移动-amp-amp-换名" class="headerlink" title="15、移动&amp;&amp;换名"></a>15、移动&amp;&amp;换名</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv</span><br><span class="line">文件移动：mv 目标文件所在路径 目的地路径</span><br><span class="line">文件换名：mv 旧名 新名</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="16、计算运行时间"><a href="#16、计算运行时间" class="headerlink" title="16、计算运行时间"></a>16、计算运行时间</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">time 执行命令</span><br><span class="line">例如：</span><br><span class="line">time ./exp2</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="17、查看详细文件存储情况"><a href="#17、查看详细文件存储情况" class="headerlink" title="17、查看详细文件存储情况"></a>17、查看详细文件存储情况</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">od -c filename</span><br></pre></td></tr></tbody></table></figure>
+
     </div>
 
     
@@ -420,8 +426,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/03/18/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/" rel="next" title="关系数据库标准语言SQL03">
-                  关系数据库标准语言SQL03 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/03/31/%E4%B9%90%E7%90%86/" rel="next" title="乐理">
+                  乐理 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -512,14 +518,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">47k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">33 分钟</span>
+    <span title="站点阅读时长">43 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">

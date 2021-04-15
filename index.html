@@ -85,9 +85,9 @@
   </style>
 </noscript>
 
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -202,7 +202,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -215,7 +215,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">8</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -258,6 +258,393 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/04/02/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/02/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/" class="post-title-link" itemprop="url">数据链路层</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-02 20:54:11" itemprop="dateCreated datePublished" datetime="2021-04-02T20:54:11+08:00">2021-04-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-10 17:06:08" itemprop="dateModified" datetime="2021-04-10T17:06:08+08:00">2021-04-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第一节-使用点对点信道的数据链路层"><a href="#第一节-使用点对点信道的数据链路层" class="headerlink" title="第一节 使用点对点信道的数据链路层"></a>第一节 使用点对点信道的数据链路层</h1><p>*数据链路层使用的信道</p>
+<ul>
+<li><p>点对点信道：使用一对一的点对点通信方式</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/3.1.1.jpg" style="zoom:33%;"></p>
+</li>
+<li><p>广播信道：使用一对多的广播通信方式。因此必须使用专用的共享信道协议来协调这些主机的数据发送</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/3.1.2.jpg" style="zoom:33%;"></p>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/02/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/" class="post-title-link" itemprop="url">Linux中的C语言</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-01 22:59:31" itemprop="dateCreated datePublished" datetime="2021-04-01T22:59:31+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-10 14:13:55" itemprop="dateModified" datetime="2021-04-10T14:13:55+08:00">2021-04-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/04/01/%E9%9F%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/01/%E9%9F%B3/" class="post-title-link" itemprop="url">基础知识</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-04-01 18:42:00" itemprop="dateCreated datePublished" datetime="2021-04-01T18:42:00+08:00">2021-04-01</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-04-15 19:38:54" itemprop="dateModified" datetime="2021-04-15T19:38:54+08:00">2021-04-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9F%B3%E4%B9%90/" itemprop="url" rel="index"><span itemprop="name">音乐</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>909</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>知识总览：</p>
+<p><img src="/images/%E9%9F%B3/image-20210415182012756.png" alt="image-20210415182012756"></p>
+</blockquote>
+<h1 id="1、音与十二平均律"><a href="#1、音与十二平均律" class="headerlink" title="1、音与十二平均律"></a>1、音与十二平均律</h1><p><img src="/images/%E9%9F%B3/image-20210401205433127.png" alt="image-20210401205433127"></p>
+<h1 id="2、音的分布"><a href="#2、音的分布" class="headerlink" title="2、音的分布"></a>2、音的分布</h1><p>从左至右：全音符、二分音符、四分音符…</p>
+<p><img src="/images/%E9%9F%B3/image-20210401184311474.png" alt="image-20210401184311474"></p>
+<p>简谱：</p>
+<p>全音符 X—</p>
+<p>二分音符X-</p>
+<p>四分音符X</p>
+<p>八分音符<u>X</u></p>
+<p><img src="/images/%E9%9F%B3/image-20210414190538653.png" alt="image-20210414190538653"></p>
+<p>四三拍（3/4）：以四分音符为一拍，每小节有三拍</p>
+<p>V(大大)  V(大大) V(大大)</p>
+<p>六八拍（6/8）：以八分音符为一拍，每小节有六拍</p>
+<p>V(大) V(大) V(大) V(大) V(大) V(大)</p>
+<p><img src="/images/%E9%9F%B3/image-20210414191149879.png" alt="image-20210414191149879"></p>
+<h1 id="3、音程"><a href="#3、音程" class="headerlink" title="3、音程"></a>3、音程</h1><p>唱名：1  2  34   5   6   7i   2(后边都上边打一点)   34</p>
+<p>音名：C  D  EF  G  A  BC</p>
+<blockquote>
+<p>度与距离的算法：</p>
+<p>举例说明：</p>
+<p>由1到2——度为2   距离为1（因为1~2为全音 即1）</p>
+<p>由1到3——度为3   距离为2（因为1~3之间都为全音 即1+1）</p>
+<p>由1到4——度为4   距离为2.5（因为1~3之间都为全音， 3~4之间为半音 即1+1+0.5）</p>
+</blockquote>
+<h2 id="“纯组”："><a href="#“纯组”：" class="headerlink" title="“纯组”："></a>“纯组”：</h2><p>由1到1：纯一度 距离为0</p>
+<p>由1到4：纯四度 距离为2.5</p>
+<p>由1到5：纯五度 距离为3.5</p>
+<p>由1到 i：纯八度 距离为6</p>
+<p>由3到6：纯四度 距离为2.5</p>
+<p>（因为3到6的度与纯四度一样为四，距离也和纯四度一样为2.5，所以3到6也为纯四度）</p>
+<p>由4到7：增四度 距离为3</p>
+<p>（因为4到7的度与纯四度一样为四，距离却比纯四度大一个半音，一个半音在12平均律中算一个单位，所以可以看做距离比纯四度大一个单位，所以由4到7称为增四度）</p>
+<p>由7到4(上边打一点)：减五度 距离为3</p>
+<ul>
+<li>==距离比<strong>纯X度</strong>的大就<strong>增X度</strong>==   eg.由4到7(增四度)</li>
+<li>==距离比<strong>纯X度</strong>的小就<strong>减X度</strong>==   eg.由1到b5(减五度)</li>
+</ul>
+<p>特殊一点的：</p>
+<p>唱名：<strong>1</strong>       <strong>2</strong>     <strong>34</strong>   （#4 or b5）   <strong>5</strong>      <strong>6</strong>      <strong>7i</strong>     </p>
+<p>音名：<strong>C      D     EF                             G    A    BC</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">b5: 5往下降半音 称为降5（降so）flat5</span><br><span class="line">注：b在5的左上角</span><br><span class="line">   bb5：重降5</span><br><span class="line"></span><br><span class="line">#4：4往上升半音 称为升4（升fa）sharp4 </span><br><span class="line">注：#在4的左上角</span><br><span class="line">   x4：重生4</span><br></pre></td></tr></tbody></table></figure>
+<p>由1到#4：增四度</p>
+<p>由1到b5：减五度</p>
+<p>由1到#1：增一度</p>
+<p>由1到b1：减一度</p>
+<h2 id="“大组”"><a href="#“大组”" class="headerlink" title="“大组”"></a>“大组”</h2><p>1到2：大二度</p>
+<p>1到3：大三度</p>
+<p>1到6：大六度</p>
+<p>1到7：大七度</p>
+<ul>
+<li>==距离比<strong>大X度</strong>的大就<strong>增X度</strong>==     eg.</li>
+<li>==距离比<strong>大X度</strong>的小就<strong>小X度</strong>==     eg.由3到5（小三度）</li>
+<li>==距离比<strong>小X度</strong>还小的就是<strong>减X度</strong>==    eg.由3到b5（减三度）</li>
+</ul>
+<p><img src="/images/%E9%9F%B3/image-20210415192552941.png" alt="image-20210415192552941"></p>
+<h2 id="自然音程-amp-amp-变化音程"><a href="#自然音程-amp-amp-变化音程" class="headerlink" title="自然音程&amp;&amp;变化音程"></a>自然音程&amp;&amp;变化音程</h2><p>C大调下自然音程，即，没有什么升X(#X)和降X(bX)的音</p>
+<p>C大调下变化音程，有升降的音</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -362,391 +749,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/18/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/18/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/" class="post-title-link" itemprop="url">关系数据库标准语言SQL03</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-18 16:58:34" itemprop="dateCreated datePublished" datetime="2021-03-18T16:58:34+08:00">2021-03-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-28 21:52:25" itemprop="dateModified" datetime="2021-03-28T21:52:25+08:00">2021-03-28</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>7.6k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>7 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="一、SQL语言介绍"><a href="#一、SQL语言介绍" class="headerlink" title="一、SQL语言介绍"></a>一、SQL语言介绍</h1><h2 id="1、-SQL数据库的体系结构"><a href="#1、-SQL数据库的体系结构" class="headerlink" title="1、 SQL数据库的体系结构"></a>1、 SQL数据库的体系结构</h2><h3 id="（1）体系结构示意图"><a href="#（1）体系结构示意图" class="headerlink" title="（1）体系结构示意图"></a>（1）体系结构示意图</h3><p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/2.1.1.jpg" alt=""></p>
-<h3 id="（2）基本概念说明"><a href="#（2）基本概念说明" class="headerlink" title="（2）基本概念说明"></a>（2）基本概念说明</h3><h4 id="1）SQL用户"><a href="#1）SQL用户" class="headerlink" title="1）SQL用户"></a>1）SQL用户</h4><ul>
-<li>SQL用户可以是应用程序，也可以是终端用户<ul>
-<li>SQL语言可以被嵌入在宿主语言的程序（如Python、C++、Java等）中使用，也可以作为独立的用户接口在DBMS环境下被用户直接使用</li>
-</ul>
-</li>
-<li>SQL用户可以用SQL语言对基本表和视图进行查询</li>
-</ul>
-<h4 id="2）视图"><a href="#2）视图" class="headerlink" title="2）视图"></a>2）视图</h4><ul>
-<li><p>一个视图是从若干基本表或其他视图上导出的表。</p>
-</li>
-<li><p><u>数据库中只存放该视图的定义，而不存放该视图所对应的数据</u>，这些数据仍然存放在导出该视图的基本表中，因此，可以说<strong>视图是一个虚表</strong></p>
-</li>
-<li>用户可以在视图上再定义视图</li>
-</ul>
-<h4 id="3）基本表"><a href="#3）基本表" class="headerlink" title="3）基本表"></a>3）基本表</h4><ul>
-<li>本身独立存在的表</li>
-<li>SQL中一个关系就对应一个基本表</li>
-<li><p>一个或一些基本表对应于一个数据文件，一个基本表也可以存放在若干数据文件中，一个数据文件对应于存储设备上的一个存储文件</p>
-</li>
-<li><p>一个基本表可以带若干索引。索引也存放在数据文件中</p>
-</li>
-</ul>
-<h4 id="4）表空间"><a href="#4）表空间" class="headerlink" title="4）表空间"></a>4）表空间</h4><p>一个表空间可以由若干个数据文件组成</p>
-<h4 id="5）数据库"><a href="#5）数据库" class="headerlink" title="5）数据库"></a>5）数据库</h4><p>一个数据库可以由多个存储文件组成</p>
-<h4 id="6）存储文件"><a href="#6）存储文件" class="headerlink" title="6）存储文件"></a>6）存储文件</h4><ul>
-<li>逻辑结构组成了关系数据库的内模式</li>
-<li>物理结构是任意的，对用户透明</li>
-</ul>
-<h2 id="2、SQL的特点"><a href="#2、SQL的特点" class="headerlink" title="2、SQL的特点"></a>2、SQL的特点</h2><h3 id="（1）综合统一"><a href="#（1）综合统一" class="headerlink" title="（1）综合统一"></a>（1）综合统一</h3><ul>
-<li>集数据定义语言（DDL)，数据操纵语言(DML)，数据控制语言(DCL）功能于一体</li>
-<li>可以独立完成数据库生命周期中的全部活动<ul>
-<li>定义关系模式，插入数据，建立数据库</li>
-<li>对数据库中的数据进行查询和更新</li>
-<li>数据库重构和维护</li>
-<li>数据库安全性、完整性控制等</li>
-</ul>
-</li>
-<li>用户数据库投入运行后，可根据需要随时逐步修改模式，不影响数据的运行</li>
-<li>数据操作符统一</li>
-</ul>
-<h3 id="（2）高度非过程化"><a href="#（2）高度非过程化" class="headerlink" title="（2）高度非过程化"></a>（2）高度非过程化</h3><ul>
-<li>非关系数据模型的数据操纵语言“面向过程”，必须制定存取路径</li>
-<li>SQL只要提出“做什么”，无须了解存取路径</li>
-<li>存取路径的选择以及SQL的操作过程由系统自动完成</li>
-</ul>
-<h3 id="（3）面向集合的操作方式"><a href="#（3）面向集合的操作方式" class="headerlink" title="（3）面向集合的操作方式"></a>（3）面向集合的操作方式</h3><ul>
-<li>非关系数据模型采用面向记录的操作方式，操作对象是一条记录</li>
-<li>SQL采用集合操作方式<ul>
-<li>操作对象、查找结果可以是元组的集合</li>
-<li>一次插入、删除、更新操作的对象可以是元组的集合</li>
-</ul>
-</li>
-</ul>
-<h3 id="（4）以同一种语法结构提供多种使用方式"><a href="#（4）以同一种语法结构提供多种使用方式" class="headerlink" title="（4）以同一种语法结构提供多种使用方式"></a>（4）以同一种语法结构提供多种使用方式</h3><ul>
-<li>SQL是独立的语言<br>能够独立地用于联机交互的使用方式</li>
-<li>SQL又是嵌入式语言<br>SQL能够嵌入到高级语言(例如C，C++，Java)程序中，供程序员设计程序时使用</li>
-</ul>
-<h3 id="（5）语言简洁"><a href="#（5）语言简洁" class="headerlink" title="（5）语言简洁"></a>（5）语言简洁</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th>SQL功能</th>
-<th>动词</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>数据查询</td>
-<td>SELECT</td>
-</tr>
-<tr>
-<td>数据定义</td>
-<td>CREATE,DROP,ALTER</td>
-</tr>
-<tr>
-<td>数据操纵</td>
-<td>INSERT,UPDATE,DELETE</td>
-</tr>
-<tr>
-<td>数据控制</td>
-<td>GRANT,REVOKE</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="3、-SQL语言的组成"><a href="#3、-SQL语言的组成" class="headerlink" title="3、 SQL语言的组成"></a>3、 SQL语言的组成</h2><p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/ddlDML.jpg" alt=""></p>
-<h3 id="（1）数据定义语言（DDL）"><a href="#（1）数据定义语言（DDL）" class="headerlink" title="（1）数据定义语言（DDL）"></a>（1）数据定义语言（DDL）</h3><p>DDL用来定义、修改、删除数据库中的各种对象。包括创建、修改、删除或者重命名模式对象（CREATE、ALTER、DROP、RENAME）的语句，以及删除表中所有行但不删除表（Truncate）的语句等。</p>
-<ul>
-<li><p>添加数据库（CREATE）</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database 库名</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>删除数据库（DROP）</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database 库名</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>查询指定库的详细信息（SHOW）</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">show CREATE DATABASE 库名  #查看某一个数据库的详细信息</span><br><span class="line">show DATABASE             #查看mysql服务器软件下的所有库</span><br><span class="line">show CREATE TABLE 表名     #打印某一张表sql创建信息</span><br><span class="line">show tables               #查看指定的数据库下有哪些表</span><br><span class="line"></span><br><span class="line">DESC 表名                  #查询某一张表的结构</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>修改</p>
-<p>一般不会去改编码 默认utf-8</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">alter database 库名 character set 新编码   #指定库的编码</span><br><span class="line">                                         #一般不会去改编码 默认utf-8</span><br><span class="line"></span><br><span class="line">rename table 旧表名 to 新表名              #对已经存在的表进行重命名</span><br><span class="line">eg.把学生信息表名字从stdinfo改为students</span><br><span class="line">rename table stdinfo to students </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alter table 表名 add 要添加的字段名 字段数据类型     #往已经存在的表中添加字段信息</span><br><span class="line">eg.在学生信息表中添加性别这个信息</span><br><span class="line">alter table stdinfo add gender int</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alter table 表名 drop 要删除的字段名             #往已经存在的表中删除字段信息</span><br><span class="line">eg.在学生信息表中删除性别这个信息</span><br><span class="line">alter table stdinfo drop gender</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">alter table 表名 change 旧字段名 新字段名 新字段数据类型 #对表中字段进行重命名</span><br><span class="line">eg.在学生信息表中将name字段重命名为stu_name</span><br><span class="line">alter table stdinfo change name stu_name varchar(40)</span><br><span class="line">#这个重命名也可以顺带修改数据类型 如果不想重命名只改数据类型的话 新旧字段名保持一致即可</span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<h3 id="（2）数据操纵语言（DML）"><a href="#（2）数据操纵语言（DML）" class="headerlink" title="（2）数据操纵语言（DML）"></a>（2）数据操纵语言（DML）</h3><p>DML的命令用来查询、插入、修改、删除数据库中数据。包含用于查询数据（Select）、添加新行数据（Insert）、修改现有行数据（Update）、删除现有行数据（Delete）的语句等。</p>
-<p>也可以吧Select单独列出来称为DQL数据库查询语言，剩余的insert、update、delete称作DML</p>
-<h3 id="（3）数据控制语言（DCL）"><a href="#（3）数据控制语言（DCL）" class="headerlink" title="（3）数据控制语言（DCL）"></a>（3）数据控制语言（DCL）</h3><p>用于事务控制、并发控制、完整性和安全性控制等。 </p>
-<h1 id="二、数据定义"><a href="#二、数据定义" class="headerlink" title="二、数据定义"></a>二、数据定义</h1><h2 id="1、数据库和基本表的定义与删除"><a href="#1、数据库和基本表的定义与删除" class="headerlink" title="1、数据库和基本表的定义与删除"></a>1、数据库和基本表的定义与删除</h2><h3 id="（1）数据库的创建与删除"><a href="#（1）数据库的创建与删除" class="headerlink" title="（1）数据库的创建与删除"></a>（1）数据库的创建与删除</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建数据库：</span><br><span class="line">create database 数据库名称;</span><br><span class="line"></span><br><span class="line">创建数据库，判断不存在，再创建：</span><br><span class="line">create database if not exists 数据库名称;</span><br><span class="line"></span><br><span class="line">创建数据库，并指定字符集：</span><br><span class="line">create database 数据库名称 character set 字符集名;</span><br><span class="line"></span><br><span class="line">* 练习： 创建db4数据库，判断是否存在，并制定字符集为gbk</span><br><span class="line">create database if not exists db4 character set gbk;</span><br><span class="line"></span><br><span class="line">删除数据库：</span><br><span class="line">drop database 数据库名称;</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（2）表的创建与删除"><a href="#（2）表的创建与删除" class="headerlink" title="（2）表的创建与删除"></a>（2）表的创建与删除</h3><h4 id="1）create创建"><a href="#1）create创建" class="headerlink" title="1）create创建"></a>1）create创建</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">创建表：</span><br><span class="line">create table 表名(</span><br><span class="line">     字段1 数据类型,   //例如，姓名 varchar[30],</span><br><span class="line">     字段2 数据类型,</span><br><span class="line">     ...</span><br><span class="line">);</span><br><span class="line">eg.</span><br><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20],</span><br><span class="line">    id int,</span><br><span class="line">    prof varchar[20]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">删除表：</span><br><span class="line">drop table 表名;</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="2、数据类型"><a href="#2、数据类型" class="headerlink" title="2、数据类型"></a>2、数据类型</h2><p>整数类型：BIT、BOOL、TINY INT、SMALL INT、MEDIUM INT、 INT、 BIG INT</p>
-<p>浮点数类型：FLOAT、DOUBLE、DECIMAL</p>
-<p>字符串类型：CHAR、VARCHAR、TINY TEXT、TEXT、MEDIUM TEXT、LONGTEXT、TINY BLOB、BLOB、MEDIUM BLOB、LONG BLOB</p>
-<p>日期类型：Date、DateTime、TimeStamp、Time、Year</p>
-<p>其他数据类型：BINARY、VARBINARY、ENUM、SET、Geometry、Point、MultiPoint、LineString、MultiLineString、Polygon、GeometryCollection等</p>
-<h3 id="（1）字符串"><a href="#（1）字符串" class="headerlink" title="（1）字符串"></a>（1）字符串</h3><p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181155722.png" alt="image-20210327181155722"></p>
-<ul>
-<li>CHAR，描述定长的字符串，说明格式为：CHAR(L)。</li>
-<li>VARCHAR，描述变长的字符串，说明格式为：VARCHAR(L)。</li>
-<li>字符串值用单引号或双引号括起来。如’abc’、”女”，习惯使用单引号。</li>
-<li><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181303196.png" alt="image-20210327181303196" style="zoom:67%;"></li>
-</ul>
-<h3 id="（2）数值类型"><a href="#（2）数值类型" class="headerlink" title="（2）数值类型"></a>（2）数值类型</h3><p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181349637.png" alt="image-20210327181349637"></p>
-<p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181359874.png" alt="image-20210327181359874"></p>
-<p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181409129.png" alt="image-20210327181409129"></p>
-<ul>
-<li>INT，用于表示整数，存储长度默认为4个字节。说明格式为：INT。</li>
-<li>DECIMAL，可以用来表示所有的数值数据。说明格式为：DECIMAL(p,s)。</li>
-</ul>
-<h3 id="（3）时间和日期类型"><a href="#（3）时间和日期类型" class="headerlink" title="（3）时间和日期类型"></a>（3）时间和日期类型</h3><ul>
-<li>DATE：用来保存固定长度的日期数据。说明格式为：DATE。</li>
-<li>TIME：用来保存固定长度的时间数据。说明格式为：TIME。</li>
-<li>DATETIME：用来保存固定长度的日期时间数据。说明格式为：DATETIME。</li>
-<li>格式：<ul>
-<li>日期值格式为’YYYY-MM-DD’；</li>
-<li>时间值格式为’HH:MM:SS’；</li>
-<li>日期时间值格式为’ YYYY-MM-DD HH:MM:SS’。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210327181609892.png" alt="image-20210327181609892"></p>
-<h3 id="（4）布尔类型"><a href="#（4）布尔类型" class="headerlink" title="（4）布尔类型"></a>（4）布尔类型</h3><p>布尔类型为BOOLEAN类型，只有两个值：TRUE和FALSE，即真值和假值</p>
-<h2 id="3、数据类型的属性（列、表级完整性约束）"><a href="#3、数据类型的属性（列、表级完整性约束）" class="headerlink" title="3、数据类型的属性（列、表级完整性约束）"></a>3、数据类型的属性（列、表级完整性约束）</h2><p><img src="/images/%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A0%87%E5%87%86%E8%AF%AD%E8%A8%80SQL/image-20210328155420790.png" alt="image-20210328155420790" style="zoom:40%;"></p>
-<p>举例如下：创建Employees表，字段类型（列的数据类型）和字段属性（约束）如下表所示</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>列</strong>  <strong>名</strong></th>
-<th><strong>含</strong>  <strong>义</strong></th>
-<th><strong>数 据 类 型</strong></th>
-<th><strong>约</strong>  <strong>束</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Eid</td>
-<td>职工号</td>
-<td>char(10)</td>
-<td>主键</td>
-</tr>
-<tr>
-<td>Ename</td>
-<td>姓名</td>
-<td>nchar(6)</td>
-<td>非空</td>
-</tr>
-<tr>
-<td>Sex</td>
-<td>性别</td>
-<td>nchar(1)</td>
-<td>取值范围：“男”或“女”</td>
-</tr>
-<tr>
-<td>BrithDate</td>
-<td>出生日期</td>
-<td>date</td>
-<td></td>
-</tr>
-<tr>
-<td>JobDate</td>
-<td>参加工作日期</td>
-<td>dateTime</td>
-<td>默认为系统当前日期时间</td>
-</tr>
-<tr>
-<td>Sid</td>
-<td>身份证号</td>
-<td>char(18)</td>
-<td>取值不重</td>
-</tr>
-<tr>
-<td>Jid</td>
-<td>所干工作编号</td>
-<td>char(6)</td>
-<td>外键，引用工作表的工作编号</td>
-</tr>
-<tr>
-<td>Tel</td>
-<td>联系电话</td>
-<td>char(11)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#举例：</span><br><span class="line">CREATE TABLE Employees (</span><br><span class="line"> Eid        char(10)                                comment 职工号,</span><br><span class="line"> Ename      nvarchar(20) NOT NULL                   comment 姓名,</span><br><span class="line"> Sex        nchar(1)     CHECK(Sex='男' OR Sex='女') comment 性别,</span><br><span class="line"> BirthDate  date                                    comment 出生日期, </span><br><span class="line"> JobDate    datetime     DEFAULT now()              comment 参加工作日期,</span><br><span class="line"> Sid		char(18)     UNIQUE                     comment 身份证号,</span><br><span class="line"> Jid		char(6)                                 comment 所干工作编号,</span><br><span class="line"> Tel        char(11)                                comment 联系电话,</span><br><span class="line"> PRIMARY KEY(Eid),</span><br><span class="line"> #设置职工号为主键</span><br><span class="line"> FOREIGN KEY(Jid) REFERENCES Jobs(Jid)</span><br><span class="line"> #设置工作编号为外键，引用工作表的工作编号</span><br><span class="line">)</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（1）default默认值"><a href="#（1）default默认值" class="headerlink" title="（1）default默认值"></a>（1）default默认值</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">default </span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20] comment '姓名',</span><br><span class="line">    id int(20) default '0' comment'学号',</span><br><span class="line">    #default意思是默认id初始值为0</span><br><span class="line">    #comment意思是备注id字段表示学号</span><br><span class="line">    prof varchar[20] comment '专业'</span><br><span class="line">)</span><br><span class="line">#但是默认学生学号为0意义不大，常用于默认性别</span><br><span class="line">#例如：</span><br><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20] comment '姓名',</span><br><span class="line">    gender varchar(2) default '女' comment'性别',</span><br><span class="line">    #默认性别为女</span><br><span class="line">    prof varchar[20] comment '专业'</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（2）not-null非空"><a href="#（2）not-null非空" class="headerlink" title="（2）not null非空"></a>（2）not null非空</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">not null</span><br><span class="line">#当某个字段被not null修饰时，那么在添加数据的时候就必须填写该字段</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#eg</span><br><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20] comment '姓名',</span><br><span class="line">    gender varchar(2) default '女' comment'性别',</span><br><span class="line">    prof varchar[20] comment '专业',</span><br><span class="line">    age int not null comment'年龄'</span><br><span class="line">    #设置年龄这个字段为非空</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（3）auto-increment自动增长"><a href="#（3）auto-increment自动增长" class="headerlink" title="（3）auto_increment自动增长"></a>（3）auto_increment自动增长</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">auto_increment</span><br><span class="line">#一般与primary key一起使用，放在primary key前面</span><br><span class="line">#尽量作用在int类型的字段上</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20] comment '姓名',</span><br><span class="line">    id int(20) auto_increment primary key comment '学号',</span><br><span class="line">    #让学号自动增长，每添加一个学生信息，学号就加1</span><br><span class="line">    #但是如果删掉了某个学号的学生信息，后边的学 学号不变</span><br><span class="line">    prof varchar[20] comment '专业'</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">#为了解决删除所有数据后重新添加的数据依旧按照原来的id值加1</span><br><span class="line">#想要重新从1开始计数，那么删除语句就不能用delete 用truncate</span><br><span class="line">#引申：删除某一条数据用delete 删除表中所有数据用truncate</span><br><span class="line">truncate table stdinfo;</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（4）unique唯一键"><a href="#（4）unique唯一键" class="headerlink" title="（4）unique唯一键"></a>（4）unique唯一键</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unique</span><br><span class="line">#被unique修饰的数据不能够重复,也就是说这个数据应该能够唯一标识个体</span><br><span class="line">#例如，身份证，学号,手机号等</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#eg.</span><br><span class="line">create table stdinfo(</span><br><span class="line">    name varchar[20] comment '姓名',</span><br><span class="line">    id int(20) unique comment '学号',</span><br><span class="line">    #设置学号不能重复</span><br><span class="line">    prof varchar[20] comment '专业'</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（5）CHECK限制取值范围"><a href="#（5）CHECK限制取值范围" class="headerlink" title="（5）CHECK限制取值范围"></a>（5）CHECK限制取值范围</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">check</span><br><span class="line">#用于限制列的取值在指定范围内，即约束列的取值符合应用语义</span><br><span class="line">#如果CHECK约束是定义多列之间的取值约束，则只能在表级完整性约束处定义</span><br><span class="line"></span><br><span class="line">#例如：人的性别：“男”或“女”</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">eg.</span><br><span class="line">CREATE TABLE Jobs (</span><br><span class="line">  Jid        char(6)     PRIMARY KEY    comment 工作编号,    </span><br><span class="line">  Descp	     nchar(20)   NOT NULL       comment 工作编号,</span><br><span class="line">  EduReq	 nchar(6)    DEFAULT '本科'  comment 学历要求, </span><br><span class="line">  MinSalary  int		 comment 最低工资,</span><br><span class="line">  MaxSalary  int		 comment 最高工资,</span><br><span class="line">  CHECK( MaxSalary &gt;= MinSalary )</span><br><span class="line">  #用check约束最高工资应该大于最低工资</span><br><span class="line">)</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（6）primary-key-主键"><a href="#（6）primary-key-主键" class="headerlink" title="（6）primary key 主键"></a>（6）primary key 主键</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">primary key </span><br><span class="line">#主键必须唯一</span><br><span class="line">#一张表中只有一个字段可以作为主键，一般被主键修饰的字段用于查询和删除的条件 </span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#如果在列级完整性约束处定义单列主键，则可省略括号</span><br><span class="line">例1： SNO char(7) PRIMARY KEY</span><br><span class="line">例2:  PRIMARY KEY(SNO)</span><br><span class="line">      PRIMARY KEY(SNO，CNO)</span><br><span class="line">      #想用主键约束多个字段</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（7）FOREIGN-KEY外键"><a href="#（7）FOREIGN-KEY外键" class="headerlink" title="（7）FOREIGN KEY外键"></a>（7）FOREIGN KEY外键</h3><div class="table-container">
-<table>
-<thead>
-<tr>
-<th></th>
-<th>主键</th>
-<th>外键</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>定义</td>
-<td>唯一标识一条记录，不能有重复的，不允许为空</td>
-<td>表的外键是另一表的主键, 外键可以有重复的, 可以是空值</td>
-</tr>
-<tr>
-<td>作用</td>
-<td>用来保证数据完整性</td>
-<td>用来和其他表建立联系用的</td>
-</tr>
-<tr>
-<td>个数</td>
-<td>主键只能有一个</td>
-<td>一个表可以有多个外键</td>
-</tr>
-<tr>
-<td>举例</td>
-<td>学生表中的学号为主键；学生成绩表中的学号与课程号组合为主键（单独一个没办法唯一标识一条记录）；课程表的课程编号为主键</td>
-<td>成绩表中的课程号是课程表的外键</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2 id="4、逻辑运算符"><a href="#4、逻辑运算符" class="headerlink" title="4、逻辑运算符"></a>4、逻辑运算符</h2><blockquote>
-<p>“=”跟在where关键字后面就是“关系运算符”<br>“=”跟在set关键字后面就是“赋值运算符”</p>
-</blockquote>
-<p>与：and</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from stdinfo where id&lt;=200 and prof=信息安全</span><br></pre></td></tr></tbody></table></figure>
-<p>或：or</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from stdinfo where id&lt;=200 or prof=信息安全</span><br></pre></td></tr></tbody></table></figure>
-<p>非：not</p>
-<h1 id="三、数据查询"><a href="#三、数据查询" class="headerlink" title="三、数据查询"></a>三、数据查询</h1><h2 id="1、基本查询"><a href="#1、基本查询" class="headerlink" title="1、基本查询"></a>1、基本查询</h2><h3 id="（1）基本操作"><a href="#（1）基本操作" class="headerlink" title="（1）基本操作"></a>（1）基本操作</h3><h4 id="1）查询某一张表中的所有数据记录"><a href="#1）查询某一张表中的所有数据记录" class="headerlink" title="1）查询某一张表中的所有数据记录"></a>1）查询某一张表中的所有数据记录</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">方法1:</span><br><span class="line">select 字段1,字段2,... from 表名 [where 条件];</span><br><span class="line">eg. select name,id,prof from stdinfo;</span><br><span class="line"></span><br><span class="line">方法2:</span><br><span class="line">select * from 表名 [where 条件];</span><br><span class="line">eg. select * from stdinfo;</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="2）查询一张表中某一项数据记录"><a href="#2）查询一张表中某一项数据记录" class="headerlink" title="2）查询一张表中某一项数据记录"></a>2）查询一张表中某一项数据记录</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name from stdinfo;</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="3）带条件的查询某一项数据记录"><a href="#3）带条件的查询某一项数据记录" class="headerlink" title="3）带条件的查询某一项数据记录"></a>3）带条件的查询某一项数据记录</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id from stdinfo where id&gt;=200;</span><br></pre></td></tr></tbody></table></figure>
-<p>还可以用as为要查询的字段取别名，举例如下</p>
-<p>为“姓名“这个字段取一个别名叫做“stdname”</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select naem as stdname from stdinfo</span><br><span class="line">//"as"其实也不是必备，可以省略</span><br></pre></td></tr></tbody></table></figure>
-<p>也可以给表取别名，但要注意不用as，直接在表名后边加上取的别名就好了，举例如下：为学生信息表取一个别名叫students</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eg.select name from stdinfo students</span><br></pre></td></tr></tbody></table></figure>
-<h3 id="（2）ORDER-BY"><a href="#（2）ORDER-BY" class="headerlink" title="（2）ORDER BY"></a>（2）ORDER BY</h3><ul>
-<li><p>升序</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user order by id asc</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>降序</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user order by id desc</span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<h2 id="2、分组查询"><a href="#2、分组查询" class="headerlink" title="2、分组查询"></a>2、分组查询</h2><h2 id="3、连接查询"><a href="#3、连接查询" class="headerlink" title="3、连接查询"></a>3、连接查询</h2><h2 id="4、子查询"><a href="#4、子查询" class="headerlink" title="4、子查询"></a>4、子查询</h2><h2 id="5、合并查询查询"><a href="#5、合并查询查询" class="headerlink" title="5、合并查询查询"></a>5、合并查询查询</h2><h1 id="四、数据的维护"><a href="#四、数据的维护" class="headerlink" title="四、数据的维护"></a>四、数据的维护</h1><h2 id="1、插入数据"><a href="#1、插入数据" class="headerlink" title="1、插入数据"></a>1、插入数据</h2><p>（1）往指定的表中插入一条完整数据</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">insert into 表名(字段1,字段2....) value(值1，值2....);</span><br><span class="line">eg.</span><br><span class="line">insert into stdinfo (name,id,prof) value('张三',00001,'信息安全');</span><br><span class="line"></span><br><span class="line">在插入时，只要value关键字后面的字段值与表字段数一样，且一一对应，就可以省略“(字段1,字段2....)”，即：</span><br><span class="line">insert into 表名 value(值1，值2....);</span><br></pre></td></tr></tbody></table></figure>
-<p>（2）往指定的表中仅插入一条数据中的某一项数据</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">方法1：</span><br><span class="line">insert into 表名(字段n) value(值n);</span><br><span class="line">eg.insert into stdinfo(name) value('张三');</span><br><span class="line">方法2：</span><br><span class="line">insert into 表名 set 字段名='值' ;</span><br><span class="line">eg.insert into stdinfo set 姓名='张三';</span><br></pre></td></tr></tbody></table></figure>
-<p>（3）往指定的表中插入多条数据</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">insert into 表名 (字段1,字段2....) </span><br><span class="line">value(值1，值2....),</span><br><span class="line">(值1，值2....),</span><br><span class="line">(值1，值2....),</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="2、更新数据"><a href="#2、更新数据" class="headerlink" title="2、更新数据"></a>2、更新数据</h2><p>（1）修改某个数据的具体指</p>
-  <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">update 表名 set 字段名1=值1,字段名2=值2... where 条件</span><br><span class="line">eg.将学号为1的学生专业改为软件工程</span><br><span class="line">update stdinfo set prof="软件工程" where id=1</span><br></pre></td></tr></tbody></table></figure>
-<p>（2）修改表中所有个体的某一属性</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">eg.将stdinfo表中学生的专业全部设置为信息安全</span><br><span class="line">update stdinfo set prof="信息安全" where 1=1</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="3、删除数据"><a href="#3、删除数据" class="headerlink" title="3、删除数据"></a>3、删除数据</h2><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">delete from 表名 where 条件</span><br><span class="line">eg.delete from stdinfo where name='张三'</span><br><span class="line"></span><br><span class="line">**删除表中所有数据</span><br><span class="line">delete from stdinfo where 1=1</span><br><span class="line"></span><br><span class="line">注意：</span><br><span class="line">“=”跟在where关键字后面就是“关系运算符”</span><br><span class="line">“=”跟在set关键字后面就是“赋值运算符”</span><br></pre></td></tr></tbody></table></figure>
-<h1 id="五、索引和视图"><a href="#五、索引和视图" class="headerlink" title="五、索引和视图"></a>五、索引和视图</h1><h2 id="1、索引的创建与删除"><a href="#1、索引的创建与删除" class="headerlink" title="1、索引的创建与删除"></a>1、索引的创建与删除</h2><h2 id="2、视图"><a href="#2、视图" class="headerlink" title="2、视图"></a>2、视图</h2>
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -778,7 +780,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-30 18:32:01" itemprop="dateModified" datetime="2021-03-30T18:32:01+08:00">2021-03-30</time>
+        <time title="修改时间：2021-04-08 23:36:56" itemprop="dateModified" datetime="2021-04-08T23:36:56+08:00">2021-04-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -798,7 +800,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1k</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -816,9 +818,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+          <h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
 <h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/#more" rel="contents">
@@ -1077,7 +1079,7 @@ A(数据库技术)--&gt;C(数据处理)</pre>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%89%A9%E7%90%86%E5%B1%82/">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/09/%E7%89%A9%E7%90%86%E5%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1090,7 +1092,7 @@ A(数据库技术)--&gt;C(数据处理)</pre>
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%89%A9%E7%90%86%E5%B1%82/" class="post-title-link" itemprop="url">计算机网络物理层02</a>
+          <a href="/2021/03/09/%E7%89%A9%E7%90%86%E5%B1%82/" class="post-title-link" itemprop="url">物理层02</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1108,7 +1110,7 @@ A(数据库技术)--&gt;C(数据处理)</pre>
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-30 22:45:44" itemprop="dateModified" datetime="2021-03-30T22:45:44+08:00">2021-03-30</time>
+        <time title="修改时间：2021-04-06 22:00:36" itemprop="dateModified" datetime="2021-04-06T22:00:36+08:00">2021-04-06</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1128,7 +1130,7 @@ A(数据库技术)--&gt;C(数据处理)</pre>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>8.9k</span>
+      <span>9.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -1154,7 +1156,7 @@ A(数据库技术)--&gt;C(数据处理)</pre>
 <h2 id="2、物理层的主要任务："><a href="#2、物理层的主要任务：" class="headerlink" title="2、物理层的主要任务："></a>2、物理层的主要任务：</h2>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/09/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%89%A9%E7%90%86%E5%B1%82/#more" rel="contents">
+              <a class="btn" href="/2021/03/09/%E7%89%A9%E7%90%86%E5%B1%82/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1397,223 +1399,6 @@ A(数据库技术)--&gt;C(数据处理)</pre>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/07/Java%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/07/Java%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/" class="post-title-link" itemprop="url">Java流程控制语句</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-03-07 23:34:57 / 修改时间：23:39:33" itemprop="dateCreated datePublished" datetime="2021-03-07T23:34:57+08:00">2021-03-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">语言</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="一、顺序结构"><a href="#一、顺序结构" class="headerlink" title="一、顺序结构"></a>一、顺序结构</h3><p>从上往下依次执行</p>
-<h3 id="二、选择结构"><a href="#二、选择结构" class="headerlink" title="二、选择结构"></a>二、选择结构</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/07/Java%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">hexo基本操作</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-07 23:31:28" itemprop="dateCreated datePublished" datetime="2021-03-07T23:31:28+08:00">2021-03-07</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-03-11 20:35:31" itemprop="dateModified" datetime="2021-03-11T20:35:31+08:00">2021-03-11</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%8D%9A%E5%AE%A2/" itemprop="url" rel="index"><span itemprop="name">博客</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1、写博客 </p>
-<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
-<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
-<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
-<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1696,14 +1481,14 @@ A(数据库技术)--&gt;C(数据处理)</pre>
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">37k</span>
+    <span title="站点总字数">47k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">33 分钟</span>
+    <span title="站点阅读时长">43 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
