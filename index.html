@@ -85,9 +85,9 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -202,20 +202,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -267,6 +267,296 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/05/16/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/16/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">软考后半部分知识点</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-05-16 16:16:07" itemprop="dateCreated datePublished" datetime="2021-05-16T16:16:07+08:00">2021-05-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-05-25 22:58:53" itemprop="dateModified" datetime="2021-05-25T22:58:53+08:00">2021-05-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">软考</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第八章、程序设计语言与语言处理程序"><a href="#第八章、程序设计语言与语言处理程序" class="headerlink" title="第八章、程序设计语言与语言处理程序"></a>第八章、程序设计语言与语言处理程序</h1><h2 id="1、编译过程"><a href="#1、编译过程" class="headerlink" title="1、编译过程"></a>1、编译过程</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516161759590.png" alt="image-20210516161759590" style="zoom: 33%;"></p>
+<h2 id="2、文法的定义以及语法推导树"><a href="#2、文法的定义以及语法推导树" class="headerlink" title="2、文法的定义以及语法推导树"></a>2、文法的定义以及语法推导树</h2><h3 id="文法定义"><a href="#文法定义" class="headerlink" title="文法定义"></a>文法定义</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516162153021.png" alt="image-20210516162153021" style="zoom: 33%;"></p>
+<h3 id="文法类型"><a href="#文法类型" class="headerlink" title="文法类型"></a>文法类型</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516162120819.png" alt="image-20210516162120819" style="zoom: 33%;"></p>
+<h3 id="语法推导树"><a href="#语法推导树" class="headerlink" title="语法推导树"></a>语法推导树</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516162428060.png" alt="image-20210516162428060" style="zoom: 33%;"></p>
+<h2 id="3、有限自动机与正规式"><a href="#3、有限自动机与正规式" class="headerlink" title="3、有限自动机与正规式"></a>3、有限自动机与正规式</h2><h3 id="有限自动机"><a href="#有限自动机" class="headerlink" title="有限自动机"></a>有限自动机</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516162718862.png" alt="image-20210516162718862" style="zoom: 33%;"></p>
+<p>从S输入1可以到A，从A输入0可以到f，f有两个圈 意思是是终止</p>
+<h3 id="文法推导"><a href="#文法推导" class="headerlink" title="文法推导"></a>文法推导</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516164853777.png" alt="image-20210516164853777" style="zoom: 33%;"></p>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516163220839.png" alt="image-20210516163220839" style="zoom: 33%;"></p>
+<p>第一问：首先从S出发推导，把ABCD选项带进去看看能不能推出来</p>
+<p>最后发现ABC可行 D不行，因为从S—bB—baS—babB—bab(aS|a) 此时B只能化成aS或者是a 不可能接b</p>
+<p>第二问：解题技巧：因为第一问已经退出ABC选项是符合要求的，所以把第二问的几个选项依次看能不能表达出第一问ABC选项的三个串</p>
+<p>==（）^*^ : 意思是循环括号里的内容==</p>
+<p>A.可以表达第一问的ABC选项，但它也能表达D选项，不符合一一对应关系</p>
+<p>B.无法表达第一问的BC选项</p>
+<p>C.可以表达第一问的ABC选项，不能表达D选项，符合要求</p>
+<p>D.无法实现以ba开头</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516164649299.png" alt="image-20210516164649299" style="zoom: 33%;"></p>
+<p>从A开始走吧数字带进去看能不能到C</p>
+<h2 id="4、表达式"><a href="#4、表达式" class="headerlink" title="4、表达式"></a>4、表达式</h2><p>和树结合，前、中、后序遍历 对应 前、中、后序表达式</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516165045589.png" alt="image-20210516165045589" style="zoom: 33%;"></p>
+<h2 id="5、各种程序语言特点"><a href="#5、各种程序语言特点" class="headerlink" title="5、各种程序语言特点"></a>5、各种程序语言特点</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516165323210.png" alt="image-20210516165323210" style="zoom:33%;"></p>
+<h1 id="第九章-法律法规"><a href="#第九章-法律法规" class="headerlink" title="第九章 法律法规"></a>第九章 法律法规</h1><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516170235910.png" alt="image-20210516170235910" style="zoom:33%;"></p>
+<h2 id="1、保护期限问题"><a href="#1、保护期限问题" class="headerlink" title="1、保护期限问题"></a>1、保护期限问题</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516171422842.png" alt="image-20210516171422842" style="zoom:33%;"></p>
+<h2 id="2、知识产权人确定"><a href="#2、知识产权人确定" class="headerlink" title="2、知识产权人确定"></a>2、知识产权人确定</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516172554065.png" alt="image-20210516172554065" style="zoom:33%;"><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516173005346.png" alt="image-20210516173005346"></p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516173037525.png" alt="image-20210516173037525" style="zoom:33%;"></p>
+<h2 id="3、侵权判定"><a href="#3、侵权判定" class="headerlink" title="3、侵权判定"></a>3、侵权判定</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516174502498.png" alt="image-20210516174502498" style="zoom:33%;"></p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516174555092.png" alt="image-20210516174555092" style="zoom:33%;"></p>
+<h2 id="4、标准化基础知识"><a href="#4、标准化基础知识" class="headerlink" title="4、标准化基础知识"></a>4、标准化基础知识</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516175246275.png" alt="image-20210516175246275" style="zoom:33%;"><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516175337756.png" alt="image-20210516175337756"></p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516175354888.png" alt="image-20210516175354888" style="zoom:33%;"></p>
+<h1 id="第十章-软件工程"><a href="#第十章-软件工程" class="headerlink" title="第十章 软件工程"></a>第十章 软件工程</h1><h2 id="1、软件开发模型"><a href="#1、软件开发模型" class="headerlink" title="1、软件开发模型"></a>1、软件开发模型</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516175850386.png" alt="image-20210516175850386" style="zoom:33%;"></p>
+<h3 id="瀑布模型"><a href="#瀑布模型" class="headerlink" title="瀑布模型"></a>瀑布模型</h3><p>初期很常用 现在几乎不使用 因为瀑布模型很难高效完成项目</p>
+<p>缺点：需求一开始是无法完全确定的，一旦后期需求发生改变瀑布模型通过回溯来修改</p>
+<p>适合于需求明确，或者是二次开发</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516180803014.png" alt="image-20210516180803014" style="zoom:33%;"></p>
+<h3 id="原型模型、演化模型、增量模型"><a href="#原型模型、演化模型、增量模型" class="headerlink" title="原型模型、演化模型、增量模型"></a>原型模型、演化模型、增量模型</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516182733476.png" alt="image-20210516182733476" style="zoom:33%;"></p>
+<h4 id="原型模型"><a href="#原型模型" class="headerlink" title="原型模型"></a>原型模型</h4><p>只用于开发需求阶段，最适用于需求不明确的情况，刚好弥补了瀑布模型的缺陷</p>
+<p>在项目初期构造一个简易系统向用户演示（只做外观方面 不做具体功能）</p>
+<h4 id="演化模型"><a href="#演化模型" class="headerlink" title="演化模型"></a>演化模型</h4><p>由原型演化而来，在原型模型基础上和客户沟通所确定出来</p>
+<h4 id="螺旋模型"><a href="#螺旋模型" class="headerlink" title="螺旋模型"></a>螺旋模型</h4><p>做一块功能就和客户沟通修改，再做下一模块的功能</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516183327654.png" alt="image-20210516183327654" style="zoom:43%;"></p>
+<h3 id="V模型-喷泉模型-RAD模型（快速开发模型）"><a href="#V模型-喷泉模型-RAD模型（快速开发模型）" class="headerlink" title="V模型 喷泉模型  RAD模型（快速开发模型）"></a>V模型 喷泉模型  RAD模型（快速开发模型）</h3><ul>
+<li><p>V模型强调测试要贯穿整个开发过程</p>
+<ul>
+<li>在需求分析的阶段就开始写验收测试和系统测试计划，从而发现需求分析中存在的问题</li>
+<li>在概要设计时就写集成测试</li>
+<li>详细设计时就写单元测试</li>
+</ul>
+</li>
+<li><p>喷泉模型属于面向对象的模型（瀑布模型属于结构化的模型）</p>
+</li>
+<li><p>RAD模型（快速开发模型）</p>
+<p>先建模（快速构建应用系统）再开发</p>
+</li>
+</ul>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516183942938.png" alt="image-20210516183942938" style="zoom:33%;"></p>
+<h3 id="构件组装模型（CBSD）"><a href="#构件组装模型（CBSD）" class="headerlink" title="构件组装模型（CBSD）"></a>构件组装模型（CBSD）</h3><p>把各个模块做成构件，将各个构建组装起来构成目的软件</p>
+<p>增加软件的复用性 </p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516193726037.png" alt="image-20210516193726037" style="zoom:33%;"></p>
+<h2 id="2、敏捷开发方法"><a href="#2、敏捷开发方法" class="headerlink" title="2、敏捷开发方法"></a>2、敏捷开发方法</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516193935370.png" alt="image-20210516193935370" style="zoom:33%;"></p>
+<h2 id="3、信息系统开发方法"><a href="#3、信息系统开发方法" class="headerlink" title="3、信息系统开发方法"></a>3、信息系统开发方法</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516222610320.png" alt="image-20210516222610320" style="zoom:33%;"></p>
+<h2 id="4、需求分类与获取"><a href="#4、需求分类与获取" class="headerlink" title="4、需求分类与获取"></a>4、需求分类与获取</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516223600204.png" alt="image-20210516223600204" style="zoom:33%;"></p>
+<h2 id="5、结构化设计"><a href="#5、结构化设计" class="headerlink" title="5、结构化设计"></a>5、结构化设计</h2><h3 id="基本原则"><a href="#基本原则" class="headerlink" title="基本原则"></a>基本原则</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516224343287.png" alt="image-20210516224343287" style="zoom:33%;"></p>
+<p>多扇入，少扇出：相当于入度和出度，也就是被别人调用的多，调用别人少</p>
+<p>​                                被调用的多：说明这个模块的价值比较高</p>
+<p>​                                调用别人少：说明这个模块对其他模块依赖程度高</p>
+<h3 id="内聚与耦合"><a href="#内聚与耦合" class="headerlink" title="内聚与耦合"></a>内聚与耦合</h3><p>高内聚 低耦合</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516224553886.png" alt="image-20210516224553886" style="zoom:33%;"></p>
+<h3 id="系统结构-模块结构"><a href="#系统结构-模块结构" class="headerlink" title="系统结构/模块结构"></a>系统结构/模块结构</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210516225223017.png" alt="image-20210516225223017" style="zoom:33%;"></p>
+<h2 id="6、软件测试"><a href="#6、软件测试" class="headerlink" title="6、软件测试"></a>6、软件测试</h2><h3 id="测试原则与类型"><a href="#测试原则与类型" class="headerlink" title="测试原则与类型"></a>测试原则与类型</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517082452247.png" alt="image-20210517082452247" style="zoom:33%;"></p>
+<h3 id="黑盒测试与白盒测试"><a href="#黑盒测试与白盒测试" class="headerlink" title="黑盒测试与白盒测试"></a>黑盒测试与白盒测试</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517083238935.png" alt="image-20210517083238935" style="zoom:33%;"></p>
+<p>黑盒测试：</p>
+<ul>
+<li>边界值：下边界下方-正下边界———正上边界-上边界上方</li>
+<li>错误推测：凭经验来试错</li>
+</ul>
+<h3 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517083950939.png" alt="image-20210517083950939" style="zoom:33%;"></p>
+<ul>
+<li><p>单元测试：关注局部模块功能的测试</p>
+</li>
+<li><p>集成测试：把各个模块组装起来测试</p>
+<ul>
+<li>组装有两种方式（一次性组装，增量式组装）<ul>
+<li>其中增量式组装是拼一个模块上去就测一次，拼接模块的方式又分为三种（自顶向下、自底向上、混合）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>确认测试：需求测试，看做出来的产品 是否符合用户需求</p>
+<ul>
+<li>alpha（在开发试验环境测试）、beta测试（用户在本地使用）针对产品</li>
+<li>验收测试：用户参与进来，看是否达到要求</li>
+</ul>
+</li>
+<li><p>系统测试：关注整体的性能、安全等</p>
+<ul>
+<li><p>性能测试：通常收集所有和测试有关的所有性能，通常被不同人在不同场合下进行使用</p>
+<ul>
+<li><p>压力测试：压力测试是在强负载（大数据量、大量并发用户等）下的测试</p>
+</li>
+<li><p>负载测试（模拟实际软件系统所承受的负载条件的系统负荷，通过不断加载来观察不同负载下系统的性能）</p>
+</li>
+<li>强度测试（在资源异常的情况下，系统能否正常工作）<ul>
+<li>Spike testing：短时间的极端负载测试<br>Extreme testing：在过量用户下的负载测试<br>Hammer testing：连续执行所有能做的操作 </li>
+</ul>
+</li>
+<li>容量测试（确定系统可处理同时在线的最大用户数 ）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="McCabe复杂度"><a href="#McCabe复杂度" class="headerlink" title="McCabe复杂度"></a>McCabe复杂度</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517090232117.png" alt="image-20210517090232117" style="zoom:33%;"></p>
+<p>复杂度=m-n+2（n可以记为node，表示点的数目）</p>
+<p>上图示例中是把每个交叉点都抽象成了一个结点</p>
+<p>也可以不用抽象为结点，比如默认3、4都连到7上，10连到9上，9连到12上，算出来的复杂度也是正确的</p>
+<h2 id="7、系统运行与维护"><a href="#7、系统运行与维护" class="headerlink" title="7、系统运行与维护"></a>7、系统运行与维护</h2><p>可维护性类型 以及 维护的类型</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517090921326.png" alt="image-20210517090921326" style="zoom:33%;"></p>
+<h2 id="8、软件能力成熟度模型集成"><a href="#8、软件能力成熟度模型集成" class="headerlink" title="8、软件能力成熟度模型集成"></a>8、软件能力成熟度模型集成</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517091750856.png" alt="image-20210517091750856" style="zoom:33%;"></p>
+<h2 id="9、项目管理基础知识"><a href="#9、项目管理基础知识" class="headerlink" title="9、项目管理基础知识"></a>9、项目管理基础知识</h2><h3 id="甘特图（Gantt）与PERT图"><a href="#甘特图（Gantt）与PERT图" class="headerlink" title="甘特图（Gantt）与PERT图"></a>甘特图（Gantt）与PERT图</h3><p>甘特图（Gantt）</p>
+<p>可以简单明了的展示项目进度，缺点是没办法表示事件与事件之间先后顺序</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517092859487.png" alt="image-20210517092859487" style="zoom:33%;"></p>
+<p>PERT图（软件项目活动图）</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517093316237.png" alt="image-20210517093316237" style="zoom:33%;"></p>
+<h3 id="风险"><a href="#风险" class="headerlink" title="风险"></a>风险</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517093356203.png" alt="image-20210517093356203"></p>
+<h1 id="第十一章-面向对象设计"><a href="#第十一章-面向对象设计" class="headerlink" title="第十一章 面向对象设计"></a>第十一章 面向对象设计</h1><h2 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517093753354.png" alt="image-20210517093753354" style="zoom:33%;"></p>
+<h2 id="2、设计原则"><a href="#2、设计原则" class="headerlink" title="2、设计原则"></a>2、设计原则</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517094443194.png" alt="image-20210517094443194" style="zoom:33%;"></p>
+<p>开放封闭原则：尽量扩展类来增加功能，而不是通过修改原有的类来增加功能</p>
+<p>李氏替换原则：要让子类可以替换父类，而不要去重载</p>
+<p>依赖倒装原则：也就是低耦合，针对接口编程，方便更新换代</p>
+<p>组合重用原则：因为继承是紧耦合，少用继承</p>
+<p>最少知识法则：信息隐蔽，统一用标准的方式调用对象</p>
+<h2 id="3、UML"><a href="#3、UML" class="headerlink" title="3、UML"></a>3、UML</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517095137026.png" alt="image-20210517095137026" style="zoom:33%;"></p>
+<h2 id="4、设计模式"><a href="#4、设计模式" class="headerlink" title="4、设计模式"></a>4、设计模式</h2><h3 id="设计模式概念"><a href="#设计模式概念" class="headerlink" title="设计模式概念"></a>设计模式概念</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517095812442.png" alt="image-20210517095812442" style="zoom:33%;"></p>
+<p>区分架构模式与设计模式：看全局还是局部</p>
+<p>区分设计模式与惯用法：看是否与具体的语言相关</p>
+<h3 id="设计模式的分类"><a href="#设计模式的分类" class="headerlink" title="设计模式的分类"></a>设计模式的分类</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517100528273.png" alt="image-20210517100528273" style="zoom:33%;"><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517100548573.png" alt="image-20210517100548573" style="zoom: 50%;"></p>
+<h4 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h4><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517100548573.png" style="zoom:33%;"></p>
+<h4 id="结构性模式"><a href="#结构性模式" class="headerlink" title="结构性模式"></a>结构性模式</h4><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517101325589.png" alt="image-20210517101325589" style="zoom:33%;"></p>
+<h4 id="行为性模式"><a href="#行为性模式" class="headerlink" title="行为性模式"></a>行为性模式</h4><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517102156112.png" alt="image-20210517102156112" style="zoom:33%;"><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517102259256.png" alt="image-20210517102259256" style="zoom: 50%;"></p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517102259256.png" alt="image-20210517102259256" style="zoom:50%;"></p>
+<h1 id="第十二章-数据流图（DFD）下午题01"><a href="#第十二章-数据流图（DFD）下午题01" class="headerlink" title="第十二章 数据流图（DFD）下午题01"></a>第十二章 数据流图（DFD）下午题01</h1><p>（下午题 第一道 15分）</p>
+<h2 id="1、数据流图概念"><a href="#1、数据流图概念" class="headerlink" title="1、数据流图概念"></a>1、数据流图概念</h2><h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517102645218.png" alt="image-20210517102645218" style="zoom:33%;"></p>
+<p>加工：函数or功能模块</p>
+<p>数据存储：记录表、记录文件</p>
+<h3 id="数据流图的分层"><a href="#数据流图的分层" class="headerlink" title="数据流图的分层"></a>数据流图的分层</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517103211516.png" alt="image-20210517103211516" style="zoom:33%;"></p>
+<h2 id="2、数据字典"><a href="#2、数据字典" class="headerlink" title="2、数据字典"></a>2、数据字典</h2><p>配合数据流</p>
+<p>符号：</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517103251128.png" alt="image-20210517103251128" style="zoom:33%;"></p>
+<h2 id="3、数据流图平衡原则"><a href="#3、数据流图平衡原则" class="headerlink" title="3、数据流图平衡原则"></a>3、数据流图平衡原则</h2><h3 id="父图与子图之间的平衡"><a href="#父图与子图之间的平衡" class="headerlink" title="父图与子图之间的平衡"></a>父图与子图之间的平衡</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517103936191.png" alt="image-20210517103936191" style="zoom:33%;"></p>
+<h3 id="子图内平衡"><a href="#子图内平衡" class="headerlink" title="子图内平衡"></a>子图内平衡</h3><ul>
+<li>既有输入也有输出——正常</li>
+<li>只有输入——黑洞</li>
+<li>只有输出——奇迹</li>
+</ul>
+<h2 id="4、例题"><a href="#4、例题" class="headerlink" title="4、例题"></a>4、例题</h2><h3 id="解题技巧"><a href="#解题技巧" class="headerlink" title="解题技巧"></a>解题技巧</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210517142822495.png" alt="image-20210517142822495" style="zoom:33%;"></p>
+<h1 id="第十三章-数据库设计-下午题02"><a href="#第十三章-数据库设计-下午题02" class="headerlink" title="第十三章 数据库设计 下午题02"></a>第十三章 数据库设计 下午题02</h1><h2 id="1、数据库设计过程"><a href="#1、数据库设计过程" class="headerlink" title="1、数据库设计过程"></a>1、数据库设计过程</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210522223650929.png" alt="image-20210522223650929" style="zoom:33%;"></p>
+<h2 id="2、ER模型"><a href="#2、ER模型" class="headerlink" title="2、ER模型"></a>2、ER模型</h2><h3 id="实体间的联系类型"><a href="#实体间的联系类型" class="headerlink" title="实体间的联系类型"></a>实体间的联系类型</h3><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210522223901524.png" alt="image-20210522223901524" style="zoom:33%;"></p>
+<h3 id="ER模型-lt-gt-关系模式"><a href="#ER模型-lt-gt-关系模式" class="headerlink" title="ER模型<=>关系模式"></a>ER模型&lt;=&gt;关系模式</h3><p>原则：实体和联系分别转换为关系，属性则转换成相应关系的属性</p>
+<h1 id="第十四章-UML图-下午题03"><a href="#第十四章-UML图-下午题03" class="headerlink" title="第十四章 UML图 下午题03"></a>第十四章 UML图 下午题03</h1><h2 id="1、用例图"><a href="#1、用例图" class="headerlink" title="1、用例图"></a>1、用例图</h2><p>包含关系：include</p>
+<p>扩展关系：extend</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525175942979.png" alt="image-20210525175942979" style="zoom:50%;"></p>
+<h2 id="2、类图与对象图"><a href="#2、类图与对象图" class="headerlink" title="2、类图与对象图"></a>2、类图与对象图</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525184412155.png" alt="image-20210525184412155" style="zoom:80%;"></p>
+<p>考察内容：</p>
+<ul>
+<li><p>填类名（最常考），填方法名，填属性名</p>
+</li>
+<li><p>填多重度</p>
+<ul>
+<li>1：表示一个集合中的一个对象对应另一个集合中1个对象</li>
+<li>0..*：表示一个集合中的一个对象对应另一个集合中的0个或多个对象</li>
+<li>1..*：表示一个集合中的一个对象对应另一个集合中的1个或多个对象</li>
+<li>*：表示一个集合中的一个对象对应另一个集合中的多个对象</li>
+</ul>
+</li>
+<li><p>填关系</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/UML%E5%85%B3%E7%B3%BB.jpg" style="zoom: 67%;"></p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525180820181.png" alt="image-20210525180820181" style="zoom:63%;"></p>
+</li>
+</ul>
+<h2 id="3、顺序图"><a href="#3、顺序图" class="headerlink" title="3、顺序图"></a>3、顺序图</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525184539938.png" alt="image-20210525184539938" style="zoom:67%;"></p>
+<p>考察方面：</p>
+<p>根据处理流程和题目描述来填消息名称（如图的6、7）</p>
+<p>填对象名称</p>
+<h2 id="4、活动图"><a href="#4、活动图" class="headerlink" title="4、活动图"></a>4、活动图</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525184818879.png" alt="image-20210525184818879" style="zoom:67%;"></p>
+<h2 id="5、状态图"><a href="#5、状态图" class="headerlink" title="5、状态图"></a>5、状态图</h2><p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525191301040.png" alt="image-20210525191301040" style="zoom: 67%;"></p>
+<p>考察方面：</p>
+<p>填触发事件（也就是状态发生变化的条件）</p>
+<h2 id="6、通信图（协助图）"><a href="#6、通信图（协助图）" class="headerlink" title="6、通信图（协助图）"></a>6、通信图（协助图）</h2><p>和顺序图很像，所以两者有时统称为交互图，但是相比之下，通信图没那么强调时间顺序</p>
+<p><img src="/images/%E8%BD%AF%E8%80%83%E5%90%8E%E5%8D%8A%E9%83%A8%E5%88%86%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210525191833610.png" alt="image-20210525191833610" style="zoom:67%;"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/04/02/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -298,7 +588,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-10 17:06:08" itemprop="dateModified" datetime="2021-04-10T17:06:08+08:00">2021-04-10</time>
+        <time title="修改时间：2021-05-09 22:07:05" itemprop="dateModified" datetime="2021-05-09T22:07:05+08:00">2021-05-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -318,14 +608,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>10k</span>
+      <span>11k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>10 分钟</span>
     </span>
 </div>
 
@@ -336,9 +626,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="第一节-使用点对点信道的数据链路层"><a href="#第一节-使用点对点信道的数据链路层" class="headerlink" title="第一节 使用点对点信道的数据链路层"></a>第一节 使用点对点信道的数据链路层</h1><p>*数据链路层使用的信道</p>
+          <h1 id="第一节-数据链路层基本概念与问题"><a href="#第一节-数据链路层基本概念与问题" class="headerlink" title="第一节 数据链路层基本概念与问题"></a>第一节 数据链路层基本概念与问题</h1><p>*数据链路层使用的信道类型</p>
 <ul>
-<li><p>点对点信道：使用一对一的点对点通信方式</p>
+<li><p>点对点信道 ：使用一对一的点对点通信方式</p>
 <p><img src="/images/%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82/3.1.1.jpg" style="zoom:33%;"></p>
 </li>
 <li><p>广播信道：使用一对多的广播通信方式。因此必须使用专用的共享信道协议来协调这些主机的数据发送</p>
@@ -524,7 +814,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-15 19:38:54" itemprop="dateModified" datetime="2021-04-15T19:38:54+08:00">2021-04-15</time>
+        <time title="修改时间：2021-05-06 19:40:17" itemprop="dateModified" datetime="2021-05-06T19:40:17+08:00">2021-05-06</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -544,7 +834,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>909</span>
+      <span>911</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -622,6 +912,8 @@
 <p><img src="/images/%E9%9F%B3/image-20210415192552941.png" alt="image-20210415192552941"></p>
 <h2 id="自然音程-amp-amp-变化音程"><a href="#自然音程-amp-amp-变化音程" class="headerlink" title="自然音程&amp;&amp;变化音程"></a>自然音程&amp;&amp;变化音程</h2><p>C大调下自然音程，即，没有什么升X(#X)和降X(bX)的音</p>
 <p>C大调下变化音程，有升降的音</p>
+<p><img src="/images/%E9%9F%B3/QQ%E5%9B%BE%E7%89%8720210506185347.jpg" alt=""></p>
+<h2 id="音阶"><a href="#音阶" class="headerlink" title="音阶"></a>音阶</h2><p><img src="/images/%E9%9F%B3/QQ%E5%9B%BE%E7%89%8720210506192939.jpg" alt=""></p>
 
       
     </div>
@@ -780,7 +1072,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-04-08 23:36:56" itemprop="dateModified" datetime="2021-04-08T23:36:56+08:00">2021-04-08</time>
+        <time title="修改时间：2021-04-22 23:41:34" itemprop="dateModified" datetime="2021-04-22T23:41:34+08:00">2021-04-22</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -800,14 +1092,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -1295,110 +1587,6 @@ A(数据库技术)--&gt;C(数据处理)</pre>
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/07/Java%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/07/Java%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">Java方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-03-07 23:36:49 / 修改时间：23:39:47" itemprop="dateCreated datePublished" datetime="2021-03-07T23:36:49+08:00">2021-03-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index"><span itemprop="name">语言</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="一、方法的定义及格式"><a href="#一、方法的定义及格式" class="headerlink" title="一、方法的定义及格式"></a>一、方法的定义及格式</h2><h3 id="1、定义"><a href="#1、定义" class="headerlink" title="1、定义"></a>1、定义</h3><p>完成特定功能的代码块</p>
-<p>（类似于c/c++的函数的定义 在java中我们称之为方法）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/07/Java%E6%96%B9%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1481,14 +1669,14 @@ A(数据库技术)--&gt;C(数据处理)</pre>
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">47k</span>
+    <span title="站点总字数">52k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">43 分钟</span>
+    <span title="站点阅读时长">47 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
