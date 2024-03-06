@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hello World</title>
+    <url>/2021/03/05/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Linux中的C语言</title>
     <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
     <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
@@ -132,89 +147,17 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/03/05/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>hexo基本操作</title>
-    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>1、写博客 </p>
-<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
-<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
-<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
-<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
-<span id="more"></span>
-<p>2、一些命令</p>
-<p><code>hexo clean</code> 清除缓存</p>
-<p><code>hexo g</code> 部署</p>
-<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
-<p>3、摘要（阅读全文）</p>
-<p>在想展示的内容后添加如下代码</p>
-<!-- more -->
-<p>4、部署到远端的github</p>
-<p><code>hexo deploy</code></p>
-<p>5、hexo使用说明</p>
-<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
-<p>6、解决报错Error: Spawn failed</p>
-<ul>
-<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
-<ul>
-<li>删除<code>.deploy_git</code>文件夹;</li>
-<li>输入<code>git config --global core.autocrlf false</code></li>
-<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
-</ul>
-</li>
-<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
-<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
-<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>Failed to connect to github.com</p>
-<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<p>7、如果有图片插入 要在头部加入</p>
-<p><code>typora-root-url: ..</code></p>
+    <title>有关全排列问题</title>
+    <url>/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="1、递归分治法"><a href="#1、递归分治法" class="headerlink" title="1、递归分治法"></a>1、递归分治法</h1><span id="more"></span>
+<p>代码实现（C语言）：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_ARRAY_LEN(array,len) {len = (sizeof(array) / sizeof(array[0]));}</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> k)</span> </span>{</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(k==<span class="number">4</span>) {</span><br><span class="line">		GET_ARRAY_LEN(arr,len);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=len+<span class="number">1</span>;j++)</span><br><span class="line">		  <span class="built_in">printf</span>(<span class="string">"%d"</span>,arr[j]); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	}</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=k;i&lt;<span class="number">4</span>;i++) {</span><br><span class="line">		<span class="keyword">int</span> t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	</span><br><span class="line">		f(arr, k+<span class="number">1</span>);</span><br><span class="line">			</span><br><span class="line">		t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	}	</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>{</span><br><span class="line">	<span class="keyword">int</span> arr[] = {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>};</span><br><span class="line">	f(arr,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 ]]></content>
       <categories>
-        <category>博客基本操作及报错解决方案</category>
+        <category>JavaA组</category>
       </categories>
       <tags>
-        <tag>blog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>互斥访问临界区的软/硬件实现方法</title>
-    <url>/2022/07/01/%E4%BA%92%E6%96%A5%E8%AE%BF%E9%97%AE%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E8%BD%AF-%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="一、软件实现"><a href="#一、软件实现" class="headerlink" title="一、软件实现"></a>一、软件实现</h1><h2 id="1、单标志法"><a href="#1、单标志法" class="headerlink" title="1、单标志法"></a>1、单标志法</h2><p>​        <strong>直接上锁</strong><br>​        （1）理解：A，B共用一个标志flag，比如为0就是A用，为1就是B用，用完之后主动把flag设置为对方使用的状态。<br>​        （2）违反 “空闲让进” 原则：限制了只能轮流使用临界资源，只能A用完B用，而不能A用完之后（B不用的情况下）A再用一次。主要原因是只有一个标志，且每次使用后都要把标志换成对方用，这就导致标志不可能连续是1，或者连续是0。</p>
-<h2 id="2、双标志法先检查"><a href="#2、双标志法先检查" class="headerlink" title="2、双标志法先检查"></a>2、双标志法先检查</h2><p>​        <strong>先检查再上锁</strong><br>​        （1）理解：A，B两个进程各一个标志，表示是否上锁（这里上锁指的是有访问临界资源的意愿），A先检查B有没有上锁，B没有的话，A就上锁，然后访问。B先检查A有没有上锁，A没有的话，B就上锁，然后访问。<br>​        （2）违反 “忙则等待” 原则：在A检查完之后，发生中断还没来得及上锁，B此时就可以检查然后上锁，再返回A，虽然B此时已经上锁，但A已经检查完了，不知道B后来又上锁了，A也上个锁，就导致AB同时访问了。主要原因就是检查和上锁不是原子操作，不能一气呵成，很容易卡bug同时访问临界资源</p>
-<span id="more"></span>
-<h2 id="3、双标志法后检查"><a href="#3、双标志法后检查" class="headerlink" title="3、双标志法后检查"></a>3、双标志法后检查</h2><p>​        <strong>先上锁再检查</strong><br>​        （1）理解：A，B两个进程各一个标志，表示是否上锁（这里上锁指的是有访问临界资源的意愿）A先上锁表明自己想访问，再检查B有没有上锁，B没有的话，A就访问。B先上锁表明自己想访问，再检查A有没有上锁，A没有的话，B就访问。<br>​        （2）违反 “有限等待” 和 “空闲让进” 原则：A如果先上了锁，然后发生中断，B也上锁，然后B检查A的情况就会发现A已经上锁了，就等待A进程使用结束再使用，此时回到A进程，A发现B也上锁，就等待B解锁，此时就形成了A、B相互等待对方释放资源。</p>
-<h2 id="4、Peterson’s-Alogorithm"><a href="#4、Peterson’s-Alogorithm" class="headerlink" title="4、Peterson’s Alogorithm"></a>4、Peterson’s Alogorithm</h2><p>​        <strong>单标志和双标志法后检查的结合</strong><br>​        （1）理解：A，B两个进程各一个标志，外加一个turn标志指示谁更优先，只有上锁且turn为自己优先时才能使用临界资源。A先上锁，然后将对方（B）设置为更优先，只有当B没有上锁或者A自身优先级更高时才会使用临界资源。B先上锁，然后将对方（A）设置为更优先，只有当A没有上锁或者B自身优先级更高时才会使用临界资源。<br>​        （2）违反 “让权等待” 原则：因为算法里等待是执行while空循环直到对方让出资源，也就是一直霸占着CPU执行while循环，而不是交出处理机资源，让权等待。</p>
-<h1 id="二、硬件实现（低级方法）（元方法）"><a href="#二、硬件实现（低级方法）（元方法）" class="headerlink" title="二、硬件实现（低级方法）（元方法）"></a>二、硬件实现（低级方法）（元方法）</h1><h2 id="1、中断屏蔽法"><a href="#1、中断屏蔽法" class="headerlink" title="1、中断屏蔽法"></a>1、中断屏蔽法</h2><p>用开关中断来实现临界区访问的排他性与原子性</p>
-<p>违反 “让权等待” 原则</p>
-<p>缺点是：<br>①限制了处理机交替执行程序的能力<br>②且开关中断属于特权指令，要在内核态才能运行，所以这个方法只适合内核进程，用户进程如果能随意开关中断会让系统很危险<br>③对多处理机系统无效，开关中断只限制了一个处理机只能有一个进程访问临界资源，当有多个处理机的时候很有可能导致不同处理机的多个进程同时访问临界资源        </p>
-<h2 id="2、硬件指令法"><a href="#2、硬件指令法" class="headerlink" title="2、硬件指令法"></a>2、硬件指令法</h2><h3 id="（1）TestAndSet指令（TS指令）（TSL指令）"><a href="#（1）TestAndSet指令（TS指令）（TSL指令）" class="headerlink" title="（1）TestAndSet指令（TS指令）（TSL指令）"></a>（1）TestAndSet指令（TS指令）（TSL指令）</h3><p>TSL = TestSetLock<br>实质上和软件实现的 “双标志先检查” 一样，只不过这个是用硬件实现，保证了过程的原子性，不会被中断</p>
-<h3 id="（2）Swap指令（Exchange指令）（XCHG指令）"><a href="#（2）Swap指令（Exchange指令）（XCHG指令）" class="headerlink" title="（2）Swap指令（Exchange指令）（XCHG指令）"></a>（2）Swap指令（Exchange指令）（XCHG指令）</h3><p>违反 “让权等待” 原则</p>
-<p>和TestAndSet指令逻辑一样，只是具体实现方法上有差别<br>适合多处理机，实现简单</p>
-]]></content>
-      <categories>
-        <category>操作系统</category>
-      </categories>
-      <tags>
-        <tag>互斥访问临界区</tag>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -357,17 +300,74 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </tags>
   </entry>
   <entry>
-    <title>有关全排列问题</title>
-    <url>/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="1、递归分治法"><a href="#1、递归分治法" class="headerlink" title="1、递归分治法"></a>1、递归分治法</h1><span id="more"></span>
-<p>代码实现（C语言）：</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_ARRAY_LEN(array,len) {len = (sizeof(array) / sizeof(array[0]));}</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> k)</span> </span>{</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(k==<span class="number">4</span>) {</span><br><span class="line">		GET_ARRAY_LEN(arr,len);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=len+<span class="number">1</span>;j++)</span><br><span class="line">		  <span class="built_in">printf</span>(<span class="string">"%d"</span>,arr[j]); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	}</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=k;i&lt;<span class="number">4</span>;i++) {</span><br><span class="line">		<span class="keyword">int</span> t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	</span><br><span class="line">		f(arr, k+<span class="number">1</span>);</span><br><span class="line">			</span><br><span class="line">		t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	}	</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>{</span><br><span class="line">	<span class="keyword">int</span> arr[] = {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>};</span><br><span class="line">	f(arr,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+    <title>hexo基本操作</title>
+    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>1、写博客 </p>
+<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
+<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
+<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
+<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
+<span id="more"></span>
+<p>2、一些命令</p>
+<p><code>hexo clean</code> 清除缓存</p>
+<p><code>hexo g</code> 部署</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
+<p>3、摘要（阅读全文）</p>
+<p>在想展示的内容后添加如下代码</p>
+<!-- more -->
+<p>4、部署到远端的github</p>
+<p><code>hexo deploy</code></p>
+<p>5、hexo使用说明</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
+<p>6、解决报错Error: Spawn failed</p>
+<ul>
+<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
+<ul>
+<li>删除<code>.deploy_git</code>文件夹;</li>
+<li>输入<code>git config --global core.autocrlf false</code></li>
+<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
+</ul>
+</li>
+<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
+<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
+<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Failed to connect to github.com</p>
+<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>7、如果有图片插入 要在头部加入</p>
+<p><code>typora-root-url: ..</code></p>
 ]]></content>
       <categories>
-        <category>JavaA组</category>
+        <category>博客基本操作及报错解决方案</category>
       </categories>
       <tags>
-        <tag>算法</tag>
+        <tag>blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>互斥访问临界区的软/硬件实现方法</title>
+    <url>/2022/07/01/%E4%BA%92%E6%96%A5%E8%AE%BF%E9%97%AE%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E8%BD%AF-%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="一、软件实现"><a href="#一、软件实现" class="headerlink" title="一、软件实现"></a>一、软件实现</h1><h2 id="1、单标志法"><a href="#1、单标志法" class="headerlink" title="1、单标志法"></a>1、单标志法</h2><p>​        <strong>直接上锁</strong><br>​        （1）理解：A，B共用一个标志flag，比如为0就是A用，为1就是B用，用完之后主动把flag设置为对方使用的状态。<br>​        （2）违反 “空闲让进” 原则：限制了只能轮流使用临界资源，只能A用完B用，而不能A用完之后（B不用的情况下）A再用一次。主要原因是只有一个标志，且每次使用后都要把标志换成对方用，这就导致标志不可能连续是1，或者连续是0。</p>
+<h2 id="2、双标志法先检查"><a href="#2、双标志法先检查" class="headerlink" title="2、双标志法先检查"></a>2、双标志法先检查</h2><p>​        <strong>先检查再上锁</strong><br>​        （1）理解：A，B两个进程各一个标志，表示是否上锁（这里上锁指的是有访问临界资源的意愿），A先检查B有没有上锁，B没有的话，A就上锁，然后访问。B先检查A有没有上锁，A没有的话，B就上锁，然后访问。<br>​        （2）违反 “忙则等待” 原则：在A检查完之后，发生中断还没来得及上锁，B此时就可以检查然后上锁，再返回A，虽然B此时已经上锁，但A已经检查完了，不知道B后来又上锁了，A也上个锁，就导致AB同时访问了。主要原因就是检查和上锁不是原子操作，不能一气呵成，很容易卡bug同时访问临界资源</p>
+<span id="more"></span>
+<h2 id="3、双标志法后检查"><a href="#3、双标志法后检查" class="headerlink" title="3、双标志法后检查"></a>3、双标志法后检查</h2><p>​        <strong>先上锁再检查</strong><br>​        （1）理解：A，B两个进程各一个标志，表示是否上锁（这里上锁指的是有访问临界资源的意愿）A先上锁表明自己想访问，再检查B有没有上锁，B没有的话，A就访问。B先上锁表明自己想访问，再检查A有没有上锁，A没有的话，B就访问。<br>​        （2）违反 “有限等待” 和 “空闲让进” 原则：A如果先上了锁，然后发生中断，B也上锁，然后B检查A的情况就会发现A已经上锁了，就等待A进程使用结束再使用，此时回到A进程，A发现B也上锁，就等待B解锁，此时就形成了A、B相互等待对方释放资源。</p>
+<h2 id="4、Peterson’s-Alogorithm"><a href="#4、Peterson’s-Alogorithm" class="headerlink" title="4、Peterson’s Alogorithm"></a>4、Peterson’s Alogorithm</h2><p>​        <strong>单标志和双标志法后检查的结合</strong><br>​        （1）理解：A，B两个进程各一个标志，外加一个turn标志指示谁更优先，只有上锁且turn为自己优先时才能使用临界资源。A先上锁，然后将对方（B）设置为更优先，只有当B没有上锁或者A自身优先级更高时才会使用临界资源。B先上锁，然后将对方（A）设置为更优先，只有当A没有上锁或者B自身优先级更高时才会使用临界资源。<br>​        （2）违反 “让权等待” 原则：因为算法里等待是执行while空循环直到对方让出资源，也就是一直霸占着CPU执行while循环，而不是交出处理机资源，让权等待。</p>
+<h1 id="二、硬件实现（低级方法）（元方法）"><a href="#二、硬件实现（低级方法）（元方法）" class="headerlink" title="二、硬件实现（低级方法）（元方法）"></a>二、硬件实现（低级方法）（元方法）</h1><h2 id="1、中断屏蔽法"><a href="#1、中断屏蔽法" class="headerlink" title="1、中断屏蔽法"></a>1、中断屏蔽法</h2><p>用开关中断来实现临界区访问的排他性与原子性</p>
+<p>违反 “让权等待” 原则</p>
+<p>缺点是：<br>①限制了处理机交替执行程序的能力<br>②且开关中断属于特权指令，要在内核态才能运行，所以这个方法只适合内核进程，用户进程如果能随意开关中断会让系统很危险<br>③对多处理机系统无效，开关中断只限制了一个处理机只能有一个进程访问临界资源，当有多个处理机的时候很有可能导致不同处理机的多个进程同时访问临界资源        </p>
+<h2 id="2、硬件指令法"><a href="#2、硬件指令法" class="headerlink" title="2、硬件指令法"></a>2、硬件指令法</h2><h3 id="（1）TestAndSet指令（TS指令）（TSL指令）"><a href="#（1）TestAndSet指令（TS指令）（TSL指令）" class="headerlink" title="（1）TestAndSet指令（TS指令）（TSL指令）"></a>（1）TestAndSet指令（TS指令）（TSL指令）</h3><p>TSL = TestSetLock<br>实质上和软件实现的 “双标志先检查” 一样，只不过这个是用硬件实现，保证了过程的原子性，不会被中断</p>
+<h3 id="（2）Swap指令（Exchange指令）（XCHG指令）"><a href="#（2）Swap指令（Exchange指令）（XCHG指令）" class="headerlink" title="（2）Swap指令（Exchange指令）（XCHG指令）"></a>（2）Swap指令（Exchange指令）（XCHG指令）</h3><p>违反 “让权等待” 原则</p>
+<p>和TestAndSet指令逻辑一样，只是具体实现方法上有差别<br>适合多处理机，实现简单</p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>互斥访问临界区</tag>
       </tags>
   </entry>
   <entry>
