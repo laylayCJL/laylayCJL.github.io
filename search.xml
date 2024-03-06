@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2021/03/05/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Linux中的C语言</title>
     <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
     <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
@@ -85,80 +70,68 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux命令总结</title>
-    <url>/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+    <title>hexo基本操作</title>
+    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>1、写博客 </p>
+<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
+<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
+<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
+<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
 <span id="more"></span>
-<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
-<p>filepath是决定把编译生成的可执行文件放在哪里</p>
-<p>执行生成的可执行文件：</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
-<p>在后台执行生成的可执行文件：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./filename&amp;</span><br></pre></td></tr></tbody></table></figure>
-<p>eg.回车之后可以再运行，进程自己更换pid了，也就是他会派生出子进程</p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C.jpg" style="zoom:50%;"></p>
-<p>且通过top查看 三者都在运行态R</p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E6%80%81.jpg" style="zoom:50%;"></p>
-<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<p>vi可读可写，cat只能读取</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gedit filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<p>用纯文本编辑器打开文件</p>
-<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="12、查看当前路径下的目录"><a href="#12、查看当前路径下的目录" class="headerlink" title="12、查看当前路径下的目录"></a>12、查看当前路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="13、查看指定路径下的目录"><a href="#13、查看指定路径下的目录" class="headerlink" title="13、查看指定路径下的目录"></a>13、查看指定路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l 路径</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="14、编译脚本文件（改变权限）"><a href="#14、编译脚本文件（改变权限）" class="headerlink" title="14、编译脚本文件（改变权限）"></a>14、编译脚本文件（改变权限）</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">chmod 777 exp1.sh</span><br><span class="line">Linux档案的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限</span><br><span class="line">owner：文件的属主（拥有者）group：用户组内成员other：其他用户</span><br><span class="line">r:4 w:2 x:1</span><br><span class="line">r (read)：可读取此一档案的实际内容，如读取文本文件的文字内容等；</span><br><span class="line">w (write)：可以编辑、新增戒者是修改该档案的内容(但丌吨删除该档案)；</span><br><span class="line">x (eXecute)：该档案具有可以被系统执行的权限。</span><br><span class="line">owner=4+2+1=7</span><br><span class="line">group=4+2+1=7</span><br><span class="line">others=4+2+1=7</span><br><span class="line">也就是修改exp1.sh的权限为owner/group/others均可读可写可执行</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="15、移动-amp-amp-换名"><a href="#15、移动-amp-amp-换名" class="headerlink" title="15、移动&amp;&amp;换名"></a>15、移动&amp;&amp;换名</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mv</span><br><span class="line">文件移动：mv 目标文件所在路径 目的地路径</span><br><span class="line">文件换名：mv 旧名 新名</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="16、计算运行时间"><a href="#16、计算运行时间" class="headerlink" title="16、计算运行时间"></a>16、计算运行时间</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">time 执行命令</span><br><span class="line">例如：</span><br><span class="line">time ./exp2</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="17、查看详细文件存储情况"><a href="#17、查看详细文件存储情况" class="headerlink" title="17、查看详细文件存储情况"></a>17、查看详细文件存储情况</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">od -c filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="18、kill向进程发送信号"><a href="#18、kill向进程发送信号" class="headerlink" title="18、kill向进程发送信号"></a>18、kill向进程发送信号</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill1.jpg" style="zoom:50%;"></p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill2.jpg" style="zoom:50%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">kill -9 pid(进程号) </span><br><span class="line">向进程发送信号终止进程</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">参数： </span><br><span class="line">-l：列出目前 kill 能够使用的讯号 (signal) 有哪些</span><br><span class="line">signal：代表给予后面接的那个工作什么样的指令</span><br><span class="line">-1(数字1)：重新读取一次参数的配置文件 (类似 reload)；</span><br><span class="line">-2：代表与由键盘输入ctrl c同样的动作；</span><br><span class="line">-9：立刻强制删除一个工作； </span><br><span class="line">-15：以正常的程序方式终止一项工作。与-9是不一样的</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="19、查看历史命令"><a href="#19、查看历史命令" class="headerlink" title="19、查看历史命令"></a>19、查看历史命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">history</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="20、观察程序进程"><a href="#20、观察程序进程" class="headerlink" title="20、观察程序进程"></a>20、观察程序进程</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/proc.jpg" style="zoom: 50%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">proc里记录了进程的运行状态</span><br><span class="line">可以通过ls /proc/</span><br><span class="line">来查看某个进程是否运行</span><br><span class="line">通过ls /proc/进程号(也就是pid)</span><br><span class="line">来查看某个进程的具体运行状态</span><br></pre></td></tr></tbody></table></figure>
-<h5 id="（1）静态（ps）"><a href="#（1）静态（ps）" class="headerlink" title="（1）静态（ps）"></a>（1）静态（ps）</h5><p>将某个时间点的程序运作情况撷取下来</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps所带参数含义</span><br><span class="line">参数：</span><br><span class="line">-A ：所有的进程均显示出来，与 -e 具有同样的效用；</span><br><span class="line">-a ： 显示现行终端机下的所有进程，包括其他用户的进程；</span><br><span class="line">-u ：以用户为主的进程状态 ；</span><br><span class="line">x ：通常与 a 这个参数一起使用，可列出较完整信息。</span><br><span class="line"></span><br><span class="line">输出格式规划：</span><br><span class="line">l ：较长、较详细的将该PID 的的信息列出；</span><br><span class="line">j ：工作的格式 (jobs format)</span><br><span class="line">-f ：做一个更为完整的输出。</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/ps.jpg" style="zoom:67%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义</span><br><span class="line">UID： 说明该程序被谁拥有</span><br><span class="line">PID：就是指该程序的PID号码</span><br><span class="line">PPID： 就是指该程序父级程序的PID号码</span><br><span class="line">C： 指的是 CPU 使用率，单位为百分比</span><br><span class="line">STIME： 程序的启动时间</span><br><span class="line">TTY： 指的是登录终端</span><br><span class="line">TIME : 指程序使用掉 CPU 的时间</span><br><span class="line">CMD： 下达的指令就是 command 的缩写</span><br></pre></td></tr></tbody></table></figure>
-<h5 id="（2）动态（top）"><a href="#（2）动态（top）" class="headerlink" title="（2）动态（top）"></a>（2）动态（top）</h5><p>top可以持续侦测程序的变化</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">top -d 2</span><br><span class="line">解释：动态观察程序状态，每两秒刷新一次</span><br><span class="line">选项与参数： </span><br><span class="line">   -d：后面可以接秒数，就是整个程序画面更新的秒数。预设是5秒；</span><br><span class="line">   -b：以批次的方式执行top</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/top.jpg" style="zoom:67%;"></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义:</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">上半部分：</span><br><span class="line">第一行：(top)</span><br><span class="line">04:03:28————目前的时间</span><br><span class="line">up 4:36————开机到目前为止所经过的时间</span><br><span class="line">1 user————已经登入系统的用户人数</span><br><span class="line">load average: 2.14,2.09,2.17————系统在1,5,15分钟的平均工作负载，负载高于1就有点繁复，显然我的过分繁复了，呜呜呜</span><br><span class="line"></span><br><span class="line">第二行：(任务Tasks)</span><br><span class="line">289 total————目前程序总量</span><br><span class="line">3个处在运行态，286个睡眠态，0个停止，0个僵尸</span><br><span class="line"></span><br><span class="line">第三行：(cpus)</span><br><span class="line">显示的是 CPU 的整体负载，每个顷目可使用? </span><br><span class="line">查阅。需要特别注意癿是 %wa ，那个项目代表的是 I/O wait， 通常你癿系统会变慢都是I/O产生癿问题比较大！因此这里得要注意这个项目耗用CPU的资源喔！</span><br><span class="line"></span><br><span class="line">第四行与第五行：表示目前的物理内存与虚拟内存 (Mem/Swap) 的使用情况</span><br><span class="line"></span><br><span class="line">第六行：这个是当在 top 程序当中输入指令时，显示状态的地方。</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">下半部分：</span><br><span class="line">PID ：每个process的ID 啦！</span><br><span class="line">USER：该process所属的使用者；</span><br><span class="line">PR ：Priority癿简写，程序的优先执行顺序，越小越早被执行；</span><br><span class="line">NI ：Nice的简写，与Priority有关，也是越小越早被执行；</span><br><span class="line"><span class="meta">%</span><span class="bash">CPU：CPU的使用率；</span></span><br><span class="line"><span class="meta">%</span><span class="bash">MEM：内存的使用率；</span></span><br><span class="line">TIME+：CPU 使用时间的累加；</span><br></pre></td></tr></tbody></table></figure>
+<p>2、一些命令</p>
+<p><code>hexo clean</code> 清除缓存</p>
+<p><code>hexo g</code> 部署</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
+<p>3、摘要（阅读全文）</p>
+<p>在想展示的内容后添加如下代码</p>
+<!-- more -->
+<p>4、部署到远端的github</p>
+<p><code>hexo deploy</code></p>
+<p>5、hexo使用说明</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
+<p>6、解决报错Error: Spawn failed</p>
+<ul>
+<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
+<ul>
+<li>删除<code>.deploy_git</code>文件夹;</li>
+<li>输入<code>git config --global core.autocrlf false</code></li>
+<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
+</ul>
+</li>
+<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
+<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
+<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Failed to connect to github.com</p>
+<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>7、如果有图片插入 要在头部加入</p>
+<p><code>typora-root-url: ..</code></p>
 ]]></content>
       <categories>
-        <category>操作系统</category>
+        <category>博客基本操作及报错解决方案</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>blog</tag>
       </tags>
   </entry>
   <entry>
-    <title>有关全排列问题</title>
-    <url>/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<h1 id="1、递归分治法"><a href="#1、递归分治法" class="headerlink" title="1、递归分治法"></a>1、递归分治法</h1><span id="more"></span>
-<p>代码实现（C语言）：</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_ARRAY_LEN(array,len) {len = (sizeof(array) / sizeof(array[0]));}</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> k)</span> </span>{</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(k==<span class="number">4</span>) {</span><br><span class="line">		GET_ARRAY_LEN(arr,len);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=len+<span class="number">1</span>;j++)</span><br><span class="line">		  <span class="built_in">printf</span>(<span class="string">"%d"</span>,arr[j]); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	}</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=k;i&lt;<span class="number">4</span>;i++) {</span><br><span class="line">		<span class="keyword">int</span> t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	</span><br><span class="line">		f(arr, k+<span class="number">1</span>);</span><br><span class="line">			</span><br><span class="line">		t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	}	</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>{</span><br><span class="line">	<span class="keyword">int</span> arr[] = {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>};</span><br><span class="line">	f(arr,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+    <title>Hello World</title>
+    <url>/2021/03/05/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-      <categories>
-        <category>JavaA组</category>
-      </categories>
-      <tags>
-        <tag>算法</tag>
-      </tags>
   </entry>
   <entry>
     <title>数据库概述01</title>
@@ -300,52 +273,65 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </tags>
   </entry>
   <entry>
-    <title>hexo基本操作</title>
-    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>1、写博客 </p>
-<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
-<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
-<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
-<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
+    <title>Linux命令总结</title>
+    <url>/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
 <span id="more"></span>
-<p>2、一些命令</p>
-<p><code>hexo clean</code> 清除缓存</p>
-<p><code>hexo g</code> 部署</p>
-<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
-<p>3、摘要（阅读全文）</p>
-<p>在想展示的内容后添加如下代码</p>
-<!-- more -->
-<p>4、部署到远端的github</p>
-<p><code>hexo deploy</code></p>
-<p>5、hexo使用说明</p>
-<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
-<p>6、解决报错Error: Spawn failed</p>
-<ul>
-<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
-<ul>
-<li>删除<code>.deploy_git</code>文件夹;</li>
-<li>输入<code>git config --global core.autocrlf false</code></li>
-<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
-</ul>
-</li>
-<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
-<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
-<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>Failed to connect to github.com</p>
-<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<p>7、如果有图片插入 要在头部加入</p>
-<p><code>typora-root-url: ..</code></p>
+<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<p>filepath是决定把编译生成的可执行文件放在哪里</p>
+<p>执行生成的可执行文件：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
+<p>在后台执行生成的可执行文件：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./filename&amp;</span><br></pre></td></tr></tbody></table></figure>
+<p>eg.回车之后可以再运行，进程自己更换pid了，也就是他会派生出子进程</p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C.jpg" style="zoom:50%;"></p>
+<p>且通过top查看 三者都在运行态R</p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E6%80%81.jpg" style="zoom:50%;"></p>
+<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<p>vi可读可写，cat只能读取</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gedit filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<p>用纯文本编辑器打开文件</p>
+<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="12、查看当前路径下的目录"><a href="#12、查看当前路径下的目录" class="headerlink" title="12、查看当前路径下的目录"></a>12、查看当前路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="13、查看指定路径下的目录"><a href="#13、查看指定路径下的目录" class="headerlink" title="13、查看指定路径下的目录"></a>13、查看指定路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l 路径</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="14、编译脚本文件（改变权限）"><a href="#14、编译脚本文件（改变权限）" class="headerlink" title="14、编译脚本文件（改变权限）"></a>14、编译脚本文件（改变权限）</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">chmod 777 exp1.sh</span><br><span class="line">Linux档案的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限</span><br><span class="line">owner：文件的属主（拥有者）group：用户组内成员other：其他用户</span><br><span class="line">r:4 w:2 x:1</span><br><span class="line">r (read)：可读取此一档案的实际内容，如读取文本文件的文字内容等；</span><br><span class="line">w (write)：可以编辑、新增戒者是修改该档案的内容(但丌吨删除该档案)；</span><br><span class="line">x (eXecute)：该档案具有可以被系统执行的权限。</span><br><span class="line">owner=4+2+1=7</span><br><span class="line">group=4+2+1=7</span><br><span class="line">others=4+2+1=7</span><br><span class="line">也就是修改exp1.sh的权限为owner/group/others均可读可写可执行</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="15、移动-amp-amp-换名"><a href="#15、移动-amp-amp-换名" class="headerlink" title="15、移动&amp;&amp;换名"></a>15、移动&amp;&amp;换名</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mv</span><br><span class="line">文件移动：mv 目标文件所在路径 目的地路径</span><br><span class="line">文件换名：mv 旧名 新名</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="16、计算运行时间"><a href="#16、计算运行时间" class="headerlink" title="16、计算运行时间"></a>16、计算运行时间</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">time 执行命令</span><br><span class="line">例如：</span><br><span class="line">time ./exp2</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="17、查看详细文件存储情况"><a href="#17、查看详细文件存储情况" class="headerlink" title="17、查看详细文件存储情况"></a>17、查看详细文件存储情况</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">od -c filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="18、kill向进程发送信号"><a href="#18、kill向进程发送信号" class="headerlink" title="18、kill向进程发送信号"></a>18、kill向进程发送信号</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill1.jpg" style="zoom:50%;"></p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill2.jpg" style="zoom:50%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">kill -9 pid(进程号) </span><br><span class="line">向进程发送信号终止进程</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">参数： </span><br><span class="line">-l：列出目前 kill 能够使用的讯号 (signal) 有哪些</span><br><span class="line">signal：代表给予后面接的那个工作什么样的指令</span><br><span class="line">-1(数字1)：重新读取一次参数的配置文件 (类似 reload)；</span><br><span class="line">-2：代表与由键盘输入ctrl c同样的动作；</span><br><span class="line">-9：立刻强制删除一个工作； </span><br><span class="line">-15：以正常的程序方式终止一项工作。与-9是不一样的</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="19、查看历史命令"><a href="#19、查看历史命令" class="headerlink" title="19、查看历史命令"></a>19、查看历史命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">history</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="20、观察程序进程"><a href="#20、观察程序进程" class="headerlink" title="20、观察程序进程"></a>20、观察程序进程</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/proc.jpg" style="zoom: 50%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">proc里记录了进程的运行状态</span><br><span class="line">可以通过ls /proc/</span><br><span class="line">来查看某个进程是否运行</span><br><span class="line">通过ls /proc/进程号(也就是pid)</span><br><span class="line">来查看某个进程的具体运行状态</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="（1）静态（ps）"><a href="#（1）静态（ps）" class="headerlink" title="（1）静态（ps）"></a>（1）静态（ps）</h5><p>将某个时间点的程序运作情况撷取下来</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps所带参数含义</span><br><span class="line">参数：</span><br><span class="line">-A ：所有的进程均显示出来，与 -e 具有同样的效用；</span><br><span class="line">-a ： 显示现行终端机下的所有进程，包括其他用户的进程；</span><br><span class="line">-u ：以用户为主的进程状态 ；</span><br><span class="line">x ：通常与 a 这个参数一起使用，可列出较完整信息。</span><br><span class="line"></span><br><span class="line">输出格式规划：</span><br><span class="line">l ：较长、较详细的将该PID 的的信息列出；</span><br><span class="line">j ：工作的格式 (jobs format)</span><br><span class="line">-f ：做一个更为完整的输出。</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/ps.jpg" style="zoom:67%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义</span><br><span class="line">UID： 说明该程序被谁拥有</span><br><span class="line">PID：就是指该程序的PID号码</span><br><span class="line">PPID： 就是指该程序父级程序的PID号码</span><br><span class="line">C： 指的是 CPU 使用率，单位为百分比</span><br><span class="line">STIME： 程序的启动时间</span><br><span class="line">TTY： 指的是登录终端</span><br><span class="line">TIME : 指程序使用掉 CPU 的时间</span><br><span class="line">CMD： 下达的指令就是 command 的缩写</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="（2）动态（top）"><a href="#（2）动态（top）" class="headerlink" title="（2）动态（top）"></a>（2）动态（top）</h5><p>top可以持续侦测程序的变化</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">top -d 2</span><br><span class="line">解释：动态观察程序状态，每两秒刷新一次</span><br><span class="line">选项与参数： </span><br><span class="line">   -d：后面可以接秒数，就是整个程序画面更新的秒数。预设是5秒；</span><br><span class="line">   -b：以批次的方式执行top</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/top.jpg" style="zoom:67%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义:</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">上半部分：</span><br><span class="line">第一行：(top)</span><br><span class="line">04:03:28————目前的时间</span><br><span class="line">up 4:36————开机到目前为止所经过的时间</span><br><span class="line">1 user————已经登入系统的用户人数</span><br><span class="line">load average: 2.14,2.09,2.17————系统在1,5,15分钟的平均工作负载，负载高于1就有点繁复，显然我的过分繁复了，呜呜呜</span><br><span class="line"></span><br><span class="line">第二行：(任务Tasks)</span><br><span class="line">289 total————目前程序总量</span><br><span class="line">3个处在运行态，286个睡眠态，0个停止，0个僵尸</span><br><span class="line"></span><br><span class="line">第三行：(cpus)</span><br><span class="line">显示的是 CPU 的整体负载，每个顷目可使用? </span><br><span class="line">查阅。需要特别注意癿是 %wa ，那个项目代表的是 I/O wait， 通常你癿系统会变慢都是I/O产生癿问题比较大！因此这里得要注意这个项目耗用CPU的资源喔！</span><br><span class="line"></span><br><span class="line">第四行与第五行：表示目前的物理内存与虚拟内存 (Mem/Swap) 的使用情况</span><br><span class="line"></span><br><span class="line">第六行：这个是当在 top 程序当中输入指令时，显示状态的地方。</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">下半部分：</span><br><span class="line">PID ：每个process的ID 啦！</span><br><span class="line">USER：该process所属的使用者；</span><br><span class="line">PR ：Priority癿简写，程序的优先执行顺序，越小越早被执行；</span><br><span class="line">NI ：Nice的简写，与Priority有关，也是越小越早被执行；</span><br><span class="line"><span class="meta">%</span><span class="bash">CPU：CPU的使用率；</span></span><br><span class="line"><span class="meta">%</span><span class="bash">MEM：内存的使用率；</span></span><br><span class="line">TIME+：CPU 使用时间的累加；</span><br></pre></td></tr></tbody></table></figure>
 ]]></content>
       <categories>
-        <category>博客基本操作及报错解决方案</category>
+        <category>操作系统</category>
       </categories>
       <tags>
-        <tag>blog</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -368,6 +354,20 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </categories>
       <tags>
         <tag>互斥访问临界区</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有关全排列问题</title>
+    <url>/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="1、递归分治法"><a href="#1、递归分治法" class="headerlink" title="1、递归分治法"></a>1、递归分治法</h1><span id="more"></span>
+<p>代码实现（C语言）：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GET_ARRAY_LEN(array,len) {len = (sizeof(array) / sizeof(array[0]));}</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> arr[],<span class="keyword">int</span> k)</span> </span>{</span><br><span class="line">	<span class="comment">//</span></span><br><span class="line">	<span class="keyword">if</span>(k==<span class="number">4</span>) {</span><br><span class="line">		GET_ARRAY_LEN(arr,len);</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;=len+<span class="number">1</span>;j++)</span><br><span class="line">		  <span class="built_in">printf</span>(<span class="string">"%d"</span>,arr[j]); </span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"\n"</span>);</span><br><span class="line">	}</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i=k;i&lt;<span class="number">4</span>;i++) {</span><br><span class="line">		<span class="keyword">int</span> t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	</span><br><span class="line">		f(arr, k+<span class="number">1</span>);</span><br><span class="line">			</span><br><span class="line">		t = arr[i];</span><br><span class="line">		arr[i] = arr[k];</span><br><span class="line">		arr[k] = t;</span><br><span class="line">	}	</span><br><span class="line">}</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>{</span><br><span class="line">	<span class="keyword">int</span> arr[] = {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>};</span><br><span class="line">	f(arr,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>JavaA组</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
