@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、数据和数据模型1、数据与信息（1）基本概念1）数据：描述事物的符号记录  数据有一定的格式，这些格式的规定是数据的语法，而数据的含义是数据的语义 数据是信息存在的一种形式，只有通过解释或处理才能成为有用的信息">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据模型与数据库结构02">
+<meta property="og:url" content="https://laylaycjl.github.io/2021/03/14/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、数据和数据模型1、数据与信息（1）基本概念1）数据：描述事物的符号记录  数据有一定的格式，这些格式的规定是数据的语法，而数据的含义是数据的语义 数据是信息存在的一种形式，只有通过解释或处理才能成为有用的信息">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.1.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.2.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.3.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.4.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.5.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.6.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.7.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.8.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.9.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.10.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.11.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.12.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314170538834.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314170653264.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314171350568.png">
+<meta property="article:published_time" content="2021-03-14T01:44:47.000Z">
+<meta property="article:modified_time" content="2021-03-14T09:43:15.039Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.1.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2021/03/14/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>数据模型与数据库结构02 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%95%B0%E6%8D%AE%E5%92%8C%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">一、数据和数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E4%B8%8E%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">1、数据与信息</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">（1）基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%95%B0%E6%8D%AE%E7%9A%84%E9%9D%99%E6%80%81%E7%89%B9%E5%BE%81%E4%B8%8E%E5%8A%A8%E6%80%81%E7%89%B9%E5%BE%81"><span class="nav-number">1.1.2.</span> <span class="nav-text">（2）数据的静态特征与动态特征</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">2、数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="nav-number">1.2.1.</span> <span class="nav-text">（1）数据模型的三要素</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="nav-number">1.2.2.</span> <span class="nav-text">（2）数据模型分类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A6%82%E5%BF%B5%E5%B1%82%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">二、概念层数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">1、基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%AE%9E%E4%BD%93-%E8%81%94%E7%B3%BB%E6%A8%A1%E5%9E%8B%EF%BC%88Entity-Relationship-Model%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2、实体-联系模型（Entity-Relationship Model）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AE%9E%E4%BD%93-%E8%81%94%E7%B3%BB%E6%A8%A1%E5%9E%8B%E5%9F%BA%E6%9C%AC%E7%AE%80%E4%BB%8B"><span class="nav-number">2.2.1.</span> <span class="nav-text">（1）实体-联系模型基本简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%AE%9E%E4%BD%93%EF%BC%88%E5%90%8D%E8%AF%8D%EF%BC%89"><span class="nav-number">2.2.2.</span> <span class="nav-text">（2）实体（名词）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%B1%9E%E6%80%A7%EF%BC%88%E5%90%8D%E8%AF%8D%E7%9A%84%E5%B1%9E%E6%80%A7%EF%BC%89"><span class="nav-number">2.2.3.</span> <span class="nav-text">（3）属性（名词的属性）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E8%81%94%E7%B3%BB%EF%BC%88%E5%8A%A8%E8%AF%8D%EF%BC%9A%E5%90%8D%E8%AF%8D%E9%97%B4%E7%9A%84%E8%81%94%E7%B3%BB%EF%BC%89"><span class="nav-number">2.2.4.</span> <span class="nav-text">（4）联系（动词：名词间的联系）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%BB%84%E7%BB%87%E5%B1%82%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">三、组织层数据模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%B1%82%E6%AC%A1%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.1.</span> <span class="nav-text">1、层次数据模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E7%BD%91%E7%8A%B6%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.2.</span> <span class="nav-text">2、网状数据模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%85%B3%E7%B3%BB%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.3.</span> <span class="nav-text">3、关系数据模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E6%8A%80%E6%9C%AF%E7%8E%B0%E7%8A%B6"><span class="nav-number">4.</span> <span class="nav-text">四、数据库技术现状</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.0.1.</span> <span class="nav-text">1、高级数据库系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E6%8A%80%E6%9C%AF%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98%E6%8A%80%E6%9C%AF"><span class="nav-number">4.0.2.</span> <span class="nav-text">2、数据仓库技术与数据挖掘技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81NoSQL"><span class="nav-number">4.0.3.</span> <span class="nav-text">3、NoSQL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84"><span class="nav-number">5.</span> <span class="nav-text">五、数据库结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">5.1.</span> <span class="nav-text">1、模式的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%B8%89%E7%BA%A7%E6%A8%A1%E5%BC%8F%E7%BB%93%E6%9E%84"><span class="nav-number">5.2.</span> <span class="nav-text">2、三级模式结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%A4%96%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.1.</span> <span class="nav-text">1）外模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.2.</span> <span class="nav-text">2）模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E5%A4%96%E6%A8%A1%E5%BC%8F"><span class="nav-number">5.2.3.</span> <span class="nav-text">3）外模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E6%A8%A1%E5%BC%8F%E5%B0%8F%E7%BB%93"><span class="nav-number">5.2.4.</span> <span class="nav-text">4）模式小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%A8%A1%E5%BC%8F%E6%98%A0%E5%83%8F%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%8B%AC%E7%AB%8B%E6%80%A7"><span class="nav-number">5.3.</span> <span class="nav-text">3、模式映像与数据独立性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%A4%96%E6%A8%A1%E5%BC%8F-%E6%A8%A1%E5%BC%8F%E6%98%A0%E8%B1%A1"><span class="nav-number">5.3.1.</span> <span class="nav-text">1）外模式&#x2F;模式映象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E6%A8%A1%E5%BC%8F-%E5%86%85%E6%A8%A1%E5%BC%8F%E6%98%A0%E8%B1%A1"><span class="nav-number">5.3.2.</span> <span class="nav-text">2）模式&#x2F;内模式映象</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/03/14/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据模型与数据库结构02
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-03-14 09:44:47 / 修改时间：17:43:15" itemprop="dateCreated datePublished" datetime="2021-03-14T09:44:47+08:00">2021-03-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="一、数据和数据模型"><a href="#一、数据和数据模型" class="headerlink" title="一、数据和数据模型"></a>一、数据和数据模型</h2><h3 id="1、数据与信息"><a href="#1、数据与信息" class="headerlink" title="1、数据与信息"></a>1、数据与信息</h3><h4 id="（1）基本概念"><a href="#（1）基本概念" class="headerlink" title="（1）基本概念"></a>（1）基本概念</h4><p>1）数据：描述事物的符号记录</p>
+<ul>
+<li>数据有一定的格式，这些格式的规定是数据的<strong>语法</strong>，而数据的含义是数据的<strong>语义</strong></li>
+<li><u>数据是信息存在的一种形式</u>，只有通过解释或处理才能成为有用的信息</li>
+</ul>
+<span id="more"></span>
+<p>2）信息：从数据中获得的有意义的内容</p>
+<p>eg：数据：张三，1912，男，1981，计算机系，应用软件</p>
+<p>—(解释)—&gt;信息：张三是1912班的男生，1981年出生，计算机系应用软件专业</p>
+<h4 id="（2）数据的静态特征与动态特征"><a href="#（2）数据的静态特征与动态特征" class="headerlink" title="（2）数据的静态特征与动态特征"></a>（2）数据的静态特征与动态特征</h4><p>1）静态特征</p>
+<pre class="mermaid">graph LR
+H(静态特征)--&gt;A(数据的基本结构)
+H(静态特征)--&gt;D(数据间的联系)
+H(静态特征)--&gt;F(数据取值范围约束)
+A(数据的基本结构)--&gt;B(eg.学生学号,姓名...)
+D(数据间的联系)--&gt;E(eg.学生选课中的学号与学生基本信息中的学号)
+F(数据取值范围约束)--&gt;G(eg.年龄&gt;0,成绩&lt;100,...)&lt; pre&gt;
+
+<p>2）动态特征</p>
+<pre class="mermaid">graph LR
+H(动态特征)--&gt;A(数据可以进行的操作)
+H(动态特征)--&gt;D(操作规则)
+A(数据操作)--&gt;B(增删改查)
+D(操作规则)</pre>
+
+<h3 id="2、数据模型"><a href="#2、数据模型" class="headerlink" title="2、数据模型"></a>2、数据模型</h3><p>数据模型(data model)是对现实世界数据特征的抽象，是数据库系统中用于提供信息表示和操作手段的形式架构。</p>
+<h4 id="（1）数据模型的三要素"><a href="#（1）数据模型的三要素" class="headerlink" title="（1）数据模型的三要素"></a>（1）数据模型的三要素</h4><pre class="mermaid">graph LR
+H(数据模型的三要素)--&gt;A(数据结构)
+H(数据模型的三要素)--&gt;D(数据操作)
+H(数据模型的三要素)--&gt;F(数据的完整性约束条件)</pre>
+
+
+
+<p>1）数据结构</p>
+<ul>
+<li>数据结构是所描述的对象类型的集合。现在常用的是关系数据模型</li>
+<li>数据结构是对系统静态特性的描述</li>
+</ul>
+<p>2）数据操作</p>
+<ul>
+<li>数据操作是指对数据库表中记录的值允许执行的操作集合，数据库对数据的操作主要有增、删、改、查询4种操作</li>
+<li>数据操作是对系统动态特性的描述</li>
+</ul>
+<p>3）数据的完整性约束条件</p>
+<ul>
+<li>数据的完整性约束条件是一组完整性规则。用以保证数据的正确、有效、相容。</li>
+</ul>
+<h4 id="（2）数据模型分类"><a href="#（2）数据模型分类" class="headerlink" title="（2）数据模型分类"></a>（2）数据模型分类</h4><pre class="mermaid">graph LR
+H(数据模型)--&gt;A(概念层数据模型: 语义视角抽象)
+H(数据模型)--&gt;D(组织层数据模型: 组织层面描述)</pre>
+
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.1.png" style="zoom: 50%;"></p>
+<ul>
+<li>概念层数据模型（概念模型）：从数据的<strong>语义视角</strong>来<u>抽取</u>模型，是按用户的观点来对数据和信息进行建模<ul>
+<li>主要用在数据库的设计阶段</li>
+<li>与具体的数据库管理系统无关</li>
+<li>与具体的实现方式无关</li>
+<li>常用概念模型：实体-联系模型、语义对象模型</li>
+</ul>
+</li>
+<li>组织层数据模型（组织模型）：从数据的<strong>组织层次</strong>来<u>描述</u>数据。<ul>
+<li>是从计算机系统的观点对数据进行建模,与所使用的数据库管理系统有关</li>
+<li>常用组织模型：层次模型、网状模型、关系模型、对象-关系模型</li>
+</ul>
+</li>
+</ul>
+<h2 id="二、概念层数据模型"><a href="#二、概念层数据模型" class="headerlink" title="二、概念层数据模型"></a>二、概念层数据模型</h2><p><u>是面向用户、面向现实世界的数据模型，与具体的DBMS无关</u></p>
+<h3 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h3><p>（1）概念层数据模型完成的任务：</p>
+<ul>
+<li><strong>抽象</strong>现实系统中有应用价值的<strong>元素</strong>及其关联<strong>关系</strong></li>
+<li><strong>反映</strong>现实系统中有应用价值的<strong>信息结构</strong></li>
+<li><strong>不依赖</strong>于数据的<strong>组织层数据模型</strong></li>
+</ul>
+<p>（2）概念层数据模型存在的意义：</p>
+<ul>
+<li>是现实世界到信息世界的第一层抽象</li>
+<li>是数据库设计人员进行数据库设计的工具</li>
+<li>是数据库设计人员和业务领域的用户之间进行交流的工具</li>
+</ul>
+<p>（3）对概念层数据模型的要求：</p>
+<ul>
+<li>具有较强的语义表达能力</li>
+<li>能够方便、直接地表达应用中的各种语义知识</li>
+<li>简单、清晰，易于被用户理解</li>
+</ul>
+<h3 id="2、实体-联系模型（Entity-Relationship-Model）"><a href="#2、实体-联系模型（Entity-Relationship-Model）" class="headerlink" title="2、实体-联系模型（Entity-Relationship Model）"></a>2、实体-联系模型（Entity-Relationship Model）</h3><h4 id="（1）实体-联系模型基本简介"><a href="#（1）实体-联系模型基本简介" class="headerlink" title="（1）实体-联系模型基本简介"></a>（1）实体-联系模型基本简介</h4><p>1）基本观点</p>
+<p>世界是由一组称作<strong>实体的基本对象</strong>和<strong>这些对象之间的联系</strong>构成</p>
+<p>2）E-R模型的三要素</p>
+<p>实体型、属性和联系</p>
+<p>3）E-R图</p>
+<p>矩形框——实体型，菱形框——联系类型，椭圆型框——实体与联系类型的属性</p>
+<p>直线——实体型与联系之间用直线相连，线旁边标注联系的种类</p>
+<p>eg.</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.2.png" style="zoom: 50%;"></p>
+<h4 id="（2）实体（名词）"><a href="#（2）实体（名词）" class="headerlink" title="（2）实体（名词）"></a>（2）实体（名词）</h4><p>具有公共性质的可相互区分的现实世界<strong>对象的集合</strong>，eg.学生、课程、职工</p>
+<ul>
+<li>实体在E-R图的表示方法：用矩形框表示具体的实体，把实体名写在框内</li>
+</ul>
+<h4 id="（3）属性（名词的属性）"><a href="#（3）属性（名词的属性）" class="headerlink" title="（3）属性（名词的属性）"></a>（3）属性（名词的属性）</h4><p>描述<strong>实体</strong>或者<strong>联系</strong>的<strong>性质或特征</strong>的数据项，eg.学号、姓名、性别、年龄</p>
+<ul>
+<li>标识属性：能够<strong>唯一标识实体</strong>的一个属性或最小的一组属性（称为属性集或属性组）称为实体的标识属性，又称为实体的码。<br>例如，“学号”就是学生实体的码</li>
+<li>属性在E-R图的表示方法：用圆角矩形或椭圆框表示，框内写上属性名，并用连线连到相应实体</li>
+</ul>
+<h4 id="（4）联系（动词：名词间的联系）"><a href="#（4）联系（动词：名词间的联系）" class="headerlink" title="（4）联系（动词：名词间的联系）"></a>（4）联系（动词：名词间的联系）</h4><p>联系是数据之间的关联集合，是客观存在的应用语义链</p>
+<ul>
+<li><ul>
+<li>实体内部的联系：一个实体内属性之间的联系。职工中的职工号和此职工的部门经理号</li>
+<li>实体之间的联系：不同实体之间的联系。课程和学生实体之间存在选课联系</li>
+</ul>
+</li>
+<li><p>联系在E-R图的表示方法：实体之间的联系用菱形框表示，框内写上联系名，并用连线与有关的实体相连</p>
+</li>
+<li><p>联系的种类：</p>
+<ul>
+<li><p>一对一联系(1:1)</p>
+<p>如果实体A中的每个实例在实体B中至多有一个（也可以没有）实例与之关联，反之亦然，则称实体A与实体B具有一对一联系，记作：1:1 </p>
+<p>eg. </p>
+<pre class="mermaid">    graph TD
+a[班长]--&gt;|1|b{管理}
+b{管理}--&gt;|1|c[班级]</pre>
+
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>一对多联系(1:n)</p>
+<p>如果实体A与实体B之间存在联系，并且对于实体A中的一个实例，实体B中有多个实例与之对应；而对实体B中的任意一个实例，在实体A中都只有一个实例与之对应，则称实体A到实体B的联系是一对多的，记为1 : n </p>
+<p>eg.</p>
+<pre class="mermaid">    graph TD
+a[班长]--&gt;|1|b{管理}
+b{管理}--&gt;|n|c[班级成员]</pre>
+</li>
+<li><p>多对多联系(m:n)</p>
+<p>如果实体A与实体B之间存在联系，并且对于实体A中的一个实例，实体B中有多个实例与之对应；而对实体B中的一个实例，在实体A中也有多个实例与之对应，则称实体A到实体B的联系是多对多的，记为m : n </p>
+<p>eg.</p>
+<pre class="mermaid">    graph TD
+a[班干部]--&gt;|m|b{管理}
+b{管理}--&gt;|n|c[班级成员]</pre>
+</li>
+<li><p>区分：关联多个实体的多对多联系 与 关联两个实体的多对多联系</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.3.png" style="zoom:50%;"></p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.4.png" style="zoom:50%;"></p>
+</li>
+</ul>
+<h2 id="三、组织层数据模型"><a href="#三、组织层数据模型" class="headerlink" title="三、组织层数据模型"></a>三、组织层数据模型</h2><ul>
+<li>组织层数据模型是从<strong>数据的组织形式</strong>的角度来<strong>描述</strong>信息</li>
+<li>在数据库技术的发展过程中用到的组织层数据模型主要有：<ul>
+<li>层次模型（Hierarchical Model）</li>
+<li>网状模型（Network Model）</li>
+<li>关系模型（Relational Model）</li>
+<li>面向对象模型（Object Oriented Model）</li>
+</ul>
+</li>
+</ul>
+<h3 id="1、层次数据模型"><a href="#1、层次数据模型" class="headerlink" title="1、层次数据模型"></a>1、层次数据模型</h3><p>1）简介</p>
+<ul>
+<li><p>用<strong>树形结构</strong>表示实体和实体之间的联系。<br>现实世界中许多实体之间的联系本身就呈现出一种自然的层次关系，如：行政机构、家族关系</p>
+</li>
+<li><p>构成层次模型的树由<strong>结点</strong>和<strong>连线</strong>组成</p>
+<ul>
+<li>结点表示实体，结点中的项表示实体的属性</li>
+<li>连线表示相连的两个实体间的联系，这种联系是一对多的。</li>
+</ul>
+</li>
+<li><ul>
+<li>通常把表示“一”的实体放在上方，称为<strong>父结点</strong></li>
+<li>把表示“多”的实体放在下方，称为<strong>子结点</strong></li>
+<li>将不包含任何子结点的结点称为<strong>叶结点</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.5.png" style="zoom: 33%;"></p>
+<p>2）层次模型的要求</p>
+<ul>
+<li>有且仅有一个结点无父结点，这个结点即为树的根</li>
+<li>其他结点有且仅有一个父结点</li>
+</ul>
+<p>3）层次模型基本特点</p>
+<ul>
+<li>任何一个给定的记录值<u>只有从层次模型的根部开始按路径查看时，才能明确其含义</u>，<strong>任何子结点都不能脱离父结点而存在</strong></li>
+</ul>
+<p>4）层次模型局限性</p>
+<ul>
+<li>只能表示一对多的联系，不能直接表示多对多联系</li>
+<li>如果把多对多联系转换为一对多联系，会出现一个子结点有多个父结点的情况</li>
+</ul>
+<blockquote>
+<p>解决方法：把一个层次模型分解为两个层次模型</p>
+<p>例如：</p>
+<p>将</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.6.png" alt=""></p>
+<p>变为</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.7.png" alt=""></p>
+</blockquote>
+<h3 id="2、网状数据模型"><a href="#2、网状数据模型" class="headerlink" title="2、网状数据模型"></a>2、网状数据模型</h3><p>1）简介</p>
+<ul>
+<li>如果去掉层次模型中的两点限制，即：①允许一个以上的结点无父结点②每个结点可以有多个父结点便构成了网状模型</li>
+</ul>
+<p>示意图：</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.8.png" alt=""></p>
+<p>2）网状模型的局限</p>
+<ul>
+<li><p>网状数据模型可以直接表示多对多联系。但实现起来太复杂。因此一些支持网状模型的数据库管理系统，对多对多联系还是进行了限制</p>
+<p>例如，网状模型的典型代表CODASYL就只支持一对多联系</p>
+</li>
+</ul>
+<h3 id="3、关系数据模型"><a href="#3、关系数据模型" class="headerlink" title="3、关系数据模型"></a>3、关系数据模型</h3><p>在关系数据库中，<strong>记录值仅仅构成关系</strong>，关系之间的联系是靠语义相同的字段（称为连接字段）值表达的。<br>例如，要查询“刘晨”的考试成绩，首先要在“学生”关系中得到“刘晨”的学号值，然后根据这个学号值再在“选课”关系中找出该学生的所有考试记录值。</p>
+<p>实例：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>学  号</th>
+<th>姓  名</th>
+<th>年  龄</th>
+<th>性  别</th>
+<th>所 在 系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0611101</td>
+<td>李勇</td>
+<td>21</td>
+<td>男</td>
+<td>计算机系</td>
+</tr>
+<tr>
+<td>0611102</td>
+<td>刘晨</td>
+<td>20</td>
+<td>男</td>
+<td>计算机系</td>
+</tr>
+<tr>
+<td>0611103</td>
+<td>王敏</td>
+<td>20</td>
+<td>女</td>
+<td>计算机系</td>
+</tr>
+<tr>
+<td>0621101</td>
+<td>张立</td>
+<td>20</td>
+<td>男</td>
+<td>信息管理系</td>
+</tr>
+<tr>
+<td>0621102</td>
+<td>吴宾</td>
+<td>19</td>
+<td>女</td>
+<td>信息管理系</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>1）关系数据模型的完整性约束</p>
+<pre class="mermaid">graph TD
+A(数据模型完整约束)--&gt;B(实体完整性)
+A--&gt;C(参照完整性)
+A--&gt;D(用户定义的完整性)</pre>
+
+<p>2）关系模型好处</p>
+<ul>
+<li>关系数据模型<strong>易于设计、实现、维护和使用</strong></li>
+<li>它与层次数据模型和网状数据模型的最根本区别是：关系数据模型不依赖于导航式的数据访问系统，<strong>数据结构的变化不会影响对数据的访问</strong>。</li>
+</ul>
+<h2 id="四、数据库技术现状"><a href="#四、数据库技术现状" class="headerlink" title="四、数据库技术现状"></a>四、数据库技术现状</h2><h4 id="1、高级数据库系统"><a href="#1、高级数据库系统" class="headerlink" title="1、高级数据库系统"></a>1、高级数据库系统</h4><ul>
+<li>分布式数据库系统</li>
+<li>面向对象数据库系统 </li>
+<li>并行数据库系统 </li>
+<li>多媒体数据库系统 </li>
+</ul>
+<h4 id="2、数据仓库技术与数据挖掘技术"><a href="#2、数据仓库技术与数据挖掘技术" class="headerlink" title="2、数据仓库技术与数据挖掘技术"></a>2、数据仓库技术与数据挖掘技术</h4><p>（1）数据仓库（Data Warehouse，DW）</p>
+<ul>
+<li>是一个面向主题的、集成的、稳定的、随时间不断变化的数据集合，它用于支持经营管理中的决策制定过程</li>
+<li>OLAP可以对大量的数据进行动态合并和分析，是决策支持领域的一部分</li>
+</ul>
+<p>（2）数据挖掘（Date Mining）</p>
+<ul>
+<li>是从大量数据中提取隐含在其中的、人们事先不知道的但又可能有用的信息和知识的过程</li>
+</ul>
+<h4 id="3、NoSQL"><a href="#3、NoSQL" class="headerlink" title="3、NoSQL"></a>3、NoSQL</h4><p>（1）概述</p>
+<p> NoSQL是非关系型数据存储的广义定义。它打破了长久以来关系型数据库与事务ACID理论大一统的局面。NoSQL数据存储不需要固定的表结构，通常也不存在连接操作。在大数据存取上具备关系型数据库无法比拟的性能优势</p>
+<p>（2）NoSQL相关理论</p>
+<ul>
+<li><p>CAP理论</p>
+<ul>
+<li><p>是NoSQL数据库的基石</p>
+</li>
+<li><p>CAP理论指的是在一个分布式系统中，Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容忍性），三者不可兼得</p>
+<p>一个分布式系统无法同时满足一致性、可用性、分区容忍性三个特点，最多只能实现其中两点。而由于当前的网络硬件肯定会出现延迟丢包等问题，所以分区容忍性是我们必须需要实现的。所以我们只能在一致性和可用性之间进行权衡，没有NoSQL系统能同时保证这三点</p>
+</li>
+</ul>
+</li>
+<li><p>BASE理论</p>
+<p>Basically Available（基本可用）、Soft state（软状态）和Eventually consistent（最终一致性）三个短语的简写，BASE是对CAP中一致性和可用性权衡的结果，其核心思想是即使无法做到强一致性，但每个应用都可以根据自身的业务特点，采用适当的方式使系统达到最终一致性</p>
+</li>
+</ul>
+<h2 id="五、数据库结构"><a href="#五、数据库结构" class="headerlink" title="五、数据库结构"></a>五、数据库结构</h2><p>==数据库的体系结构：三级模式和两级映像==</p>
+<h3 id="1、模式的基本概念"><a href="#1、模式的基本概念" class="headerlink" title="1、模式的基本概念"></a>1、模式的基本概念</h3><p>1）模式是数据库中<u>全体数据的逻辑结构和特征的描述</u>，它仅仅涉及“型”的描述，不涉及具体的值</p>
+<p>2）关系模式是关系的“型”或元组的结构共性的描述</p>
+<p>实际上对应的是<strong>关系表的表头</strong></p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.9.png" style="zoom:50%;"></p>
+<ul>
+<li>实例与模式<ul>
+<li>模式的一个具体值——&gt;实例（instance），所以一个模式可以对应多个实例</li>
+</ul>
+</li>
+</ul>
+<pre class="mermaid">graph TD
+A(模式)--&gt;B(稳定的)
+A--&gt;|反映|C(数据的结构与联系)
+E(实例)--&gt;F(变动的)
+E(实例)--&gt;|反映|D(数据库某一时刻的状态)</pre>
+
+<h3 id="2、三级模式结构"><a href="#2、三级模式结构" class="headerlink" title="2、三级模式结构"></a>2、三级模式结构</h3><ul>
+<li><p>分三级模式的目的：</p>
+<ul>
+<li>为了提高数据的物理独立性和逻辑独立性，<u>使数据库的用户观点（即用户看到的数据库）与数据库的物理方面（即实际存储的数据库）区分开来</u></li>
+<li>数据库系统的三级模式是对数据的三个抽象级别，它把数据的具体组织留给DBMS管理，使用户能逻辑地、抽象地处理数据，而不必关心数据在计算机中的具体表示方式与存储方式</li>
+</ul>
+</li>
+<li><p>三级模式示意图</p>
+</li>
+</ul>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.10.png" style="zoom: 50%;"> <img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.11.png" style="zoom:33%;"></p>
+<pre class="mermaid">graph LR
+A(模式)--&gt;B(外模式 = 子模式 = 用户模式)
+A(模式)--&gt;C(模式 = 逻辑模式 = 概念模式)
+A(模式)--&gt;D(内模式 = 存储模式 = 物理模式)</pre>
+
+<h4 id="1）外模式"><a href="#1）外模式" class="headerlink" title="1）外模式"></a>1）外模式</h4><p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/2.12.png" style="zoom: 50%;"></p>
+<ul>
+<li><p><strong>外模式是模式的子集</strong>解释：</p>
+<p>举例如下：</p>
+<p>下图中的模式即为表头（学号、姓名、年龄、性别、所在系）</p>
+<p>| 学  号  | 姓  名 | 年 龄 | 性  别 | 所 在 系   |<br>| ———- | ——— | ——- | ——— | ————— |<br>| 0611101 | 李勇   | 21    | 男     | 计算机系   |<br>| 0611102 | 刘晨   | 20    | 男     | 计算机系   |<br>| 0611103 | 王敏   | 20    | 女     | 计算机系   |<br>| 0621101 | 张立   | 20    | 男     | 信息管理系 |<br>| 0621102 | 吴宾   | 19    | 女     | 信息管理系 |</p>
+<p>而外模式是模式的子集，所以外模式可以为（学号、姓名、年龄），如下图</p>
+<p>| 学  号  | 姓 名 | 性  别 |<br>| ———- | ——- | ——— |<br>| 0611101 | 李勇  | 男     |<br>| 0611102 | 刘晨  | 男     |<br>| 0611103 | 王敏  | 女     |<br>| 0621101 | 张立  | 男     |<br>| 0621102 | 吴宾  | 女     |</p>
+</li>
+<li><p><strong>子模式可以重构</strong>解释：</p>
+<p>学生（学号，姓名，性别，年龄，所在系）<br>课程（课程号，课程名，学分）<br>选课（学号，课程号，成绩）</p>
+<p>三者可以重构为：学生（姓名，课程名，成绩）</p>
+</li>
+<li><p>外模式的安全性更强</p>
+<p>因为外模式是模式的子集，所以有一些信息可以隐藏起来，不必全部展出，比如学生的身份证号属于个人隐私，可以不把身份证号这一项放在外模式中，从而实现隐藏</p>
+</li>
+</ul>
+<h4 id="2）模式"><a href="#2）模式" class="headerlink" title="2）模式"></a>2）模式</h4><p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314170538834.png" style="zoom: 33%;"></p>
+<h4 id="3）外模式"><a href="#3）外模式" class="headerlink" title="3）外模式"></a>3）外模式</h4><p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314170653264.png" alt="image-20210314170653264" style="zoom:33%;"></p>
+<ul>
+<li>内模式是对整个数据库的底层表示。<u>描述了数据的存储结构，但不涉及物理记录的形式</u>。比如：<ul>
+<li>数据的组织与存储方式</li>
+<li>索引按什么方式组织</li>
+<li>是否加密</li>
+</ul>
+</li>
+</ul>
+<h4 id="4）模式小结"><a href="#4）模式小结" class="headerlink" title="4）模式小结"></a>4）模式小结</h4><ul>
+<li><strong>模式</strong>是数据库的中心与关键，它独立于数据库系统的其他层。设计数据库系统时也是首先设计数据库系统的逻辑模式。</li>
+<li><strong>内模式</strong>依赖于数据库的全局逻辑结构，但独立于数据库的用户视图，也独立于具体的存储设备。</li>
+<li><strong>外模式</strong>面向具体的应用程序，它定义在逻辑模式之上，但独立于存储模式和存储设备。</li>
+</ul>
+<h3 id="3、模式映像与数据独立性"><a href="#3、模式映像与数据独立性" class="headerlink" title="3、模式映像与数据独立性"></a>3、模式映像与数据独立性</h3><ul>
+<li>两级映像的目的：为了能够在内部实现这三个抽象层次的联系和转换，数据库管理系统在三级模式之间提供了两层映象：<ul>
+<li>外模式/模式映象</li>
+<li>模式/内模式映象</li>
+</ul>
+</li>
+</ul>
+<h4 id="1）外模式-模式映象"><a href="#1）外模式-模式映象" class="headerlink" title="1）外模式/模式映象"></a>1）外模式/模式映象</h4><ul>
+<li><p>==数据和程序<strong>逻辑独立</strong>（<strong>概念独立</strong>）==：</p>
+<p>当模式改变时，可用外模式/模式定义语句，调整外模式/模式映象定义，从而保持外模式不变</p>
+<p>举例：如图，修改属性（学号，姓名，性别）对应的变量名，数据逻辑的改编，并不会改变最后的结果</p>
+<p><img src="/images/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/image-20210314171350568.png" alt="image-20210314171350568"></p>
+</li>
+</ul>
+<h4 id="2）模式-内模式映象"><a href="#2）模式-内模式映象" class="headerlink" title="2）模式/内模式映象"></a>2）模式/内模式映象</h4><ul>
+<li><p>==数据和程序<strong>物理独立</strong>（<strong>存储独立</strong>）==： </p>
+<p>当存储结构改变时，可（由DBA）用内模式定义语句，调整内模式定义，从而保持模式不变</p>
+<p>举例：</p>
+<p>将学生信息从电脑的D盘移动到F盘，数据物理位置的改变，并不会对程序产生影响  </p>
+</li>
+</ul>
+<!--100,...)<--></pre>
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2021/03/14/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E7%BB%93%E6%9E%84/" title="数据模型与数据库结构02">https://laylaycjl.github.io/2021/03/14/数据模型与数据库结构/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/13/%E6%95%B0%E6%8D%AE%E5%BA%93%E6%A6%82%E8%BF%B0/" rel="prev" title="数据库概述01">
+                  <i class="fa fa-chevron-left"></i> 数据库概述01
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/" rel="next" title="Linux命令总结">
+                  Linux命令总结 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:48</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="系统架构设计师上午题转载自www.educity.cn 上午知识点总结：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统架构设计师上午题">
+<meta property="og:url" content="https://laylaycjl.github.io/2021/09/08/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="系统架构设计师上午题转载自www.educity.cn 上午知识点总结：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908134924552.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908145905265.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908150407631.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908150957580.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908151453479.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908151944500.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908152220294.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908152732274.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908153312283.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908153604849.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908154249877.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908154930747.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908160430513.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908162344663.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908162413112.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205612746.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205715705.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205756688.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205828593.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205926877.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210013120.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210054193.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210218359.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210451685.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210548872.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210819496.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210850079.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210937181.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211002201.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211020444.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211241395.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211241395.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211307657.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211332774.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211307657.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211332774.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211359910.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211431509.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211448018.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211503704.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211522173.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211539608.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211617802.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211646818.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211737438.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211832772.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910103552673.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910103644539.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104141992.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104054208.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104323463.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104342973.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104342973.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104435801.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104503066.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104523744.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104546418.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104635201.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104652357.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104732978.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104754943.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104813592.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105722097.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105755314.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105912298.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105935030.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105959972.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110025483.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110113293.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110124230.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110152711.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110213693.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110250095.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110313553.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110337013.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110411775.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110442642.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110501459.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110519032.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110536596.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110600175.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110647348.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110705192.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110805613.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094437961.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094618801.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094859465.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913105505056.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913112546254.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113054394.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113509321.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113939578.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114255712.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114449297.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114558284.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163045637.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163218719.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163456222.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163549328.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165149703.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165246207.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165334976.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165601918.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170043832.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170220403.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170855168.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913171456815.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913171909597.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913172831931.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230342254.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230457425.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230524845.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230546172.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230740069.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914231319506.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915170543816.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915171123523.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914081450972.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914092905232.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914093930729.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914101347118.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914101501689.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914102440570.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914104231530.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914104531382.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914112657554.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914224754441.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225034347.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225330885.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225351301.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225448483.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225717220.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225846560.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230055477.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230125017.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915172824938.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915173121208.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193107876.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193538161.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193730455.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194055122.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194143757.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194303127.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194401889.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194458334.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194547932.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194625361.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194712173.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194802382.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194858390.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194929407.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195008504.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195052589.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195132828.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195203821.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195239998.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195300573.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195817867.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195907832.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916144400197.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151308725.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151449654.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151549733.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151841273.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152110313.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152229511.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152328692.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152404351.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152810309.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152923122.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153231289.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153253250.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153533752.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153708729.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916154204007.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916154556796.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155148869.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155421182.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155629608.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160208578.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160329427.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160505787.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160928796.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161106990.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161926403.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161942273.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162028719.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162051531.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162147305.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162258518.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162434953.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162557352.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162736587.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162805491.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162950766.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163057005.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163821564.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163851702.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916164315845.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152031267.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152101519.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152125413.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152148407.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152205780.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152241636.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152317394.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152340726.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152402524.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152422144.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152445835.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152511800.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152529904.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152551564.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152609240.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152629508.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152659578.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152720674.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152745171.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152805927.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152831074.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152856286.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152955548.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918153012608.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918153036567.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920172112270.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920172801675.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173025653.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173321974.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173934469.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920174317458.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920174722255.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175156721.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175238864.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175526818.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175919495.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920180147276.png">
+<meta property="article:published_time" content="2021-09-08T05:41:27.000Z">
+<meta property="article:modified_time" content="2022-07-01T10:25:58.952Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="软考高级">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908134924552.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2021/09/08/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>系统架构设计师上午题 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">系统架构设计师上午题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">一、计算机组成与体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Flynn%E5%88%86%E7%B1%BB%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、Flynn分类法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81CISC%E4%B8%8ERISC"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、CISC与RISC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%B1%82%E6%AC%A1%E5%8C%96%E5%AD%98%E5%82%A8%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、计算机层次化存储结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81cache"><span class="nav-number">1.1.4.</span> <span class="nav-text">4、cache</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%97%B6%E9%97%B4%E5%B1%80%E9%83%A8%E6%80%A7%E5%92%8C%E7%A9%BA%E9%97%B4%E5%B1%80%E9%83%A8%E6%80%A7"><span class="nav-number">1.1.5.</span> <span class="nav-text">5、时间局部性和空间局部性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E4%B8%BB%E5%AD%98"><span class="nav-number">1.1.6.</span> <span class="nav-text">6、主存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E3%80%81%E4%B8%BB%E5%AD%98%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">1）、主存的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E3%80%81%E4%B8%BB%E5%AD%98%E7%9A%84%E7%BC%96%E5%9D%80"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">2）、主存的编址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E7%A3%81%E7%9B%98"><span class="nav-number">1.1.7.</span> <span class="nav-text">7、磁盘</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%80%A7%E8%83%BD%E8%AF%84%E4%BB%B7"><span class="nav-number">1.2.</span> <span class="nav-text">二、系统配置与性能评价</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">1、计算机性能指标</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%98%BF%E5%A7%86%E8%BE%BE%E5%B0%94%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">2、阿姆达尔解决方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%80%A7%E8%83%BD%E8%AF%84%E4%BB%B7%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">3、计算机性能评价方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%80%A7%E8%83%BD%E7%9B%91%E6%B5%8B%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.0.4.</span> <span class="nav-text">4、计算机性能监测方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">三、操作系统基本原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%89%8D%E8%B6%8B%E5%9B%BE"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、前趋图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%90%8C%E6%AD%A5%E4%B8%8E%E4%BA%92%E6%96%A5"><span class="nav-number">1.3.3.</span> <span class="nav-text">3、进程的同步与互斥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81PV%E6%93%8D%E4%BD%9C"><span class="nav-number">1.3.4.</span> <span class="nav-text">4、PV操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81PV%E6%93%8D%E4%BD%9C%E4%B8%8E%E5%89%8D%E8%B6%8B%E5%9B%BE"><span class="nav-number">1.3.5.</span> <span class="nav-text">5、PV操作与前趋图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E6%AD%BB%E9%94%81"><span class="nav-number">1.3.6.</span> <span class="nav-text">6、死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.7.</span> <span class="nav-text">7、银行家算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E3%80%81%E6%AE%B5%E5%BC%8F%E5%AD%98%E5%82%A8%E3%80%81%E6%AE%B5%E9%A1%B5%E5%BC%8F%E5%AD%98%E5%82%A8"><span class="nav-number">1.3.8.</span> <span class="nav-text">8、页式存储、段式存储、段页式存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%E3%80%81%E9%A1%B5%E9%9D%A2%E6%B7%98%E6%B1%B0%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.9.</span> <span class="nav-text">9、页面淘汰算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%E3%80%81%E7%B4%A2%E5%BC%95%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.10.</span> <span class="nav-text">10、索引文件结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11%E3%80%81%E6%A0%91%E5%BD%A2%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.11.</span> <span class="nav-text">11、树形目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12%E3%80%81%E4%BD%8D%E7%A4%BA%E5%9B%BE%E6%B3%95"><span class="nav-number">1.3.12.</span> <span class="nav-text">12、位示图法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13%E3%80%81%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.13.</span> <span class="nav-text">13、数据传输控制方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14%E3%80%81%E5%BE%AE%E5%86%85%E6%A0%B8%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.3.14.</span> <span class="nav-text">14、微内核操作系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.4.</span> <span class="nav-text">四、数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%89%E7%BA%A7%E6%A8%A1%E5%BC%8F%E3%80%81%E4%B8%A4%E7%BA%A7%E6%98%A0%E5%B0%84"><span class="nav-number">1.4.1.</span> <span class="nav-text">1、三级模式、两级映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E8%BF%87%E7%A8%8B%E8%AF%B4%E6%98%8E"><span class="nav-number">1.4.2.</span> <span class="nav-text">2、数据库设计过程说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.3.</span> <span class="nav-text">3、ER模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0"><span class="nav-number">1.4.4.</span> <span class="nav-text">4、关系代数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E8%A7%84%E8%8C%83%E5%8C%96%E7%90%86%E8%AE%BA"><span class="nav-number">1.4.5.</span> <span class="nav-text">5、规范化理论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">1）函数依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E8%A7%84%E8%8C%83%E5%8C%96%E7%90%86%E8%AE%BA%E6%84%8F%E4%B9%89"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">2）规范化理论意义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E6%B1%82%E5%80%99%E9%80%89%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">1.4.5.3.</span> <span class="nav-text">3）求候选关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E8%8C%83%E5%BC%8F"><span class="nav-number">1.4.5.4.</span> <span class="nav-text">4）范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%EF%BC%89%E6%A8%A1%E5%BC%8F%E5%88%86%E8%A7%A3"><span class="nav-number">1.4.5.5.</span> <span class="nav-text">5）模式分解</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E5%8F%91%E6%8E%A7%E5%88%B6"><span class="nav-number">1.4.6.</span> <span class="nav-text">6、数据库并发控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%8C%E6%95%B4%E6%80%A7%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.4.7.</span> <span class="nav-text">7、数据库完整性约束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8"><span class="nav-number">1.4.8.</span> <span class="nav-text">8、数据库安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%A4%87%E4%BB%BD%E4%B8%8E%E6%81%A2%E5%A4%8D"><span class="nav-number">1.4.9.</span> <span class="nav-text">9、数据库备份与恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.4.10.</span> <span class="nav-text">10、分布式数据库系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BC%98%E5%8C%96"><span class="nav-number">1.4.11.</span> <span class="nav-text">11、数据库优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12%E3%80%81%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98"><span class="nav-number">1.4.12.</span> <span class="nav-text">12、数据仓库与数据挖掘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13%E3%80%81%E8%81%94%E9%82%A6%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.4.13.</span> <span class="nav-text">13、联邦数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14%E3%80%81NoSQL%E6%8A%80%E6%9C%AF"><span class="nav-number">1.4.14.</span> <span class="nav-text">14、NoSQL技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15%E3%80%81%E5%8F%8D%E8%A7%84%E8%8C%83%E5%8C%96%E6%8A%80%E6%9C%AF"><span class="nav-number">1.4.15.</span> <span class="nav-text">15、反规范化技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16%E3%80%81%E5%A4%A7%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.16.</span> <span class="nav-text">16、大数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">1.5.</span> <span class="nav-text">五、计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.5.1.</span> <span class="nav-text">1、七层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E7%BD%91%E7%BB%9C%E6%8A%80%E6%9C%AF%E6%A0%87%E5%87%86%E4%B8%8E%E5%8D%8F%E8%AE%AE"><span class="nav-number">1.5.2.</span> <span class="nav-text">2、网络技术标准与协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%BD%91%E7%BB%9C%E8%A7%84%E5%88%92%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.5.3.</span> <span class="nav-text">3、网络规划与设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E6%97%A0%E7%BA%BF%E7%BD%91"><span class="nav-number">1.5.4.</span> <span class="nav-text">4、无线网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E7%BD%91%E7%BB%9C%E6%8E%A5%E5%85%A5%E6%8A%80%E6%9C%AF"><span class="nav-number">1.5.5.</span> <span class="nav-text">5、网络接入技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E6%8A%80%E6%9C%AF"><span class="nav-number">1.5.6.</span> <span class="nav-text">6、网络存储技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E7%A3%81%E7%9B%98%E9%98%B5%E5%88%97%EF%BC%88RAID%EF%BC%89"><span class="nav-number">1.5.7.</span> <span class="nav-text">7、磁盘阵列（RAID）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81IPv6"><span class="nav-number">1.5.8.</span> <span class="nav-text">8、IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%E3%80%81%E7%89%A9%E8%81%94%E7%BD%91"><span class="nav-number">1.5.9.</span> <span class="nav-text">9、物联网</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%E3%80%81%E4%BA%91%E8%AE%A1%E7%AE%97"><span class="nav-number">1.5.10.</span> <span class="nav-text">10、云计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96%E6%88%98%E7%95%A5%E4%B8%8E%E5%AE%9E%E6%96%BD"><span class="nav-number">1.6.</span> <span class="nav-text">六、企业信息化战略与实施</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%BF%A1%E6%81%AF%E4%B8%8E%E4%BF%A1%E6%81%AF%E5%8C%96%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.6.1.</span> <span class="nav-text">1、信息与信息化的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.6.2.</span> <span class="nav-text">2、信息系统的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.6.3.</span> <span class="nav-text">3、信息系统的模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%88%98%E7%95%A5%E8%A7%84%E5%88%92"><span class="nav-number">1.6.4.</span> <span class="nav-text">4、信息系统的战略规划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%94%BF%E5%BA%9C%E4%BF%A1%E6%81%AF%E5%8C%96%E4%B8%8E%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1"><span class="nav-number">1.6.5.</span> <span class="nav-text">5、政府信息化与电子商务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96%E4%B8%8E%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1"><span class="nav-number">1.6.6.</span> <span class="nav-text">6、企业信息化与电子商务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E4%BC%81%E4%B8%9A%E8%B5%84%E6%BA%90%E8%AE%A1%E5%88%92ERP"><span class="nav-number">1.6.6.1.</span> <span class="nav-text">1）企业资源计划ERP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%AE%A2%E6%88%B7%E5%85%B3%E7%B3%BB%E7%AE%A1%E7%90%86CRM"><span class="nav-number">1.6.6.2.</span> <span class="nav-text">2）客户关系管理CRM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E4%BE%9B%E5%BA%94%E9%93%BE%E7%AE%A1%E7%90%86SCM"><span class="nav-number">1.6.6.3.</span> <span class="nav-text">3）供应链管理SCM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E5%95%86%E4%B8%9A%E6%99%BA%E8%83%BDBI"><span class="nav-number">1.6.6.4.</span> <span class="nav-text">4）商业智能BI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%EF%BC%89%E7%94%B5%E5%AD%90%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2EDI"><span class="nav-number">1.6.6.5.</span> <span class="nav-text">5）电子数据交换EDI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%EF%BC%89%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8%E9%9B%86%E6%88%90%EF%BC%88%E5%B8%B8%E8%80%83"><span class="nav-number">1.6.6.6.</span> <span class="nav-text">6）企业应用集成（常考</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7%EF%BC%89%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1"><span class="nav-number">1.6.6.7.</span> <span class="nav-text">7）电子商务</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%BC%80%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="nav-number">1.6.7.</span> <span class="nav-text">7、信息系统开发方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.7.</span> <span class="nav-text">七、软件工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.7.1.</span> <span class="nav-text">1、软件开发模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%80%91%E5%B8%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.7.1.1.</span> <span class="nav-text">（1）瀑布模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%9E%8B%E3%80%81%E6%BC%94%E5%8C%96%E6%A8%A1%E5%9E%8B%E3%80%81%E5%A2%9E%E9%87%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.7.1.2.</span> <span class="nav-text">（2）原型模型、演化模型、增量模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E8%9E%BA%E6%97%8B%E6%A8%A1%E5%9E%8B%EF%BC%9A"><span class="nav-number">1.7.1.3.</span> <span class="nav-text">（3）螺旋模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89V%E6%A8%A1%E5%9E%8B%E3%80%81%E5%96%B7%E6%B3%89%E6%A8%A1%E5%9E%8B%E3%80%81RAD%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.7.1.4.</span> <span class="nav-text">（4）V模型、喷泉模型、RAD模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E6%9E%84%E5%BB%BA%E6%9E%84%E5%BB%BA%E7%BB%84%E8%A3%85%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.7.1.5.</span> <span class="nav-text">（5）构建构建组装模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E7%BB%9F%E4%B8%80%E8%BF%87%E7%A8%8B"><span class="nav-number">1.7.1.6.</span> <span class="nav-text">（6）统一过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91"><span class="nav-number">1.7.1.7.</span> <span class="nav-text">（7）敏捷开发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.7.2.</span> <span class="nav-text">2、逆向工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95"><span class="nav-number">1.7.3.</span> <span class="nav-text">3、软件测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E6%B5%8B%E8%AF%95%E5%8E%9F%E5%88%99%E5%92%8C%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.7.3.1.</span> <span class="nav-text">1、测试原则和类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.7.3.2.</span> <span class="nav-text">2、测试用例设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E6%B5%8B%E8%AF%95%E9%98%B6%E6%AE%B5"><span class="nav-number">1.7.3.3.</span> <span class="nav-text">3、测试阶段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%B5%8B%E8%AF%95"><span class="nav-number">1.7.3.4.</span> <span class="nav-text">4、面向对象测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E6%B5%8B%E8%AF%95%E7%AE%A1%E7%90%86"><span class="nav-number">1.7.3.5.</span> <span class="nav-text">5、测试管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95"><span class="nav-number">1.7.3.6.</span> <span class="nav-text">6、软件调试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%B3%BB%E7%BB%9F%E8%BF%90%E8%A1%8C%E4%B8%8E%E7%BB%B4%E6%8A%A4"><span class="nav-number">1.7.4.</span> <span class="nav-text">4、系统运行与维护</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E8%BD%AF%E4%BB%B6%E8%83%BD%E5%8A%9B%E6%88%90%E7%86%9F%E5%BA%A6%E6%A8%A1%E5%9E%8B%E9%9B%86%E6%88%90%E2%80%94%E2%80%94CMMI"><span class="nav-number">1.7.5.</span> <span class="nav-text">5、软件能力成熟度模型集成——CMMI</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E9%9C%80%E6%B1%82%E5%B7%A5%E7%A8%8B"><span class="nav-number">1.8.</span> <span class="nav-text">八、需求工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.8.1.</span> <span class="nav-text">1、面向对象基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81UML"><span class="nav-number">1.8.2.</span> <span class="nav-text">2、UML</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%85%B3%E7%B3%BB"><span class="nav-number">1.8.2.1.</span> <span class="nav-text">（1）关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%9B%BE"><span class="nav-number">1.8.2.2.</span> <span class="nav-text">（2）图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E9%9C%80%E6%B1%82%E7%9A%84%E5%88%86%E7%B1%BB%E4%B8%8E%E9%9C%80%E6%B1%82%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.8.3.</span> <span class="nav-text">3、需求的分类与需求的获取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%9C%80%E6%B1%82%E5%88%86%E7%B1%BB"><span class="nav-number">1.8.3.1.</span> <span class="nav-text">（1）需求分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%9C%80%E6%B1%82%E7%9A%84%E8%8E%B7%E5%8F%96"><span class="nav-number">1.8.3.2.</span> <span class="nav-text">（2）需求的获取</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">1.8.4.</span> <span class="nav-text">4、需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE%EF%BC%88DFD%EF%BC%89"><span class="nav-number">1.8.4.1.</span> <span class="nav-text">（1）数据流图（DFD）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89E-R%E5%9B%BE"><span class="nav-number">1.8.4.2.</span> <span class="nav-text">（2）E-R图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%95%B0%E6%8D%AE%E5%AD%97%E5%85%B8"><span class="nav-number">1.8.4.3.</span> <span class="nav-text">（3）数据字典</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.9.</span> <span class="nav-text">九、系统设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%B8%9A%E5%8A%A1%E6%B5%81%E9%87%8D%E7%BB%84%EF%BC%88BPR%EF%BC%89%E4%B8%8E%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%AE%A1%E7%90%86%EF%BC%88BPM%EF%BC%89"><span class="nav-number">1.9.1.</span> <span class="nav-text">1、业务流重组（BPR）与业务流管理（BPM）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%BA%BA%E6%9C%BA%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.9.2.</span> <span class="nav-text">2、人机界面设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%BB%93%E6%9E%84%E5%8C%96%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.9.3.</span> <span class="nav-text">3、结构化设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.9.4.</span> <span class="nav-text">4、面向对象设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">1.9.4.1.</span> <span class="nav-text">（1）设计原则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.9.4.2.</span> <span class="nav-text">（2）设计模式的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.9.4.3.</span> <span class="nav-text">（3）设计模式的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.9.4.3.1.</span> <span class="nav-text">创建型模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.9.4.3.2.</span> <span class="nav-text">结构型模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E5%9E%8B%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.9.4.3.3.</span> <span class="nav-text">行为型模式</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.</span> <span class="nav-text">十、项目管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%8C%83%E5%9B%B4%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.1.</span> <span class="nav-text">1、范围管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.2.</span> <span class="nav-text">2、时间管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%8D%95%E4%BB%A3%E5%8F%B7%E7%BD%91%E7%BB%9C%E5%9B%BE"><span class="nav-number">1.10.2.1.</span> <span class="nav-text">（1）单代号网络图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%8F%8C%E4%BB%A3%E5%8F%B7%E7%BD%91%E7%BB%9C%E5%9B%BE"><span class="nav-number">1.10.2.2.</span> <span class="nav-text">（2）双代号网络图</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E8%87%AA%E7%94%B1%E6%97%B6%E5%B7%AE"><span class="nav-number">1.10.2.3.</span> <span class="nav-text">（3）自由时差</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E7%94%98%E7%89%B9%E5%9B%BE"><span class="nav-number">1.10.2.4.</span> <span class="nav-text">（4）甘特图</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E6%88%90%E6%9C%AC%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.3.</span> <span class="nav-text">3、成本管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%8C%A3%E5%80%BC%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.3.1.</span> <span class="nav-text">（1）挣值管理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%8C%A3%E5%80%BC%E6%9B%B2%E7%BA%BF"><span class="nav-number">1.10.3.2.</span> <span class="nav-text">（2）挣值曲线</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E8%B4%A8%E9%87%8F%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.4.</span> <span class="nav-text">4、质量管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E8%B4%A8%E9%87%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.10.4.1.</span> <span class="nav-text">（1）质量模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%B4%A8%E9%87%8F%E7%AE%A1%E7%90%86%E8%BF%87%E7%A8%8B"><span class="nav-number">1.10.4.2.</span> <span class="nav-text">（2）质量管理过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PDCA%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.10.4.2.1.</span> <span class="nav-text">PDCA循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B4%A8%E9%87%8F%E4%BF%9D%E8%AF%81%E5%92%8C%E8%B4%A8%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="nav-number">1.10.4.2.2.</span> <span class="nav-text">质量保证和质量控制</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E8%B4%A8%E9%87%8F%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">1.10.4.3.</span> <span class="nav-text">（3）质量管理工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%B8%89%E8%A7%92%E5%BD%A2"><span class="nav-number">1.10.4.4.</span> <span class="nav-text">（4）项目管理三角形</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.5.</span> <span class="nav-text">5、软件配置管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%85%8D%E7%BD%AE%E9%A1%B9"><span class="nav-number">1.10.5.1.</span> <span class="nav-text">（1）配置项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%85%8D%E7%BD%AE%E5%BA%93"><span class="nav-number">1.10.5.2.</span> <span class="nav-text">（2）配置库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%8F%98%E6%9B%B4%E6%8E%A7%E5%88%B6"><span class="nav-number">1.10.5.3.</span> <span class="nav-text">（3）变更控制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E9%A3%8E%E9%99%A9%E7%AE%A1%E7%90%86"><span class="nav-number">1.10.6.</span> <span class="nav-text">6、风险管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%A3%8E%E9%99%A9%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.10.6.1.</span> <span class="nav-text">（1）风险的概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%A3%8E%E9%99%A9%E5%88%86%E7%B1%BB"><span class="nav-number">1.10.6.2.</span> <span class="nav-text">（2）风险分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E9%A3%8E%E9%99%A9%E6%9B%9D%E5%85%89%E7%8E%87"><span class="nav-number">1.10.6.3.</span> <span class="nav-text">（3）风险曝光率</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="nav-number">1.10.7.</span> <span class="nav-text">7、项目管理工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.11.</span> <span class="nav-text">十一、软件架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.11.1.</span> <span class="nav-text">1、软件架构的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.</span> <span class="nav-text">2、软件架构风格</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%95%B0%E6%8D%AE%E6%B5%81%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.1.</span> <span class="nav-text">（1）数据流风格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%B0%83%E7%94%A8-%E8%BF%94%E5%9B%9E%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.2.</span> <span class="nav-text">（2）调用&#x2F;返回风格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%8B%AC%E7%AB%8B%E6%9E%84%E5%BB%BA%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.3.</span> <span class="nav-text">（3）独立构建风格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.4.</span> <span class="nav-text">（4）虚拟机风格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E4%BB%93%E5%BA%93%E9%A3%8E%E6%A0%BC"><span class="nav-number">1.11.2.5.</span> <span class="nav-text">（5）仓库风格</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89C-S%E6%9E%B6%E6%9E%84"><span class="nav-number">1.11.2.6.</span> <span class="nav-text">（6）C&#x2F;S架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E4%B8%89%E5%B1%82BS%E6%9E%B6%E6%9E%84"><span class="nav-number">1.11.2.7.</span> <span class="nav-text">（7）三层BS架构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%888%EF%BC%89%E5%AF%8C%E4%BA%92%E8%81%94%E7%BD%91%E5%BA%94%E7%94%A8%EF%BC%88RIA%EF%BC%89"><span class="nav-number">1.11.2.8.</span> <span class="nav-text">（8）富互联网应用（RIA）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ajax%EF%BC%9A%E5%BC%82%E6%AD%A5JavaScript%E4%BB%A5%E5%8F%8AXML"><span class="nav-number">1.11.2.8.1.</span> <span class="nav-text">ajax：异步JavaScript以及XML</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#mushup"><span class="nav-number">1.11.2.8.2.</span> <span class="nav-text">mushup</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%889%EF%BC%89%E5%9F%BA%E4%BA%8E%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%9E%B6%E6%9E%84%EF%BC%88SOA%EF%BC%89"><span class="nav-number">1.11.2.9.</span> <span class="nav-text">（9）基于服务的架构（SOA）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89SOA%E7%89%B9%E7%82%B9%EF%BC%9A"><span class="nav-number">1.11.2.9.1.</span> <span class="nav-text">1）SOA特点：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89SOA%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E2%80%94%E2%80%94Web-Service"><span class="nav-number">1.11.2.9.2.</span> <span class="nav-text">2）SOA实现方式——Web Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89SOA%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E2%80%94%E2%80%94ESB%EF%BC%88%E4%BC%81%E4%B8%9A%E6%9C%8D%E5%8A%A1%E6%80%BB%E7%BA%BF%EF%BC%89"><span class="nav-number">1.11.2.9.3.</span> <span class="nav-text">3）SOA实现方式——ESB（企业服务总线）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0"><span class="nav-number">1.11.3.</span> <span class="nav-text">3、软件架构评估</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7"><span class="nav-number">1.11.3.1.</span> <span class="nav-text">（1）质量属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="nav-number">1.11.3.2.</span> <span class="nav-text">（2）软件架构评估方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89ATAM"><span class="nav-number">1.11.3.2.1.</span> <span class="nav-text">1）ATAM</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89SAAM"><span class="nav-number">1.11.3.2.2.</span> <span class="nav-text">2）SAAM</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E8%BD%AF%E4%BB%B6%E4%BA%A7%E5%93%81%E7%BA%BF%E6%8A%80%E6%9C%AF"><span class="nav-number">1.11.4.</span> <span class="nav-text">4、软件产品线技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.11.4.1.</span> <span class="nav-text">（1）基本概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%BF%87%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.11.4.2.</span> <span class="nav-text">（2）过程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%8F%8C%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.11.4.2.1.</span> <span class="nav-text">1）双生命周期模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89SEI%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.11.4.2.2.</span> <span class="nav-text">2）SEI模型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E4%B8%89%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%86%E8%A7%A3%E5%8D%B3%E5%8F%AF"><span class="nav-number">1.11.4.2.3.</span> <span class="nav-text">3）三生命周期模型（了解即可</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%BB%84%E7%BB%87%E7%BB%93%E6%9E%84"><span class="nav-number">1.11.4.3.</span> <span class="nav-text">（3）组织结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%BB%BA%E7%AB%8B%E6%96%B9%E5%BC%8F%EF%BC%88%E9%87%8D%E7%82%B9%EF%BC%89"><span class="nav-number">1.11.4.4.</span> <span class="nav-text">（4）建立方式（重点）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8A%80%E6%9C%AF"><span class="nav-number">1.11.5.</span> <span class="nav-text">5、中间件技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E5%85%B8%E5%9E%8B%E7%9A%84%E5%BA%94%E7%94%A8%E6%9E%B6%E6%9E%84"><span class="nav-number">1.11.6.</span> <span class="nav-text">6、典型的应用架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89J2EE%E2%80%94%E2%80%94%E5%88%86%E5%B8%83%E5%BC%8F%E5%A4%9A%E5%B1%82%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.11.6.1.</span> <span class="nav-text">（1）J2EE——分布式多层应用程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89-NET"><span class="nav-number">1.11.6.2.</span> <span class="nav-text">（2）.NET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89-NET%E5%92%8CJ2EE%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="nav-number">1.11.6.3.</span> <span class="nav-text">（3）.NET和J2EE的差别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89MVC%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.11.6.4.</span> <span class="nav-text">（4）MVC模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89J2EE%E2%80%94%E2%80%94Java%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8%E6%A1%86%E6%9E%B6"><span class="nav-number">1.11.6.5.</span> <span class="nav-text">（5）J2EE——Java企业应用框架</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89MVP%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.11.6.6.</span> <span class="nav-text">（6）MVP模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%BA%8C%E3%80%81%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E6%80%A7%E4%B8%8E%E4%BF%9D%E5%AF%86%E6%80%A7%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.12.</span> <span class="nav-text">十二、系统安全性与保密性设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E5%B1%9E%E6%80%A7"><span class="nav-number">1.12.1.</span> <span class="nav-text">1、信息系统安全属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86%E5%92%8C%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86"><span class="nav-number">1.12.2.</span> <span class="nav-text">2、对称加密和非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%BF%A1%E6%81%AF%E6%91%98%E8%A6%81"><span class="nav-number">1.12.3.</span> <span class="nav-text">3、信息摘要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">1.12.4.</span> <span class="nav-text">4、数字签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6%E4%B8%8EPGP"><span class="nav-number">1.12.5.</span> <span class="nav-text">5、数字证书与PGP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E8%AE%BE%E8%AE%A1%E9%82%AE%E4%BB%B6%E5%8A%A0%E5%AF%86%E7%B3%BB%E7%BB%9F-%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.12.6.</span> <span class="nav-text">6、设计邮件加密系统(实例)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81PKI%E5%85%AC%E9%92%A5%E4%BD%93%E7%B3%BB"><span class="nav-number">1.12.7.</span> <span class="nav-text">7、PKI公钥体系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81PKI%E5%85%AC%E9%92%A5%E7%B3%BB%E5%88%86%E5%B1%82%E6%83%85%E5%86%B5"><span class="nav-number">1.12.8.</span> <span class="nav-text">8、PKI公钥系分层情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AE%89%E5%85%A8%E4%BF%9D%E8%AF%81%E5%B1%82%E6%AC%A1"><span class="nav-number">1.12.9.</span> <span class="nav-text">9、信息系统安全保证层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10%E3%80%81%E5%AE%89%E5%85%A8%E5%AE%A1%E6%A0%B8%E4%B8%8E%E5%AE%89%E5%85%A8%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99"><span class="nav-number">1.12.10.</span> <span class="nav-text">10、安全审核与安全系统设计原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11%E3%80%81%E5%90%84%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%B1%82%E6%AC%A1%E7%9A%84%E5%AE%89%E5%85%A8%E4%BF%9D%E9%9A%9C"><span class="nav-number">1.12.11.</span> <span class="nav-text">11、各个网络层次的安全保障</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12%E3%80%81%E7%BD%91%E7%BB%9C%E5%A8%81%E8%83%81%E4%B8%8E%E5%85%B1%E8%AE%A1"><span class="nav-number">1.12.12.</span> <span class="nav-text">12、网络威胁与共计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13%E3%80%81DOS%E5%92%8CDDOS%E5%85%B1%E8%AE%A1"><span class="nav-number">1.12.13.</span> <span class="nav-text">13、DOS和DDOS共计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14%E3%80%81%E9%98%B2%E7%81%AB%E5%A2%99%E6%8A%80%E6%9C%AF"><span class="nav-number">1.12.14.</span> <span class="nav-text">14、防火墙技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15%E3%80%81%E5%85%A5%E4%BE%B5%E6%A3%80%E6%B5%8B"><span class="nav-number">1.12.15.</span> <span class="nav-text">15、入侵检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%97%85%E6%AF%92%E4%B8%8E%E6%9C%A8%E9%A9%AC"><span class="nav-number">1.12.16.</span> <span class="nav-text">16、计算机病毒与木马</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%89%E3%80%81%E7%B3%BB%E7%BB%9F%E5%8F%AF%E9%9D%A0%E6%80%A7%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.13.</span> <span class="nav-text">十三、系统可靠性分析与设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E7%B3%BB%E7%BB%9F%E6%95%85%E9%9A%9C%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.13.1.</span> <span class="nav-text">1、系统故障模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%8F%AF%E9%9D%A0%E6%80%A7%E6%8C%87%E6%A0%87"><span class="nav-number">1.13.2.</span> <span class="nav-text">2、可靠性指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%B2%E8%81%94%E7%B3%BB%E7%BB%9F%E4%B8%8E%E5%B9%B6%E8%81%94%E7%B3%BB%E7%BB%9F%E5%8F%AF%E9%9D%A0%E5%BA%A6%E8%AE%A1%E7%AE%97"><span class="nav-number">1.13.3.</span> <span class="nav-text">3、串联系统与并联系统可靠度计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%B3%BB%E7%BB%9F%E9%94%99%E6%8A%80%E6%9C%AF"><span class="nav-number">1.13.4.</span> <span class="nav-text">4、系统错技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%88%86%E7%B1%BB"><span class="nav-number">1.13.4.1.</span> <span class="nav-text">（1）概念与分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%86%97%E4%BD%99%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.13.4.2.</span> <span class="nav-text">（2）冗余系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E8%BD%AF%E4%BB%B6%E5%AE%B9%E9%94%99"><span class="nav-number">1.13.4.3.</span> <span class="nav-text">（3）软件容错</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89N%E7%89%88%E6%9C%AC%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.13.4.3.1.</span> <span class="nav-text">1）N版本程序设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E6%81%A2%E5%A4%8D%E5%BF%AB%E6%96%B9%E6%B3%95"><span class="nav-number">1.13.4.3.2.</span> <span class="nav-text">2）恢复快方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E9%98%B2%E5%8D%AB%E5%BC%8F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.13.4.3.3.</span> <span class="nav-text">3）防卫式程序设计</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%8F%8C%E6%9C%BA%E5%AE%B9%E9%94%99"><span class="nav-number">1.13.4.4.</span> <span class="nav-text">（4）双机容错</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E9%9B%86%E7%BE%A4%E6%8A%80%E6%9C%AF"><span class="nav-number">1.13.4.5.</span> <span class="nav-text">（5）集群技术</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E5%9B%9B%E3%80%81%E6%B3%95%E5%BE%8B%E6%B3%95%E8%A7%84%E4%B8%8E%E6%A0%87%E5%87%86%E5%8C%96"><span class="nav-number">1.14.</span> <span class="nav-text">十四、法律法规与标准化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%B3%95%E5%BE%8B%E6%B3%95%E8%A7%84%E7%9F%A5%E8%AF%86"><span class="nav-number">1.14.1.</span> <span class="nav-text">1、法律法规知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BF%9D%E6%8A%A4%E5%B9%B4%E9%99%90"><span class="nav-number">1.14.1.1.</span> <span class="nav-text">（1）保护年限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%9F%A5%E8%AF%86%E4%BA%A7%E6%9D%83%E4%BA%BA%E7%A1%AE%E5%AE%9A"><span class="nav-number">1.14.1.2.</span> <span class="nav-text">（2）知识产权人确定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%BE%B5%E6%9D%83%E5%88%A4%E6%96%AD"><span class="nav-number">1.14.1.3.</span> <span class="nav-text">（3）侵权判断</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%A0%87%E5%87%86%E5%8C%96%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">1.14.2.</span> <span class="nav-text">2、标准化基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E7%9A%84%E7%BC%96%E5%8F%B7"><span class="nav-number">1.14.2.1.</span> <span class="nav-text">标准的编号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%BA%94%E3%80%81%E6%95%B0%E5%AD%A6%E4%B8%8E%E7%BB%8F%E6%B5%8E%E7%AE%A1%E7%90%86"><span class="nav-number">1.15.</span> <span class="nav-text">十五、数学与经济管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%9B%BE%E8%AE%BA%E5%BA%94%E7%94%A8"><span class="nav-number">1.15.1.</span> <span class="nav-text">1、图论应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%9C%80%E5%A4%A7%E6%B5%81%E9%87%8F"><span class="nav-number">1.15.1.1.</span> <span class="nav-text">网络与最大流量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BF%90%E7%AD%B9%E6%96%B9%E6%B3%95"><span class="nav-number">1.15.2.</span> <span class="nav-text">2、运筹方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%BA%BF%E6%80%A7%E8%A7%84%E5%88%92"><span class="nav-number">1.15.2.1.</span> <span class="nav-text">（1）线性规划</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%86%B3%E7%AD%96"><span class="nav-number">1.15.2.2.</span> <span class="nav-text">（2）决策</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E4%B8%8D%E7%A1%AE%E5%AE%9A%E5%9E%8B%E5%86%B3%E7%AD%96"><span class="nav-number">1.15.2.2.1.</span> <span class="nav-text">1）不确定型决策</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/09/08/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统架构设计师上午题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-08 13:41:27" itemprop="dateCreated datePublished" datetime="2021-09-08T13:41:27+08:00">2021-09-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-07-01 18:25:58" itemprop="dateModified" datetime="2022-07-01T18:25:58+08:00">2022-07-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">软考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="系统架构设计师上午题"><a href="#系统架构设计师上午题" class="headerlink" title="系统架构设计师上午题"></a>系统架构设计师上午题</h1><p>转载自www.educity.cn</p>
+<p>上午知识点总结：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908134924552.png" alt="image-20210908134924552"></p>
+<span id="more"></span>
+<h2 id="一、计算机组成与体系结构"><a href="#一、计算机组成与体系结构" class="headerlink" title="一、计算机组成与体系结构"></a>一、计算机组成与体系结构</h2><h3 id="1、Flynn分类法"><a href="#1、Flynn分类法" class="headerlink" title="1、Flynn分类法"></a>1、Flynn分类法</h3><p>S: single（单）</p>
+<p>M: multiple（多）</p>
+<p>考查形式：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908145905265.png" alt="image-20210908145905265" style="zoom: 50%;"></p>
+<h3 id="2、CISC与RISC"><a href="#2、CISC与RISC" class="headerlink" title="2、CISC与RISC"></a>2、CISC与RISC</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908150407631.png" alt="image-20210908150407631" style="zoom: 50%;"></p>
+<h3 id="3、计算机层次化存储结构"><a href="#3、计算机层次化存储结构" class="headerlink" title="3、计算机层次化存储结构"></a>3、计算机层次化存储结构</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908150957580.png" alt="image-20210908150957580" style="zoom: 50%;"></p>
+<p>寄存器速度快效率高、但容量小（顶层存储结构</p>
+<p>外存速度慢，但容量大</p>
+<p>cache<strong>按内容存取</strong>主存中的一部分内容，但可使得速度极大提高</p>
+<p><strong>按内容存取</strong>也叫相联存储器</p>
+<h3 id="4、cache"><a href="#4、cache" class="headerlink" title="4、cache"></a>4、cache</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908151453479.png" alt="image-20210908151453479" style="zoom: 50%;"></p>
+<h3 id="5、时间局部性和空间局部性"><a href="#5、时间局部性和空间局部性" class="headerlink" title="5、时间局部性和空间局部性"></a>5、时间局部性和空间局部性</h3><p>局部性原理：计算机在处理相关程序时，会在某一时段集中地访问某一空间中的数据。</p>
+<p>例如以下的循环语句会反复访问某一数据。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908151944500.png" alt="image-20210908151944500" style="zoom:50%;"></p>
+<p>空间局部性：访问某一空间之后又立即访问其临近的空间</p>
+<h3 id="6、主存"><a href="#6、主存" class="headerlink" title="6、主存"></a>6、主存</h3><h4 id="1）、主存的分类"><a href="#1）、主存的分类" class="headerlink" title="1）、主存的分类"></a>1）、主存的分类</h4><p>随机存储器和只读存储器</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908152220294.png" alt="image-20210908152220294" style="zoom: 50%;"></p>
+<h4 id="2）、主存的编址"><a href="#2）、主存的编址" class="headerlink" title="2）、主存的编址"></a>2）、主存的编址</h4><p>多计算题</p>
+<h3 id="7、磁盘"><a href="#7、磁盘" class="headerlink" title="7、磁盘"></a>7、磁盘</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908152732274.png" alt="image-20210908152732274" style="zoom: 50%;"></p>
+<h2 id="二、系统配置与性能评价"><a href="#二、系统配置与性能评价" class="headerlink" title="二、系统配置与性能评价"></a>二、系统配置与性能评价</h2><h4 id="1、计算机性能指标"><a href="#1、计算机性能指标" class="headerlink" title="1、计算机性能指标"></a>1、计算机性能指标</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908153312283.png" alt="image-20210908153312283" style="zoom: 50%;"></p>
+<p>字长：代表计算机的一次操作可以完成对几个比特位的处理（如32位，64位</p>
+<h4 id="2、阿姆达尔解决方案"><a href="#2、阿姆达尔解决方案" class="headerlink" title="2、阿姆达尔解决方案"></a>2、阿姆达尔解决方案</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908153604849.png" alt="image-20210908153604849" style="zoom: 50%;"></p>
+<p>解决此类题目：先假设出所需时间，然后代入计算，求出加速的倍数</p>
+<h4 id="3、计算机性能评价方法"><a href="#3、计算机性能评价方法" class="headerlink" title="3、计算机性能评价方法"></a>3、计算机性能评价方法</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908154249877.png" alt="image-20210908154249877" style="zoom:50%;"></p>
+<p>指令执行速度：MIPS 用加法指令的执行速度代表指令执行速度</p>
+<p>等效指令速度法：求出各个指令所占比例，再求速度</p>
+<p>PDR：既考虑CPU速度也要考虑存储</p>
+<p>CTP：PDR的进阶</p>
+<p>基准程序法：综合全面的评测性能，综合T/O、CPU、显卡、存储等各个方面</p>
+<h4 id="4、计算机性能监测方法"><a href="#4、计算机性能监测方法" class="headerlink" title="4、计算机性能监测方法"></a>4、计算机性能监测方法</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908154930747.png" alt="image-20210908154930747" style="zoom:50%;"></p>
+<p>软件检测会影响到当前计算机的性能</p>
+<p>硬件检测实现更困难，但不会影响当前计算机的性能</p>
+<h2 id="三、操作系统基本原理"><a href="#三、操作系统基本原理" class="headerlink" title="三、操作系统基本原理"></a>三、操作系统基本原理</h2><h3 id="1、进程状态"><a href="#1、进程状态" class="headerlink" title="1、进程状态"></a>1、进程状态</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908160430513.png" alt="image-20210908160430513" style="zoom: 50%;"></p>
+<h3 id="2、前趋图"><a href="#2、前趋图" class="headerlink" title="2、前趋图"></a>2、前趋图</h3><p>略</p>
+<h3 id="3、进程的同步与互斥"><a href="#3、进程的同步与互斥" class="headerlink" title="3、进程的同步与互斥"></a>3、进程的同步与互斥</h3><p>同步——异步</p>
+<p>互斥——共享</p>
+<h3 id="4、PV操作"><a href="#4、PV操作" class="headerlink" title="4、PV操作"></a>4、PV操作</h3><p>略</p>
+<h3 id="5、PV操作与前趋图"><a href="#5、PV操作与前趋图" class="headerlink" title="5、PV操作与前趋图"></a>5、PV操作与前趋图</h3><p>略</p>
+<h3 id="6、死锁"><a href="#6、死锁" class="headerlink" title="6、死锁"></a>6、死锁</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908162344663.png" alt="image-20210908162344663" style="zoom:50%;"></p>
+<h3 id="7、银行家算法"><a href="#7、银行家算法" class="headerlink" title="7、银行家算法"></a>7、银行家算法</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210908162413112.png" alt="image-20210908162413112" style="zoom:50%;"></p>
+<h3 id="8、页式存储、段式存储、段页式存储"><a href="#8、页式存储、段式存储、段页式存储" class="headerlink" title="8、页式存储、段式存储、段页式存储"></a>8、页式存储、段式存储、段页式存储</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205612746.png" alt="image-20210909205612746" style="zoom: 50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205715705.png" alt="image-20210909205715705" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205756688.png" alt="image-20210909205756688" style="zoom:50%;"></p>
+<p>快表</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205828593.png" style="zoom:50%;"></p>
+<h3 id="9、页面淘汰算法"><a href="#9、页面淘汰算法" class="headerlink" title="9、页面淘汰算法"></a>9、页面淘汰算法</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909205926877.png" alt="image-20210909205926877" style="zoom:50%;"></p>
+<h3 id="10、索引文件结构"><a href="#10、索引文件结构" class="headerlink" title="10、索引文件结构"></a>10、索引文件结构</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210013120.png" alt="image-20210909210013120" style="zoom:50%;"></p>
+<h3 id="11、树形目录结构"><a href="#11、树形目录结构" class="headerlink" title="11、树形目录结构"></a>11、树形目录结构</h3><p>主要考察<strong>绝对路径</strong>和<strong>相对路径</strong>的差别</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210054193.png" alt="image-20210909210054193" style="zoom:50%;"></p>
+<h3 id="12、位示图法"><a href="#12、位示图法" class="headerlink" title="12、位示图法"></a>12、位示图法</h3><p>空闲存储空间管理方法：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210218359.png" alt="image-20210909210218359" style="zoom:50%;"></p>
+<p>（主要了解位示图法）</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210451685.png" alt="image-20210909210451685" style="zoom:50%;"></p>
+<h3 id="13、数据传输控制方式"><a href="#13、数据传输控制方式" class="headerlink" title="13、数据传输控制方式"></a>13、数据传输控制方式</h3><p>内存与外设之间进行数据传输的方式：</p>
+<p>程序控制：CPU介入，外设不会主动报告是否完成数据传输</p>
+<p>程序中断：CPU介入，传输完成后外设会向CPU报告</p>
+<p>DMA：专门的控制器来控制传输，不需要CPU介入</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210548872.png" alt="image-20210909210548872" style="zoom:50%;"></p>
+<h3 id="14、微内核操作系统"><a href="#14、微内核操作系统" class="headerlink" title="14、微内核操作系统"></a>14、微内核操作系统</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210819496.png" alt="image-20210909210819496" style="zoom:50%;"></p>
+<h2 id="四、数据库"><a href="#四、数据库" class="headerlink" title="四、数据库"></a>四、数据库</h2><h3 id="1、三级模式、两级映射"><a href="#1、三级模式、两级映射" class="headerlink" title="1、三级模式、两级映射"></a>1、三级模式、两级映射</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210850079.png" alt="image-20210909210850079" style="zoom:50%;"></p>
+<h3 id="2、数据库设计过程说明"><a href="#2、数据库设计过程说明" class="headerlink" title="2、数据库设计过程说明"></a>2、数据库设计过程说明</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909210937181.png" alt="image-20210909210937181" style="zoom:50%;"></p>
+<h3 id="3、ER模型"><a href="#3、ER模型" class="headerlink" title="3、ER模型"></a>3、ER模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211002201.png" alt="image-20210909211002201" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211020444.png" alt="image-20210909211020444" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211241395.png" alt="image-20210909211241395" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211241395.png" alt="image-20210909211241395" style="zoom:50%;"></p>
+<h3 id="4、关系代数"><a href="#4、关系代数" class="headerlink" title="4、关系代数"></a>4、关系代数</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211307657.png" alt="image-20210909211307657" style="zoom:50%;"><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211332774.png" alt="image-20210909211332774" style="zoom: 80%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211307657.png" alt="image-20210909211307657" style="zoom:50%;"><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211332774.png" alt="image-20210909211332774" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211359910.png" alt="image-20210909211359910" style="zoom:50%;"></p>
+<h3 id="5、规范化理论"><a href="#5、规范化理论" class="headerlink" title="5、规范化理论"></a>5、规范化理论</h3><h4 id="1）函数依赖"><a href="#1）函数依赖" class="headerlink" title="1）函数依赖"></a>1）函数依赖</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211431509.png" alt="image-20210909211431509" style="zoom:50%;"></p>
+<h4 id="2）规范化理论意义"><a href="#2）规范化理论意义" class="headerlink" title="2）规范化理论意义"></a>2）规范化理论意义</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211448018.png" alt="image-20210909211448018" style="zoom:50%;"></p>
+<h4 id="3）求候选关键字"><a href="#3）求候选关键字" class="headerlink" title="3）求候选关键字"></a>3）求候选关键字</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211503704.png" alt="image-20210909211503704" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211522173.png" alt="image-20210909211522173" style="zoom:50%;"></p>
+<h4 id="4）范式"><a href="#4）范式" class="headerlink" title="4）范式"></a>4）范式</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211539608.png" alt="image-20210909211539608" style="zoom:50%;"></p>
+<h4 id="5）模式分解"><a href="#5）模式分解" class="headerlink" title="5）模式分解"></a>5）模式分解</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211617802.png" alt="image-20210909211617802" style="zoom:50%;"></p>
+<h3 id="6、数据库并发控制"><a href="#6、数据库并发控制" class="headerlink" title="6、数据库并发控制"></a>6、数据库并发控制</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211646818.png" alt="image-20210909211646818" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211737438.png" style="zoom:50%;"></p>
+<h3 id="7、数据库完整性约束"><a href="#7、数据库完整性约束" class="headerlink" title="7、数据库完整性约束"></a>7、数据库完整性约束</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210909211832772.png" alt="image-20210909211832772" style="zoom:50%;"></p>
+<h3 id="8、数据库安全"><a href="#8、数据库安全" class="headerlink" title="8、数据库安全"></a>8、数据库安全</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910103552673.png" alt="image-20210910103552673" style="zoom:50%;"></p>
+<h3 id="9、数据库备份与恢复"><a href="#9、数据库备份与恢复" class="headerlink" title="9、数据库备份与恢复"></a>9、数据库备份与恢复</h3><p>备份：冷备份与热备份</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910103644539.png" alt="image-20210910103644539" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104141992.png" style="zoom:50%;"></p>
+<p>故障恢复：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104054208.png" alt="image-20210910104054208" style="zoom:50%;"></p>
+<h3 id="10、分布式数据库系统"><a href="#10、分布式数据库系统" class="headerlink" title="10、分布式数据库系统"></a>10、分布式数据库系统</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104323463.png" alt="image-20210910104323463" style="zoom:50%;"><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104342973.png" alt="image-20210910104342973"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104342973.png" style="zoom:50%;"></p>
+<h3 id="11、数据库优化"><a href="#11、数据库优化" class="headerlink" title="11、数据库优化"></a>11、数据库优化</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104435801.png" alt="image-20210910104435801" style="zoom:50%;"></p>
+<h3 id="12、数据仓库与数据挖掘"><a href="#12、数据仓库与数据挖掘" class="headerlink" title="12、数据仓库与数据挖掘"></a>12、数据仓库与数据挖掘</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104503066.png" alt="image-20210910104503066" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104523744.png" alt="image-20210910104523744" style="zoom:50%;"></p>
+<h3 id="13、联邦数据库"><a href="#13、联邦数据库" class="headerlink" title="13、联邦数据库"></a>13、联邦数据库</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104546418.png" alt="image-20210910104546418" style="zoom: 50%;"></p>
+<h3 id="14、NoSQL技术"><a href="#14、NoSQL技术" class="headerlink" title="14、NoSQL技术"></a>14、NoSQL技术</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104635201.png" alt="image-20210910104635201" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104652357.png" style="zoom: 50%;"></p>
+<h3 id="15、反规范化技术"><a href="#15、反规范化技术" class="headerlink" title="15、反规范化技术"></a>15、反规范化技术</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104732978.png" alt="image-20210910104732978" style="zoom:50%;"></p>
+<h3 id="16、大数据"><a href="#16、大数据" class="headerlink" title="16、大数据"></a>16、大数据</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104754943.png" alt="image-20210910104754943" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910104813592.png" style="zoom:50%;"></p>
+<h2 id="五、计算机网络"><a href="#五、计算机网络" class="headerlink" title="五、计算机网络"></a>五、计算机网络</h2><h3 id="1、七层模型"><a href="#1、七层模型" class="headerlink" title="1、七层模型"></a>1、七层模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105722097.png" alt="image-20210910105722097" style="zoom:50%;"></p>
+<h3 id="2、网络技术标准与协议"><a href="#2、网络技术标准与协议" class="headerlink" title="2、网络技术标准与协议"></a>2、网络技术标准与协议</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105755314.png" alt="image-20210910105755314" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105912298.png" alt="image-20210910105912298" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105935030.png" alt="image-20210910105935030" style="zoom:50%;"></p>
+<h3 id="3、网络规划与设计"><a href="#3、网络规划与设计" class="headerlink" title="3、网络规划与设计"></a>3、网络规划与设计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910105959972.png" alt="image-20210910105959972" style="zoom: 50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110025483.png" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110113293.png" alt="image-20210910110113293" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110124230.png" alt="image-20210910110124230" style="zoom:50%;"></p>
+<h3 id="4、无线网"><a href="#4、无线网" class="headerlink" title="4、无线网"></a>4、无线网</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110152711.png" alt="image-20210910110152711" style="zoom:50%;"></p>
+<h3 id="5、网络接入技术"><a href="#5、网络接入技术" class="headerlink" title="5、网络接入技术"></a>5、网络接入技术</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110213693.png" alt="image-20210910110213693" style="zoom:50%;"></p>
+<h3 id="6、网络存储技术"><a href="#6、网络存储技术" class="headerlink" title="6、网络存储技术"></a>6、网络存储技术</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110250095.png" alt="image-20210910110250095" style="zoom:50%;"></p>
+<h3 id="7、磁盘阵列（RAID）"><a href="#7、磁盘阵列（RAID）" class="headerlink" title="7、磁盘阵列（RAID）"></a>7、磁盘阵列（RAID）</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110313553.png" alt="image-20210910110313553" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110337013.png" alt="image-20210910110337013" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110411775.png" style="zoom:50%;"></p>
+<h3 id="8、IPv6"><a href="#8、IPv6" class="headerlink" title="8、IPv6"></a>8、IPv6</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110442642.png" alt="image-20210910110442642" style="zoom:50%;"></p>
+<h3 id="9、物联网"><a href="#9、物联网" class="headerlink" title="9、物联网"></a>9、物联网</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110501459.png" alt="image-20210910110501459" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110519032.png" alt="image-20210910110519032" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110536596.png" alt="image-20210910110536596" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110600175.png" style="zoom:50%;"></p>
+<h3 id="10、云计算"><a href="#10、云计算" class="headerlink" title="10、云计算"></a>10、云计算</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110647348.png" alt="image-20210910110647348" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110705192.png" style="zoom:50%;"></p>
+<h2 id="六、企业信息化战略与实施"><a href="#六、企业信息化战略与实施" class="headerlink" title="六、企业信息化战略与实施"></a>六、企业信息化战略与实施</h2><h3 id="1、信息与信息化的概念"><a href="#1、信息与信息化的概念" class="headerlink" title="1、信息与信息化的概念"></a>1、信息与信息化的概念</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210910110805613.png" alt="image-20210910110805613" style="zoom:50%;"></p>
+<h3 id="2、信息系统的概念"><a href="#2、信息系统的概念" class="headerlink" title="2、信息系统的概念"></a>2、信息系统的概念</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094437961.png" alt="image-20210913094437961" style="zoom:50%;"></p>
+<p>信息系统不一定是计算机的，也可以是人工的。</p>
+<p>输入—&gt;加工—&gt;输出</p>
+<h3 id="3、信息系统的模型"><a href="#3、信息系统的模型" class="headerlink" title="3、信息系统的模型"></a>3、信息系统的模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094618801.png" alt="image-20210913094618801" style="zoom:50%;"></p>
+<p>按数据环境分类：</p>
+<p>数据文件：非常繁冗，需要人工完成信息输入输出</p>
+<p>数据库：具体存取数据的操作由系统完成，人只需要输入指令</p>
+<h3 id="4、信息系统的战略规划"><a href="#4、信息系统的战略规划" class="headerlink" title="4、信息系统的战略规划"></a>4、信息系统的战略规划</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913094859465.png" alt="image-20210913094859465" style="zoom:50%;"></p>
+<ul>
+<li><p>信息系统的发展历程：</p>
+<p>以数据处理为核心：BSP、CSF、SST 可统称为BCS</p>
+<p>以企业全局为核心：SDP：提出主题数据库的概念，强调全局问题；</p>
+<p>​                                   IE：将信息系统工程化；</p>
+<p>以集成为核心：综合考虑企业的内外环境</p>
+</li>
+<li><p>信息系统的主要思想：</p>
+</li>
+</ul>
+<h3 id="5、政府信息化与电子商务"><a href="#5、政府信息化与电子商务" class="headerlink" title="5、政府信息化与电子商务"></a>5、政府信息化与电子商务</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913105505056.png" alt="image-20210913105505056" style="zoom:50%;"></p>
+<p>G2G：government to government</p>
+<p>G2B：government to business</p>
+<p>G2C：government to citizen</p>
+<p>G2E：government to employee</p>
+<h3 id="6、企业信息化与电子商务"><a href="#6、企业信息化与电子商务" class="headerlink" title="6、企业信息化与电子商务"></a>6、企业信息化与电子商务</h3><h4 id="1）企业资源计划ERP"><a href="#1）企业资源计划ERP" class="headerlink" title="1）企业资源计划ERP"></a>1）企业资源计划ERP</h4><p>enterprise resource plan</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913112546254.png" alt="image-20210913112546254" style="zoom:50%;"></p>
+<p>前身：mrp（物料管理系统</p>
+<p>让企业内部的供应链连通起来</p>
+<p>erp的实施非常困难：原因：1、结构复杂  2、管理思想必须与erp同步 </p>
+<p>erp相当于软件管理：可以在过程执行过程中实现监控功能</p>
+<h4 id="2）客户关系管理CRM"><a href="#2）客户关系管理CRM" class="headerlink" title="2）客户关系管理CRM"></a>2）客户关系管理CRM</h4><p>customer relationship management</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113054394.png" alt="image-20210913113054394" style="zoom: 50%;"></p>
+<p>维护企业与顾客的关系</p>
+<p>触发中心：顾客咨询时自动触发顾客的信息，从而不必每次都询问</p>
+<p>挖掘中心：向已存在的顾客进行推销，（垃圾短信</p>
+<h4 id="3）供应链管理SCM"><a href="#3）供应链管理SCM" class="headerlink" title="3）供应链管理SCM"></a>3）供应链管理SCM</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113509321.png" alt="image-20210913113509321" style="zoom:50%;"></p>
+<p>仅仅管理自身是不够的，还要了解整个供应链，从而更好的配合工作</p>
+<h4 id="4）商业智能BI"><a href="#4）商业智能BI" class="headerlink" title="4）商业智能BI"></a>4）商业智能BI</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913113939578.png" alt="image-20210913113939578" style="zoom:50%;"></p>
+<p>商业智能 = 数据仓库 + 数据挖掘</p>
+<p>利用数据仓库和数据挖掘来为<strong>企业决策</strong>作贡献</p>
+<p>需求分析——设计好数据仓库——抽取相关数据填充数据仓库——建立分析报表</p>
+<h4 id="5）电子数据交换EDI"><a href="#5）电子数据交换EDI" class="headerlink" title="5）电子数据交换EDI"></a>5）电子数据交换EDI</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114255712.png" alt="image-20210913114255712" style="zoom:50%;"></p>
+<p>无纸化办公，用电子化方式来交换数据</p>
+<p>交换数据的标准：EDI标准</p>
+<p>在外贸企业应用广泛</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114449297.png" alt="image-20210913114449297" style="zoom:50%;"></p>
+<h4 id="6）企业应用集成（常考"><a href="#6）企业应用集成（常考" class="headerlink" title="6）企业应用集成（常考"></a>6）企业应用集成（常考</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913114558284.png" alt="image-20210913114558284" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163045637.png" alt="image-20210913163045637" style="zoom:50%;"></p>
+<h4 id="7）电子商务"><a href="#7）电子商务" class="headerlink" title="7）电子商务"></a>7）电子商务</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163218719.png" alt="image-20210913163218719" style="zoom:50%;"></p>
+<p>电子商务四流：信息流、资金流、物流、商流</p>
+<p>电子商务三流：信息流（主要、资金流、物流</p>
+<p>电子商务分类：B2C\C2C\B2B\O2O(线上对线下 在线上购物 线下消费)</p>
+<p>电子商务标准体系分类：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163456222.png" alt="image-20210913163456222" style="zoom:50%;"></p>
+<h3 id="7、信息系统开发方式"><a href="#7、信息系统开发方式" class="headerlink" title="7、信息系统开发方式"></a>7、信息系统开发方式</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913163549328.png" alt="image-20210913163549328" style="zoom:50%;"></p>
+<h2 id="七、软件工程"><a href="#七、软件工程" class="headerlink" title="七、软件工程"></a>七、软件工程</h2><h3 id="1、软件开发模型"><a href="#1、软件开发模型" class="headerlink" title="1、软件开发模型"></a>1、软件开发模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165149703.png" alt="image-20210913165149703" style="zoom:50%;"></p>
+<h4 id="（1）瀑布模型"><a href="#（1）瀑布模型" class="headerlink" title="（1）瀑布模型"></a>（1）瀑布模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165246207.png" alt="image-20210913165246207" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165334976.png" style="zoom:50%;"></p>
+<p>结构化模型</p>
+<p>现在基本已经淘汰，因为需求分析阶段是不够完善的，一旦需求变更会导致项目失败</p>
+<p>适合于小型项目或者需求明确的项目</p>
+<h4 id="（2）原型模型、演化模型、增量模型"><a href="#（2）原型模型、演化模型、增量模型" class="headerlink" title="（2）原型模型、演化模型、增量模型"></a>（2）原型模型、演化模型、增量模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913165601918.png" alt="image-20210913165601918" style="zoom:50%;"></p>
+<p><strong>原型模型</strong>：先做一个demo给客户看 作为原型</p>
+<p>原型模型演化到最终产品——<strong>演化模型</strong></p>
+<p>螺旋模型+瀑布模型=增量模型</p>
+<p><strong>增量模型</strong>：做出一个模块先使用，合格之后再做下一个模块</p>
+<h4 id="（3）螺旋模型："><a href="#（3）螺旋模型：" class="headerlink" title="（3）螺旋模型："></a>（3）螺旋模型：</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170043832.png" alt="image-20210913170043832" style="zoom:50%;"></p>
+<p>提供了<u>风险分析</u>，边编写边进行风险分析</p>
+<h4 id="（4）V模型、喷泉模型、RAD模型"><a href="#（4）V模型、喷泉模型、RAD模型" class="headerlink" title="（4）V模型、喷泉模型、RAD模型"></a>（4）V模型、喷泉模型、RAD模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170220403.png" alt="image-20210913170220403" style="zoom:50%;"></p>
+<p>V模型：强调<strong>测试</strong>贯穿整个开发过程，一遍开发一遍测试</p>
+<p>喷泉模型：最大特点是<strong>面向对象</strong></p>
+<p>RAD模型：可以快速的</p>
+<h4 id="（5）构建构建组装模型"><a href="#（5）构建构建组装模型" class="headerlink" title="（5）构建构建组装模型"></a>（5）构建构建组装模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913170855168.png" alt="image-20210913170855168" style="zoom:50%;"></p>
+<p>提高代码的复用性</p>
+<h4 id="（6）统一过程"><a href="#（6）统一过程" class="headerlink" title="（6）统一过程"></a>（6）统一过程</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913171456815.png" alt="image-20210913171456815" style="zoom:50%;"></p>
+<h4 id="（7）敏捷开发"><a href="#（7）敏捷开发" class="headerlink" title="（7）敏捷开发"></a>（7）敏捷开发</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913171909597.png" alt="image-20210913171909597" style="zoom:50%;"></p>
+<h3 id="2、逆向工程"><a href="#2、逆向工程" class="headerlink" title="2、逆向工程"></a>2、逆向工程</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210913172831931.png" alt="image-20210913172831931" style="zoom:50%;"></p>
+<h3 id="3、软件测试"><a href="#3、软件测试" class="headerlink" title="3、软件测试"></a>3、软件测试</h3><h4 id="1、测试原则和类型"><a href="#1、测试原则和类型" class="headerlink" title="1、测试原则和类型"></a>1、测试原则和类型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230342254.png" alt="image-20210914230342254" style="zoom:50%;"></p>
+<h4 id="2、测试用例设计"><a href="#2、测试用例设计" class="headerlink" title="2、测试用例设计"></a>2、测试用例设计</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230457425.png" alt="image-20210914230457425" style="zoom:50%;"></p>
+<h4 id="3、测试阶段"><a href="#3、测试阶段" class="headerlink" title="3、测试阶段"></a>3、测试阶段</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230524845.png" alt="image-20210914230524845" style="zoom:50%;"></p>
+<h4 id="4、面向对象测试"><a href="#4、面向对象测试" class="headerlink" title="4、面向对象测试"></a>4、面向对象测试</h4><p>了解基本概念即可</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230546172.png" alt="image-20210914230546172" style="zoom:50%;"></p>
+<p>也可以认为模块测试属于单元测试</p>
+<h4 id="5、测试管理"><a href="#5、测试管理" class="headerlink" title="5、测试管理"></a>5、测试管理</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230740069.png" alt="image-20210914230740069" style="zoom:50%;"></p>
+<p>a1:b1=a2:b2：提前人为植入一些bug，然后看找出来的bug里所含的提前植入bug所占比例，求出debug率</p>
+<p>DRE：测试出来的bug占软件投入使用后产生的总bug（e+d）</p>
+<h4 id="6、软件调试"><a href="#6、软件调试" class="headerlink" title="6、软件调试"></a>6、软件调试</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914231319506.png" alt="image-20210914231319506" style="zoom:50%;"></p>
+<h3 id="4、系统运行与维护"><a href="#4、系统运行与维护" class="headerlink" title="4、系统运行与维护"></a>4、系统运行与维护</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915170543816.png" alt="image-20210915170543816" style="zoom:50%;"></p>
+<h3 id="5、软件能力成熟度模型集成——CMMI"><a href="#5、软件能力成熟度模型集成——CMMI" class="headerlink" title="5、软件能力成熟度模型集成——CMMI"></a>5、软件能力成熟度模型集成——CMMI</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915171123523.png" alt="image-20210915171123523" style="zoom:50%;"></p>
+<h2 id="八、需求工程"><a href="#八、需求工程" class="headerlink" title="八、需求工程"></a>八、需求工程</h2><h3 id="1、面向对象基本概念"><a href="#1、面向对象基本概念" class="headerlink" title="1、面向对象基本概念"></a>1、面向对象基本概念</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914081450972.png" alt="image-20210914081450972" style="zoom:50%;"></p>
+<h3 id="2、UML"><a href="#2、UML" class="headerlink" title="2、UML"></a>2、UML</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914092905232.png" alt="image-20210914092905232" style="zoom:50%;"></p>
+<h4 id="（1）关系"><a href="#（1）关系" class="headerlink" title="（1）关系"></a>（1）关系</h4><p>依赖、关联、泛化、实现</p>
+<h4 id="（2）图"><a href="#（2）图" class="headerlink" title="（2）图"></a>（2）图</h4><p>结构（静态）：类图、对象图、包图、组合结构图、构件图、部署图（软件的构建应该部署在硬件的哪个节点上）、制品图</p>
+<p>——结构图都差不多</p>
+<p>行为（动态）：用例图（有分歧，可以说是动态图也可以说是静态图）、顺序图（强调时间顺序）、通信图（不强调时间顺序）、定时图、状态图、活动图（和流程图很相似）、交互概览图</p>
+<p>——行为图各有特征</p>
+<h3 id="3、需求的分类与需求的获取"><a href="#3、需求的分类与需求的获取" class="headerlink" title="3、需求的分类与需求的获取"></a>3、需求的分类与需求的获取</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914093930729.png" alt="image-20210914093930729" style="zoom:50%;"></p>
+<h4 id="（1）需求分类"><a href="#（1）需求分类" class="headerlink" title="（1）需求分类"></a>（1）需求分类</h4><ul>
+<li><p>系统需求：</p>
+<p>性能需求：非功能需求</p>
+<p>设计约束：与功能、性能无关的需求，例如，项目既可以用c++也可以用java，但客户要求用java语言编写</p>
+</li>
+<li><p>OFD</p>
+<p>基本需求：明确提出的需求；</p>
+<p>期望需求：未说明但期望达到的需求；</p>
+<p>兴奋需求：顾客没有预料到的需求。</p>
+</li>
+</ul>
+<h4 id="（2）需求的获取"><a href="#（2）需求的获取" class="headerlink" title="（2）需求的获取"></a>（2）需求的获取</h4><p>如图</p>
+<h3 id="4、需求分析"><a href="#4、需求分析" class="headerlink" title="4、需求分析"></a>4、需求分析</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914101347118.png" alt="image-20210914101347118" style="zoom:50%;"></p>
+<p>重点是数据流图 and E-R图</p>
+<h4 id="（1）数据流图（DFD）"><a href="#（1）数据流图（DFD）" class="headerlink" title="（1）数据流图（DFD）"></a>（1）数据流图（DFD）</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914101501689.png" alt="image-20210914101501689" style="zoom:50%;"></p>
+<h4 id="（2）E-R图"><a href="#（2）E-R图" class="headerlink" title="（2）E-R图"></a>（2）E-R图</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914102440570.png" alt="image-20210914102440570" style="zoom:50%;"></p>
+<h4 id="（3）数据字典"><a href="#（3）数据字典" class="headerlink" title="（3）数据字典"></a>（3）数据字典</h4><p>定义：数据字典是描述数据的信息的集合，是对系统中使用的所有数据元素/数据流图中包含的所有元素 的定义的集合。是为了描述在结构化分析过程中定义对象的内容时，使用的一种半形式化的工具。</p>
+<p>数据字典的内容：</p>
+<ul>
+<li>数据流：系统中对应的每个数据流都应该在数据字典中做出相应的描述</li>
+<li>数据元素：定义数据元素时需要知名的东西（例如数据类型、数据取值范围…</li>
+<li>数据存储：描述存放的是什么数据</li>
+<li>处理：能够把数据流转变成输出数据流的机制称之为“处理”</li>
+</ul>
+<h2 id="九、系统设计"><a href="#九、系统设计" class="headerlink" title="九、系统设计"></a>九、系统设计</h2><h3 id="1、业务流重组（BPR）与业务流管理（BPM）"><a href="#1、业务流重组（BPR）与业务流管理（BPM）" class="headerlink" title="1、业务流重组（BPR）与业务流管理（BPM）"></a>1、业务流重组（BPR）与业务流管理（BPM）</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914104231530.png" alt="image-20210914104231530" style="zoom:50%;"></p>
+<p>业务流程重组（business process rematch</p>
+<p>变动过大——推出业务流程管理</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914104531382.png" alt="image-20210914104531382" style="zoom:50%;"></p>
+<h3 id="2、人机界面设计"><a href="#2、人机界面设计" class="headerlink" title="2、人机界面设计"></a>2、人机界面设计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914112657554.png" alt="image-20210914112657554" style="zoom:50%;"></p>
+<h3 id="3、结构化设计"><a href="#3、结构化设计" class="headerlink" title="3、结构化设计"></a>3、结构化设计</h3><p>基本原则：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914224754441.png" alt="image-20210914224754441" style="zoom:50%;"></p>
+<p>扇入（高扇入：被别的模块调用（被调用的多说明用处大</p>
+<p>扇出（低扇出：调用别的模块（调用别的多说明该模块控制的功能很复杂</p>
+<p>模块衡量标准：耦合（低耦合）与内聚（高内聚）</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225034347.png" alt="image-20210914225034347" style="zoom:50%;"></p>
+<p>系统结构、模块结构</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225330885.png" alt="image-20210914225330885" style="zoom:50%;"></p>
+<h3 id="4、面向对象设计"><a href="#4、面向对象设计" class="headerlink" title="4、面向对象设计"></a>4、面向对象设计</h3><h4 id="（1）设计原则"><a href="#（1）设计原则" class="headerlink" title="（1）设计原则"></a>（1）设计原则</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225351301.png" alt="image-20210914225351301" style="zoom:50%;"></p>
+<h4 id="（2）设计模式的概念"><a href="#（2）设计模式的概念" class="headerlink" title="（2）设计模式的概念"></a>（2）设计模式的概念</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225448483.png" alt="image-20210914225448483" style="zoom:50%;"></p>
+<p>决定整体的框架，从全局看待问题——架构模式</p>
+<p>决定局部的设计，从局部看待问题，但不涉及语言——设计模式</p>
+<p>和语言相关——惯用法</p>
+<h4 id="（3）设计模式的分类"><a href="#（3）设计模式的分类" class="headerlink" title="（3）设计模式的分类"></a>（3）设计模式的分类</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225717220.png" alt="image-20210914225717220" style="zoom:50%;"></p>
+<p>设计模式分为 创建型模式、结构型模式、行为型模式</p>
+<h5 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914225846560.png" alt="image-20210914225846560" style="zoom:50%;"></p>
+<p>原型模式：也称为克隆模式</p>
+<h5 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230055477.png" alt="image-20210914230055477" style="zoom:50%;"></p>
+<h5 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210914230125017.png" alt="image-20210914230125017" style="zoom:50%;"></p>
+<h2 id="十、项目管理"><a href="#十、项目管理" class="headerlink" title="十、项目管理"></a>十、项目管理</h2><h3 id="1、范围管理"><a href="#1、范围管理" class="headerlink" title="1、范围管理"></a>1、范围管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915172824938.png" alt="image-20210915172824938" style="zoom:50%;"></p>
+<h3 id="2、时间管理"><a href="#2、时间管理" class="headerlink" title="2、时间管理"></a>2、时间管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915173121208.png" alt="image-20210915173121208" style="zoom:50%;"></p>
+<p>活动定义：找出活动是什么</p>
+<p>活动排序：找出活动之间的依赖关系</p>
+<p>活动资源、时间估算 </p>
+<p>进度控制</p>
+<h4 id="（1）单代号网络图"><a href="#（1）单代号网络图" class="headerlink" title="（1）单代号网络图"></a>（1）单代号网络图</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193107876.png" alt="image-20210915193107876" style="zoom:50%;"></p>
+<p>网络图：时间管理计划工具</p>
+<p>单代号网络图：每一个节点代表一个活动</p>
+<p>FS：A完成B才能开始  FF：A完成B才能完成</p>
+<p>SS：A开始B才能开始  SF：A开始B才能结束</p>
+<h4 id="（2）双代号网络图"><a href="#（2）双代号网络图" class="headerlink" title="（2）双代号网络图"></a>（2）双代号网络图</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193538161.png" alt="image-20210915193538161" style="zoom:50%;"></p>
+<p>双代号网络图：每一个节点代表一个时间，每一条边代表活动</p>
+<p>虚线：代表不占时间，但不能够直接删除，因为它代表了先后顺序的依赖关系</p>
+<h4 id="（3）自由时差"><a href="#（3）自由时差" class="headerlink" title="（3）自由时差"></a>（3）自由时差</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915193730455.png" alt="image-20210915193730455" style="zoom:50%;"></p>
+<h4 id="（4）甘特图"><a href="#（4）甘特图" class="headerlink" title="（4）甘特图"></a>（4）甘特图</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194055122.png" alt="image-20210915194055122" style="zoom:50%;"></p>
+<p>粗线：代表计划完成时间</p>
+<p>细线：代表实际完成时间</p>
+<h3 id="3、成本管理"><a href="#3、成本管理" class="headerlink" title="3、成本管理"></a>3、成本管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194143757.png" alt="image-20210915194143757" style="zoom:50%;"></p>
+<h4 id="（1）挣值管理"><a href="#（1）挣值管理" class="headerlink" title="（1）挣值管理"></a>（1）挣值管理</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194303127.png" alt="image-20210915194303127" style="zoom:50%;"></p>
+<h4 id="（2）挣值曲线"><a href="#（2）挣值曲线" class="headerlink" title="（2）挣值曲线"></a>（2）挣值曲线</h4><p>成本超支 进度滞后：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194401889.png" alt="image-20210915194401889" style="zoom:50%;"></p>
+<h3 id="4、质量管理"><a href="#4、质量管理" class="headerlink" title="4、质量管理"></a>4、质量管理</h3><h4 id="（1）质量模型"><a href="#（1）质量模型" class="headerlink" title="（1）质量模型"></a>（1）质量模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194458334.png" alt="image-20210915194458334" style="zoom:50%;"></p>
+<h4 id="（2）质量管理过程"><a href="#（2）质量管理过程" class="headerlink" title="（2）质量管理过程"></a>（2）质量管理过程</h4><h5 id="PDCA循环"><a href="#PDCA循环" class="headerlink" title="PDCA循环"></a>PDCA循环</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194547932.png" alt="image-20210915194547932" style="zoom:50%;"></p>
+<h5 id="质量保证和质量控制"><a href="#质量保证和质量控制" class="headerlink" title="质量保证和质量控制"></a>质量保证和质量控制</h5><p>质量保证强调过程</p>
+<p>质量控制强调结果</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194625361.png" alt="image-20210915194625361" style="zoom:50%;"></p>
+<h4 id="（3）质量管理工具"><a href="#（3）质量管理工具" class="headerlink" title="（3）质量管理工具"></a>（3）质量管理工具</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194712173.png" alt="image-20210915194712173" style="zoom:50%;"></p>
+<h4 id="（4）项目管理三角形"><a href="#（4）项目管理三角形" class="headerlink" title="（4）项目管理三角形"></a>（4）项目管理三角形</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194802382.png" alt="image-20210915194802382" style="zoom:50%;"></p>
+<h3 id="5、软件配置管理"><a href="#5、软件配置管理" class="headerlink" title="5、软件配置管理"></a>5、软件配置管理</h3><h4 id="（1）配置项"><a href="#（1）配置项" class="headerlink" title="（1）配置项"></a>（1）配置项</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194858390.png" alt="image-20210915194858390" style="zoom:50%;"></p>
+<h4 id="（2）配置库"><a href="#（2）配置库" class="headerlink" title="（2）配置库"></a>（2）配置库</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915194929407.png" alt="image-20210915194929407" style="zoom:50%;"></p>
+<h4 id="（3）变更控制"><a href="#（3）变更控制" class="headerlink" title="（3）变更控制"></a>（3）变更控制</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195008504.png" alt="image-20210915195008504" style="zoom:50%;"></p>
+<h3 id="6、风险管理"><a href="#6、风险管理" class="headerlink" title="6、风险管理"></a>6、风险管理</h3><h4 id="（1）风险的概念"><a href="#（1）风险的概念" class="headerlink" title="（1）风险的概念"></a>（1）风险的概念</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195052589.png" alt="image-20210915195052589" style="zoom:50%;"></p>
+<h4 id="（2）风险分类"><a href="#（2）风险分类" class="headerlink" title="（2）风险分类"></a>（2）风险分类</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195132828.png" alt="image-20210915195132828" style="zoom:50%;"></p>
+<h4 id="（3）风险曝光率"><a href="#（3）风险曝光率" class="headerlink" title="（3）风险曝光率"></a>（3）风险曝光率</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195203821.png" alt="image-20210915195203821" style="zoom:50%;"></p>
+<h3 id="7、项目管理工具"><a href="#7、项目管理工具" class="headerlink" title="7、项目管理工具"></a>7、项目管理工具</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195239998.png" alt="image-20210915195239998" style="zoom:50%;"></p>
+<h2 id="十一、软件架构设计"><a href="#十一、软件架构设计" class="headerlink" title="十一、软件架构设计"></a>十一、软件架构设计</h2><h3 id="1、软件架构的概念"><a href="#1、软件架构的概念" class="headerlink" title="1、软件架构的概念"></a>1、软件架构的概念</h3><p>架构在需求分析和软件设计之间</p>
+<p>架构就是将识别到的需求划分为不同模块</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195300573.png" alt="image-20210915195300573" style="zoom:50%;"></p>
+<h3 id="2、软件架构风格"><a href="#2、软件架构风格" class="headerlink" title="2、软件架构风格"></a>2、软件架构风格</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195817867.png" alt="image-20210915195817867" style="zoom:50%;"></p>
+<h4 id="（1）数据流风格"><a href="#（1）数据流风格" class="headerlink" title="（1）数据流风格"></a>（1）数据流风格</h4><p>整个架构以处理数据流为目的</p>
+<p>批处理序列的架构风格：特点：在处理过程当中，用户不参与</p>
+<p>管道过滤器：结构和批处理一样，但更高级</p>
+<p>两者差别：</p>
+<ul>
+<li>批处理序列所处理的数据必须完整的进入下一环节</li>
+<li>管道过滤器所处理的数据成流状，可以一部分在上一环节，一部分已进入下一环节</li>
+</ul>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210915195907832.png" alt="image-20210915195907832" style="zoom:50%;"></p>
+<h4 id="（2）调用-返回风格"><a href="#（2）调用-返回风格" class="headerlink" title="（2）调用/返回风格"></a>（2）调用/返回风格</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916144400197.png" alt="image-20210916144400197" style="zoom:50%;"></p>
+<h4 id="（3）独立构建风格"><a href="#（3）独立构建风格" class="headerlink" title="（3）独立构建风格"></a>（3）独立构建风格</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151308725.png" alt="image-20210916151308725" style="zoom:50%;"></p>
+<p>进程通信</p>
+<p>事件驱动系统（重点）</p>
+<h4 id="（4）虚拟机风格"><a href="#（4）虚拟机风格" class="headerlink" title="（4）虚拟机风格"></a>（4）虚拟机风格</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151449654.png" alt="image-20210916151449654" style="zoom:50%;"></p>
+<h4 id="（5）仓库风格"><a href="#（5）仓库风格" class="headerlink" title="（5）仓库风格"></a>（5）仓库风格</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151549733.png" alt="image-20210916151549733"></p>
+<p>仓库风格：以数据为中心的风格</p>
+<h4 id="（6）C-S架构"><a href="#（6）C-S架构" class="headerlink" title="（6）C/S架构"></a>（6）C/S架构</h4><p>两层C/S架构：表示层（数据库服务器）、客户层（客户机）</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916151841273.png" alt="image-20210916151841273" style="zoom:50%;"></p>
+<p>三层C/S架构：因为更新换代主要变换的是业务逻辑层，不必每次修改数据层和表示层，所以分为三层。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152110313.png" alt="image-20210916152110313" style="zoom:50%;"></p>
+<p>可以部署为俩层，当需要修改时变换为三层</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152229511.png" alt="image-20210916152229511" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152328692.png" style="zoom:50%;"></p>
+<h4 id="（7）三层BS架构"><a href="#（7）三层BS架构" class="headerlink" title="（7）三层BS架构"></a>（7）三层BS架构</h4><p>三层C/S架构没有怎么流行就被淘汰</p>
+<p>三层B/S架构开始流行</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152404351.png" alt="image-20210916152404351" style="zoom:50%;"></p>
+<p>混合架构风格（BS\CS混合使用）</p>
+<p>内部：CS架构，效率高</p>
+<p>外部：BS架构，方便更新换代</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152810309.png" alt="image-20210916152810309" style="zoom:50%;"></p>
+<h4 id="（8）富互联网应用（RIA）"><a href="#（8）富互联网应用（RIA）" class="headerlink" title="（8）富互联网应用（RIA）"></a>（8）富互联网应用（RIA）</h4><p>结合BS\CS</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916152923122.png" alt="image-20210916152923122" style="zoom:50%;"></p>
+<p>应用最多的是ajax</p>
+<h5 id="ajax：异步JavaScript以及XML"><a href="#ajax：异步JavaScript以及XML" class="headerlink" title="ajax：异步JavaScript以及XML"></a>ajax：异步JavaScript以及XML</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153231289.png" alt="image-20210916153231289" style="zoom:50%;"></p>
+<h5 id="mushup"><a href="#mushup" class="headerlink" title="mushup"></a>mushup</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153253250.png" alt="image-20210916153253250" style="zoom:50%;"></p>
+<h4 id="（9）基于服务的架构（SOA）"><a href="#（9）基于服务的架构（SOA）" class="headerlink" title="（9）基于服务的架构（SOA）"></a>（9）基于服务的架构（SOA）</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153533752.png" alt="image-20210916153533752" style="zoom:50%;"></p>
+<h5 id="1）SOA特点："><a href="#1）SOA特点：" class="headerlink" title="1）SOA特点："></a>1）SOA特点：</h5><p>松耦合、粗粒度、标准化接口</p>
+<p>——&gt;使得很多服务可以复用 </p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916153708729.png" alt="image-20210916153708729" style="zoom:50%;"></p>
+<h5 id="2）SOA实现方式——Web-Service"><a href="#2）SOA实现方式——Web-Service" class="headerlink" title="2）SOA实现方式——Web Service"></a>2）SOA实现方式——Web Service</h5><ul>
+<li>服务注册中心：可以省略；服务请求者、服务提供者必不可少</li>
+<li><strong>静态绑定</strong>：服务请求者、服务提供者直接绑定称之为静态绑定</li>
+<li><strong>动态绑定</strong>：服务请求者、服务提供者之间通过服务注册中心绑定起来称之为动态绑定</li>
+<li>web service强调把各种服务进行相应的封装</li>
+</ul>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916154204007.png" alt="image-20210916154204007" style="zoom:50%;"></p>
+<h5 id="3）SOA实现方式——ESB（企业服务总线）"><a href="#3）SOA实现方式——ESB（企业服务总线）" class="headerlink" title="3）SOA实现方式——ESB（企业服务总线）"></a>3）SOA实现方式——ESB（企业服务总线）</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916154556796.png" alt="image-20210916154556796" style="zoom:50%;"></p>
+<ul>
+<li>ESB强调提供一条总线，把各个服务连接起来（总线的拓扑结构）</li>
+</ul>
+<h3 id="3、软件架构评估"><a href="#3、软件架构评估" class="headerlink" title="3、软件架构评估"></a>3、软件架构评估</h3><h4 id="（1）质量属性"><a href="#（1）质量属性" class="headerlink" title="（1）质量属性"></a>（1）质量属性</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155148869.png" alt="image-20210916155148869" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155421182.png" alt="image-20210916155421182" style="zoom:50%;"></p>
+<h4 id="（2）软件架构评估方法"><a href="#（2）软件架构评估方法" class="headerlink" title="（2）软件架构评估方法"></a>（2）软件架构评估方法</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916155629608.png" alt="image-20210916155629608" style="zoom:80%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160208578.png" style="zoom:50%;"></p>
+<p>基于场景的方式用的最多</p>
+<p>基于场景的方法又分为ATAM/SAAM/CBAM</p>
+<p>ATAM/SAAM用的较多</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160329427.png" alt="image-20210916160329427" style="zoom:50%;"></p>
+<h5 id="1）ATAM"><a href="#1）ATAM" class="headerlink" title="1）ATAM"></a>1）ATAM</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160505787.png" alt="image-20210916160505787" style="zoom:50%;"></p>
+<p>描述ATAM方法：由评估小组负责人介绍评估方法（有开发人员参与</p>
+<p>描述业务动机：介绍为什么要做这个业务</p>
+<p>由架构师描述架构，确定一种架构方法</p>
+<p>生成质量属性效用树：由各个小组共同权衡</p>
+<h5 id="2）SAAM"><a href="#2）SAAM" class="headerlink" title="2）SAAM"></a>2）SAAM</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916160928796.png" alt="image-20210916160928796" style="zoom:50%;"></p>
+<p>用SAAM的前提是描述架构</p>
+<p>决定哪些场景更重要</p>
+<p>评估单个场景以及场景组合起来的效果</p>
+<h3 id="4、软件产品线技术"><a href="#4、软件产品线技术" class="headerlink" title="4、软件产品线技术"></a>4、软件产品线技术</h3><h4 id="（1）基本概念"><a href="#（1）基本概念" class="headerlink" title="（1）基本概念"></a>（1）基本概念</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161106990.png" alt="image-20210916161106990" style="zoom:50%;"></p>
+<h4 id="（2）过程模型"><a href="#（2）过程模型" class="headerlink" title="（2）过程模型"></a>（2）过程模型</h4><h5 id="1）双生命周期模型"><a href="#1）双生命周期模型" class="headerlink" title="1）双生命周期模型"></a>1）双生命周期模型</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161926403.png" alt="image-20210916161926403" style="zoom:50%;"></p>
+<h5 id="2）SEI模型"><a href="#2）SEI模型" class="headerlink" title="2）SEI模型"></a>2）SEI模型</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916161942273.png" alt="image-20210916161942273" style="zoom:50%;"></p>
+<h5 id="3）三生命周期模型（了解即可"><a href="#3）三生命周期模型（了解即可" class="headerlink" title="3）三生命周期模型（了解即可"></a>3）三生命周期模型（了解即可</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162028719.png" alt="image-20210916162028719" style="zoom:50%;"></p>
+<h4 id="（3）组织结构"><a href="#（3）组织结构" class="headerlink" title="（3）组织结构"></a>（3）组织结构</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162051531.png" alt="image-20210916162051531" style="zoom:50%;"></p>
+<h4 id="（4）建立方式（重点）"><a href="#（4）建立方式（重点）" class="headerlink" title="（4）建立方式（重点）"></a>（4）建立方式（重点）</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162147305.png" alt="image-20210916162147305" style="zoom:50%;"></p>
+<h3 id="5、中间件技术"><a href="#5、中间件技术" class="headerlink" title="5、中间件技术"></a>5、中间件技术</h3><p>把不互联互通的系统连接起来，中间件支持各种不同的系统</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162258518.png" alt="image-20210916162258518" style="zoom:50%;"></p>
+<p>主要的中间件：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162434953.png" alt="image-20210916162434953" style="zoom:50%;"></p>
+<h3 id="6、典型的应用架构"><a href="#6、典型的应用架构" class="headerlink" title="6、典型的应用架构"></a>6、典型的应用架构</h3><h4 id="（1）J2EE——分布式多层应用程序"><a href="#（1）J2EE——分布式多层应用程序" class="headerlink" title="（1）J2EE——分布式多层应用程序"></a>（1）J2EE——分布式多层应用程序</h4><p>J2EE可以分多个层次，支持多层分布式开发应用</p>
+<p>数据层、业务层、web层、客户层</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162557352.png" alt="image-20210916162557352" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162736587.png" alt="image-20210916162736587" style="zoom:50%;"></p>
+<h4 id="（2）-NET"><a href="#（2）-NET" class="headerlink" title="（2）.NET"></a>（2）.NET</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162805491.png" alt="image-20210916162805491" style="zoom:50%;"></p>
+<p>通用语言运行环境——就是一个虚拟机</p>
+<p>执行的时候必须在通用语言运行环境中</p>
+<p>可将不同语言转换为符合通用语言规范的语言</p>
+<h4 id="（3）-NET和J2EE的差别"><a href="#（3）-NET和J2EE的差别" class="headerlink" title="（3）.NET和J2EE的差别"></a>（3）.NET和J2EE的差别</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916162950766.png" alt="image-20210916162950766" style="zoom:50%;"></p>
+<p>相比于J2EE而言，.NET可移植性差，但支持的语言形式更多。其他都差不多</p>
+<h4 id="（4）MVC模式"><a href="#（4）MVC模式" class="headerlink" title="（4）MVC模式"></a>（4）MVC模式</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163057005.png" alt="image-20210916163057005" style="zoom:50%;"></p>
+<p>MVC的产生：可复用程度高和可复用程度低的模块混杂在一起会使得整体可复用性很差，MVC可使混杂在一起的逻辑分开。</p>
+<p>view：控制输入输出，在视图界面发号指令</p>
+<p>controller：指令到控制层后发送到模型层</p>
+<p>model：模型进行处理，将处理结果送回view</p>
+<p>主动的MVC：model可以给view推送信息</p>
+<p>被动的MVC：model只能等待view来取信息</p>
+<h4 id="（5）J2EE——Java企业应用框架"><a href="#（5）J2EE——Java企业应用框架" class="headerlink" title="（5）J2EE——Java企业应用框架"></a>（5）J2EE——Java企业应用框架</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163821564.png" alt="image-20210916163821564" style="zoom:50%;"></p>
+<h4 id="（6）MVP模式"><a href="#（6）MVP模式" class="headerlink" title="（6）MVP模式"></a>（6）MVP模式</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916163851702.png" alt="image-20210916163851702" style="zoom:50%;"></p>
+<p>相比于MVC，</p>
+<p>MVP的view和model没有联系起来，controller层变为presenter</p>
+<p>MVP耦合程度更有优势</p>
+<h2 id="十二、系统安全性与保密性设计"><a href="#十二、系统安全性与保密性设计" class="headerlink" title="十二、系统安全性与保密性设计"></a>十二、系统安全性与保密性设计</h2><h3 id="1、信息系统安全属性"><a href="#1、信息系统安全属性" class="headerlink" title="1、信息系统安全属性"></a>1、信息系统安全属性</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210916164315845.png" alt="image-20210916164315845" style="zoom:50%;"></p>
+<h3 id="2、对称加密和非对称加密"><a href="#2、对称加密和非对称加密" class="headerlink" title="2、对称加密和非对称加密"></a>2、对称加密和非对称加密</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152031267.png" alt="image-20210918152031267" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152101519.png" alt="image-20210918152101519" style="zoom:50%;"></p>
+<h3 id="3、信息摘要"><a href="#3、信息摘要" class="headerlink" title="3、信息摘要"></a>3、信息摘要</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152125413.png" alt="image-20210918152125413" style="zoom:50%;"></p>
+<h3 id="4、数字签名"><a href="#4、数字签名" class="headerlink" title="4、数字签名"></a>4、数字签名</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152148407.png" alt="image-20210918152148407" style="zoom:50%;"></p>
+<h3 id="5、数字证书与PGP"><a href="#5、数字证书与PGP" class="headerlink" title="5、数字证书与PGP"></a>5、数字证书与PGP</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152205780.png" alt="image-20210918152205780" style="zoom:50%;"></p>
+<h3 id="6、设计邮件加密系统-实例"><a href="#6、设计邮件加密系统-实例" class="headerlink" title="6、设计邮件加密系统(实例)"></a>6、设计邮件加密系统(实例)</h3><p>略</p>
+<h3 id="7、PKI公钥体系"><a href="#7、PKI公钥体系" class="headerlink" title="7、PKI公钥体系"></a>7、PKI公钥体系</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152241636.png" alt="image-20210918152241636" style="zoom:50%;"></p>
+<h3 id="8、PKI公钥系分层情况"><a href="#8、PKI公钥系分层情况" class="headerlink" title="8、PKI公钥系分层情况"></a>8、PKI公钥系分层情况</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152317394.png" alt="image-20210918152317394" style="zoom:50%;"></p>
+<h3 id="9、信息系统安全保证层次"><a href="#9、信息系统安全保证层次" class="headerlink" title="9、信息系统安全保证层次"></a>9、信息系统安全保证层次</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152340726.png" alt="image-20210918152340726" style="zoom:50%;"></p>
+<h3 id="10、安全审核与安全系统设计原则"><a href="#10、安全审核与安全系统设计原则" class="headerlink" title="10、安全审核与安全系统设计原则"></a>10、安全审核与安全系统设计原则</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152402524.png" alt="image-20210918152402524" style="zoom:50%;"></p>
+<h3 id="11、各个网络层次的安全保障"><a href="#11、各个网络层次的安全保障" class="headerlink" title="11、各个网络层次的安全保障"></a>11、各个网络层次的安全保障</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152422144.png" alt="image-20210918152422144" style="zoom:50%;"></p>
+<h3 id="12、网络威胁与共计"><a href="#12、网络威胁与共计" class="headerlink" title="12、网络威胁与共计"></a>12、网络威胁与共计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152445835.png" alt="image-20210918152445835" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152511800.png" alt="image-20210918152511800" style="zoom:50%;"></p>
+<h3 id="13、DOS和DDOS共计"><a href="#13、DOS和DDOS共计" class="headerlink" title="13、DOS和DDOS共计"></a>13、DOS和DDOS共计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152529904.png" alt="image-20210918152529904" style="zoom:50%;"></p>
+<h3 id="14、防火墙技术"><a href="#14、防火墙技术" class="headerlink" title="14、防火墙技术"></a>14、防火墙技术</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152551564.png" alt="image-20210918152551564" style="zoom:50%;"></p>
+<h3 id="15、入侵检测"><a href="#15、入侵检测" class="headerlink" title="15、入侵检测"></a>15、入侵检测</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152609240.png" alt="image-20210918152609240" style="zoom:50%;"></p>
+<h3 id="16、计算机病毒与木马"><a href="#16、计算机病毒与木马" class="headerlink" title="16、计算机病毒与木马"></a>16、计算机病毒与木马</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152629508.png" alt="image-20210918152629508" style="zoom:50%;"></p>
+<h2 id="十三、系统可靠性分析与设计"><a href="#十三、系统可靠性分析与设计" class="headerlink" title="十三、系统可靠性分析与设计"></a>十三、系统可靠性分析与设计</h2><h3 id="1、系统故障模型"><a href="#1、系统故障模型" class="headerlink" title="1、系统故障模型"></a>1、系统故障模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152659578.png" alt="image-20210918152659578" style="zoom:50%;"></p>
+<h3 id="2、可靠性指标"><a href="#2、可靠性指标" class="headerlink" title="2、可靠性指标"></a>2、可靠性指标</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152720674.png" alt="image-20210918152720674" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152745171.png" alt="image-20210918152745171" style="zoom:50%;"></p>
+<h3 id="3、串联系统与并联系统可靠度计算"><a href="#3、串联系统与并联系统可靠度计算" class="headerlink" title="3、串联系统与并联系统可靠度计算"></a>3、串联系统与并联系统可靠度计算</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152805927.png" alt="image-20210918152805927" style="zoom:50%;"></p>
+<h3 id="4、系统错技术"><a href="#4、系统错技术" class="headerlink" title="4、系统错技术"></a>4、系统错技术</h3><h4 id="（1）概念与分类"><a href="#（1）概念与分类" class="headerlink" title="（1）概念与分类"></a>（1）概念与分类</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152831074.png" alt="image-20210918152831074" style="zoom:50%;"></p>
+<h4 id="（2）冗余系统"><a href="#（2）冗余系统" class="headerlink" title="（2）冗余系统"></a>（2）冗余系统</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152856286.png" alt="image-20210918152856286" style="zoom:50%;"></p>
+<h4 id="（3）软件容错"><a href="#（3）软件容错" class="headerlink" title="（3）软件容错"></a>（3）软件容错</h4><h5 id="1）N版本程序设计"><a href="#1）N版本程序设计" class="headerlink" title="1）N版本程序设计"></a>1）N版本程序设计</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918152955548.png" alt="image-20210918152955548" style="zoom:50%;"></p>
+<h5 id="2）恢复快方法"><a href="#2）恢复快方法" class="headerlink" title="2）恢复快方法"></a>2）恢复快方法</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918153012608.png" alt="image-20210918153012608" style="zoom:50%;"></p>
+<h5 id="3）防卫式程序设计"><a href="#3）防卫式程序设计" class="headerlink" title="3）防卫式程序设计"></a>3）防卫式程序设计</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210918153036567.png" alt="image-20210918153036567" style="zoom:50%;"></p>
+<h4 id="（4）双机容错"><a href="#（4）双机容错" class="headerlink" title="（4）双机容错"></a>（4）双机容错</h4><p>在核心部位，采取双机配合工作，一台坏了，另一台还可以用</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920172112270.png" alt="image-20210920172112270" style="zoom:50%;"></p>
+<h4 id="（5）集群技术"><a href="#（5）集群技术" class="headerlink" title="（5）集群技术"></a>（5）集群技术</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920172801675.png" alt="image-20210920172801675" style="zoom:50%;"></p>
+<h2 id="十四、法律法规与标准化"><a href="#十四、法律法规与标准化" class="headerlink" title="十四、法律法规与标准化"></a>十四、法律法规与标准化</h2><h3 id="1、法律法规知识"><a href="#1、法律法规知识" class="headerlink" title="1、法律法规知识"></a>1、法律法规知识</h3><h4 id="（1）保护年限"><a href="#（1）保护年限" class="headerlink" title="（1）保护年限"></a>（1）保护年限</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173025653.png" alt="image-20210920173025653" style="zoom:50%;"></p>
+<h4 id="（2）知识产权人确定"><a href="#（2）知识产权人确定" class="headerlink" title="（2）知识产权人确定"></a>（2）知识产权人确定</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173321974.png" alt="image-20210920173321974" style="zoom:50%;"></p>
+<h4 id="（3）侵权判断"><a href="#（3）侵权判断" class="headerlink" title="（3）侵权判断"></a>（3）侵权判断</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920173934469.png" alt="image-20210920173934469" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920174317458.png" alt="image-20210920174317458" style="zoom:50%;"></p>
+<h3 id="2、标准化基础知识"><a href="#2、标准化基础知识" class="headerlink" title="2、标准化基础知识"></a>2、标准化基础知识</h3><h4 id="标准的编号"><a href="#标准的编号" class="headerlink" title="标准的编号"></a>标准的编号</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920174722255.png" alt="image-20210920174722255" style="zoom:50%;"></p>
+<h2 id="十五、数学与经济管理"><a href="#十五、数学与经济管理" class="headerlink" title="十五、数学与经济管理"></a>十五、数学与经济管理</h2><h3 id="1、图论应用"><a href="#1、图论应用" class="headerlink" title="1、图论应用"></a>1、图论应用</h3><h4 id="网络与最大流量"><a href="#网络与最大流量" class="headerlink" title="网络与最大流量"></a>网络与最大流量</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175156721.png" alt="image-20210920175156721" style="zoom:50%;"></p>
+<h3 id="2、运筹方法"><a href="#2、运筹方法" class="headerlink" title="2、运筹方法"></a>2、运筹方法</h3><h4 id="（1）线性规划"><a href="#（1）线性规划" class="headerlink" title="（1）线性规划"></a>（1）线性规划</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175238864.png" alt="image-20210920175238864" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175526818.png" style="zoom:50%;"></p>
+<h4 id="（2）决策"><a href="#（2）决策" class="headerlink" title="（2）决策"></a>（2）决策</h4><h5 id="1）不确定型决策"><a href="#1）不确定型决策" class="headerlink" title="1）不确定型决策"></a>1）不确定型决策</h5><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920175919495.png" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/image-20210920180147276.png" alt="image-20210920180147276" style="zoom:50%;"></p>
+<ul>
+<li><p>乐观主义准则：大中取大</p>
+<p>整个表中的最大值：500</p>
+</li>
+<li><p>悲观主义准则：小中取大</p>
+<p>整个表中最差情况的最大收益：200</p>
+</li>
+<li><p>折中主义准则：取系数α</p>
+<p>α取0——悲观主义准则</p>
+<p>α取1——乐观主义准则</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2021/09/08/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/" title="系统架构设计师上午题">https://laylaycjl.github.io/2021/09/08/系统架构设计师上午题/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E8%80%83%E9%AB%98%E7%BA%A7/" rel="tag"><i class="fa fa-tag"></i> 软考高级</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/11/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93/" rel="prev" title="软件设计师上午题知识点总结">
+                  <i class="fa fa-chevron-left"></i> 软件设计师上午题知识点总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="next" title="系统架构师上午真题知识点">
+                  系统架构师上午真题知识点 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:48</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

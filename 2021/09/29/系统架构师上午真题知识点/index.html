@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="系统架构设计师上午题真题知识点转载自www.educity.cn 2015年1、分片式数据库6题  C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统架构师上午真题知识点">
+<meta property="og:url" content="https://laylaycjl.github.io/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="系统架构设计师上午题真题知识点转载自www.educity.cn 2015年1、分片式数据库6题  C">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929164652309.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929151452317.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929165247297.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929165909276.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929170316229.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929170650490.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929171101249.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929171351378.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003101018993.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003110400088.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003141849297.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009133627724.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009134746612.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009142617869.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009145745830.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009151658619.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152002347.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152450073.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152832036.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009161331171.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009182224882.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009180029700.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010160050833.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009180752487.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009181030564.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010101843355.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011154402202.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010161501092.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010162029394.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010164119354.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010173833150.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180841371.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180917088.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011153348308.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010175014750.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180511158.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180138907.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180333128.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180411428.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180453086.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017100647019.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017104538408.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017101323601.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017101702001.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017102229034.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017104304946.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017153613850.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017161226983.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017154337028.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017154921496.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017161808809.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017164010475.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017164246464.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017170721200.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017170930475.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171422445.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171643167.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171734294.png">
+<meta property="og:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017172042221.png">
+<meta property="article:published_time" content="2021-09-29T07:12:13.000Z">
+<meta property="article:modified_time" content="2021-10-18T05:28:02.543Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="软考高级">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929164652309.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>系统架构师上午真题知识点 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">系统架构设计师上午题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">真题知识点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2015%E5%B9%B4"><span class="nav-number">3.</span> <span class="nav-text">2015年</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%88%86%E7%89%87%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">3.1.</span> <span class="nav-text">1、分片式数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%B5%8C%E5%85%A5%E5%BC%8F"><span class="nav-number">3.2.</span> <span class="nav-text">2、嵌入式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%9D%BF%E7%BA%A7%E6%94%AF%E6%8C%81%E5%8C%85BSP"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">（1）嵌入式操作系统中的板级支持包BSP</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%89%B9%E7%82%B9"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">（2）嵌入式操作系统特点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B5%8C%E5%85%A5%E5%BC%8F%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">（2）嵌入式软件设计</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81RAID5%E9%98%B5%E5%88%97"><span class="nav-number">3.3.</span> <span class="nav-text">3、RAID5阵列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81IPV6%E9%98%B5%E5%88%97"><span class="nav-number">3.4.</span> <span class="nav-text">4、IPV6阵列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E8%AF%84%E4%BB%B7%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.5.</span> <span class="nav-text">5、评价程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="nav-number">3.6.</span> <span class="nav-text">6、信息系统基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%95%86%E4%B8%9A%E6%99%BA%E8%83%BD%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.6.1.</span> <span class="nav-text">（1）商业智能系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86"><span class="nav-number">3.7.</span> <span class="nav-text">7、项目管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%A1%B9%E7%9B%AE%E8%8C%83%E5%9B%B4%E7%AE%A1%E7%90%86"><span class="nav-number">3.7.1.</span> <span class="nav-text">（1）项目范围管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">3.7.2.</span> <span class="nav-text">（2）软件配置管理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2016%E5%B9%B4"><span class="nav-number">4.</span> <span class="nav-text">2016年</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86"><span class="nav-number">4.1.</span> <span class="nav-text">一、计算机组成原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%B5%8C%E5%85%A5%E5%BC%8F"><span class="nav-number">4.1.1.</span> <span class="nav-text">1、嵌入式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E7%A3%81%E7%9B%98%E5%AD%98%E5%82%A8%EF%BC%88%E7%BC%93%E5%86%B2%E5%8C%BA%EF%BC%89"><span class="nav-number">4.1.2.</span> <span class="nav-text">2、磁盘存储（缓冲区）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">4.2.</span> <span class="nav-text">二、计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81TCP-IP%E5%8D%8F%E8%AE%AE%E6%97%8F"><span class="nav-number">4.2.1.</span> <span class="nav-text">1、TCP&#x2F;IP协议族</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81IPv6"><span class="nav-number">4.2.2.</span> <span class="nav-text">2、IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E7%AE%A1%E7%90%86%E8%B7%9D%E7%A6%BB"><span class="nav-number">4.2.3.</span> <span class="nav-text">3、管理距离</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96%E6%88%98%E7%95%A5%E4%B8%8E%E5%AE%9E%E6%96%BD"><span class="nav-number">4.3.</span> <span class="nav-text">三、企业信息化战略与实施</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%94%BF%E5%BA%9C%E4%BF%A1%E6%81%AF%E5%8C%96%E4%B8%8E%E7%94%B5%E5%AD%90%E6%94%BF%E5%8A%A1"><span class="nav-number">4.3.1.</span> <span class="nav-text">1、政府信息化与电子政务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96%E4%B8%8E%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1"><span class="nav-number">4.3.2.</span> <span class="nav-text">2、企业信息化与电子商务</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%BC%80%E5%8F%91%E7%AE%A1%E7%90%86"><span class="nav-number">4.4.</span> <span class="nav-text">四、开发管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">4.4.1.</span> <span class="nav-text">1、软件配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BD%AF%E4%BB%B6%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86"><span class="nav-number">4.4.2.</span> <span class="nav-text">2、软件需求管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%BD%AF%E4%BB%B6%E9%87%8D%E7%94%A8"><span class="nav-number">4.4.3.</span> <span class="nav-text">3、软件重用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%BC%80%E5%8F%91%E6%96%B9%E6%B3%95"><span class="nav-number">4.5.</span> <span class="nav-text">五、开发方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.5.1.</span> <span class="nav-text">1、软件开发模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E7%B3%BB%E7%BB%9F%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="nav-number">4.6.</span> <span class="nav-text">六、系统分析与设计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81UML%E5%9B%BE"><span class="nav-number">4.6.1.</span> <span class="nav-text">1、UML图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.7.</span> <span class="nav-text">七、软件架构设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E8%B4%A8%E9%87%8F%E5%B1%9E%E6%80%A7"><span class="nav-number">4.7.1.</span> <span class="nav-text">1、软件质量属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%9E%84%E4%BB%B6%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%8A%80%E6%9C%AF"><span class="nav-number">4.7.2.</span> <span class="nav-text">2、构件与中间件技术</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%9D%A2%E5%90%91%E6%9E%84%E4%BB%B6%E7%9A%84%E7%BC%96%E7%A8%8B"><span class="nav-number">4.7.2.1.</span> <span class="nav-text">（1）面向构件的编程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89CORBA%E6%9E%84%E4%BB%B6%E6%A8%A1%E5%9E%8B"><span class="nav-number">4.7.2.2.</span> <span class="nav-text">（2）CORBA构件模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%9E%84%E4%BB%B6"><span class="nav-number">4.7.2.3.</span> <span class="nav-text">（3）构件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%B0%83%E7%94%A8%E8%BF%94%E5%9B%9E%E9%A3%8E%E6%A0%BC"><span class="nav-number">4.7.3.</span> <span class="nav-text">3、调用返回风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%89%B9%E5%AE%9A%E9%A2%86%E5%9F%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.7.4.</span> <span class="nav-text">4、特定领域架构设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80"><span class="nav-number">4.8.</span> <span class="nav-text">八、信息系统基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E4%BC%81%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%8C%96%E4%B8%8E%E7%94%B5%E5%AD%90%E5%95%86%E5%8A%A1"><span class="nav-number">4.8.1.</span> <span class="nav-text">1、企业信息化与电子商务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BC%81%E4%B8%9A%E5%BA%94%E7%94%A8%E9%9B%86%E6%88%90"><span class="nav-number">4.8.1.1.</span> <span class="nav-text">（1）企业应用集成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%9D%E3%80%81%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%AE%A1%E8%AF%84%E6%96%B9%E6%B3%95"><span class="nav-number">4.9.</span> <span class="nav-text">九、软件测试审评方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E9%9B%86%E6%88%90%E6%B5%8B%E8%AF%95"><span class="nav-number">4.9.1.</span> <span class="nav-text">1、软件集成测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E3%80%81%E6%B3%95%E5%BE%8B"><span class="nav-number">4.10.</span> <span class="nav-text">十、法律</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E6%95%B0%E5%AD%A6"><span class="nav-number">4.11.</span> <span class="nav-text">十一、数学</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2017%E5%B9%B4"><span class="nav-number">5.</span> <span class="nav-text">2017年</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">5.1.</span> <span class="nav-text">一、操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">5.1.1.</span> <span class="nav-text">1、进程的状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%B5%8C%E5%85%A5%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E2%80%94%E2%80%94%E4%BD%8E%E5%8A%9F%E8%80%97%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.1.2.</span> <span class="nav-text">2、嵌入式操作系统——低功耗设计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">5.2.</span> <span class="nav-text">二、数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%9F%A5%E8%AF%A2%E8%AF%AD%E5%8F%A5%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98"><span class="nav-number">5.2.1.</span> <span class="nav-text">1、查询语句效率问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93"><span class="nav-number">5.2.2.</span> <span class="nav-text">2、数据仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BB%84%E6%88%90%E5%8E%9F%E7%90%86"><span class="nav-number">5.3.</span> <span class="nav-text">三、计算机组成原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%B5%8C%E5%85%A5%E5%BC%8F%E2%80%94%E2%80%94DSP%E8%8A%AF%E7%89%87"><span class="nav-number">5.3.1.</span> <span class="nav-text">1、嵌入式——DSP芯片</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%80%BB%E7%BA%BF"><span class="nav-number">5.3.2.</span> <span class="nav-text">2、总线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E8%AF%84%E4%BB%B7"><span class="nav-number">5.4.</span> <span class="nav-text">四、系统性能评价</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94CPU%E4%B8%BB%E9%A2%91%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">5.4.1.</span> <span class="nav-text">1、性能指标——CPU主频的计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E2%80%94%E2%80%94%E4%B8%8D%E5%90%8C%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-number">5.4.2.</span> <span class="nav-text">2、性能指标——不同系统的性能指标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">5.5.</span> <span class="nav-text">五、计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81TCP-IP%E5%8D%8F%E8%AE%AE%E6%97%8F%E2%80%94%E2%80%94%E9%80%9A%E8%BF%87IP%E6%9F%A5%E8%AF%A2%E5%9F%9F%E5%90%8D"><span class="nav-number">5.5.1.</span> <span class="nav-text">1、TCP&#x2F;IP协议族——通过IP查询域名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81TCP-IP%E5%8D%8F%E8%AE%AE%E6%97%8F%E2%80%94%E2%80%94DHCP%E6%8C%87%E4%BB%A4"><span class="nav-number">5.5.2.</span> <span class="nav-text">2、TCP&#x2F;IP协议族——DHCP指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="nav-number">5.6.</span> <span class="nav-text">六、信息系统基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E7%B3%BB%E7%BB%9F%E5%B7%A5%E7%A8%8B"><span class="nav-number">5.6.1.</span> <span class="nav-text">1、系统工程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%83%E3%80%81%E5%BC%80%E5%8F%91%E7%AE%A1%E7%90%86"><span class="nav-number">5.7.</span> <span class="nav-text">七、开发管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E6%97%B6%E9%97%B4%E7%AE%A1%E7%90%86"><span class="nav-number">5.7.1.</span> <span class="nav-text">1、项目管理——时间管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%85%8D%E7%BD%AE%E4%B8%8E%E6%96%87%E6%A1%A3%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86"><span class="nav-number">5.7.2.</span> <span class="nav-text">2、配置与文档管理——软件配置管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86"><span class="nav-number">5.7.3.</span> <span class="nav-text">3、需求管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E9%9C%80%E6%B1%82%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94%E5%8F%98%E6%9B%B4%E6%8E%A7%E5%88%B6"><span class="nav-number">5.7.4.</span> <span class="nav-text">4、需求管理——变更控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AB%E3%80%81%E5%BC%80%E5%8F%91%E6%96%B9%E6%B3%95"><span class="nav-number">5.8.</span> <span class="nav-text">八、开发方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E5%8E%9F%E5%9E%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.8.1.</span> <span class="nav-text">1、软件开发模型——原型模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E5%BF%AB%E9%80%9F%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%A8%A1%E5%9E%8B%E3%80%81%E8%9E%BA%E6%97%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.8.2.</span> <span class="nav-text">2、软件开发模型——快速应用开发模型、螺旋模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-number">5.8.3.</span> <span class="nav-text">3、软件开发环境</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          系统架构师上午真题知识点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-29 15:12:13" itemprop="dateCreated datePublished" datetime="2021-09-29T15:12:13+08:00">2021-09-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-10-18 13:28:02" itemprop="dateModified" datetime="2021-10-18T13:28:02+08:00">2021-10-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%BD%AF%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">软考</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>17 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="系统架构设计师上午题"><a href="#系统架构设计师上午题" class="headerlink" title="系统架构设计师上午题"></a>系统架构设计师上午题</h1><h1 id="真题知识点"><a href="#真题知识点" class="headerlink" title="真题知识点"></a>真题知识点</h1><p>转载自www.educity.cn</p>
+<h1 id="2015年"><a href="#2015年" class="headerlink" title="2015年"></a>2015年</h1><h2 id="1、分片式数据库"><a href="#1、分片式数据库" class="headerlink" title="1、分片式数据库"></a>1、分片式数据库</h2><p>6题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929164652309.png" alt="image-20210929164652309" style="zoom:50%;"></p>
+<p>C</p>
+<span id="more"></span>
+<p>解析：</p>
+<ul>
+<li><p>分片透明性是指<u>用户不必关系数据是如何分片的，它们对数据的操作在全局关系上进行，即关系如何分片对用户是透明的</u>，因此，当分片改变时应用程序可以不变。<strong>分片透明性是最高层次的透明性</strong>，如果用户能在全局关系一级操作，则数据如何分布，如何存储等细节自不必关系，其应用程序的编写与集中式数据库相同。</p>
+</li>
+<li><p>复制透明指的是<u>用户或应用程序不关心数据库在网络中各个结点的复制情况</u></p>
+</li>
+<li><p>位置透明性是指<u>用户不必知道所操作的数据放在何处，即数据分配到哪个或哪些站点存储对用户是透明的。</u>因此数据分片模式的改变，如把数据从一个站点转移到另一个站点将不会影响应用程序，因而应用程序不必改写。</p>
+</li>
+<li><p>局部映像透明性<strong>（逻辑透明)是最低层次的透明性</strong>，该透明性提供数据到局部数据库的映像，<u>即用户不必关系局部DBMS支持哪种数据模型、使用哪种数据操纵语言，数据模型和操纵语言的转换是由系统完成的</u>。因此，局部映像透明性对异构型和同构异质的分布式数据库系统是非常重要的。</p>
+</li>
+</ul>
+<h2 id="2、嵌入式"><a href="#2、嵌入式" class="headerlink" title="2、嵌入式"></a>2、嵌入式</h2><h4 id="（1）嵌入式操作系统中的板级支持包BSP"><a href="#（1）嵌入式操作系统中的板级支持包BSP" class="headerlink" title="（1）嵌入式操作系统中的板级支持包BSP"></a>（1）嵌入式操作系统中的板级支持包BSP</h4><p>9题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929151452317.png" alt="image-20210929151452317" style="zoom:50%;"></p>
+<p>B</p>
+<p>解析：</p>
+<ul>
+<li><p>板级支持包 (BSP）是介于主板硬件和操作系统中驱动层程序之间的一层，一般认为它属于<strong>操作系统一部分</strong>，主要是实现对操作系统的支持，为上层的驱动程序提供访问硬件设备寄存器的函数包，使之能够更好的运行于硬件主板。</p>
+<p>在嵌入式系统软件的组成中，就有BSP。</p>
+</li>
+<li><p>BSP是相对于操作系统而言的，不同的操作系统对应于不同定义形式的BSP，例如VxWorks的BSP和Linux的BSP相对于某一CPU来说尽管实现的功能一样，可是写法和接口定义是完全不同的，所以写BSP一定要按照该系统BSP的定义形式来写(BSP的编程过程大多数是在某一个成型的BSP模板上进行修改)。这样才能与上层OS保持正确的接口，良好的支持上层OS。</p>
+</li>
+<li><p>BSP主要功能为屏蔽硬件，提供操作系统及硬件驱动，具体功能包括:</p>
+<p>1.单板硬件初始化，主要是CPU的初始化，为整个软件系统提供底层硬件支持</p>
+<p>2.为操作系统提供设备驱动程序和系统中断服务程序</p>
+<p>3.定制操作系统的功能，为软件系统提供一个实时多任务的运行环境</p>
+<p>4.初始化操作系统，为操作系统的正常运行做好准备。</p>
+</li>
+<li><p>板级支持包(BSP，也称为硬件抽象层HAL)一般包含相关<strong>底层硬件的初始化</strong>、<strong>数据的输入/输出操作</strong>和<strong>硬件设备的配置</strong>等功能，它主要具有以下两个特点。</p>
+<p>①硬件相关性，因为嵌入式实时系统的硬件环境具有应用相关性，而作为上层软件与硬件平台之间的接口，BSP需为操作系统提供操作和控制具体硬件的方法。<br>②操作系统相关性，不同的操作系统具有各自的软件层次结构，因此不同操作系统具有特定的硬件接口形式。</p>
+</li>
+</ul>
+<h4 id="（2）嵌入式操作系统特点"><a href="#（2）嵌入式操作系统特点" class="headerlink" title="（2）嵌入式操作系统特点"></a>（2）嵌入式操作系统特点</h4><p>10题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929165247297.png" alt="image-20210929165247297" style="zoom:50%;"></p>
+<p>B</p>
+<p>解析：</p>
+<p>嵌入式操作系统的特点包括:</p>
+<p>1）系统内核小<br>由于嵌入式系统一般是应用于小型电子装置的，系统资源相对有限，所以内核较之传统的操作系统要小得多。比如Enea公司的OSE分布式系统，内核只有5K。</p>
+<p>2)专用性强<br>嵌入式系统的个性化很强，其中的软件系统和硬件的结合非常紧密，一般要针对硬件进行系统的移植，即使在同一品牌、同一系列的产品中也需要根据系统硬件的变化和增减不断进行修改。同时针对不同的任务，往往需要对系统进行较大更改，程序的编译下载要和系统相结合，这种修改和通用软件的“升级”是完全两个概念。</p>
+<p>3）系统精简<br>嵌入式系统一般没有系统软件和应用软件的明显区分，不要求其功能设计及实现上过于复杂，这样一方面利于控制系统成本，同时也利于实现系统安全。</p>
+<p>4）高实时性<br>高实时性的系统软件(OS)是嵌入式软件的基本要求。而且软件要求固态存储，以提高速度;软件代码要求高质量和高可靠性。</p>
+<p>5)多任务的操作系统<br>嵌入式软件开发要想走向标准化，就必须使用多任务的操作系统。嵌入式系统的应用程序可以没有操作系统直接在芯片上运行。但是为了合理地调度多任务、利用系统资源、系统函数以及和专用库函数接口，用户必须自行选配<br>RTOS (Real - Time Operating System)开发平台,这样才能保证程序执行的实时性、可靠性，并减少开发时间，保障软件质量。</p>
+<p>6)需要开发工具和环境<br>嵌入式系统开发需要开发工具和环境。由于其本身不具备自开发能力，即使设计完成以后用户通常也是不能对其中的程序功能进行修改的，必须有一套开发工具和环境才能进行开发,这些工具和环境一般是基于通用计算机上的软硬件设备以及各种逻辑分析仪、混合信号示波器等。开发时往往有主机和目标机的概念，主机用于程序的开发，目标机作为最后的执行机，开发时需要交替结合进行。</p>
+<h4 id="（2）嵌入式软件设计"><a href="#（2）嵌入式软件设计" class="headerlink" title="（2）嵌入式软件设计"></a>（2）嵌入式软件设计</h4><p>11题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929165909276.png" alt="image-20210929165909276" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>备选答案中，只有硬件无关性与可移植性相关。实上，现在很多嵌入式系统开发对此非常重视，例如进行电视机顶盒开发,以前解码使用硬件芯片解码的做法比较普遍,现在随着嵌入式系统CPU运算能力的提升，人们开始将硬件解码改为软件解码，为的就是解决移植过程中由于解码芯片型号不同带来的问题。</p>
+<h2 id="3、RAID5阵列"><a href="#3、RAID5阵列" class="headerlink" title="3、RAID5阵列"></a>3、RAID5阵列</h2><p>13、14题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929170316229.png" alt="image-20210929170316229" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>RAID5是一种存储性能、数据安全和存储成本兼顾的存储解决方案。这种方案中数据信息与校验信息的配比是N+1方案，即<strong>N份数据，1份校验信息</strong>。</p>
+<p>当用3块容量为80G的硬盘实际数据容量为160G。</p>
+<p>当3盘不同容量的盘做RAID时，会以最小容量的盘为准,所以2块80G和1块40G的盘视为3块40G的盘,所以容量为80G。</p>
+<h2 id="4、IPV6阵列"><a href="#4、IPV6阵列" class="headerlink" title="4、IPV6阵列"></a>4、IPV6阵列</h2><p>15题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929170650490.png" alt="image-20210929170650490" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>A: IPv4的首部比IPv6复杂，因为IPv6删减掉了IPv4中许多不必要的功能</p>
+<p>B：IPv6寻址模式分为三种，即单播地址、组播地址和泛播地址。<br>通常一台IPv6主机有多个IPv6地址,即使该主机只有一个单接口。-台IPv6主机可以同时拥有以机种单点传送地址:<br>每个接口的链路本地地址; .<br>每个接口的单播地址(可以是一 个站点本地地址和一个或多个可聚集全球地址) ;<br>回环(loopback)接口的回环地址(: : 1);<br>此外，每台主机还需要时刻保持收听以下多点传送地址上的信息;<br>节点本地范围内所有节点组播地址(FFOUh?链路本地范围内所有节点组播地址(FF02::1); .<br>请求节点(solicited-node)组播地址 (如果主机的某个接口加入请求节点组;<br>组播组组播地址(如果主机的某个接U加人任何组播组)。</p>
+<h2 id="5、评价程序"><a href="#5、评价程序" class="headerlink" title="5、评价程序"></a>5、评价程序</h2><p>17题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929171101249.png" alt="image-20210929171101249" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>评价程序用于测试新系统的性能。</p>
+<p>基准程序测试：将应用程序中用得最多的，最频繁的那部分核心程序作为评估计算机系统性能的标准程序</p>
+<p>评测准确程度:</p>
+<p>真实程序 &gt; 核心程序 &gt; 小型基准程序 &gt; 合成基准程序</p>
+<p>合成基准程序覆盖面广了,但是毕竟不是全覆盖，造成了系统的不确定或者说增加了跟真实系统偏离的概率,所以相对单个的小型基准程序来说更不准确。</p>
+<h2 id="6、信息系统基础"><a href="#6、信息系统基础" class="headerlink" title="6、信息系统基础"></a>6、信息系统基础</h2><h3 id="（1）商业智能系统"><a href="#（1）商业智能系统" class="headerlink" title="（1）商业智能系统"></a>（1）商业智能系统</h3><p>22题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929171351378.png" alt="image-20210929171351378" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>商业智能系统的处理过程包括数据预处理、建立数据仓库、数据分析及数据展现4个主要阶段。</p>
+<ul>
+<li><p><u>数据预处理</u>是整合企业原始数据的第一步，包括<strong>数据的抽取</strong>、<strong>转换</strong>和<strong>装载</strong>三个过程。</p>
+</li>
+<li><p><u>建立数据仓库</u>则是处理海量数据的基础。</p>
+</li>
+<li><p><u>数据分析</u>是体现系统智能的关键，一般采用<strong>OLAP</strong>和<strong>数据挖掘技术</strong>。</p>
+<ul>
+<li><p><strong>联机分析处理OLAP</strong>不仅进行数据汇总/聚集，同时还提供切片、切块、下钻、上卷和旋转等数据分析功能，用户可以方便地对海量数据进行多维分析。主要用于数据仓库。</p>
+<p>区分<strong>联机数据处理OLTP</strong>：主要应用于传统的关系型数据库</p>
+</li>
+<li><p>数据挖掘的目标则是挖掘数据背后隐藏的知识，通过关联分析、聚类和分类等方法建立分析模型，预测企业未来发展趋势和将要面临的问题。</p>
+</li>
+</ul>
+</li>
+<li><p>在海量数据和分析手段增多的情况下，<u>数据展现</u>则主要保障系统分析结果的可视化。</p>
+</li>
+</ul>
+<h2 id="7、项目管理"><a href="#7、项目管理" class="headerlink" title="7、项目管理"></a>7、项目管理</h2><h3 id="（1）项目范围管理"><a href="#（1）项目范围管理" class="headerlink" title="（1）项目范围管理"></a>（1）项目范围管理</h3><p>25题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003101018993.png" alt="image-20211003101018993" style="zoom:50%;"></p>
+<p>D</p>
+<p>解析：</p>
+<p>项目范围管理：包括保证项目顺利完成所需的全部工作过程。</p>
+<ul>
+<li><p>目的是控制项目的全部活动都在需求范围内，以确保项目资源的高效利用。</p>
+</li>
+<li><p>主要包括<u>项目启动</u>、<u>范围计划编制</u>、<u>范围定义</u>、<u>范围核实</u>和<u>范围变更控制</u>5个部分的内容。</p>
+<ul>
+<li><p><strong>项目启动</strong>指批准项目启动或者允许项目进入下一个阶段</p>
+</li>
+<li><p><strong>范围计划编</strong>制是将生产项目产品所需进行的项目工作渐进明细和形成文件的过程;</p>
+</li>
+<li><p><strong>项目范围定义</strong>是把主要的项目可交付成果分解成更小、更易管理的单元，</p>
+<p>以达到如下目的:</p>
+<ul>
+<li>提高对成本、时间及资源估算的准确性。</li>
+<li>为绩效测量与控制定义一个基准计划。</li>
+<li>便于进行明确的职责分配。</li>
+</ul>
+</li>
+<li><p><strong>范围定义</strong>：正确的范围定义是项目成功的关键。“当范围定义不明确时，不可避免的变更会使最终项目成本大大超出预算，因为这些不可避免的变更会破坏项目节奏，导致返工、增加项目历时、降低生产率和工作人员的士气”。</p>
+</li>
+<li><p><strong>范围核实</strong>是项目干系人（发起人、客户）正式接受项目范围的过程。范围核实需要审查可交付成果和工作结果，以确保它们都已经正确圆满地完成。如果项目被提前终止，范围核实过程应当对项目完成程度建立文档。范围核实与质量控制是不同的，范围核实是有关工作结果的“接收”，而质量控制是有关工作结果的正确性。项目范围变更控制涉及的是:<br>对造成范围变更的因素施加影响，以确保这些变更得到一致认可;确定范围变更是否已经发生;<br>当范围变更发生时对实际变更进行管理。</p>
+</li>
+<li><p><strong>范围变更控制</strong>必须与其他控制管理过程（进行控制、成本控制和质量控制）结合在一起使用，才能取得良好的效果。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）软件配置管理"><a href="#（2）软件配置管理" class="headerlink" title="（2）软件配置管理"></a>（2）软件配置管理</h3><p>26题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003110400088.png" alt="image-20211003110400088" style="zoom:50%;"></p>
+<p>解析：</p>
+<p>配置项的状态有3种：草稿（draft）、正式发布（released）、正在修改（changing）</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211003141849297.png" style="zoom:50%;"></p>
+<h1 id="2016年"><a href="#2016年" class="headerlink" title="2016年"></a>2016年</h1><h2 id="一、计算机组成原理"><a href="#一、计算机组成原理" class="headerlink" title="一、计算机组成原理"></a>一、计算机组成原理</h2><h3 id="1、嵌入式"><a href="#1、嵌入式" class="headerlink" title="1、嵌入式"></a>1、嵌入式</h3><p>（1）嵌入式处理器</p>
+<p>3题</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009133627724.png" alt="image-20211009133627724" style="zoom:50%;"></p>
+<ul>
+<li><p>嵌入式微处理器MPU：</p>
+<p>MPU采用增强型通用微处理器。由于嵌入式系统通常应用于环境比较恶劣的环境中，因而MPU在工作温度、电磁兼容性以及可靠性方面的要求较通用的标准微处理器高。但是<u>，MPU在功能方面与标准的微处理器基本上是一样的。</u>A是错的。</p>
+<p>MPU对可靠性和安全性要求高，但在功能方面和其他微处理器是一样的</p>
+</li>
+<li><p>微控制器MCU：</p>
+<p>MCU又称单片微型计算机(Single Chip Microcomputer)或者单片机，是指随着大规模集成电路的出现及其发展，将计算机的CPU、RAM、ROM、定时计数器和多种I/O接口集成在一片芯片上，形成芯片级的计算机，为不同的应用场合做不同组合控制。B是对的。</p>
+</li>
+<li><p>数字信号处理器DSP：</p>
+<p>DSP是一种独特的微处理器，是以数字信号来处理大量信息的器件。其实时运行速度可达每秒数以千万条复杂指令程序，远远超过通用微处理器，它的<u>强大数据处理能力</u>和<u>高运行速度</u>，是最值得称道的两大特色。C也是对的，</p>
+</li>
+<li><p>片上系统SOC</p>
+<p>SOC称为系统级芯片，也有称片上系统,意指它是一个产品，是一个有专用目标的集成电路，<u>其中包含完整系统并有嵌入软件的全部内容</u>，D也是对的。</p>
+</li>
+</ul>
+<h3 id="2、磁盘存储（缓冲区）"><a href="#2、磁盘存储（缓冲区）" class="headerlink" title="2、磁盘存储（缓冲区）"></a>2、磁盘存储（缓冲区）</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009134746612.png" alt="image-20211009134746612" style="zoom:50%;"></p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009142617869.png" style="zoom:50%;"></p>
+<h2 id="二、计算机网络"><a href="#二、计算机网络" class="headerlink" title="二、计算机网络"></a>二、计算机网络</h2><h3 id="1、TCP-IP协议族"><a href="#1、TCP-IP协议族" class="headerlink" title="1、TCP/IP协议族"></a>1、TCP/IP协议族</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009145745830.png" alt="image-20211009145745830" style="zoom:50%;"></p>
+<p>区分服务（DiffServ）：是为解决服务质量问题，在网络上将用户发送的数据流按照它对<u>服务质量的要求</u>划分等级的一种协议。</p>
+<p>区分服务将具有相同特性的若干业务流汇聚起来，为整个汇聚流提供服务，而不是面向单个业务流来提供服务。</p>
+<p>每个IP分组都要根据其QoS需求打上一个标记，这种标记称为DS码点，可以利用IPv4协议头中的<strong><u>服务类型字段</u></strong>，或者IPv6协议头中的<strong><u>通信类别字段</u></strong>来实现，这样就维持了现有的IP分组格式不变。</p>
+<h3 id="2、IPv6"><a href="#2、IPv6" class="headerlink" title="2、IPv6"></a>2、IPv6</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009151658619.png" alt="image-20211009151658619" style="zoom:50%;"></p>
+<p>IPv6地址的格式前缀(FP)用于表示地址类型或子网地址，用类似于IPv4的CIDR表示方法表示。</p>
+<p>链路本地地址:前缀为1111111010，用于同一链路的相邻节点间的通信.相当于IPv4的自动专用IP地址。</p>
+<p>为实现IP地址的自动配置，IPv6主机将MAC地址附加在地址前缀1111111010之后，产生一个链路本地地址。</p>
+<h3 id="3、管理距离"><a href="#3、管理距离" class="headerlink" title="3、管理距离"></a>3、管理距离</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152002347.png" alt="image-20211009152002347" style="zoom:50%;"></p>
+<p><u>管理距离是指—种路由协议的路由可信度。</u>每一种路由协议按可靠性从高到低，依次分配一个信任等级，这个信任等级就叫管理距离。</p>
+<p>为什么要出现管理距离这个技术呢?<br>在自治系统内部，如RIP协议是根据路径传递的跳数来决定路径长短也就是传输距离，而像EIGRP协议是根据路径传输中的带宽和延迟来决定路径开销从而体现传输距离的。这是两种不同单位的度量值，我们没法进行比较。为了方便比较，我们定义了管理距离。这样我们就可以统一单位从而衡量不同协议的路径开销从而选出最优路径。</p>
+<p>正常情况下，<u>管理距离越小，它的优先级就越高，也就是可信度越高。</u><br>对于两种不同的路由协议到一个目的地的路由信息，路由器首先根据管理距离决定相信哪一个协议。<br>AD值越低，则它的优先级越高。一个管理距离是一个从<u>0——255的整数值，0是最可信赖的，而255则意味着不会有业务量通过这个路由。</u><br>由此可见，管理距离是与信任相关的，只有选项C是相符的。</p>
+<h2 id="三、企业信息化战略与实施"><a href="#三、企业信息化战略与实施" class="headerlink" title="三、企业信息化战略与实施"></a>三、企业信息化战略与实施</h2><h3 id="1、政府信息化与电子政务"><a href="#1、政府信息化与电子政务" class="headerlink" title="1、政府信息化与电子政务"></a>1、政府信息化与电子政务</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152450073.png" alt="image-20211009152450073"></p>
+<p>参考解析:</p>
+<p>电子政务的行为主体包括:<strong>政府</strong>、<strong>企(事)业单位</strong>及<strong>居民</strong>。<br>国家和地方人口信息的采集、处理和利用，属于<strong>政府对政府</strong>的电子政务活动。</p>
+<h3 id="2、企业信息化与电子商务"><a href="#2、企业信息化与电子商务" class="headerlink" title="2、企业信息化与电子商务"></a>2、企业信息化与电子商务</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009152832036.png" alt="image-20211009152832036"></p>
+<p>参考解析:</p>
+<p>信息化的”三流”: <strong>信息流</strong>，<strong>资金流</strong>，<strong>物流</strong>。</p>
+<p>采购与库存管理是ERP的基本模块，其中采购管理模块是对采购工作——从采购订单产生至货物收到的全过程进行组织、实施与控制。</p>
+<p>库存管理(Inventory Management, IM）模块则是对企业物料的进、出、存进行管理。</p>
+<h2 id="四、开发管理"><a href="#四、开发管理" class="headerlink" title="四、开发管理"></a>四、开发管理</h2><h3 id="1、软件配置管理"><a href="#1、软件配置管理" class="headerlink" title="1、软件配置管理"></a>1、软件配置管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009161331171.png" alt="image-20211009161331171"></p>
+<p><strong>配置管理</strong>是PMBOK、ISO9000和CMMI中的重要组成元素，它在产品开发的生命周期中，提供了结构化的、有序化的、产品化的管理方法，是项目管理的基础工作。</p>
+<p><u><strong>配置管理</strong>是通过技术和行政手段对产品及其开发过程和生命周期进行控制、规范的一系列措施和过程。</u>信息系统开发过程中的变更以及相应的返工会对产品的质量有很大的影响。</p>
+<p><u><strong>产品配置</strong>是指一个产品在其生命周期各个阶段所产生的各种形式(机器可读或人工可读)和各种版本的文档、计算机程序、部件及数据的集合。</u>该集合中的每一个元素称为该产品配置中的一个配置项(Configuration ltem, Cl)。</p>
+<ul>
+<li><p>配置项主要有两大类：</p>
+<p>属于<strong>产品组成部分</strong>的工作成果，如需求文档、设计文档、源代码、测试用例等。</p>
+<p>属于<strong>项目管理</strong>和<strong>机构支撑过程域</strong>产生的文档，如工作计划、项目质量报告、项目跟踪报告等。这些文档虽然不是产品的组成部分，但是值得保存。</p>
+</li>
+</ul>
+<p><strong>软件系统的文档</strong>可以分为<u>用户文档</u>和<u>系统文档</u>两类。</p>
+<ul>
+<li><p><strong>用户文档</strong>主要描述系统功能和使用方法，并不关心这些功能是怎样实现的。</p>
+<p>用户文档是用户了解系统的第一步，它可以让用户获得对系统的准确的初步印象。</p>
+<p>用户文档至少应该包括下述5方面的内容:<br>(1）功能描述：说明系统能做什么;<br>(2）安装文档：说明怎样安装这个系统以及怎样使系统适应特定的硬件配置;<br>(8）使用手册：简要说明如何着手使用这个系统(通过丰富的例子说明怎样使用常用的系统功能，并说明用户操作错误时怎样恢复和重新启动);<br>(4）参考手册：详尽描述用户可以使用的所有系统设施以及它们的使用方法，并解释系统可能产生的各种出错信息的含义(对参考手册最主要的要求是完整，因此通常使用形式化的描述技术);<br>(5）操作员指南(如果需要有系统操作员的话)：说明操作员应如何处理使用中出现的各种情况。系统文档<br>所谓系统文档指从问题定义、需求说明到验收测试计划这样—系列和系统实现有关的文档。描述系统设计、实现和测试的文档对于理解程序和维护程序来说是非常重要的。</p>
+</li>
+<li><p><strong>系统文档</strong>描述系统设计、实现和测试等各方面的内容。</p>
+</li>
+</ul>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009182224882.png" alt="image-20211009182224882"></p>
+<p>软件系统工具的种类繁多，很难有统一的分方法。</p>
+<p>通常可以按软件过程活动将软件工具分为：<br><strong>软件开发工具</strong>：需求分析工具、设计工具、编码与排错工具。<br><strong>软件维护工具</strong>：版本控制工具、文档分析工具、开发信息库工具、逆向工程工具、再工程工具。<br><strong>软件管理和软件支持工具</strong>：项目管理工具、配置管理工具、软件评价工具、软件开发工具的评价和选择。</p>
+<h3 id="2、软件需求管理"><a href="#2、软件需求管理" class="headerlink" title="2、软件需求管理"></a>2、软件需求管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009180029700.png" alt="image-20211009180029700"></p>
+<ul>
+<li><p>过程能力成熟度模型（CMM ) 在软件开发机构中被广泛用来指导软件过程改进。</p>
+<p>该模型描述了软件处理能力的5个成熟级别。为了达到过程能力成熟度模型的第二级，组织机构必须具有<strong>6个</strong>关键过程域KPA ( Key ProcessAreas )。故A选项错误。</p>
+</li>
+<li><p>除了文本，每一个功能需求应该有一些相关的信息与它联系，我们把这些信息称为<strong>需求属性</strong>。对于一个大型的复杂项目来说，丰富的属性类别显得尤为重要。例如，在文档中考虑和明确如下属性：</p>
+<p>1、创建需求的时间 2、需求的版本号 3、创建需求的作者 4、负责认可该软件需求的人员 5、需求状态 6、需求的原因和根据 7、需求涉及的子系统 8、需求涉及的产品版本号 9、使用的验证方法或者接受的测试标准 10、产品的优先级或者重要程度 11、需求的稳定性。故B选项错误。</p>
+</li>
+<li><p>需求的变更遵循以下流程:<br>（1）<u>问题分析和变更描述。</u>这是识别和分析需求问题或者一份明确的变更提议，以检查它的有效性，从而产生个更明确的需求变更提议。<br>（2）<u>变更分析和成本计算。</u>使用可追溯性信息和系统需求的一般知识，对需求变更提议进行影响分析和评估。变更成本计算应该包括对需求文档的修改、系统修改的设计和实现的成本。一旦分析完成并且被确认，应该进行是否执行这一变更的决策。<br>（3）<u>变更实现。</u>这要求需求文档和系统设计以及实现都要同时修改。如果先对系统的程序做变更，然后再修改需求文档，这几乎不可避免地会出现需求文档和程序的不一致。<br>故C选项错误。</p>
+</li>
+</ul>
+<h3 id="3、软件重用"><a href="#3、软件重用" class="headerlink" title="3、软件重用"></a>3、软件重用</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010160050833.png" alt="image-20211010160050833"></p>
+<p>软件重用是指在两次或多次不同的软件开发过程中重复使用相同或相似软件元素的过程。</p>
+<p><strong>软件元素</strong>包括<u>需求分析文档</u>、<u>设计过程</u>、<u>设计文档</u>、<u>程序代码</u>、<u>测试用例</u>、<u>领域知识</u>等。</p>
+<p>对于新的软件开发项目而言，它们或者是构成整个目标软件系统的部件，或者在软件开发过程中发挥某种作用。通常将这些软件元素称为<strong>软部件</strong>。</p>
+<h2 id="五、开发方法"><a href="#五、开发方法" class="headerlink" title="五、开发方法"></a>五、开发方法</h2><h3 id="1、软件开发模型"><a href="#1、软件开发模型" class="headerlink" title="1、软件开发模型"></a>1、软件开发模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009180752487.png" alt="image-20211009180752487"></p>
+<p>记住。</p>
+<p>螺旋模型在快速模型的基础上扩展而成。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211009181030564.png" alt="image-20211009181030564"></p>
+<p>（1）<strong>XP(Extreme Programming，极限编程）</strong>在所有的敏捷型方法中，XP是最引人瞩目的。它源于Smalltalk圈子，特别是Kent Beck和Ward Cunningham在2o世纪80年代末的密切合作。XP在一些对费用控制严格的公司中的使用，已经被证明是非常有效的。</p>
+<p>（2）<strong>Cockburn的水晶系列方法</strong>，水晶系列方法是由Alistair Cockburn提出的。<u>它与XP方法一样，都有以人为中心的理念，但在实践上有所不同。</u>Alistair考虑到人们一般很难严格遵循一个纪律约束很强的过程，因此，与XP的高度纪律性不同，Alistair探索了用<u>最少纪律约束而仍能成功</u>的方法，从而在产出效率与易于运作上达到一种平衡也就是说，虽然水晶系列不如XP那样的产出效率，但会有更多的人能够接受并遵循它。</p>
+<p>（3）<strong>开放式源码</strong>，这里提到的开放式源码指的是开放源码界所用的一种运作方式。开放式源码项目有一个特别之处，就是<u>程序开发人员在地域上分布很广</u>，这使得它和其他敏捷方法不同，因为一般的敏捷方法都强调项目组成员在同一地点工作。开放源码的一个突出特点就是<u>查错排障(debug)的高度并行性</u>，任何人发现了错误都可将改正源码的“补丁”文件发给维护者。然后由维护者将这些“补丁”或是新增的代码并入源码库。</p>
+<p>（4）<strong>SCRUM</strong>。SCRUM已经出现很久了，像前面所论及的方法一样，该方法强调这样一个事实，即明确定义了的可重复的方法过程只限于在明确定义了的可重复的环境中，为明确定义了的可重复的人员所用，去解决明确定义了的可重复的问题。</p>
+<p>（5）<strong>Coad的功用驱动开发方法(FDD-Feature Driven Development)</strong><br>FDD是由Jeff De Luca和大师Peter Coad提出来的。像其他方法一样，它致力于短时的迭代阶段和可见可用的功能。在FDD中，一个迭代周期─般是两周。<br>在FDD中，编程开发人员分成两类:<u>首席程序员</u>和<u>类程序员(class owner)</u>。首席程序员是最富有经验的开发人员，他们是项目的协调者、设计者和指导者，而“类”程序员则主要做源码编写。</p>
+<p>（6）<strong>ASD方法</strong>，ASD (Adaptive Software Development)方法由Jim Highsmith提出，其核心是三个非线性的、重叠的开发阶段:猜测、合作与学习。</p>
+<h2 id="六、系统分析与设计方法"><a href="#六、系统分析与设计方法" class="headerlink" title="六、系统分析与设计方法"></a>六、系统分析与设计方法</h2><h3 id="1、UML图"><a href="#1、UML图" class="headerlink" title="1、UML图"></a>1、UML图</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010101843355.png" alt="image-20211010101843355"></p>
+<p>面向对象的<strong>分析模型</strong>主要由<u>顶层架构图</u>、<u>用例与用例图</u>、<u>领域概念模型</u>构成；</p>
+<p><strong>设计模型</strong>则包含<u>以包图表示的软件体系结构图</u>、<u>以交互图表示的用例实现图</u>、<u>完整精确的类图</u>、<u>针对复杂对象的状态图</u>和<u>用以描述流程化处理过程的活动图</u>等。</p>
+<h2 id="七、软件架构设计"><a href="#七、软件架构设计" class="headerlink" title="七、软件架构设计"></a>七、软件架构设计</h2><h3 id="1、软件质量属性"><a href="#1、软件质量属性" class="headerlink" title="1、软件质量属性"></a>1、软件质量属性</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011154402202.png" alt="image-20211011154402202"></p>
+<p><strong>可修改性(modifiability)</strong>是指能够<u>快速地</u>以<u>较高的性能价格比</u>对系统进行变更的能力。通常以某些具体的变更为基准，通过考察这些变更的代价衡量可修改性。</p>
+<p>可修改性包含四个方面：</p>
+<ul>
+<li>（1）<strong>可维护性</strong>(maintainability)。这主要体现在问题的修复上:在错误发生后”修复”软件系统。为可维护性做好准备的软件体系结构往往能做局部性的修改并能使对其他构件的负面影响最小化。</li>
+<li>（2）<strong>可扩展性</strong>（extendibility)。这一点关注的是使用新特性来扩展软件系统，以及使用改进版本来替换构件并删除不需要或不必要的特性和构件。为了实现可扩展性，软件系统需要松散耦合的构件。其目标是实现一种体系结构，它能使开发人员在不影响构件客户的情况下替换构件。支持把新构件集成到现有的体系结构中也是必要的。</li>
+<li>（3）<strong>结构重组</strong>(reassemble)。这一点处理的是重新组织软件系统的构件及构件间的关系，例如通过将构件移动到一个不同的子系统而改变它的位置。为了支持结构重组，软件系统需要精心设计构件之间的关系。理想情况下它们允许开发人员在不影响实现的主体部分的情况下灵活地配置构件。</li>
+<li>（4）<strong>可移植性</strong>(portability)。可移植性使软件系统适用于多种硬件平台、用户界面、操作系统、编程语言或编译器。为了实现可移植，需要按照硬件无关的方式组织软件系统，其他软件系统和环境被提取出。可移植性是系统能够在不同计算环境下运行的能力。这些环境可能是硬件、软件，也可能是两者的结合。在关于某个特定计算环境的所有假设都集中在一个构件中时，系统是可移植的。如果移植到新的系统需要做些更改，则可移植性就是一种特殊的可修改性。</li>
+</ul>
+<p>第40题（单选题)∶<br>某公司欲开发一个智能机器人系统，在架构设计阶段，公司的架构师识别出3个核心质量属性场景。其中”机器人系统主电源断电后，能够在10秒内自动启动备用电源并进行切换，恢复正常运行”主要与（<strong>可用性</strong>）质量属性相关，通常可采用（<strong>主动冗余</strong>）架构策略实现该属性；“机器人在正常运动过程中如果发现前方2米内有人或者障碍物，应在1秒内停止并在2秒内选择一条新的运行路径“主要与(<strong>性能</strong>)质量属性相关，通常可采用（<strong>资源调度</strong>）架构策略实现该属性;“对机器人的远程控制命令应该进行加密，从而能够抵挡恶意的入侵破坏行为，并对攻击进行报警和记录”主要与(<strong>安全性</strong>）质量属性相关，通常可采用（<strong>追踪审计</strong>）架构策略实现该属性。</p>
+<p>解析：</p>
+<ul>
+<li><p>“机器人系统主电源断电后，能够在10秒内自动启动备用电源并进行切换，恢复正常运行”</p>
+<p>——<u>属于<strong>可用性</strong>，因为场景描述的是<strong>故障恢复问题</strong>。<strong>主动冗余</strong>是可用性的常见策略。</u></p>
+</li>
+<li><p>“机器人在正常运动过程中如果发现前方2米内有人或者障碍物，应在1秒内停止并在2秒内选择一条新的运行路径”</p>
+<p>——<u>属于<strong>性能</strong>，<strong>资源调度</strong>是其常见策略。</u></p>
+</li>
+<li><p>“对机器人的远程控制命令应该进行加密，从而能够抵挡恶意的入侵破坏行为，并对攻击进行报警和记录”</p>
+<p>——<u>属于<strong>安全性</strong>，常见的策略是<strong>追踪审计</strong>。</u></p>
+</li>
+</ul>
+<h3 id="2、构件与中间件技术"><a href="#2、构件与中间件技术" class="headerlink" title="2、构件与中间件技术"></a>2、构件与中间件技术</h3><h4 id="（1）面向构件的编程"><a href="#（1）面向构件的编程" class="headerlink" title="（1）面向构件的编程"></a>（1）面向构件的编程</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010161501092.png" alt="image-20211010161501092"></p>
+<p>面向构件的编程(COP）关注于如何支持建立面向构件的解决方案。</p>
+<p>一个基于一般OOP风格的COP定义如下：</p>
+<p>面向构件的编程需要下列基本的支持:</p>
+<p>1、多态性（可替代性)</p>
+<p>2、模块封装性(高层次信息的隐藏)</p>
+<p>3、后期的绑定和装载(部署独立性)</p>
+<p>4、安全性(类型和模块安全性)</p>
+<h4 id="（2）CORBA构件模型"><a href="#（2）CORBA构件模型" class="headerlink" title="（2）CORBA构件模型"></a>（2）CORBA构件模型</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010162029394.png" alt="image-20211010162029394"></p>
+<p><strong>可移植对象适配器POA</strong>：是对象实现与ORB其他组件之间的中介，它将客户请求传送到伺服对象，按需创建子POA，提供管理伺服对象的策略。</p>
+<p><strong>CORBA对象</strong>可看作是一个具有对象标识、对象接口及对象实现的抽象实体。之所以称为抽象的，是因为并没有硬性规定CORBA对象的实现机制。由于独立于程序设计语言和特定ORB产品，一个CORBA对象的引用又称可互操作的对象引用(Interoperable Object Reference)。</p>
+<p>从客户程序的角度看，IOR中包含了对象的标识、接口类型及其他信息以查找对象实现。<br><strong>伺服对象(servant)</strong>是指具体程序设计语言的对象或实体，通常存在于一个服务程序进程之中。客户程序通过对象引用发出的请求经过ORB担当中介角色，转换为对特定的伺服对象的调用。在一个CORBA对象的生命期中，它可能与多个伺服对象相关联，因而对该对象的请求可能被发送到不同的伺服对象。<br><strong>对象标识(Object ID)</strong>是一个用于在POA中标识一个CORBA对象的字符串。它既可由程序员指派，也可由对象适配器自动分配，这两种方式都要求对象标识在创建它的对象适配器中必须具有唯—性。</p>
+<h4 id="（3）构件"><a href="#（3）构件" class="headerlink" title="（3）构件"></a>（3）构件</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010164119354.png" alt="image-20211010164119354"></p>
+<p><u><strong>构件</strong>是一组通常需要 <em>同时部署</em> 的原子构件。</u>构件和原子构件之间的区别在于，大多数原子构件永远都不会被单独部署，尽管它们可以被单独部署。相反，大多数原子构件都属于一个构件家族，一次部署往往涉及整个家族。—个原子构件是一个模块和一组资源。</p>
+<p><u><strong>原子构件</strong>是部署、版本控制和替换的基本单位。</u>原子构件通常<u>成组地部署</u>，但是它也能够被单独部署。</p>
+<p><u><strong>模块</strong>是—组类和可能的非面向对象的结构体</u>，比如过程或者函数。一个模块是<strong>不带单独资源</strong>的原子构件(在这个严格定义下，Java包不是模块——在Java中部署的原子单元是类文件。一个单独的包被编译成多个单独的类文件——每个公共类都有一个)。</p>
+<h3 id="3、调用返回风格"><a href="#3、调用返回风格" class="headerlink" title="3、调用返回风格"></a>3、调用返回风格</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010173833150.png" alt="image-20211010173833150"></p>
+<p>UDDI(Universal Descrip tion，Discovery&amp;Integration)，UDDI用于Web服务注册和服务查找;</p>
+<p>WSDL (Web Service Description Language),WSDL用于描述Web服务的接口和操作功能;</p>
+<p>SOAP (Simple Object Access Protocol)，SOAP为建立Web服务和服务请求之间的通信提供支持。</p>
+<p>BPEL (Business Process Execution Language For Web Services)翻译成中文的意思是面向Web服务的业务流程执行语言，也有的文献简写成BPEL4WS，它是一种使用Web服务定义和执行业务流程的语言。使用BPEL，用户可以通过组合、编排和协调Web服务自上而下地实现面向服务的体系结构(SOA)。BPEL提供了一种相对简单易懂的方法，可将多个Web服务组合到一个新的复合服务（称作业务流程)中。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180841371.png" alt="image-20211010180841371"></p>
+<p>C2体系结构风格可以概括为:通过连接件绑定在一起的按照一组规则运作的并行构件网络。</p>
+<p>C2风格中的系统组织规则如下:<br>（1）系统中的构件和连接件都有一个顶部和一个底部;<br>（2）构件的顶部应连接到某连接件的底部，构件的底部则应连接到某连接件的顶部，而构件与构件之间的直接连接是不允许的;<br>（3）一个连接件可以和任意数目的其他构件和连接件连接;<br>（4）当两个连接件进行直接连接时，必须由其中一个的底部到另一个的顶部。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180917088.png" alt="image-20211010180917088" style="zoom:50%;"></p>
+<h3 id="4、特定领域架构设计"><a href="#4、特定领域架构设计" class="headerlink" title="4、特定领域架构设计"></a>4、特定领域架构设计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011153348308.png" alt="image-20211011153348308"></p>
+<p>DSSA的基本活动包括：<strong>领域分析、领域设计、领域实现</strong>:</p>
+<ul>
+<li><p>1、领域分析<br><u>这个阶段的主要目标是获得领域模型。</u>领域模型描述领域中系统之间的共同的需求，即领域模型所描述的需求为领域需求。在这个阶段中首先要进行一些准备性的活动，包括定义领域的边界。从而明确分析的对象;识别信息源整个领域工程过程中信息的来源，可能的信息源包括现存系统、技术文献、问题域和系统开发的专家、用户调查和市场分析、领域演化的历史记录等，在此基础上就可以分析领域中系统的需求，确定哪些需求是领域中的系统广泛共享的，从而建立领域模型。当领域中存在大量系统时，需要选择它们的一个子集作为样本系统。对样本系统需求的考察将显示领域需求的一个变化范围。一些需求对所有被考察的系统是共同的，一些需求是单个系统所独有的很多需求位于这两个极端之间，即被部分系统共享。</p>
+</li>
+<li><p>2、领域设计<br><u>这个阶段的目标是获得DSSA</u>。DSSA描述在领域模型中表示的需求的解决方案，它不是单个系统的表示，而是能够适应领域中多个系统的需求的一个高层次的设计。建立了领域模型之后，就可以派生出满足这些被建模的领域需求的DSSA，由于领域模型中的领域需求具有一定的变化性，DSSA也要相应地具有变化性。它可以通过表示多选一的(alternative)、可选的(optional)解决方案等来做到这一点。模型和DSSA来组织的，因此在这个阶段通过获得DSSA，也就同时形成了重用基础设施的规约。</p>
+</li>
+<li><p>3、领域实现<br><u>这个阶段的主要目标是依据领域模型和DSSA开发和组织可重用信息。</u>这些可重用信息可能是从现有系统中提取得到，也可能需要通过新的开发得到。它们依据领域模型和DSSA进行组织，也就是领域模型和DSSA定义了这些重用信息的重用时机，从而支持了系统化的软件重用。这个阶段也可以看作重用基础设施的实现阶段。<br>值得注意的是，以上过程是一个反复的、逐渐求精的过程。在实施领域工程的每个阶段中，都可能返回到以前的步骤，对以前的步骤得到的结果进行修改和完善，再回到当前步骤，在新的基础上进行本阶段的活动。</p>
+</li>
+</ul>
+<p>参与DSSA的人员可以划分为四种角色:领域专家、领域分析师、领域设计人员和领域实现人员。</p>
+<ul>
+<li>1、领域专家<br>领域专家可能包括该领域中系统的有经验的用户、从事该领域中系统的需求分析、设计、实现以及项目管理的有经验的软件工程师等。领域专家的主要任务包括提供关于领域中系统的需求规约和实现的知识，帮助组织规范的致的领域字典，帮助选择样本系统作为领域工程的依据，复审领域模型、DSSA等领域工程产品等。<br>领域专家应该熟悉该领域中系统的软件设计和实现、硬件限制、未来的用户需求及技术走向等。</li>
+<li>2、领域分析人员<br>领域分析人员应由具有知识工程背景的有经验的系统分析员来担任。领域分析人员的主要任务包括控制整个领域分析过程，进行知识获取，将获取的知识组织到领域模型中，根据现有系统、标准规范等验证领域模型的准确性和一致性，维护领域模型。<br>领域分析人员应熟悉软件重用和领域分析方法;熟悉进行知识获取和知识表示所需的技术、语言和工具;应具有一定的该领域的经验，以便于分析领域中的问题及与领域专家进行交互;应具有较高的进行抽象、关联和类比的能<br>力;应具有较高的与他人交互和合作的能力。</li>
+<li>3、领域设计人员<br>领域设计人员应由有经验的软件设计人员来担任。领域设计人员的主要任务包括控制核个软件设计过程，根据领域模型和现有的系统开发出DSSA，对DSSA的准确性和一致性进行验证，建立领域模型和DSSA之间的联系。<br>领域设计人员应熟悉软件重用和领域设计方法;熟悉软件设计方法;应有一定的该领域的经验，以便于分析领域中的问题及与领域专家进行交互。</li>
+<li>4、领域实现人员<br>领域实现人员应由有经验的程序设计人员来担任。领域实现人员的主要任务包括根据领域模型和DSSA，或者从头开发可重用构件，或者利用再工程的技术从现有系统中提取可重用构件，对可重用构件进行验证，建立DSSA与可重用构件间的联系。<br>领域实现人员应熟悉软件重用、领域实现及软件再工程技术;熟悉程序设计;具有一定的该领域的经验。</li>
+</ul>
+<h2 id="八、信息系统基础"><a href="#八、信息系统基础" class="headerlink" title="八、信息系统基础"></a>八、信息系统基础</h2><h3 id="1、企业信息化与电子商务"><a href="#1、企业信息化与电子商务" class="headerlink" title="1、企业信息化与电子商务"></a>1、企业信息化与电子商务</h3><h4 id="（1）企业应用集成"><a href="#（1）企业应用集成" class="headerlink" title="（1）企业应用集成"></a>（1）企业应用集成</h4><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010175014750.png" alt="image-20211010175014750"></p>
+<p><strong>JDBC</strong>(Java Data Base Connectivity,java数据库连接)</p>
+<ul>
+<li>是一种用于执行SQL语句的Java API，可以为多种关系数据库提供统—访问，它由一组用Java语言编写的类和接口组成。</li>
+<li>JDBC提供了一种基准，据此可以构建更高级的工具和接口，使数据库开发人员能够编写数据库应用程序。</li>
+</ul>
+<p><strong>JCA</strong>标准化连接子</p>
+<ul>
+<li>是由J2EE 1.3首先提出的，它位于J2EE应用服务器和企业信息系统(EIS)之间，比如数据库管理、企业资源规划(ERP)、企业资产管理(EAM）和客户关系管理(CRM)系统。</li>
+<li>不是用Java开发的企业应用或者在J2EE框架内的应用都可以通过JCA连接。</li>
+<li>JCA是在javax.resource包和它的子包(cci, spi和spi.security)中定义的。(JCA的缩写形式也用于Java cryptography API的缩写。)</li>
+</ul>
+<p><u><strong>JMS</strong>是Java对消息系统的访问机制，但它本身并不实现消息。</u></p>
+<ul>
+<li>JMS支持点对点分发的消息队列，也支持多个目标订阅的消息主题。当消息发布给一个主题的适合，消息就会发送给所有那个主题的订阅者。</li>
+<li>JMS支持各种消息类型(二进制、流、名-值表、序列化的对象和文本)。通过声明与SQL的WHERE相近的句段，可以建立消息的过滤器。</li>
+</ul>
+<p><u><strong>Java lDL</strong>即idltojava编译器就是一个ORB，可用来在Java语言中定义、实现和访问CORBA对象。</u></p>
+<ul>
+<li>Java IDL支持的是一个瞬间的CORBA对象，即在对象服务器处理过程中有效。</li>
+<li>实际上，Java IDL的ORB是一个类库而已，并不是一个完整的平台软件，但它对Java IDL应用系统和其他CORBA应用系统之间提供了很好的底层通信支持，实现了OMG定义的ORB基本功能。</li>
+</ul>
+<h2 id="九、软件测试审评方法"><a href="#九、软件测试审评方法" class="headerlink" title="九、软件测试审评方法"></a>九、软件测试审评方法</h2><h3 id="1、软件集成测试"><a href="#1、软件集成测试" class="headerlink" title="1、软件集成测试"></a>1、软件集成测试</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211010180511158.png" alt="image-20211010180511158"></p>
+<p>集成方式</p>
+<ul>
+<li>非渐增式（一次性组装）</li>
+<li>渐增式组装（自顶向下集成、自底向上集成）</li>
+</ul>
+<p>集成测试主要目标是发现模块之间接口和通信所存在的问题，主要发现设计阶段所产生的错误，所以在概要设计阶段制定。</p>
+<h2 id="十、法律"><a href="#十、法律" class="headerlink" title="十、法律"></a>十、法律</h2><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180138907.png" alt="image-20211011180138907"></p>
+<p>软件著作权中规定:开发软件所用的思想、处理过程、操作方法或者数学概念不受保护。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180333128.png" alt="image-20211011180333128"></p>
+<p>著作权法规定:美术作品的著作权不随原作品所有权的转变而发生变化。所以M公司购买N画家的美术作品，著作权不归M公司，而归N画家。M公司将美术作品注册为商标，是侵犯了N画家著作权的。</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180411428.png" alt="image-20211011180411428"></p>
+<p>在题目的描述中，未体现出有申请专利的行为，所以不享有专利权。</p>
+<h2 id="十一、数学"><a href="#十一、数学" class="headerlink" title="十一、数学"></a>十一、数学</h2><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211011180453086.png" alt="image-20211011180453086"></p>
+<p>数学建模是利用数学方法解决实际问题的一种实践。即通过抽象、简化、假设、引进变量等处理过程后，将实际问题用数学方式表达，建立起数学模型，然后运用先进的数学方法及计算机技术进行求解。</p>
+<p>数学模型是对于现实世界的一个特定对象，一个特定目的，根据特有的内在规律，做出一些必要的假设，运用适当的数学工具，得到一个数学结构。</p>
+<p>对不同的问题，有不同的评价标准，数学模型难有统一的普适标准来评价。</p>
+<h1 id="2017年"><a href="#2017年" class="headerlink" title="2017年"></a>2017年</h1><h2 id="一、操作系统"><a href="#一、操作系统" class="headerlink" title="一、操作系统"></a>一、操作系统</h2><h3 id="1、进程的状态"><a href="#1、进程的状态" class="headerlink" title="1、进程的状态"></a>1、进程的状态</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017100647019.png" alt="image-20211017100647019"></p>
+<p>进程控制块PCB的组织方式有: 1) 线性表方式，2)引表方式，3)链接表方式。</p>
+<ul>
+<li>线性表方式：不论进程的状态如何,将所有的PCB<strong>连续地存放</strong>在内存的系统区。这种方式适用于系统中进程数<br>目不多的情况。</li>
+<li>索引表方式：该访式是线性表方式的改进，系统按照进程的状态分别建立<strong>就绪索引表</strong>、<strong>阻塞索引表</strong>等。</li>
+<li>链接表方式：系统按照进程的状态将进程的PCB组成队列，从而形成<strong>就绪队列、阻塞队列、运行队列</strong>等。</li>
+</ul>
+<h3 id="2、嵌入式操作系统——低功耗设计"><a href="#2、嵌入式操作系统——低功耗设计" class="headerlink" title="2、嵌入式操作系统——低功耗设计"></a>2、嵌入式操作系统——低功耗设计</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017104538408.png" alt="image-20211017104538408"></p>
+<p>软件设计层面的功耗控制主要可以从以下方面展开：</p>
+<p>1、<strong>软硬件协同</strong>设计，即软件的设计要与硬件的匹配，考虑硬件因素。</p>
+<p>2、<strong>编译优化</strong>，采用低功耗优化的编译技术。</p>
+<p>3、减少系统的持续运行时间，可从<strong>算法</strong>角度进行优化。</p>
+<p>4、用“中断”代替′查询””。</p>
+<p>5、进行电源的有效管理。</p>
+<h2 id="二、数据库"><a href="#二、数据库" class="headerlink" title="二、数据库"></a>二、数据库</h2><h3 id="1、查询语句效率问题"><a href="#1、查询语句效率问题" class="headerlink" title="1、查询语句效率问题"></a>1、查询语句效率问题</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017101323601.png" alt="image-20211017101323601"></p>
+<p>本题考查关系代数运行效率问题。</p>
+<p>解决这类问题，有一个通用原则，即，存在联接操作与选择操作的，<strong>尽可能早的完成选择操作</strong>，这样能降低参与联接操作的数据量，极大提升运算效率。</p>
+<p>本题题目有瑕疵，E2和E4是不等价的，虽然自然连接比笛卡尔积效率高，但E4由于本身与E2不等价，缺少了一次等值比较(R.A2=S.A2)，所以效率更高。</p>
+<h3 id="2、数据仓库"><a href="#2、数据仓库" class="headerlink" title="2、数据仓库"></a>2、数据仓库</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017101702001.png" alt="image-20211017101702001"></p>
+<p>数据仓库4大特点:<br><strong>面向主题</strong>：数据按主题组织。<br><strong>集成的</strong>：消除了源数据中的不一致性，提供整个企业的一致性全局信息。<br><strong>相对稳定</strong>（非易失的)：主要进行查询操作，只有少量的修改和删除操作(或是不删除)。<br><strong>反映历史变化</strong>(随着时间变化)：记录了企业从过去某一时刻到当前各个阶段的信息，可对发展历程和未来趋势做定量分析和预测。</p>
+<h2 id="三、计算机组成原理"><a href="#三、计算机组成原理" class="headerlink" title="三、计算机组成原理"></a>三、计算机组成原理</h2><h3 id="1、嵌入式——DSP芯片"><a href="#1、嵌入式——DSP芯片" class="headerlink" title="1、嵌入式——DSP芯片"></a>1、嵌入式——DSP芯片</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017102229034.png" alt="image-20211017102229034"></p>
+<p><strong>编程DSP芯片</strong>是一种具有特殊结构的<u>微处理器</u>，为了达到快速进行数字信号处理的目的，DSP芯片一般都采用特殊的软硬件结构：</p>
+<ul>
+<li><p>哈佛结构：</p>
+<p>DSP采用了<strong>哈佛结构</strong>，<u>将存储器空间划分成两个，分别存储程序和数据</u>。它们有两组总线连接到处理器核，允许同时对它们进行访问，每个存储器独立编址，独立访问。这种安排将处理器的数据吞吐率加倍，更重要的是同为处理器核提供数据与指令。在这种布局下，DSP得以实现单周期的MAC指令。<br>在哈佛结构中，由于程序和数据存储器在两个分开的空间中，因此<u>取指和执行能完全重叠运行</u>。</p>
+</li>
+<li><p>流水线：</p>
+<p>与哈佛结构相关，DSP芯片广泛采用2-6级流水线以减少指令执行时间，从而增强了处理器的处理能力。这可使指令执行能完全重叠，每个指令周期内，不同的指令都处于激活状态。</p>
+</li>
+<li><p>独立的硬件乘法器：</p>
+<p>在实现多媒体功能及数字信号处理的系统中，算法的实现和数字滤波都是计算密集型的应用。在这些场合，乘法运算是数字处理的重要组成部分，是各种算法实现的基本元素之一。乘法的执行速度越快，DSP处理器的性能越高。相比与一般的处理器需要30-40个指令周期，<u>DSP芯片的特征就是有一个专用的硬件乘法器，乘法可以在一个周期内完成</u>。</p>
+</li>
+<li><p>特殊的DSP指令：</p>
+<p>DSP的另一特征是采用特殊的指令，专为数字信号处理中的一些常用算法优化。这些特殊指令为一些典型的数字处理提供加速，可以大幅提高处理器的执行效率。使一些高速系统的实时数据处理成为可能。</p>
+</li>
+<li><p>独立的DMA总线和控制器：</p>
+<p><u>有一组或多组独立的DMA总线，与CPU的程序、数据总线并行工作。</u>在不影响CPU工作的条件下，DMA的速度已经达到800MBIS以上。这在需要大数据量进行交换的场合可以减小CPU的开销，提高数据的吞吐率。提高系统的并行执行能力。</p>
+</li>
+<li><p>多处理器接口：</p>
+<p>使多个处理器可以很方便的并行或串行工作以提高处理速度。</p>
+</li>
+<li><p>JTAG (Joint Test Action Group）：</p>
+<p>标准测试接口(IEEE 1149标准接口)。便于对DSP作片上的在线仿真和多DSP条件下的调试。</p>
+</li>
+<li><p>快速的指令周期：</p>
+<p>哈佛结构，流水线操作，专用的硬件乘法器，特殊的DSP指令再加上集成电路的优化设计，可使DSP芯片的指令周期在10ns以下。快速的指令周期可以使DSP芯片能够实时实现许多DSP应用。</p>
+</li>
+</ul>
+<h3 id="2、总线"><a href="#2、总线" class="headerlink" title="2、总线"></a>2、总线</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017104304946.png" alt="image-20211017104304946"></p>
+<p>关于串行总线的特点，总结如下:<br>1、串行总线适宜长距离传输数据。但串行总线有半双工、全双工之分，全双工是一条线发一条线收。所以A选项错误<br>2、串行总线传输的波特率在使用中可以改变，所以B选项错误。<br>3、串行总线的数据发送和接收可以使用多种方式，程序查询方式和中断方式都可以。所以D选项错误。</p>
+<h2 id="四、系统性能评价"><a href="#四、系统性能评价" class="headerlink" title="四、系统性能评价"></a>四、系统性能评价</h2><h3 id="1、性能指标——CPU主频的计算"><a href="#1、性能指标——CPU主频的计算" class="headerlink" title="1、性能指标——CPU主频的计算"></a>1、性能指标——CPU主频的计算</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017153613850.png" alt="image-20211017153613850"></p>
+<p>CPU的工作频率（主频）包括两个部分：外频与倍频，两者的乘积就是主频。所谓外频，就是外部频率，指的是系统总线频率。</p>
+<p>外频（系统总线频率） x 倍频 = 主频（CPU频率）</p>
+<p>倍频的全称是倍频系数，倍频系数是指CPU主频与外频之间的相对比例关系。</p>
+<p>最初CPU主频和系统总线速度是一样的，但CPU的速度越来越快，倍频技术也就相应产生。它的作用是使系统总线工作在相对较低的频率上，而CPU速度可以通过倍频来提升。</p>
+<h3 id="2、性能指标——不同系统的性能指标"><a href="#2、性能指标——不同系统的性能指标" class="headerlink" title="2、性能指标——不同系统的性能指标"></a>2、性能指标——不同系统的性能指标</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017161226983.png" alt="image-20211017161226983"></p>
+<p>为了优化系统性能，有时需要对系统进行调整。</p>
+<p>对于数据库系统，性能调整主要包括<strong>CPU/内存使用状况</strong>、<strong>优化数据库设计</strong>、<strong>优化数据库管理</strong>以及<strong>进程/线程状态</strong>、<strong>硬盘剩余空间</strong>、<strong>日志文件大小</strong>等;</p>
+<p>对于应用系统，性能调整主要包括应用<strong>系统的可用性</strong>、<strong>响应时间</strong>、<strong>并发用户数</strong>以及<strong>特定应用的系统资源占用</strong>等。</p>
+<h2 id="五、计算机网络"><a href="#五、计算机网络" class="headerlink" title="五、计算机网络"></a>五、计算机网络</h2><h3 id="1、TCP-IP协议族——通过IP查询域名"><a href="#1、TCP-IP协议族——通过IP查询域名" class="headerlink" title="1、TCP/IP协议族——通过IP查询域名"></a>1、TCP/IP协议族——通过IP查询域名</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017154337028.png" alt="image-20211017154337028"></p>
+<p>PTR记录是反向记录，通过IP查询域名。</p>
+<p>服务器名称——&gt;IP地址（查询DNS缓存）</p>
+<p>IP地址——&gt;服务器名称（查询PTR记录）</p>
+<h3 id="2、TCP-IP协议族——DHCP指令"><a href="#2、TCP-IP协议族——DHCP指令" class="headerlink" title="2、TCP/IP协议族——DHCP指令"></a>2、TCP/IP协议族——DHCP指令</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017154921496.png" alt="image-20211017154921496"></p>
+<ul>
+<li>发现报文（DHCP DISCOVER ）：客户端开始DHCP过程发送的包，是DHCP协议的开始。</li>
+<li>提供报文（DHCP OFFER ）：服务器接收到DHCP DISCOVER之后做出的<u>响应</u>，它包括了给予客户端的IP（yiaddr）、客户端的MAC地址、租约过期时间、服务器的识别符以及其他信息。</li>
+<li>请求报文（DHCP REQUEST ）：客户端对于服务器发出的DHCP OFFER所做出的响应。在租用期过了一半，需要续租用期的时候同样会使用。</li>
+<li>确认报文（DHCP ACK ）：服务器在接收到客户端发来的DHCP REQUEST之后发出的成功确认的报文。在建立连接的时候，客户端在接收到这个报文之后才会确认分配给它的IP和其他信息可以被允许使用。</li>
+<li>否认报文（DHCP NACK） ：DHCP ACK的相反的报文，表示服务器拒绝了客户端的请求。</li>
+<li>释放报文（DHCP RELEASE ）：一般出现在客户端关机、下线等状况。这个报文将会使DHCP服务器释放发出此报文的客户端的IP地址，从而客户可以随时提前终止服务器所提供的租用期。</li>
+<li>服务请求报文（DHCP INFORM ）：客户端发出的向服务器请求一些信息的报文</li>
+<li>拒绝当前分配报文（DHCP DECLINE） ：当客户端发现服务器分配的IP地址无法使用（如IP地址冲突时），将发出此报文，拒绝已经分配的地址信息，通知服务器禁止使用该IP地址。</li>
+</ul>
+<h2 id="六、信息系统基础知识"><a href="#六、信息系统基础知识" class="headerlink" title="六、信息系统基础知识"></a>六、信息系统基础知识</h2><h3 id="1、系统工程"><a href="#1、系统工程" class="headerlink" title="1、系统工程"></a>1、系统工程</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017161808809.png" alt="image-20211017161808809"></p>
+<p>系统工程在上个世纪中后期发展起来的一门新兴学科。它最早约产生于20世纪40年代的美国，时至今日，系统工程已经成为现代社会高速发展不可或缺的一部分。系统工程的诞生让自然科学和社会科学中有关的思想、理论和方法根据总体协调的需要联系起来，综合应用，并利用现代电子计算机，对系统的<strong>结构、要素、信息和反馈</strong>等进行分析，以达到<strong>最优规划、最优设计、最优管理</strong>和<strong>最优控制</strong>等目的。</p>
+<p>霍尔三维结构是由<strong>逻辑维</strong>、<strong>时间维</strong>和<strong>知识维</strong>组成的立体空间结构：</p>
+<p>1、逻辑维                                                                                                                                                                            运用系统工程方法解决某一大型工程项目时，一般可分为七个步骤:                                                                             (1）明确问题<br>(2）建立价值体系或评价体系                                                                                                                                                   (3）系统分析<br>(4）系统综合<br>(5）系统方案的优化选择<br>(6）决策”决策就是管理”，”决策就是决定”，人类的决策管理活动面临着被决策系统的日益庞大和日益复杂。        (7）制定计划有了决策就要付诸实施，实施就要依靠严格的有效的计划。</p>
+<p>2、时间维（工作进程）<br>对于一个具体的工作项目，从制定规划起—直到更新为止，全部过程可分为七个阶段:                                           (1）规划阶段。即调研、程序设计阶段，目的在于谋求活动的规划与战略。<br>(2）拟定方案。提出具体的计划方案。<br>(3）研制阶段。作出研制方案及生产计划。<br>(4）生产阶段。生产出系统的零部件及整个系统，并提出安装计划。                                                                          (5）安装阶段。将系统安装完毕，并完成系统的运行计划。                                                                                                 (6）运行阶段。系统按照预期的用途开展服务。<br>(7）更新阶段。即为了提高系统功能，取消旧系统而代之以新系统，或改进原有系统，使之更加有效地工作。</p>
+<p>3、知识维（专业科学知识）<br>系统工程除了要求为完成上述各步骤、各阶段所需的某些共性知识外，还需要其他学科的知识和各种专业技术<br>霍尔把这些知识分为工程、医药、建筑、商业、法律、管理、社会科学和艺术等。各类系统工程，如军事系统工程、经济系统工程、信息系统工程等。都需要使用其他相应的专业基础知识。</p>
+<h2 id="七、开发管理"><a href="#七、开发管理" class="headerlink" title="七、开发管理"></a>七、开发管理</h2><h3 id="1、项目管理——时间管理"><a href="#1、项目管理——时间管理" class="headerlink" title="1、项目管理——时间管理"></a>1、项目管理——时间管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017164010475.png" alt="image-20211017164010475"></p>
+<p>时间管理的过程包括:</p>
+<p>1、活动定义<br>2、活动排序<br>3、活动的资源估算                                                                                                                                                                                        4、活动历时估算                                                                                                                                                                                        5、制定计划                                                                                                                                                                                        6、进度控制</p>
+<h3 id="2、配置与文档管理——软件配置管理"><a href="#2、配置与文档管理——软件配置管理" class="headerlink" title="2、配置与文档管理——软件配置管理"></a>2、配置与文档管理——软件配置管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017164246464.png" alt="image-20211017164246464"></p>
+<ul>
+<li><p>用户文档</p>
+<p>用户文档主要描述所交付系统的功能和使用方法，并不关心这些功能是怎样实现的。用户文档是了解系统的第步，它可以让用户获得对系统准确的初步印象。<br>用户文档至少应该包括下述5方面的内容。<br>①功能描述：说明系统能做什么。<br>②安装文档：说明怎样安装这个系统以及怎样使系统适应特定的硬件配置。<br>③使用手册：简要说明如何着手使用这个系统（通过丰富的例子说明怎样使用常用的系统功能，并说明用户操作错误是怎样恢复和重新启动的)。<br>④参考手册：详尽描述用户可以使用的所有系统设施以及它们的使用方法，并解释系统可能产生的各种出错信息的含义(对参考手册最主要的要求是完整，因此通常使用形式化的描述技术)。<br>⑤操作员指南(如果需要有系统操作员的话)∶说明操作员应如何处理使用中出现的各种情况。</p>
+</li>
+<li><p>系统文档</p>
+<p>系统文档<u>是从问题定义</u>、<u>需求说明</u>到<u>验收测试计划</u>这样一系列和系统实现有关的文档。</p>
+<p>描述系统设计、实现和测试的文档对于理解程序和维护程序来说是非常重要的。</p>
+</li>
+</ul>
+<h3 id="3、需求管理"><a href="#3、需求管理" class="headerlink" title="3、需求管理"></a>3、需求管理</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017170721200.png" alt="image-20211017170721200"></p>
+<p>需求管理的活动包括:</p>
+<p>1、变更控制<br>2、版本控制                                                                                                                                                                          3、需求跟踪<br>4、需求状态跟踪</p>
+<h3 id="4、需求管理——变更控制"><a href="#4、需求管理——变更控制" class="headerlink" title="4、需求管理——变更控制"></a>4、需求管理——变更控制</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017170930475.png" alt="image-20211017170930475"></p>
+<p><u>变更控制委员会可以由一个小组担任，也可以由多个不同的组担任。</u>变更控制委员会的成员应能代表变更涉及的团体。变更控制委员会可能包括如下方面的代表:<br>(1）产品或计划管理部门;<br>(2）项目管理部门;<br>(3）开发部门;<br>(4）测试或质量保证部门;                                                                                                                                                  (5）市场部或客户代表;                                                                                                                                                       (6）制作用户文档的部门;                                                                                                                                                      (7）技术支持部门;<br>(8）帮助桌面或用户支持热线部门;                                                                                                                                                      (9）配置管理部门。</p>
+<h2 id="八、开发方法"><a href="#八、开发方法" class="headerlink" title="八、开发方法"></a>八、开发方法</h2><h3 id="1、软件开发模型——原型模型"><a href="#1、软件开发模型——原型模型" class="headerlink" title="1、软件开发模型——原型模型"></a>1、软件开发模型——原型模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171422445.png" alt="image-20211017171422445"></p>
+<p>本题考查的是开发模型的特点，题目所述”由原型开发阶段和目标软件开发阶段构成”符合原型模型的特点。因为原型模型先是使用原型获取需求，需求获取到之后有可能抛弃丢原型，然后根据原型获得的需求进行目标软件的开发。</p>
+<h3 id="2、软件开发模型——快速应用开发模型、螺旋模型"><a href="#2、软件开发模型——快速应用开发模型、螺旋模型" class="headerlink" title="2、软件开发模型——快速应用开发模型、螺旋模型"></a>2、软件开发模型——快速应用开发模型、螺旋模型</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171643167.png" alt="image-20211017171643167"></p>
+<p>快速应用开发模型、螺旋模型：</p>
+<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017171734294.png" alt="image-20211017171734294" style="zoom:67%;"></p>
+<h3 id="3、软件开发环境"><a href="#3、软件开发环境" class="headerlink" title="3、软件开发环境"></a>3、软件开发环境</h3><p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20211017172042221.png" alt="image-20211017172042221"></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/" title="系统架构师上午真题知识点">https://laylaycjl.github.io/2021/09/29/系统架构师上午真题知识点/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E8%80%83%E9%AB%98%E7%BA%A7/" rel="tag"><i class="fa fa-tag"></i> 软考高级</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/08/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E5%B8%88%E4%B8%8A%E5%8D%88%E9%A2%98/" rel="prev" title="系统架构设计师上午题">
+                  <i class="fa fa-chevron-left"></i> 系统架构设计师上午题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/10/19/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/" rel="next" title="系统架构师案例分析">
+                  系统架构师案例分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:48</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、操作系统 操作系统（Operating System，OS）：管理硬件和应用程序的一套&#x3D;&#x3D;系统软件&#x3D;&#x3D;。  操作系统的作用： CPU管理、内存管理、文件系统管理、进程管理、外设管理、用户管理…（理解：表现出来就是让CPU可以开始判断逻辑与运算数值，让内存可以开始加载&#x2F;读出数据与程序代码，让硬盘可以开始被访问，让网卡可以开始传输数据，让所有周边设备可以开始运转等，总之硬件的所有操作都必须要通过操">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux概述与常用命令">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、操作系统 操作系统（Operating System，OS）：管理硬件和应用程序的一套&#x3D;&#x3D;系统软件&#x3D;&#x3D;。  操作系统的作用： CPU管理、内存管理、文件系统管理、进程管理、外设管理、用户管理…（理解：表现出来就是让CPU可以开始判断逻辑与运算数值，让内存可以开始加载&#x2F;读出数据与程序代码，让硬盘可以开始被访问，让网卡可以开始传输数据，让所有周边设备可以开始运转等，总之硬件的所有操作都必须要通过操">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195236588-1714013539134.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195349886.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195322986.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195554007.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200011636.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200051533.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200143538.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200217701.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200249970.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200405547.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200554736.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425095459818.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425095732037.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425100455933.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425100558249.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101235250.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101322595.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101605704.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425140406796.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425140640049.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111908016.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111951929.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112049419.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112147709.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112830042.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425110716237.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425110940253.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111206752.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114246630.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114313418.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114448067.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114601527.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114941164.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425154330400.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425155918428.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160200351.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425155637496.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160631740.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160455936.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160534653.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425162215724.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425161954624.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164719117.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164839326.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164927185.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164538159.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425165738696.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425171704558.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101041139.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426104901689.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101619083.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101952954.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426102608535.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426105746796.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426105907240.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110206150.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426111909462.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110412644.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110531032.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110711799.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426112623072.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426112912986.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426113303223.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114227362.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114410375.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114636422.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426140638480.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426140916165.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426142338539.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143258411.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143410604.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143655028.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141550025.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141513769.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141442627.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426150327095.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426153805604.png">
+<meta property="article:published_time" content="2024-04-24T11:19:20.000Z">
+<meta property="article:modified_time" content="2024-04-27T13:29:17.173Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195236588-1714013539134.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Linux概述与常用命令 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">一、操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%B8%B8%E8%A7%81%E7%9A%84%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">1、常见的操作系统：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.</span> <span class="nav-text">2、操作系统之间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%BB%E8%A6%81%E5%AD%A6%E4%B9%A0Linux%E5%8E%9F%E5%9B%A0%EF%BC%9A"><span class="nav-number">1.3.</span> <span class="nav-text">3、主要学习Linux原因：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B"><span class="nav-number">2.</span> <span class="nav-text">二、Linux系统简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">1、Linux系统结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Linux%E5%8F%91%E8%A1%8C%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.</span> <span class="nav-text">2、Linux发行版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E7%89%B9%E7%82%B9"><span class="nav-number">2.3.</span> <span class="nav-text">3、Linux系统特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E5%9C%A8%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">2.4.</span> <span class="nav-text">4、Linux系统在软件测试中的应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Linux%E6%8C%87%E4%BB%A4"><span class="nav-number">3.</span> <span class="nav-text">三、Linux指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Linux%E7%B3%BB%E7%BB%9F%E7%99%BB%E5%BD%95"><span class="nav-number">3.1.</span> <span class="nav-text">1、Linux系统登录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Linux%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB%EF%BC%88runlevel%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">2、Linux运行级别（runlevel）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%890-6%E7%BA%A7%E5%88%AB"><span class="nav-number">3.2.1.</span> <span class="nav-text">（1）0-6级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E4%BF%AE%E6%94%B9%E8%BF%90%E8%A1%8C%E7%BA%A7%E5%88%AB-sudo"><span class="nav-number">3.2.2.</span> <span class="nav-text">（2）修改运行级别&#x3D;&#x3D;sudo&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Shell%E4%B8%8EShell%E8%84%9A%E6%9C%AC"><span class="nav-number">3.3.</span> <span class="nav-text">3、Shell与Shell脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Shell"><span class="nav-number">3.3.1.</span> <span class="nav-text">（1）Shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Shell%E8%84%9A%E6%9C%AC"><span class="nav-number">3.3.2.</span> <span class="nav-text">（2）Shell脚本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">3.4.</span> <span class="nav-text">4、Linux常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89-ps-%E7%94%A8%E4%BA%8E%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B"><span class="nav-number">3.4.1.</span> <span class="nav-text">（1）&#x3D;&#x3D;ps&#x3D;&#x3D;用于查看进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89-man-%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E5%91%BD%E4%BB%A4%E7%9A%84%E8%AF%B4%E6%98%8E%E5%92%8C%E5%8F%82%E6%95%B0"><span class="nav-number">3.4.2.</span> <span class="nav-text">（2）&#x3D;&#x3D;man&#x3D;&#x3D;命令查看命令的说明和参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89-date-%E6%9F%A5%E7%9C%8B%E6%97%B6%E9%97%B4"><span class="nav-number">3.4.3.</span> <span class="nav-text">（3）&#x3D;&#x3D;date&#x3D;&#x3D;查看时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E6%9F%A5%E7%9C%8B%E5%8F%91%E8%A1%8C%E7%89%88%E6%9C%AC%E5%8F%B7cat-etc-release"><span class="nav-number">3.4.4.</span> <span class="nav-text">（4）查看发行版本号cat &#x2F;etc&#x2F;*release</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E9%80%80%E5%87%BA%E7%99%BB%E5%BD%95-exit"><span class="nav-number">3.4.5.</span> <span class="nav-text">（5）退出登录&#x3D;&#x3D;exit&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E5%85%B3%E6%9C%BA%E5%92%8C%E9%87%8D%E5%90%AF-init"><span class="nav-number">3.4.6.</span> <span class="nav-text">（6）关机和重启&#x3D;&#x3D;init&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Linux%E6%96%87%E4%BB%B6%E5%92%8C%E6%96%87%E4%BB%B6%E5%A4%B9%E6%93%8D%E4%BD%9C%E5%9F%BA%E7%A1%80"><span class="nav-number">4.</span> <span class="nav-text">四、Linux文件和文件夹操作基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%AF%B9%E6%AF%94Windows%E7%9B%AE%E5%BD%95"><span class="nav-number">4.1.</span> <span class="nav-text">1、对比Windows目录</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89win"><span class="nav-number">4.1.1.</span> <span class="nav-text">（1）win</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Linux"><span class="nav-number">4.1.2.</span> <span class="nav-text">（2）Linux</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Linux%E5%B8%B8%E7%94%A8%E7%9B%AE%E5%BD%95"><span class="nav-number">4.2.</span> <span class="nav-text">2、Linux常用目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Linux%E6%96%87%E4%BB%B6%E5%90%8D%E5%92%8C%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6"><span class="nav-number">4.3.</span> <span class="nav-text">3、Linux文件名和特殊文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6-ls"><span class="nav-number">4.3.1.</span> <span class="nav-text">（1）查看目录下的文件&#x3D;&#x3D;ls&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Linux%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6"><span class="nav-number">4.3.2.</span> <span class="nav-text">（2）Linux特殊文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E6%88%96%E7%9B%AE%E5%BD%95%E6%8C%87%E4%BB%A4-rm"><span class="nav-number">4.3.3.</span> <span class="nav-text">（3）删除文件或目录指令&#x3D;&#x3D;rm&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%E4%B8%8E%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">4.4.</span> <span class="nav-text">4、绝对路径与相对路径</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%BD%93%E5%89%8D%E7%9B%AE%E5%BD%95%EF%BC%88%E5%88%9B%E5%BB%BA%E5%88%A0%E9%99%A4%E7%9B%AE%E5%BD%95%E5%91%BD%E4%BB%A4-mkdir-%E3%80%81-rmdir-%EF%BC%89"><span class="nav-number">4.4.1.</span> <span class="nav-text">（1）当前目录（创建删除目录命令&#x3D;&#x3D;mkdir&#x3D;&#x3D;、&#x3D;&#x3D;rmdir&#x3D;&#x3D;）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84"><span class="nav-number">4.4.2.</span> <span class="nav-text">（2）绝对路径</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%EF%BC%88%E5%88%87%E6%8D%A2%E7%9B%AE%E5%BD%95%E5%91%BD%E4%BB%A4-cd-%EF%BC%89"><span class="nav-number">4.4.3.</span> <span class="nav-text">（3）相对路径（切换目录命令&#x3D;&#x3D;cd&#x3D;&#x3D;）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C"><span class="nav-number">4.5.</span> <span class="nav-text">5、文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9"><span class="nav-number">4.5.1.</span> <span class="nav-text">（1）查看文件内容</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89-cat-%EF%BC%9A%E9%80%82%E5%90%88%E6%9F%A5%E7%9C%8B%E7%9F%AD%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.1.1.</span> <span class="nav-text">1）&#x3D;&#x3D;cat&#x3D;&#x3D;：适合查看短文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89-less-%EF%BC%9A%E6%9F%A5%E7%9C%8B%E9%95%BF%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.1.2.</span> <span class="nav-text">2）&#x3D;&#x3D;less&#x3D;&#x3D;：查看长文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89-head-%EF%BC%9A%E7%94%A8%E4%BA%8E%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%9A%84%E5%A4%B4%E9%83%A8n%E8%A1%8C"><span class="nav-number">4.5.1.3.</span> <span class="nav-text">3）&#x3D;&#x3D;head&#x3D;&#x3D;：用于查看文件的头部n行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%EF%BC%89-tail-%EF%BC%9A%E7%94%A8%E4%BA%8E%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%9A%84%E5%B0%BE%E9%83%A8n%E8%A1%8C"><span class="nav-number">4.5.1.4.</span> <span class="nav-text">4）&#x3D;&#x3D;tail&#x3D;&#x3D;：用于查看文件的尾部n行</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E9%80%9A%E9%85%8D%E7%AC%A6%EF%BC%8C%E6%A8%A1%E7%B3%8A%E6%8C%87%E4%BB%A3"><span class="nav-number">4.5.2.</span> <span class="nav-text">（2）通配符，模糊指代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.3.</span> <span class="nav-text">（3）创建文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89-touch"><span class="nav-number">4.5.3.1.</span> <span class="nav-text">1）&#x3D;&#x3D;touch&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89-vi"><span class="nav-number">4.5.3.2.</span> <span class="nav-text">2）&#x3D;&#x3D;vi&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89-gt-%EF%BC%88%E9%87%8D%E5%AE%9A%E5%90%91%E7%AC%A6%E5%8F%B7%EF%BC%89"><span class="nav-number">4.5.3.3.</span> <span class="nav-text">3）&#x3D;&#x3D;&gt;&#x3D;&#x3D;（重定向符号）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%EF%BC%89%E5%BA%95%E7%BA%BF%E6%A8%A1%E5%BC%8F%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.3.4.</span> <span class="nav-text">4）底线模式新建文件</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E3%80%81%E7%9B%AE%E5%BD%95-cp"><span class="nav-number">4.5.4.</span> <span class="nav-text">（4）复制文件、目录&#x3D;&#x3D;cp&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E7%A7%BB%E5%8A%A8%E3%80%81%E9%87%8D%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6%E5%92%8C%E7%9B%AE%E5%BD%95-mv"><span class="nav-number">4.5.5.</span> <span class="nav-text">（5）移动、重命名文件和目录&#x3D;&#x3D;mv&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89%E6%96%87%E4%BB%B6%E9%93%BE%E6%8E%A5-ln"><span class="nav-number">4.5.6.</span> <span class="nav-text">（6）文件链接&#x3D;&#x3D;ln&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E6%96%87%E4%BB%B6%E9%93%BE%E6%8E%A5%E6%A6%82%E5%BF%B5"><span class="nav-number">4.5.6.1.</span> <span class="nav-text">1）文件链接概念</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E9%93%BE%E6%8E%A5%EF%BC%9F"><span class="nav-number">4.5.6.2.</span> <span class="nav-text">2) 为什么需要链接？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E9%93%BE%E6%8E%A5%E7%9A%84%E7%A7%8D%E7%B1%BB%E4%B8%8E%E5%88%9B%E5%BB%BA"><span class="nav-number">4.5.6.3.</span> <span class="nav-text">3）链接的种类与创建</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%EF%BC%89%E8%BD%AF%E7%A1%AC%E9%93%BE%E6%8E%A5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.5.6.4.</span> <span class="nav-text">4）软硬链接的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5%EF%BC%89%E9%93%BE%E6%8E%A5%E6%96%87%E4%BB%B6%E4%BD%9C%E7%94%A8"><span class="nav-number">4.5.6.5.</span> <span class="nav-text">5）链接文件作用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6%EF%BC%89%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E9%9C%80%E8%A6%81%E5%88%9B%E5%BB%BA%E9%93%BE%E6%8E%A5-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.5.6.6.</span> <span class="nav-text">6）什么情况下需要创建链接?使用场景</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%887%EF%BC%89%E6%9F%A5%E6%89%BE%E6%96%87%E4%BB%B6"><span class="nav-number">4.5.7.</span> <span class="nav-text">（7）查找文件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89-which"><span class="nav-number">4.5.7.1.</span> <span class="nav-text">1）&#x3D;&#x3D;which&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89-whereis"><span class="nav-number">4.5.7.2.</span> <span class="nav-text">2）&#x3D;&#x3D;whereis&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89-find"><span class="nav-number">4.5.7.3.</span> <span class="nav-text">3）&#x3D;&#x3D;find&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%888%EF%BC%89%E6%96%87%E6%9C%AC%E5%85%B3%E9%94%AE%E5%AD%97%E6%90%9C%E7%B4%A2-grep"><span class="nav-number">4.5.8.</span> <span class="nav-text">（8）文本关键字搜索 &#x3D;&#x3D;grep&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E"><span class="nav-number">4.5.8.1.</span> <span class="nav-text">1）参数说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89grep%E5%91%BD%E4%BB%A4%E7%89%B9%E6%AE%8A%E7%AC%A6%E4%BE%8B%E5%AD%90"><span class="nav-number">4.5.8.2.</span> <span class="nav-text">2）grep命令特殊符例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%889%EF%BC%89%E7%BB%9F%E8%AE%A1%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9-wc"><span class="nav-number">4.5.9.</span> <span class="nav-text">（9）统计文件内容&#x3D;&#x3D;wc&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%8810%EF%BC%89%E6%9F%A5%E7%9C%8B%E7%9B%AE%E5%BD%95-%E6%96%87%E4%BB%B6%E5%8D%A0%E7%94%A8%E7%9A%84%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4-du%E3%80%81df"><span class="nav-number">4.5.10.</span> <span class="nav-text">（10）查看目录&#x2F;文件占用的磁盘空间 &#x3D;&#x3D;du、df&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81Linux%E6%96%87%E6%9C%AC%E7%BC%96%E8%BE%91%E5%99%A8-vi"><span class="nav-number">4.6.</span> <span class="nav-text">6、Linux文本编辑器&#x3D;&#x3D;vi&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89vi-vim%E6%A6%82%E8%BF%B0"><span class="nav-number">4.6.1.</span> <span class="nav-text">（1）vi&#x2F;vim概述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89vi%E6%A0%BC%E5%BC%8F"><span class="nav-number">4.6.2.</span> <span class="nav-text">（2）vi格式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E4%BF%AE%E6%94%B9%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%9A"><span class="nav-number">4.6.2.1.</span> <span class="nav-text">1）修改环境变量：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E4%BF%AE%E6%94%B9tomcat%E3%80%81Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">4.6.2.2.</span> <span class="nav-text">2）修改tomcat、Nginx配置文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E5%90%AF%E5%8A%A8%E6%97%B6%E6%8A%A5%E9%94%99%EF%BC%8C%E5%A6%82%E4%BD%95%E4%BF%AE%E6%94%B9%E6%8A%A5%E9%94%99%E4%BB%A3%E7%A0%81"><span class="nav-number">4.6.2.3.</span> <span class="nav-text">3）启动时报错，如何修改报错代码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%B8%89%E7%A7%8D%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.3.</span> <span class="nav-text">（3）三种模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8Fcommand-mode"><span class="nav-number">4.6.3.1.</span> <span class="nav-text">1）命令模式command mode</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E5%BA%95%E7%BA%BF%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.3.2.</span> <span class="nav-text">2）底线模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%EF%BC%89%E6%8F%92%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.6.3.3.</span> <span class="nav-text">3）插入模式</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux概述与常用命令
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-24 19:19:20" itemprop="dateCreated datePublished" datetime="2024-04-24T19:19:20+08:00">2024-04-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-04-27 21:29:17" itemprop="dateModified" datetime="2024-04-27T21:29:17+08:00">2024-04-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="一、操作系统"><a href="#一、操作系统" class="headerlink" title="一、操作系统"></a>一、操作系统</h2><ul>
+<li><p>操作系统（Operating System，OS）：管理硬件和应用程序的一套==系统软件==。</p>
+</li>
+<li><p>操作系统的作用： CPU管理、内存管理、文件系统管理、进程管理、外设管理、用户管理…（<em>理解：表现出来就是让CPU可以开始判断逻辑与运算数值，让内存可以开始加载/读出数据与程序代码，让硬盘可以开始被访问，让网卡可以开始传输数据，让所有周边设备可以开始运转等，总之硬件的所有操作都必须要通过操作系统来完成。</em>）</p>
+</li>
+<li><p>一个操作系统的核心叫==内核==，操作系统的各项功能都是通过内核实现的。</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195236588-1714013539134.png" style="zoom:50%;"></p>
+</li>
+</ul>
+<h3 id="1、常见的操作系统："><a href="#1、常见的操作系统：" class="headerlink" title="1、常见的操作系统："></a>1、常见的操作系统：</h3><ul>
+<li>DoS：个人电脑；</li>
+<li>Windows：个人电脑，Windows7、Windows10、WindowsServer；</li>
+<li>Mac OS X：MacBook系列笔记本；</li>
+<li>Android：安卓手机、平板、机顶盒、智能电视机、手环；</li>
+<li>ios：iPhone、iPad、iWatch、iPod等；</li>
+<li>Unix（服务器）</li>
+<li>Linux：免费、可靠、安全、稳定、多平台；（服务器）</li>
+</ul>
+<h3 id="2、操作系统之间的关系"><a href="#2、操作系统之间的关系" class="headerlink" title="2、操作系统之间的关系"></a>2、操作系统之间的关系</h3><p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195349886.png" alt="image-20240424195349886" style="zoom:67%;"></p>
+<h3 id="3、主要学习Linux原因："><a href="#3、主要学习Linux原因：" class="headerlink" title="3、主要学习Linux原因："></a>3、主要学习Linux原因：</h3><ul>
+<li>大部分软件都运行在Linux上<ul>
+<li>Linux作为服务器的操作系统，大部分软件都运行在Linux操作系统上;</li>
+<li>互联网Web服务、物联网、车联网、大数据、云计算服务、人工智能、智能运维等各个方面都广泛应用;</li>
+</ul>
+</li>
+<li>工作中要用Linux</li>
+</ul>
+<span id="more"></span>
+<h2 id="二、Linux系统简介"><a href="#二、Linux系统简介" class="headerlink" title="二、Linux系统简介"></a>二、Linux系统简介</h2><h3 id="1、Linux系统结构"><a href="#1、Linux系统结构" class="headerlink" title="1、Linux系统结构"></a>1、Linux系统结构</h3><p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195322986.png" alt="image-20240424195322986" style="zoom: 67%;"></p>
+<p>kernel——内核（所有命令最终由内核完成）</p>
+<p>shell——<strong>负责接受命令，然后找到该命令对应的二进制文件</strong></p>
+<p>file system——文件系统（组织和管理系统文件）</p>
+<p>users application——应用程序</p>
+<h3 id="2、Linux发行版本"><a href="#2、Linux发行版本" class="headerlink" title="2、Linux发行版本"></a>2、Linux发行版本</h3><p>各种组织或单位采用Linux内核和GNU工具集以及各类软件，编译及包装成自己所谓的Linux发行版（就像安卓)</p>
+<ul>
+<li>一类是<strong>商业公司</strong>维护的发行版本：以Redhat企业版（RHEL)为代表<ul>
+<li>Redhat系列: RHEL ( Redhat Enterprise Linux ) 、Fedora Core、OpenSUSE(德国著名Linux)</li>
+</ul>
+</li>
+<li><p>一类是<strong>社区组织</strong>维护的发行版本：以CentOS、Debian为代表</p>
+<ul>
+<li>Debian系列: Debian、Ubuntu、CentOS (RHEL的社区克隆版本，免费)不同系列的内核都是采用Linux内核，大部分命令相同，部分命令不一样</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、Linux系统特点"><a href="#3、Linux系统特点" class="headerlink" title="3、Linux系统特点"></a>3、Linux系统特点</h3><ul>
+<li>多用户：同时支持多个用户登录使用_(用户管理)<ul>
+<li>与win的明显差异，支持多用户是Linux的一大特点</li>
+</ul>
+</li>
+<li>多任务：多个任务（程序）可以同时运行（与Windows类似)·安全:源代码开源，有问题可以及时发现和优化</li>
+<li>源码公开：任何人、组织只要遵守官方许可条款，就可以自由使用Linux源代码</li>
+<li>广泛的硬件/软件支持：常见的应用先为Linux版本开发，后续才移植到其他平台</li>
+<li>强大的命令、工具</li>
+<li>稳定：可以长时间地稳定运行</li>
+</ul>
+<h3 id="4、Linux系统在软件测试中的应用"><a href="#4、Linux系统在软件测试中的应用" class="headerlink" title="4、Linux系统在软件测试中的应用"></a>4、Linux系统在软件测试中的应用</h3><ul>
+<li><p>Linux作为操作系统在企业中广泛使用</p>
+</li>
+<li><p>大量的公司项目软件安装在Linux操作系统上</p>
+</li>
+<li><p>公司软件运行过程中出现问题，需要运用Linux知识去排查和解决</p>
+<p>如：==a.网络故障排查、b.程序状态查看、c.定时启动一个程序、d.<strong>查看日志</strong>(重点)、e.软件安装/卸载、f.程序配置文件修改==</p>
+</li>
+</ul>
+<p>（重点学Linux怎么看日志，方便定位问题）</p>
+<h2 id="三、Linux指令"><a href="#三、Linux指令" class="headerlink" title="三、Linux指令"></a>三、Linux指令</h2><h3 id="1、Linux系统登录"><a href="#1、Linux系统登录" class="headerlink" title="1、Linux系统登录"></a>1、Linux系统登录</h3><ul>
+<li><p>本地登录</p>
+</li>
+<li><p>远程登录：通过远程登录工具登录，如SecureCRT/Xshell/putty等</p>
+</li>
+</ul>
+<p><strong>远程无法登录时，去查看虚拟机分配的ip地址是否改变</strong></p>
+<h3 id="2、Linux运行级别（runlevel）"><a href="#2、Linux运行级别（runlevel）" class="headerlink" title="2、Linux运行级别（runlevel）"></a>2、Linux运行级别（runlevel）</h3><h4 id="（1）0-6级别"><a href="#（1）0-6级别" class="headerlink" title="（1）0-6级别"></a>（1）0-6级别</h4><blockquote>
+<p><strong>0： 系统停机状态，系统默认运行级别不能设为0，否则不能正常启动</strong></p>
+<p>1： 单用户工作状态，root权限，用于系统维护，禁止远程登陆</p>
+<p>（超级管理员）</p>
+<p>2： 多用户无网络状态(没有NFS) </p>
+<p><strong>3： 多用户有网络状态(有NFS)，登陆后进入控制台==命令行模式==</strong></p>
+<p>（默认运行级别3）</p>
+<p>4： 系统未使用，保留 </p>
+<p>5： 多用户有网络，登陆后进入图形GUI模式 </p>
+<p><strong>6： 系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启</strong></p>
+<p> <strong>动</strong></p>
+</blockquote>
+<h4 id="（2）修改运行级别-sudo"><a href="#（2）修改运行级别-sudo" class="headerlink" title="（2）修改运行级别==sudo=="></a>（2）修改运行级别==sudo==</h4><p>1）运行时修改，转换为3级运行模式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo init 3</span><br></pre></td></tr></tbody></table></figure>
+<p>2）开机启动时指定运行模式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/inittab</span><br></pre></td></tr></tbody></table></figure>
+<p>3）查看运行级别</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ runlevel</span><br><span class="line">2 3</span><br></pre></td></tr></tbody></table></figure>
+<p> 2和3分别是刚刚的运行级别，和现在当前的运行级别</p>
+<h3 id="3、Shell与Shell脚本"><a href="#3、Shell与Shell脚本" class="headerlink" title="3、Shell与Shell脚本"></a>3、Shell与Shell脚本</h3><h4 id="（1）Shell"><a href="#（1）Shell" class="headerlink" title="（1）Shell"></a>（1）Shell</h4><ul>
+<li><p>Shell是一个用C语言编写的==程序==，是用户通过命令和Linux进行交互的<strong>桥梁</strong>，它接受用户从字符终端输入的命令，并<strong>调用对应的程序</strong>去执行</p>
+</li>
+<li><p>==Linux是通过Shell来解释执行命令（命令解释器）==</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424195554007.png" alt="image-20240424195554007" style="zoom: 80%;"></p>
+<p>可以看到用于处理cd命令的程序在/usr/bin/cd 中，由shell来调用</p>
+</li>
+<li><p>Linux默认的Shell是bash</p>
+<p>Shell种类：</p>
+<ul>
+<li>标准shell（ash）：是Linux 中占用系统资源最少的一个小Shell，它只包含24个内部命令，因而使用起来很不方便</li>
+<li><strong>Bonrne Again Shell（bash）</strong>：bash是Linux系统默认使用的Shell，内部命令一共有40 个。Linux 使用它作为默认的Shell是因为它具有以下特色：1、可以使用类似DOS下面的doskey的功能，用上下方向键查阅和快速输入并修改命令。2、自动通过查找匹配的方式，给出以某字串开头的命令。3、包含了自身的帮助功能，你只要在提示符下面键入help就可以得到相关的帮助信息。</li>
+<li>Korn shell（ksh）：该Shell最大的优点是几乎和商业发行版的ksh 完全相容，这样就可以在不用花钱购买商业版本的情况下尝试商业版本的性能。</li>
+<li>C shell（csh）：csh 是Linux 比较大的内核，它由以William Joy 为代表的共计47 位作者编成，共有52个内部命令。该Shell其实是指向/bin/tcsh这样的一个Shell，也就是说，csh其实就是tcsh。</li>
+</ul>
+</li>
+</ul>
+<h4 id="（2）Shell脚本"><a href="#（2）Shell脚本" class="headerlink" title="（2）Shell脚本"></a>（2）Shell脚本</h4><p>shell与shell脚本的区别：</p>
+<ul>
+<li><p>shell是命令解释器，作用是接受终端输入的命令，找到命令对应的可执行文件运行；</p>
+</li>
+<li><p>shell script是shell脚本，一种为 shell 编写的脚本程序</p>
+<ul>
+<li>vim创建一个shell脚本：test.sh</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200011636.png" alt="image-20240424200011636" style="zoom:67%;"></p>
+<ul>
+<li><p>进入test.sh，编辑脚本：cat查看脚本内容，第一行是声明：<code>#!/bin/bash</code>；然后输出hello world</p>
+</li>
+<li><p>运行：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200051533.png" alt="image-20240424200051533" style="zoom:80%;"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4、Linux常用命令"><a href="#4、Linux常用命令" class="headerlink" title="4、Linux常用命令"></a>4、Linux常用命令</h3><p>==格式：命令 参数1 参数2…参数n==</p>
+<ul>
+<li>Linux命令由一个命令（command）和<strong>零到多个参数构成</strong>，命令和参数之间，以及参数与参数之间用空格隔开</li>
+<li>命令和参数严格区分大小写</li>
+</ul>
+<h4 id="（1）-ps-用于查看进程"><a href="#（1）-ps-用于查看进程" class="headerlink" title="（1）==ps==用于查看进程"></a>（1）==ps==用于查看进程</h4><p><code>ps -e -f</code>：<code>-e</code>查看所有进程；<code>-f</code>明确显示格式</p>
+<p><code>ps -e -f | wc -l</code>：查看进程个数</p>
+<p>其中<code>ps -e -f</code>与<code>ps -ef</code>作用一样，即多个参数可以合并</p>
+<h4 id="（2）-man-命令查看命令的说明和参数"><a href="#（2）-man-命令查看命令的说明和参数" class="headerlink" title="（2）==man==命令查看命令的说明和参数"></a>（2）==man==命令查看命令的说明和参数</h4><p><code>man ps</code>：查看ps命令的作用和所有参数的作用</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200143538.png" alt="image-20240424200143538" style="zoom:67%;"></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200217701.png" alt="image-20240424200217701" style="zoom: 67%;"></p>
+<h4 id="（3）-date-查看时间"><a href="#（3）-date-查看时间" class="headerlink" title="（3）==date==查看时间"></a>（3）==date==查看时间</h4><p>默认表达式星期 月份 日 具体时间 年</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200249970.png" alt="image-20240424200249970" style="zoom: 67%;"></p>
+<p>格式化显示时间<code>date +'%Y-%m-%d %H:%M:%S'</code></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200405547.png" alt="image-20240424200405547" style="zoom:67%;"></p>
+<p>设置时间<code>date -s "当前时间"</code>：-s参数用于设置时间，时间为string类型</p>
+<h4 id="（4）查看发行版本号cat-etc-release"><a href="#（4）查看发行版本号cat-etc-release" class="headerlink" title="（4）查看发行版本号cat /etc/*release"></a>（4）查看发行版本号<code>cat /etc/*release</code></h4><p>完整的写法<code>cat /etc /redhat-release</code>,两个写法作用一样，经常用星号省略</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240424200554736.png" alt="image-20240424200554736" style="zoom:67%;"></p>
+<h4 id="（5）退出登录-exit"><a href="#（5）退出登录-exit" class="headerlink" title="（5）退出登录==exit=="></a>（5）退出登录==exit==</h4><p>退出Linux之后，标记会变成红色，显示未连接到服务器，且命令行变成Windows的dos系统</p>
+<h4 id="（6）关机和重启-init"><a href="#（6）关机和重启-init" class="headerlink" title="（6）关机和重启==init=="></a>（6）关机和重启==init==</h4><ul>
+<li>关机命令：<code>init 0</code>、<code>poweroff</code>、<code>shutdown -h now</code>、<code>halt -p</code></li>
+<li>重启命令：<code>init 6</code>、<code>reboot</code>、<code>shutdown -r now</code></li>
+</ul>
+<h2 id="四、Linux文件和文件夹操作基础"><a href="#四、Linux文件和文件夹操作基础" class="headerlink" title="四、Linux文件和文件夹操作基础"></a>四、Linux文件和文件夹操作基础</h2><h3 id="1、对比Windows目录"><a href="#1、对比Windows目录" class="headerlink" title="1、对比Windows目录"></a>1、对比Windows目录</h3><h4 id="（1）win"><a href="#（1）win" class="headerlink" title="（1）win"></a>（1）win</h4><ul>
+<li><p>Windows的目录结构是多个<strong>并列的树状结构</strong></p>
+<p>最顶部是不同的磁盘（分区)，如C，D文件路径都是从盘符开始</p>
+</li>
+<li><p>Windows文件系统里面都是文件或文件夹</p>
+</li>
+<li><p>Windows文件路径是大小写不区分的，层级用\表示</p>
+</li>
+</ul>
+<h4 id="（2）Linux"><a href="#（2）Linux" class="headerlink" title="（2）Linux"></a>（2）Linux</h4><p>没有盘符，一切从/根目录开始，单个的树状结构</p>
+<h3 id="2、Linux常用目录"><a href="#2、Linux常用目录" class="headerlink" title="2、Linux常用目录"></a>2、Linux常用目录</h3><ul>
+<li><p><strong>/         Linux系统的根目录</strong></p>
+</li>
+<li><p><strong>==/etc==      系统管理和配置文件</strong></p>
+<p>例如 profile就是配置文件</p>
+</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425095459818.png" alt="image-20240425095459818"></p>
+<ul>
+<li><p><strong>==/home==    用户主目录，比如jack用户的主目录就是/home/jack</strong></p>
+<p>linux系统支持多用户，所有用户的主目录都是home</p>
+<p>jack用户在home有jack文件夹，存放jack用户的文件</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425095732037.png" alt="image-20240425095732037"></p>
+</li>
+<li><p><strong>/boot     Linux系统的内核文件放在该目录下</strong></p>
+</li>
+<li><p><strong>==/sbin==     系统管理命令，这里存放的是系统管理员使用的管理程序</strong></p>
+<p>bin代指binary，放的都是可执行文件，所以sbin放的是系统管理程序，每个命令对应一个可执行程序，这个可执行程序就放在这里</p>
+</li>
+<li><p><strong>/root     系统管理员root的家目录</strong></p>
+<ul>
+<li>root用户是超级管理员，它的家目录在/root；普通用户的家目录在/home/username</li>
+<li>且超级管理员的命令提示符是#，普通用户的命令提示符是$</li>
+</ul>
+</li>
+<li><p><strong>==/bin==   常用可执行文件</strong>，主要有：cat，chmod，chown， date，mv，mkdir，cp，bash等</p>
+<p>以cat文件为例：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425100455933.png" alt="image-20240425100455933"></p>
+<p>cat命令的可执行文件就放在这里</p>
+</li>
+<li><p><strong>/dev   设备文件</strong>，如/dev/cd0</p>
+</li>
+<li><p><strong>==/usr==   用户级应用程序和文件几乎都在这个目录下面</strong></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425100558249.png" alt="image-20240425100558249"></p>
+</li>
+<li><p><strong>/proc  一个虚拟文件系统</strong></p>
+<p>放置的数据都是在内存当中，例如系统核心、进程信息（process）、设备状态及网络状态等，特点：开机就存在，关机就消失</p>
+</li>
+<li><p><strong>/tmp   公共的临时文件存储点，存放一些临时文件</strong></p>
+</li>
+<li><p><strong>/lib    一些库文件</strong></p>
+<p>库是别人写好的现有的，成熟的，可以复用的代码</p>
+</li>
+</ul>
+<h3 id="3、Linux文件名和特殊文件"><a href="#3、Linux文件名和特殊文件" class="headerlink" title="3、Linux文件名和特殊文件"></a>3、Linux文件名和特殊文件</h3><h4 id="（1）查看目录下的文件-ls"><a href="#（1）查看目录下的文件-ls" class="headerlink" title="（1）查看目录下的文件==ls=="></a>（1）查看目录下的文件==ls==</h4><ul>
+<li><p>Linux文件名称：大小写敏感，无专用扩展名</p>
+<p>例如：/opt/a2018和/opt/A2018是两个文件</p>
+<p>a.txt表示整个文件名称为a.txt，非文本文件</p>
+</li>
+<li><p>ls命令查看某个目录下有哪些文件和目录（文件夹）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls 列出目录内容</span><br><span class="line">ls -l 以列表方式显示</span><br><span class="line">ls -al 查看该目录下所有内容（包括隐藏文件：以.或..开头的文件）</span><br><span class="line">ls -R 递归显示所有目录</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><code>ls</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101235250.png" alt="image-20240425101235250" style="zoom:67%;"></p>
+<p><code>ls -l</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101322595.png" alt="image-20240425101322595" style="zoom:67%;"></p>
+<p><code>ls -al</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425101605704.png" alt="image-20240425101605704" style="zoom:67%;"></p>
+<p>  注：如何区分是目录还是文件：<strong>开头是<code>-</code>就是文件，开头是<code>d</code>就是目录</strong></p>
+<p>  <code>ls -R</code>：递归地显示所有目录</p>
+<p>  <img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425140406796.png" alt="image-20240425140406796" style="zoom: 80%;"></p>
+<p>  <code>ls -R</code>和<code>tree</code>很相似</p>
+<p>  <img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425140640049.png" alt="image-20240425140640049" style="zoom: 67%;"></p>
+<h4 id="（2）Linux特殊文件"><a href="#（2）Linux特殊文件" class="headerlink" title="（2）Linux特殊文件"></a>（2）Linux特殊文件</h4><p>不同符号对应的文件含义：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/  表示根目录</span><br><span class="line"></span><br><span class="line">.  表示当前目录</span><br><span class="line"></span><br><span class="line">..  表示当前目录的父目录</span><br><span class="line"></span><br><span class="line">.字符串 表示隐藏文件，如“.bash_profile”文件</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（3）删除文件或目录指令-rm"><a href="#（3）删除文件或目录指令-rm" class="headerlink" title="（3）删除文件或目录指令==rm=="></a>（3）删除文件或目录指令==rm==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm:用于删除文件或目录</span><br><span class="line">rm -f:force强制删除</span><br><span class="line">rm -r:recursive递归地删除</span><br><span class="line">rm -rf *:强制删除所有文件和目录</span><br><span class="line">或者rm -rf file1 file2 file3：一次删掉多个文件</span><br></pre></td></tr></tbody></table></figure>
+<p>先创建data目录，并在data里创建三个文件三个目录：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111908016.png" alt="image-20240425111908016" style="zoom:50%;"></p>
+<p>不加参数直接删除：报错，因为目录不为空；删除文件时可以直接删，不加参数</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111951929.png" alt="image-20240425111951929" style="zoom:67%;"></p>
+<p><code>-r</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112049419.png" alt="image-20240425112049419" style="zoom:67%;"></p>
+<p>递归式的删除，需要确认每一个文件和目录</p>
+<p><code>-f</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112147709.png" alt="image-20240425112147709" style="zoom:67%;"></p>
+<p>直接强制删除，不会再让user确认是否删除</p>
+<p><code>rm -rf *</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425112830042.png" alt="image-20240425112830042" style="zoom:67%;"></p>
+<p>删除当前下所有文件</p>
+<h3 id="4、绝对路径与相对路径"><a href="#4、绝对路径与相对路径" class="headerlink" title="4、绝对路径与相对路径"></a>4、绝对路径与相对路径</h3><h4 id="（1）当前目录（创建删除目录命令-mkdir-、-rmdir-）"><a href="#（1）当前目录（创建删除目录命令-mkdir-、-rmdir-）" class="headerlink" title="（1）当前目录（创建删除目录命令==mkdir==、==rmdir==）"></a>（1）当前目录（创建删除目录命令==mkdir==、==rmdir==）</h4><p>就是我们（Shell）所工作的目录</p>
+<ul>
+<li><p>当用户刚登陆系统时，当前目录是用户的家目录/home/username，如果以超级管理员身份登录，那么当前目录就是/root</p>
+</li>
+<li><p>当前目录下的所有文件都可以直接访问，指令都默认作用在当前目录上</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pwd:查看当前目录命令</span><br><span class="line">mkdir:创建目录</span><br><span class="line">mkdir -p:parents</span><br><span class="line">mkdir -v:verbose</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-p</code>：在没有www父目录的情况下，无法直接连创两级，但是加上-p参数之后，不会报错，会自动先创建www父目录，再创建子目录<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425110716237.png" alt="image-20240425110716237" style="zoom:80%;"></p>
+<p><code>-v</code>：可以显示目录创建的过程</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425110940253.png" alt="image-20240425110940253" style="zoom:67%;"></p>
+  <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmdir:删除目录，必须是空目录才能用这个命名删除,否则报错</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425111206752.png" alt="image-20240425111206752" style="zoom:67%;"></p>
+<h4 id="（2）绝对路径"><a href="#（2）绝对路径" class="headerlink" title="（2）绝对路径"></a>（2）绝对路径</h4><p>开始于根目录，紧跟着目录树的一个个分支，一直到达所期望的目录或文件</p>
+<h4 id="（3）相对路径（切换目录命令-cd-）"><a href="#（3）相对路径（切换目录命令-cd-）" class="headerlink" title="（3）相对路径（切换目录命令==cd==）"></a>（3）相对路径（切换目录命令==cd==）</h4><p>开始于当前目录，紧跟着目录树的一个个分支，一直到达所期望的目录或文件</p>
+<p>“.”（点）和“..”（点点）表示当前目录和父目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd目录（相对路径、绝对路径)</span><br><span class="line">cd~切换到家目录</span><br><span class="line">cd ..:切换到父级目录</span><br><span class="line">cd -:2个目录之间切换</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="5、文件操作"><a href="#5、文件操作" class="headerlink" title="5、文件操作"></a>5、文件操作</h3><h4 id="（1）查看文件内容"><a href="#（1）查看文件内容" class="headerlink" title="（1）查看文件内容"></a>（1）查看文件内容</h4><h5 id="1）-cat-：适合查看短文件"><a href="#1）-cat-：适合查看短文件" class="headerlink" title="1）==cat==：适合查看短文件"></a>1）==cat==：适合查看短文件</h5><p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114246630.png" alt="image-20240425114246630" style="zoom:67%;"></p>
+<h5 id="2）-less-：查看长文件"><a href="#2）-less-：查看长文件" class="headerlink" title="2）==less==：查看长文件"></a>2）==less==：查看长文件</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">可以通过快捷键查看翻页：</span><br><span class="line"> k				向上一行</span><br><span class="line"> j				向下一行</span><br><span class="line"> Page up			向上一页</span><br><span class="line"> Page down		向下一页</span><br><span class="line"> q				退出</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="3）-head-：用于查看文件的头部n行"><a href="#3）-head-：用于查看文件的头部n行" class="headerlink" title="3）==head==：用于查看文件的头部n行"></a>3）==head==：用于查看文件的头部n行</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">head -n filename看文件的前n行</span><br><span class="line">没有指定多少行的时候，默认查看10行</span><br></pre></td></tr></tbody></table></figure>
+<p>看文件的前5行：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114313418.png" alt="image-20240425114313418" style="zoom:67%;"></p>
+<p>查看前5位用户：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114448067.png" alt="image-20240425114448067" style="zoom:67%;"></p>
+<h5 id="4）-tail-：用于查看文件的尾部n行"><a href="#4）-tail-：用于查看文件的尾部n行" class="headerlink" title="4）==tail==：用于查看文件的尾部n行"></a>4）<strong>==tail==：用于查看文件的尾部n行</strong></h5><p><code>tail -f</code> ：用于实时监控日志</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tail -n filename看文件的末尾n行</span><br><span class="line">没有指定多少行的时候，默认查看10行</span><br><span class="line"></span><br><span class="line">-f：follow实时查看文件的内容，因为某些日志文件的尾部数据会一直改变</span><br></pre></td></tr></tbody></table></figure>
+<p>看文件后6行：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114601527.png" alt="image-20240425114601527" style="zoom:67%;"></p>
+<p><code>-f</code>：<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.assets/image-20240425114941164.png" alt="image-20240425114941164" style="zoom:67%;"></p>
+<p>默认查看后10行，但区别是加了参数<code>-f</code>之后，查询结果不固定，光标一直闪烁，如果数据更新，会显示新数据</p>
+<h4 id="（2）通配符，模糊指代"><a href="#（2）通配符，模糊指代" class="headerlink" title="（2）通配符，模糊指代"></a>（2）通配符，模糊指代</h4><p>通配符是一种特殊语句，主要有星号(*)和问号(?)，用来模糊搜索文件</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>匹配对象</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>*</td>
+<td>所有文件</td>
+</tr>
+<tr>
+<td>g*</td>
+<td>文件名以g开头的文件</td>
+</tr>
+<tr>
+<td>b*.txt</td>
+<td>以b开头，中间有零个或任意多个字符，并以.txt结尾的文件</td>
+</tr>
+<tr>
+<td>Data???</td>
+<td>以Data开头，后面紧跟3个字符的文件文件名</td>
+</tr>
+<tr>
+<td>[abc]*</td>
+<td>以a，b或c开头的文件</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>例如：</p>
+<p>删除文件名为六个字符的文件</p>
+  <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf ??????</span><br></pre></td></tr></tbody></table></figure>
+<p>删除以file开头的所有文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf file*</span><br></pre></td></tr></tbody></table></figure>
+<p>删除以test开头，中间有任意字符且以.sh结尾的文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf file*.sh</span><br></pre></td></tr></tbody></table></figure>
+<p>删除以f或t开头的所有文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf [ft]*</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（3）创建文件"><a href="#（3）创建文件" class="headerlink" title="（3）创建文件"></a>（3）创建文件</h4><h5 id="1）-touch"><a href="#1）-touch" class="headerlink" title="1）==touch=="></a>1）==touch==</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">touch /home/test/file01:在指定目录下新建空文件file01</span><br><span class="line">touch file02:在当前目录下新建空文件file02</span><br><span class="line">touch file01 file02 /home/test/file03：可以同时创建多个文件</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="2）-vi"><a href="#2）-vi" class="headerlink" title="2）==vi=="></a>2）==vi==</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi file01创建号文件后直接进入编辑模式</span><br><span class="line">insert打开插入模式</span><br><span class="line">编辑文件</span><br><span class="line">按esc进入底线模式</span><br><span class="line">:wq wirte quit保存并退出</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="3）-gt-（重定向符号）"><a href="#3）-gt-（重定向符号）" class="headerlink" title="3）==>==（重定向符号）"></a>3）==<strong>&gt;</strong>==（重定向符号）</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">可以通过重定向符号新建文件</span><br><span class="line"></span><br><span class="line">后面学</span><br><span class="line">比如将file01的前20行重定向到file_mini中：</span><br><span class="line">head -20 ./file01 &gt; file_mini</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="4）底线模式新建文件"><a href="#4）底线模式新建文件" class="headerlink" title="4）底线模式新建文件"></a>4）底线模式新建文件</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">还可以通过底线模式，将文件的某一段截取出来放到新文件里</span><br><span class="line">在底线模式下</span><br><span class="line">:2,12 w newfile</span><br><span class="line">表示将该文件的第2行到第12行的内容放入newfile文件中</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（4）复制文件、目录-cp"><a href="#（4）复制文件、目录-cp" class="headerlink" title="（4）复制文件、目录==cp=="></a>（4）复制文件、目录==cp==</h4><ul>
+<li><p><strong>复制文件命令：cp 源文件 目标文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cp file01 file01_backup</span><br><span class="line">将file01中的文件复制到file01_backup中（同一目录下不能同名）</span><br><span class="line"></span><br><span class="line">cp file01 /home/test/ </span><br><span class="line">将file01中的文件复制到/home/test目录下，默认不同目录下源文件和目标文件可以同名</span><br><span class="line"></span><br><span class="line">cp file01 /home/test/file02</span><br><span class="line">也可以指定名字</span><br><span class="line"></span><br><span class="line">cp file* /home/test</span><br><span class="line">利用通配符，可以将所有file+任意字符的所有文件一次性复制到指定目录</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><strong>复制目录</strong></p>
+<p>复制目录必须参数<code>-r</code>,否则报错</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">复制目录</span><br><span class="line">cp -r dir01 dir02：当前目录复制，源和目标目录名称必须不同</span><br><span class="line">cp -r file01 dir01 /home/jim/dir02：源可以是多个文件、或目录，可以把多个目录或文</span><br><span class="line">件复制到目标目录中</span><br><span class="line">参数-r或-R都有效</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="（5）移动、重命名文件和目录-mv"><a href="#（5）移动、重命名文件和目录-mv" class="headerlink" title="（5）移动、重命名文件和目录==mv=="></a>（5）移动、重命名文件和目录==mv==</h4><ul>
+<li><p><strong>重命名文件和目录</strong></p>
+<p>mv：源地址和目的地址==相同==就是重命名</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mv file01 file02			#重命名文件file01为file02</span><br><span class="line">mv dir01 dir02			#重命名目录dir01为dir02</span><br><span class="line">mv dir01/file01 dir01/file02	#重命名文件file01为file02</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p><strong>移动文件和目录</strong></p>
+<p>mv：源地址和目的地址==不同==就是移动</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mv file01 dir01/ 		 	</span><br><span class="line">移动file01到dir01目录</span><br><span class="line"></span><br><span class="line">mv file01 dir01/file02		</span><br><span class="line">移动file01到dir01目录且重命名为file02</span><br><span class="line"></span><br><span class="line">mv file01 file02 dir01 dir02	</span><br><span class="line">移动file01、file02、dir01到dir02</span><br><span class="line">(此时dir02必须存在，因为无法重命名多个文件或目录，只有移动)</span><br><span class="line">不然会报错，如下图所示</span><br><span class="line"></span><br><span class="line">mv dir01 dir02			</span><br><span class="line">如果dir02不存在，则重命名，如果dir02存在，则移动目录dir01到dir02目录下</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>  <img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425154330400.png" alt="image-20240425154330400" style="zoom:50%;"></p>
+<h4 id="（6）文件链接-ln"><a href="#（6）文件链接-ln" class="headerlink" title="（6）文件链接==ln=="></a>（6）文件链接==ln==</h4><h5 id="1）文件链接概念"><a href="#1）文件链接概念" class="headerlink" title="1）文件链接概念"></a>1）文件链接概念</h5><p>我们知道文件都有文件名与数据，这在 Linux 上被分成两个部分：用户数据 (user data) 与元数据 (metadata)。</p>
+<ul>
+<li><p>用户数据，即文件数据块 (data block)，数据块是记录文件真实内容的地方；</p>
+</li>
+<li><p>元数据则是文件的附加属性，如文件大小、创建时间、所有者等信息。</p>
+</li>
+</ul>
+<p>在 Linux 中，元数据中的 <strong>inode 号</strong>（inode 是文件元数据的一部分但其并不包含文件名，inode 号即索引节点号）才是文件的<strong>唯一标识</strong>而非文件名。文件名仅是为了方便人们的记忆和使用，系统或程序通过 inode 号寻找正确的文件数据块。</p>
+<p>下图展示了程序通过文件名获取文件内容的过程。</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425155918428.png" alt="image-20240425155918428" style="zoom: 67%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">查看文件inode命令：stat或ls -i</span><br><span class="line"></span><br><span class="line">[root@localhost test]# ls -i file01</span><br><span class="line">34355716 file01</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160200351.png" alt=""></p>
+<h5 id="2-为什么需要链接？"><a href="#2-为什么需要链接？" class="headerlink" title="2) 为什么需要链接？"></a>2) 为什么需要链接？</h5><ul>
+<li>实现文件的<strong>共享</strong>使用（原因:不能移动，其他文件使用时只能通过链接访问)</li>
+<li>提供了隐藏文件路径、增加权限<strong>安全</strong>及<strong>节省存储</strong>等好处</li>
+<li>和复制的区别:文件在磁盘中只有一个拷贝，节省磁盘空间</li>
+</ul>
+<h5 id="3）链接的种类与创建"><a href="#3）链接的种类与创建" class="headerlink" title="3）链接的种类与创建"></a>3）链接的种类与创建</h5><p>硬链接 (hard link) 与软链接（又称符号链接，即 soft link 或 symbolic link）</p>
+<ul>
+<li><p>创建硬链接： <code>ln filename filename-hardlink</code></p>
+<p>硬链接和源文件属性一样</p>
+</li>
+<li><p>创建软链接： <code>ln -s filename filename-softlink</code></p>
+</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425155637496.png" style="zoom:67%;"></p>
+<h5 id="4）软硬链接的区别"><a href="#4）软硬链接的区别" class="headerlink" title="4）软硬链接的区别"></a>4）软硬链接的区别</h5><p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160631740.png" style="zoom:67%;"></p>
+<p>详细区别：</p>
+<p><strong>硬链接</strong>：若—个inode号对应多个文件名，则称这些文件为硬链接。换言之，硬链接就是==同一个文件使用了多个别名==</p>
+<ul>
+<li><p><strong>文件有相同的inode 及 data block;</strong></p>
+<p>查询硬链接inode号：和源文件一样，硬链接的data block保存的就是源文件的文件内容</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160455936.png" style="zoom:67%;"></p>
+<p>查询软连接iNode号：和源文件不一样，软链接的data block保存了源文件的路径名的指向</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425160534653.png" style="zoom:67%;"></p>
+<p>硬链接data block大小与源文件一致，软链接则不一样</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425162215724.png" style="zoom:67%;"></p>
+</li>
+<li><p><strong>只能对已存在的文件进行创建;</strong></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425161954624.png"></p>
+</li>
+<li><p><strong>不能跨文件系统进行硬链接的创建;</strong><br>不同文件所使用的文件系统不一样,/dev使用的是devtmpfs文件系统，/dev/shm使用的则是tmpfs文件系统</p>
+<p>查看文件系统指令：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -Th</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164719117.png" alt="image-20240425164719117" style="zoom:67%;"></p>
+<p> 硬链接跨系统创建失败：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164839326.png" alt="image-20240425164839326"></p>
+<p> 软链接可以：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164927185.png" alt="image-20240425164927185" style="zoom:67%;"></p>
+</li>
+<li><p><strong>不能对目录进行创建，只可对文件创建；</strong></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425164538159.png" alt="image-20240425164538159" style="zoom: 67%;"></p>
+</li>
+<li><p><strong>删除一个硬链接文件并不影响其他有相同 inode 号的文件</strong></p>
+<ul>
+<li><p>就算删掉源文件，源文件的硬链接依旧可以使用，这就达到了备份的效果</p>
+</li>
+<li><p>源文件删除之后，即使新建了一个同名源文件之后，由于inode号改变，新文件和源硬链接已经不存在链接关系</p>
+</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425165738696.png" alt="image-20240425165738696" style="zoom:67%;"></p>
+</li>
+</ul>
+<p><strong>软链接（符号链接）</strong>：若文件用户数据块中存放的内容是另一文件的路径名的指向，则该文件就是软链接。==软链接就是一个普通文件，只是数据块内容有点特殊==。类似于Windows的快捷方式</p>
+<ul>
+<li>软链接<u>有自己的文件属性及权限</u>等；</li>
+<li>可对不存在的文件或目录创建软链接；</li>
+<li>软链接可交叉文件系统；</li>
+<li>软链接<strong>可对文件或目录创建</strong>；</li>
+<li>创建软链接时，链接计数 i_nlink 不会增加；</li>
+<li>删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为<strong>死链接</strong>（即 <strong>dangling link</strong>（创建一个和源文件同名同地址的新文件后，<strong>死链接可恢复</strong>为正常的软链接）。</li>
+</ul>
+<p>对源文件的修改，软、硬链接文件内容也一样的修改，因为都是指向同一个文件的内容。</p>
+<h5 id="5）链接文件作用"><a href="#5）链接文件作用" class="headerlink" title="5）链接文件作用"></a>5）链接文件作用</h5><ul>
+<li>硬链接：相当于同一个文件有多个别名，每个别名背后对应的是同一个文件，inode相同，但在存储的时候，只会在磁盘上存一份（跟复制两个文件不同)，可以节约存储空间。</li>
+<li>软链接：相当于快捷方式，软链接文件和目标文件是两个不同的文件，但软链接文件指向的是目录文件。</li>
+</ul>
+<h5 id="6）什么情况下需要创建链接-使用场景"><a href="#6）什么情况下需要创建链接-使用场景" class="headerlink" title="6）什么情况下需要创建链接?使用场景"></a>6）什么情况下需要创建链接?使用场景</h5><ul>
+<li><p>硬链接<br>对于有些重要文件,为了防止被用户意外删除或出于该目录的权限考虑，可以为该文件在其他目录中建立硬链接，让其他用户访问，实现重要文件的备份和共享。</p>
+</li>
+<li><p>软链接<br>为了在任意目录下都可以执行python命令，可以通过两种方式实现<br>1）把/usr/local/python3/bin添加到<strong>环境变量PATH</strong>中</p>
+<ul>
+<li>环境变量PATH作用：在终端执行命令的时候，会从PATH环境变量的每个目录下查找命令的可执行文件，找不到就会显示commend not found<img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240425171704558.png" alt="image-20240425171704558" style="zoom:67%;"></li>
+<li>把/usr/local/python3/bin添加到环境变量PATH中</li>
+</ul>
+<p>2）配置软链接</p>
+<p>可以在/usr/bin目录下创建一个软链接文件python指向/usr/local/python3/bin/python3.7，<br>因为/usr/bin目录默认就是在环境变量PATH中，所以这样就可以直接执行python命令</p>
+</li>
+</ul>
+<h4 id="（7）查找文件"><a href="#（7）查找文件" class="headerlink" title="（7）查找文件"></a>（7）查找文件</h4><h5 id="1）-which"><a href="#1）-which" class="headerlink" title="1）==which=="></a>1）==which==</h5><p>which指令会在PATH变量指定的路径中，搜索某个系统命令的位置，并且返回第一个搜索结果；Linux系统中，每个命令都有可执行文件</p>
+<p>which用来==查找可执行文件的位置==、显示命令所在路径；</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">语法：which 系统命令</span><br><span class="line">举例：which vi</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101041139.png" alt="image-20240426101041139" style="zoom:67%;"></p>
+<h5 id="2）-whereis"><a href="#2）-whereis" class="headerlink" title="2）==whereis=="></a>2）==whereis==</h5><p>whereis 命令则是用来快速查找程序的==二进制文件==、==源代码==和==man手册文件==的路径；</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">语法：whereis 系统命令</span><br><span class="line">举例：whereis vi</span><br></pre></td></tr></tbody></table></figure>
+<p> 查找那么找到的结果就比which vi命令找到的结果多，因为which命令只会列出二进制文件路径，而whereis命令会把vi的二进制文件、源代码、帮助手册都返回</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426104901689.png" alt="image-20240426104901689"></p>
+<h5 id="3）-find"><a href="#3）-find" class="headerlink" title="3）==find=="></a>3）==find==</h5><p>find命令会在==指定目录及其子目录下==查找符合条件的特定文件，当我们忘记文档路径时，可以使用该命令</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">语法：find 目录名 条件</span><br><span class="line">举例：find /home/tom -name test.sh</span><br><span class="line">     find / -name test.sh</span><br><span class="line">条件</span><br><span class="line">-name文件名</span><br><span class="line">-type文件or目录：文件用f，目录用d</span><br><span class="line">-atime -5 :5天内访问过的</span><br><span class="line">-atime +5:5天前访问过的</span><br><span class="line">-amin -5:5分钟内访问过的</span><br><span class="line">-amin +5:5分钟之前访问过的</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：在/test目录下，查找以file开头的文件</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101619083.png" alt="image-20240426101619083" style="zoom:67%;"></p>
+<p>在当前目录下，查找以d开头的所有<strong>目录</strong></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426101952954.png" alt="image-20240426101952954" style="zoom:67%;"></p>
+<p>atime、amin举例</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426102608535.png" alt="image-20240426102608535" style="zoom: 67%;"></p>
+<h4 id="（8）文本关键字搜索-grep"><a href="#（8）文本关键字搜索-grep" class="headerlink" title="（8）文本关键字搜索 ==grep=="></a>（8）文本关键字搜索 ==grep==</h4><p>一种强大的文本搜索工具，并把匹配的行打印出来。用于==查看日志==、==查看命令输出==。且grep默认<strong>关键字大小写敏感、支持正则表达式</strong>。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">命令格式：grep 要搜索的关键字 文件</span><br><span class="line">比如：grep root /var/log/message</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">-c：count 只输出匹配行的行数（有多少行匹配）</span><br><span class="line">-i：ignore case不区分大小写</span><br><span class="line">-n：line-number 只显示匹配行及行号</span><br><span class="line">-v：invert-match 显示不含匹配文本的所有行</span><br><span class="line">-F：指明pattern非正则表达式</span><br><span class="line">-E：指明pattern正则表达式</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="1）参数说明"><a href="#1）参数说明" class="headerlink" title="1）参数说明"></a>1）参数说明</h5><ul>
+<li><p>基本举例：新建一个file11，输入内容如下： </p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426105746796.png" alt="image-20240426105746796" style="zoom:67%;"></p>
+<ul>
+<li>用grep查找file11中包含line的内容</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426105907240.png" alt="image-20240426105907240" style="zoom:67%;"></p>
+</li>
+<li><p>参数<code>-c</code>：只输出匹配行的行数（有多少行匹配）</p>
+<ul>
+<li>查询file11中包含line的内容有几行</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110206150.png" alt="image-20240426110206150" style="zoom:67%;"></p>
+<ul>
+<li><p>==如何统计文件里一共多少行==</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -c "" file11</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426111909462.png" alt="image-20240426111909462" style="zoom:67%;"></p>
+</li>
+</ul>
+</li>
+<li><p>参数<code>-i</code>：（ignore capital）不区分大小写，默认严格区分大小写，例如，查包含line的关键词，区分大小写时有两条，不区分大小写时有六行</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110412644.png" alt="image-20240426110412644" style="zoom:67%;"></p>
+</li>
+<li><p>参数<code>-n</code>：（number）只显示匹配行及行号</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110531032.png" alt="image-20240426110531032" style="zoom: 67%;"></p>
+</li>
+<li><p>参数<code>-v</code>：（invert match反选）显示不含匹配文本的所有行</p>
+<p>显示不包含line的行，且不区分line的大小写</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426110711799.png" alt="image-20240426110711799" style="zoom:50%;"></p>
+</li>
+<li><p>参数<code>-E</code>：指明pattern正则表达式</p>
+<ul>
+<li><p>==用于查看日志文件中的错误信息==</p>
+<p>包含关键字: error或者exception或者fatal，加<code>-i</code>不区分大小写，因为有的ERROR是大写，有的是小写</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -i -E "error|exception|fatal" 文件名</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>参数<code>-F</code>：指明pattern非正则表达式</p>
+</li>
+</ul>
+<h5 id="2）grep命令特殊符例子"><a href="#2）grep命令特殊符例子" class="headerlink" title="2）grep命令特殊符例子"></a>2）grep命令特殊符例子</h5><ul>
+<li><p>搜索以line开头的行：<code>^</code>符号</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep "^line" file11</span><br><span class="line">显示行号：grep -n "^line" file11</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426112623072.png" alt="image-20240426112623072" style="zoom:67%;"></p>
+</li>
+<li><p>搜索以”行”字结尾的行：<code>$</code>符号</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep "line$" file11</span><br><span class="line">显示行号：grep -n "行$" file11</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426112912986.png" alt="image-20240426112912986" style="zoom: 67%;"></p>
+</li>
+<li><p>搜索当前目录下以f开头的文件中，包含line关键字的所有行：<code>*</code>符号</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep "line" ./f*</span><br><span class="line">显示行号且不区分大小写：grep -n -i "line" ./f*</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426113303223.png" alt="image-20240426113303223" style="zoom:67%;"></p>
+</li>
+<li><p>在目录及子目录下查找包含关键字的行：<code>-r</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -n -i "line" -r ./dir0</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114227362.png" alt="image-20240426114227362" style="zoom:67%;"></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114410375.png" alt="image-20240426114410375" style="zoom:67%;"></p>
+</li>
+<li><p>grep最常用的用法，查看某个进程，比如查看tomcat、nginx进程</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep tomcat</span><br><span class="line">-ef:-e查看所有进程; -f明确显示格式</span><br><span class="line">| :管道符</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426114636422.png" alt="image-20240426114636422" style="zoom:50%;"></p>
+</li>
+</ul>
+<h4 id="（9）统计文件内容-wc"><a href="#（9）统计文件内容-wc" class="headerlink" title="（9）统计文件内容==wc=="></a>（9）统计文件内容==wc==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">wc 参数 文件</span><br><span class="line">参数：</span><br><span class="line">-l多少行: wc -l ./file02：统计当前目录下file02文件有多少行</span><br><span class="line">-c多少个字节: wc -c /etc/passwd：统计/etc/passwd文件有多少个字节</span><br><span class="line">通常带着管道符一起使用：</span><br><span class="line">例如：统计有多少进程正在运行</span><br><span class="line">ps -ef |wc -l</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426140638480.png" alt="image-20240426140638480" style="zoom:67%;"></p>
+<p>统计root下有多少进程正在运行：</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426140916165.png" alt="image-20240426140916165" style="zoom: 80%;"></p>
+<h4 id="（10）查看目录-文件占用的磁盘空间-du、df"><a href="#（10）查看目录-文件占用的磁盘空间-du、df" class="headerlink" title="（10）查看目录/文件占用的磁盘空间 ==du、df=="></a>（10）查看目录/文件占用的磁盘空间 ==du、df==</h4><p>1）<code>du</code>命令是查看==文件或目录的磁盘使用空间==，即占用磁盘大小</p>
+<p>2）<code>du</code>使用的情形：比如，服务器磁盘空间不够用了，已经被占用了80%以上，就会出现服务器响应速度很慢，需要清理磁盘空间</p>
+<p>具体操作：</p>
+<ul>
+<li><p>用<code>df</code>查看==文件系统==的磁盘使用情况，比如总空间多大、使用了多少，可用空间多少、使用率等信息；</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">df</span><br><span class="line">参数</span><br><span class="line">-T：显示文件类型</span><br><span class="line">-h：可读</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426142338539.png" alt="image-20240426142338539" style="zoom:67%;"></p>
+<p>加参数<code>-T</code>：会显示type，文件类型</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143258411.png" alt="image-20240426143258411" style="zoom:67%;"></p>
+<p>加参数<code>-h</code>：可读，发现根目录下占用磁盘空间最大，所以<code>cd /</code>，进入磁盘，查看情况</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143410604.png" alt="image-20240426143410604" style="zoom: 50%;"></p>
+</li>
+<li><p>进入占用磁盘空间最大的目录，用<code>du -sh ./*</code>统计来排查到底是那个文件，然后进入这个文件进一步查看，可以再进<code>./local</code>，再又用<code>du -sh ./*</code></p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426143655028.png" alt="image-20240426143655028" style="zoom:67%;"></p>
+</li>
+<li><p>最后通过<code>rm -rf 文件</code></p>
+</li>
+</ul>
+<p>3）语法和参数</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">语法：du -sh 文件名或者目录名</span><br><span class="line">参数：</span><br><span class="line">-a：统计所有文件或目录</span><br><span class="line">-h：human-readable，在打印文件大小时，用k，m，g等可读方式展示</span><br><span class="line">-s：summarize</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>参数<code>-a</code>：展示当前目录下所有文件和目录的大小</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141550025.png" alt="image-20240426141550025" style="zoom:67%;"></p>
+</li>
+<li><p>参数<code>-h</code>：以<strong>可读</strong>方式展现所占内存大小</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141513769.png" alt="image-20240426141513769" style="zoom:67%;"></p>
+</li>
+<li><p>参数<code>-s</code>：当前目录总的大小为44</p>
+</li>
+</ul>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426141442627.png" alt="image-20240426141442627" style="zoom: 67%;"></p>
+<h3 id="6、Linux文本编辑器-vi"><a href="#6、Linux文本编辑器-vi" class="headerlink" title="6、Linux文本编辑器==vi=="></a>6、Linux文本编辑器==vi==</h3><h4 id="（1）vi-vim概述"><a href="#（1）vi-vim概述" class="headerlink" title="（1）vi/vim概述"></a>（1）vi/vim概述</h4><ul>
+<li>vi/vim是所有Linux系统都提供的文本编辑器，它提供了一个窗口，通过它可以编辑文件；</li>
+<li>vim是vi的增强版本，支持vi的全部功能<ul>
+<li>vim命令更多</li>
+<li>vim有增强功能包括颜色标记功能，更方便</li>
+</ul>
+</li>
+</ul>
+<h4 id="（2）vi格式"><a href="#（2）vi格式" class="headerlink" title="（2）vi格式"></a>（2）vi格式</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi  文件名</span><br><span class="line">vim 文件名</span><br></pre></td></tr></tbody></table></figure>
+<p>如果文件已存在，则打开并编辑文件，底部提示文件多少行，多少字节</p>
+<p>如果文件不存在，则新建并编辑文件，底部提示new file</p>
+<p>常用操作：</p>
+<h5 id="1）修改环境变量："><a href="#1）修改环境变量：" class="headerlink" title="1）修改环境变量："></a>1）修改环境变量：</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">shift +g快速移动到最后一行</span><br><span class="line">insert进入插入模式</span><br><span class="line">编辑文件，例如：export PATH=$PATH:/home/test</span><br><span class="line">ESC到底线模式</span><br><span class="line">：wq保存退出</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="2）修改tomcat、Nginx配置文件"><a href="#2）修改tomcat、Nginx配置文件" class="headerlink" title="2）修改tomcat、Nginx配置文件"></a>2）修改tomcat、Nginx配置文件</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim application.yml 进入配置文件</span><br><span class="line">:/port 定位到port，输入n可以下移，找到要修改的port</span><br><span class="line">i 进入插入模式</span><br><span class="line">编辑文件，修改port</span><br><span class="line">ESC到底线模式</span><br><span class="line">：wq保存退出</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="3）启动时报错，如何修改报错代码"><a href="#3）启动时报错，如何修改报错代码" class="headerlink" title="3）启动时报错，如何修改报错代码"></a>3）启动时报错，如何修改报错代码</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vim application.yml</span><br><span class="line">:20进入底线模式，定位到第20行（假设第20行报错）</span><br><span class="line">insert进入插入模式</span><br><span class="line">修改报错代码</span><br><span class="line">ESC到底线模式</span><br><span class="line">：wq保存退出</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（3）三种模式"><a href="#（3）三种模式" class="headerlink" title="（3）三种模式"></a>（3）三种模式</h4><p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426150327095.png" alt="image-20240426150327095" style="zoom:67%;"></p>
+<h5 id="1）命令模式command-mode"><a href="#1）命令模式command-mode" class="headerlink" title="1）命令模式command mode"></a>1）命令模式command mode</h5><ul>
+<li><p>刚进入时的默认模式就是命令模式</p>
+</li>
+<li><p>命令模式的特点：</p>
+<ul>
+<li><p>此时不可以直接添加文字</p>
+</li>
+<li><p>不能用退格删除文字</p>
+</li>
+<li><p><strong>==控制光标的快速移动==</strong></p>
+<ul>
+<li>快速移动到最后一行的行首：==<code>shift+G</code>==</li>
+<li>快速移动到第一行行首：==<code>GG</code>==</li>
+<li>移动光标到当前行的行尾：==<code>shift+$</code>==</li>
+<li>移动光标到当前行的行首：==<code>shift+^</code>==</li>
+</ul>
+</li>
+<li><p><strong>可以进行字符的删除、复制、粘贴</strong></p>
+<p><code>x</code>：删除</p>
+<ul>
+<li><p>x是往后删，相当于delete键，X是往前删，相当于Backspace键</p>
+</li>
+<li><p>3x表示删除光标所在位置开始的3个字符，包括光标所在位置</p>
+</li>
+<li><p>如果输入命令错误，可以按Esc键取消</p>
+</li>
+</ul>
+<p><code>dw</code>：删除光标所在处直到词尾的内容</p>
+<p><code>dd</code>：删除光标所在行</p>
+<ul>
+<li>3dd表示删除从光标所在行开始的3行，包括光标所在行</li>
+</ul>
+<p><code>yw</code>：复制光标所在处到词尾的内容</p>
+<p><code>yy</code>：复制光标所在行</p>
+<ul>
+<li>3yy表示复制3行</li>
+</ul>
+<p><code>p</code>：粘贴</p>
+</li>
+<li><p><strong>替换、撤销</strong></p>
+<p><code>r</code>：替换光标所在处的字符</p>
+<p><code>shift + r</code>：连续替换字符直到按ESC为止</p>
+<p><code>u</code>：假如误操作一个命令，可以马上按u进行撤销，可以连续按u撤销多个之前做出的操作（等于Windows下的ctrl + z）</p>
+<p><code>Ctrl + r</code>：反撤销</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="2）底线模式"><a href="#2）底线模式" class="headerlink" title="2）底线模式"></a>2）底线模式</h5><p>在命令模式下输入冒号进入底线模式</p>
+<p>==<strong>1))、查找、定位</strong>==</p>
+<ul>
+<li>==<code>:set nu</code>== 在每一行的行首显示行号</li>
+<li>==<code>:set nonu</code>== 关闭显示行号</li>
+<li>==<code>:n</code>== n是你要输入的数字，再按回车，光标将跳转到数字指定的行</li>
+<li>==<code>:/关键字</code>==先按/，再输入你要查找的字符<ul>
+<li>找到所有关键字后，光标默认指向第一个，可以输入<code>n</code>（next），向下继续查找</li>
+<li><code>shift+n</code>是往上查找</li>
+<li><code>set ic</code>：查找关键字时，设置忽略大小写（ignore capital）</li>
+<li><code>set noic</code>：查找关键字时，设置不忽略大小写（not ignore capital）</li>
+</ul>
+</li>
+</ul>
+<p>==<strong>2))、字符替换</strong>==</p>
+<ul>
+<li>在底线模式下输入<code>1,$s/oldstring/newstring/g</code>会将全文的oldstring字符串替换成newstring字符串<ul>
+<li>1,$表示从第一行到最后一行</li>
+<li>s表示替换</li>
+<li>g表示每行全部替换</li>
+</ul>
+</li>
+</ul>
+<p>或者简写成：<code>%s/oldstring/newstring/g</code></p>
+<p>eg.将文件里的LINE全部替换为line</p>
+<p><img src="/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/image-20240426153805604.png" alt="image-20240426153805604" style="zoom:67%;"></p>
+<ul>
+<li><p>指定行：</p>
+<p><code>:1,20s/oldstring/newstring/g</code>将1至20行间的oldstring替换成newstring字符串</p>
+</li>
+</ul>
+<p><strong>3))、编辑完成之后的==保存、退出==</strong></p>
+<ul>
+<li><code>:起始行号,结尾行号 w 文件名</code> 如果你想摘取文件的某一段，存为另一个文件，可以使用这个指令，例如：<code>30,50 w nice</code>代表将30到50行摘录下来，并另存为nice文件</li>
+<li><code>:w</code> 新文件名 将文件<strong>另存为</strong>新文件</li>
+<li><code>:wq</code> <strong>保存</strong>并退出</li>
+<li><code>:q!</code> 强制退出vi并<strong>不保存</strong>当前的修改内容</li>
+</ul>
+<h5 id="3）插入模式"><a href="#3）插入模式" class="headerlink" title="3）插入模式"></a>3）插入模式</h5><p>进入插入模式：insert、i、a、o都可以进入</p>
+<p>三者的区别在于：insert和i进入插入模式，光标不会移动；a进入插入模式，光标向后移动一位；o进入插入模式，光标向下移动一行</p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/04/24/Linux%E6%A6%82%E8%BF%B0%E4%B8%8E%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Linux概述与常用命令">https://laylaycjl.github.io/2024/04/24/Linux概述与常用命令/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/24/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/" rel="prev" title="测试报告">
+                  <i class="fa fa-chevron-left"></i> 测试报告
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/25/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A-1/" rel="next" title="测试报告">
+                  测试报告 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">119k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:48</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
