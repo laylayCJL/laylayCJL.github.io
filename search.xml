@@ -1,73 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Linux中的C语言</title>
-    <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
-    <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+    <title>Linux命令总结</title>
+    <url>/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
 <span id="more"></span>
-<h1 id="2、通过open-read-write函数实现“cp”功能"><a href="#2、通过open-read-write函数实现“cp”功能" class="headerlink" title="2、通过open read write函数实现“cp”功能"></a>2、通过open read write函数实现“cp”功能</h1><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">flags:</span><br><span class="line">O_RDONLY 以只读方式打开文件</span><br><span class="line">O_WRONLY 以只写方式打开文件</span><br><span class="line">O_RDWR 以可读写方式打开文件。上述三种旗标是互斥的，也就是不可同时使用，但可与下列的旗标利用OR(|)运算符组合。</span><br><span class="line">O_CREAT 若欲打开的文件不存在则自动建立该文件。</span><br><span class="line">O_EXCL 如果O_CREAT 也被设置，此指令会去检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误。此外，若O_CREAT与O_EXCL同时设置，并且欲打开的文件为符号连接，则会打开文件失败。</span><br><span class="line">O_NOCTTY 如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。</span><br><span class="line">O_TRUNC 若文件存在并且以可写的方式打开时，此旗标会令文件长度清为0，而原来存于该文件的资料也会消失。</span><br><span class="line">O_APPEND 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。</span><br><span class="line">O_NONBLOCK 以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。</span><br><span class="line">O_NDELAY 同O_NONBLOCK。</span><br><span class="line">O_SYNC 以同步的方式打开文件。</span><br><span class="line">O_NOFOLLOW 如果参数pathname 所指的文件为一符号连接，则会令打开文件失败。</span><br><span class="line">O_DIRECTORY 如果参数pathname 所指的文件并非为一目录，则会令打开文件失败。</span><br><span class="line">此为Linux2.2以后特有的旗标，以避免一些系统安全问题。参数mode 则有下列数种组合，只有在建立新文件时才会生效，此外真正建文件时的权限会受到umask值所影响，因此该文件权限应该为（mode-umaks）。</span><br><span class="line">S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限。</span><br><span class="line">S_IRUSR 或S_IREAD，00400权限，代表该文件所有者具有可读取的权限。</span><br><span class="line">S_IWUSR 或S_IWRITE，00200 权限，代表该文件所有者具有可写入的权限。</span><br><span class="line">S_IXUSR 或S_IEXEC，00100 权限，代表该文件所有者具有可执行的权限。</span><br><span class="line">S_IRWXG 00070权限，代表该文件用户组具有可读、可写及可执行的权限。</span><br><span class="line">S_IRGRP 00040 权限，代表该文件用户组具有可读的权限。</span><br><span class="line">S_IWGRP 00020权限，代表该文件用户组具有可写入的权限。</span><br><span class="line">S_IXGRP 00010 权限，代表该文件用户组具有可执行的权限。</span><br><span class="line">S_IRWXO 00007权限，代表其他用户具有可读、可写及可执行的权限。</span><br><span class="line">S_IROTH 00004 权限，代表其他用户具有可读的权限</span><br><span class="line">S_IWOTH 00002权限，代表其他用户具有可写入的权限。</span><br><span class="line">S_IXOTH 00001 权限，代表其他用户具有可执行的权限。</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（1）open-函数"><a href="#（1）open-函数" class="headerlink" title="（1）open()函数"></a>（1）open()函数</h2><p><strong>注意打开了的函数用完要关掉释放内存</strong></p>
-<p>表头文件 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：文件打开路径，打开方式</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname,<span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：相比上面的，这一种加上了第三个参数mode，主要是搭配O_CREAT使用，同样地，这个参数规定了属主、同组和其他人对文件的文件操作权限</span></span><br><span class="line"><span class="comment">//mode_t mode规定文件操作权限</span></span><br><span class="line">eg.</span><br><span class="line">    open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>)</span><br><span class="line">    <span class="comment">//解读：以只写（O_WRONLY），附加（O_APPEND）方式打开argv[2]文件，若argv[2]文件不存在，则以0644权限（O_CREAT）建立该文件</span></span><br><span class="line">    <span class="comment">//0644:6表示owner有可读可写权限，group可读，others可读</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若所有欲核查的权限都通过了检查则返回0 值，表示成功，只要有一个权限被禁止则返回-1。</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（2）read-函数"><a href="#（2）read-函数" class="headerlink" title="（2）read()函数"></a>（2）read()函数</h2><p>表头文件</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd,<span class="keyword">void</span> * buf ,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//read()会把参数fd 所指的文件传送count个字节到buf指针所指的内存中。若参数count为0，则read()不会有作用并返回0</span></span><br><span class="line">eg.</span><br><span class="line">    read(from,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">    <span class="comment">//把from中的内容读入缓冲区</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">返回值为实际读取到的字节数，如果返回0，表示已到达文件尾或是无可读取的数据，此外文件读写位置会随读取到的字节移动</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（3）write-函数"><a href="#（3）write-函数" class="headerlink" title="（3）write()函数"></a>（3）write()函数</h2><p>表头文件 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span> <span class="params">(<span class="keyword">int</span> fd,<span class="keyword">const</span> <span class="keyword">void</span> * buf,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//write()会把参数buf所指的内存写入count个字节到参数fd所指的文件内。当然，文件读写位置也会随之移动。</span></span><br><span class="line">eg.</span><br><span class="line">    write(to,buf,n)</span><br><span class="line">    <span class="comment">//把buf缓冲区的内容写入to文件中</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">如果顺利write()会返回实际写入的字节数。当有错误发生时则返回<span class="number">-1</span>，错误代码存入errno中</span><br></pre></td></tr></tbody></table></figure>
-<p>（4）举例</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//通过open read write函数实现“cp”功能</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="keyword">int</span> n,from,to;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">if</span>(argc!=<span class="number">3</span>){</span><br><span class="line">		perror(<span class="string">"argc error\n"</span>);</span><br><span class="line">	        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">if</span>((from=open(argv[<span class="number">1</span>],O_RDONLY))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"from fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">if</span>((to=open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"to fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">while</span>((n=read(from,buf,<span class="keyword">sizeof</span>(buf)))&gt;<span class="number">0</span>)</span><br><span class="line">		write(to,buf,n);</span><br><span class="line">	close(to);</span><br><span class="line">	close(from);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-1.</span>c -o exp3<span class="number">-1</span></span><br><span class="line">执行：./exp3<span class="number">-1</span> /proc/meminfo /home/laylay/exp3/my.meminfo</span><br><span class="line">     (./exp3<span class="number">-1</span> 要复制的文件源文件 要复制到的目的文件（可以顺带改名）)</span><br></pre></td></tr></tbody></table></figure>
-<h1 id="3、移动指针用lseek函数"><a href="#3、移动指针用lseek函数" class="headerlink" title="3、移动指针用lseek函数"></a>3、移动指针用lseek函数</h1><p>表头文件</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>函数原型</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">off_t</span> <span class="title">lseek</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset, <span class="keyword">int</span> whence)</span></span>;</span><br><span class="line">参数：</span><br><span class="line">fd：文件描述符，指向打开的文件</span><br><span class="line">whence：粗定位，选项有：</span><br><span class="line">   SEEK_SET：调到文件起始位置</span><br><span class="line">   SEEK_CUR：调到文件当前读写的位置</span><br><span class="line">   SEEK_END：调到文件末尾位置</span><br><span class="line">offset：精定位：微调位置</span><br><span class="line">   从whence指定的位置，向前或者向后移动指定字节数。</span><br><span class="line">   为负数：向前移动指定字节数</span><br><span class="line">   为正数：向后移动指定字节数</span><br><span class="line"></span><br><span class="line">不过当whence被指定为SEEK_SET时，如果offset被指定为负数的话，是没有意义，因为已经到文件头上了，在向前移动就越界了，不再当前文件的范围内了，如果非要向前调整，lseek函数会报错。</span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">调用成功</span><br><span class="line">返回当前读写位置相对于文件开始位置的偏移量（字节）。</span><br><span class="line">可以使用lseek函数获取文件的大小，将文件读写的位置移动到最末尾，然后获取返回值，这个返回值就是文件头与文件尾之间的字节数，也就是文件大小。</span><br><span class="line"></span><br><span class="line">调用失败</span><br><span class="line">返回-1，并给errno设置错误号。</span><br></pre></td></tr></tbody></table></figure>
-<p>应用举例：</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.1"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.1</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
-<p>执行结果中可以看出</p>
-<ul>
-<li>以只写方式创建的文件中，写入数据时候，会按照lseek中的指示，将指针从起始位置移动40后再写入</li>
-<li>可以看到此种情况下file.hole.1文件大小为50<ul>
-<li>如果后边不加write写入操作，仅仅移动指针，结果file.hole.1文件大小为10，因为仅仅拨动指针是没办法改变文件大小的，必须写入数据才会改变文件大小</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408230331195.png" alt="image-20210408230331195"></p>
-<p>如果将fd打开方式变为追加打开</p>
-<p>即<code>fd=open("file.hole.1",O_WRONLY|O_CREAT|O_APPEND,0644);</code>时</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.2"</span>,O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.2</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.2</span></span><br></pre></td></tr></tbody></table></figure>
-<p>lseek就会不起作用，数据依旧按照顺序已追加方式写入（对比如下）</p>
-<p>file.hole.1以只写方式创建</p>
-<p>file.hole.2以只写追加方式创建</p>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408231408315.png" alt="image-20210408231408315"></p>
-<h1 id="4、输出重定向"><a href="#4、输出重定向" class="headerlink" title="4、输出重定向"></a>4、输出重定向</h1><h2 id="（1）dup1-dup2"><a href="#（1）dup1-dup2" class="headerlink" title="（1）dup1()/dup2()"></a>（1）dup1()/dup2()</h2><p>表头文件</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>函数原型</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> oldfd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> oldfd, <span class="keyword">int</span> newfd)</span></span>;</span><br><span class="line">相同点：dup和dup2两个函数都可以用来复制一个已经存在的文件描述符。</span><br><span class="line">不同点：dup返回的新文件描述符一定是当前可用文件描述符中最小数值，</span><br><span class="line">       dup2则可以是用filedes2参数指定新的描述符。</span><br><span class="line">注意：如果filedes已经打开，则先将其关闭。若filedes2等于filedes，则dup2返回filedes2，而不关闭它。</span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若成功则返回新的文件秒速符，若出错则返回-1</span><br></pre></td></tr></tbody></table></figure>
-<p>应用举例</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="comment">//输出重定向</span></span><br><span class="line"><span class="comment">//将before redirct!直接输出，将after redirct!转到out文件中输出</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        <span class="comment">//新建out文件</span></span><br><span class="line">        fd=open(<span class="string">"out"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before redirct!\n"</span>);</span><br><span class="line">        dup2(fd,STDOUT_FILENO);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"after redirct!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-3.</span>c -o exp3<span class="number">-3</span></span><br><span class="line">执行：./exp3<span class="number">-3</span></span><br><span class="line">查看out文件：vi out</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233211954.png" alt="image-20210408233211954"></p>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233144551.png" alt="image-20210408233144551"></p>
+<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
+<p>filepath是决定把编译生成的可执行文件放在哪里</p>
+<p>执行生成的可执行文件：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
+<p>在后台执行生成的可执行文件：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./filename&amp;</span><br></pre></td></tr></tbody></table></figure>
+<p>eg.回车之后可以再运行，进程自己更换pid了，也就是他会派生出子进程</p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C.jpg" style="zoom:50%;"></p>
+<p>且通过top查看 三者都在运行态R</p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E6%80%81.jpg" style="zoom:50%;"></p>
+<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<p>vi可读可写，cat只能读取</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gedit filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<p>用纯文本编辑器打开文件</p>
+<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="12、查看当前路径下的目录"><a href="#12、查看当前路径下的目录" class="headerlink" title="12、查看当前路径下的目录"></a>12、查看当前路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="13、查看指定路径下的目录"><a href="#13、查看指定路径下的目录" class="headerlink" title="13、查看指定路径下的目录"></a>13、查看指定路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l 路径</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="14、编译脚本文件（改变权限）"><a href="#14、编译脚本文件（改变权限）" class="headerlink" title="14、编译脚本文件（改变权限）"></a>14、编译脚本文件（改变权限）</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">chmod 777 exp1.sh</span><br><span class="line">Linux档案的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限</span><br><span class="line">owner：文件的属主（拥有者）group：用户组内成员other：其他用户</span><br><span class="line">r:4 w:2 x:1</span><br><span class="line">r (read)：可读取此一档案的实际内容，如读取文本文件的文字内容等；</span><br><span class="line">w (write)：可以编辑、新增戒者是修改该档案的内容(但丌吨删除该档案)；</span><br><span class="line">x (eXecute)：该档案具有可以被系统执行的权限。</span><br><span class="line">owner=4+2+1=7</span><br><span class="line">group=4+2+1=7</span><br><span class="line">others=4+2+1=7</span><br><span class="line">也就是修改exp1.sh的权限为owner/group/others均可读可写可执行</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="15、移动-amp-amp-换名"><a href="#15、移动-amp-amp-换名" class="headerlink" title="15、移动&amp;&amp;换名"></a>15、移动&amp;&amp;换名</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mv</span><br><span class="line">文件移动：mv 目标文件所在路径 目的地路径</span><br><span class="line">文件换名：mv 旧名 新名</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="16、计算运行时间"><a href="#16、计算运行时间" class="headerlink" title="16、计算运行时间"></a>16、计算运行时间</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">time 执行命令</span><br><span class="line">例如：</span><br><span class="line">time ./exp2</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="17、查看详细文件存储情况"><a href="#17、查看详细文件存储情况" class="headerlink" title="17、查看详细文件存储情况"></a>17、查看详细文件存储情况</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">od -c filename</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="18、kill向进程发送信号"><a href="#18、kill向进程发送信号" class="headerlink" title="18、kill向进程发送信号"></a>18、kill向进程发送信号</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill1.jpg" style="zoom:50%;"></p>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill2.jpg" style="zoom:50%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">kill -9 pid(进程号) </span><br><span class="line">向进程发送信号终止进程</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">参数： </span><br><span class="line">-l：列出目前 kill 能够使用的讯号 (signal) 有哪些</span><br><span class="line">signal：代表给予后面接的那个工作什么样的指令</span><br><span class="line">-1(数字1)：重新读取一次参数的配置文件 (类似 reload)；</span><br><span class="line">-2：代表与由键盘输入ctrl c同样的动作；</span><br><span class="line">-9：立刻强制删除一个工作； </span><br><span class="line">-15：以正常的程序方式终止一项工作。与-9是不一样的</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="19、查看历史命令"><a href="#19、查看历史命令" class="headerlink" title="19、查看历史命令"></a>19、查看历史命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">history</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="20、观察程序进程"><a href="#20、观察程序进程" class="headerlink" title="20、观察程序进程"></a>20、观察程序进程</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/proc.jpg" style="zoom: 50%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">proc里记录了进程的运行状态</span><br><span class="line">可以通过ls /proc/</span><br><span class="line">来查看某个进程是否运行</span><br><span class="line">通过ls /proc/进程号(也就是pid)</span><br><span class="line">来查看某个进程的具体运行状态</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="（1）静态（ps）"><a href="#（1）静态（ps）" class="headerlink" title="（1）静态（ps）"></a>（1）静态（ps）</h5><p>将某个时间点的程序运作情况撷取下来</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps所带参数含义</span><br><span class="line">参数：</span><br><span class="line">-A ：所有的进程均显示出来，与 -e 具有同样的效用；</span><br><span class="line">-a ： 显示现行终端机下的所有进程，包括其他用户的进程；</span><br><span class="line">-u ：以用户为主的进程状态 ；</span><br><span class="line">x ：通常与 a 这个参数一起使用，可列出较完整信息。</span><br><span class="line"></span><br><span class="line">输出格式规划：</span><br><span class="line">l ：较长、较详细的将该PID 的的信息列出；</span><br><span class="line">j ：工作的格式 (jobs format)</span><br><span class="line">-f ：做一个更为完整的输出。</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/ps.jpg" style="zoom:67%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义</span><br><span class="line">UID： 说明该程序被谁拥有</span><br><span class="line">PID：就是指该程序的PID号码</span><br><span class="line">PPID： 就是指该程序父级程序的PID号码</span><br><span class="line">C： 指的是 CPU 使用率，单位为百分比</span><br><span class="line">STIME： 程序的启动时间</span><br><span class="line">TTY： 指的是登录终端</span><br><span class="line">TIME : 指程序使用掉 CPU 的时间</span><br><span class="line">CMD： 下达的指令就是 command 的缩写</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="（2）动态（top）"><a href="#（2）动态（top）" class="headerlink" title="（2）动态（top）"></a>（2）动态（top）</h5><p>top可以持续侦测程序的变化</p>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">top -d 2</span><br><span class="line">解释：动态观察程序状态，每两秒刷新一次</span><br><span class="line">选项与参数： </span><br><span class="line">   -d：后面可以接秒数，就是整个程序画面更新的秒数。预设是5秒；</span><br><span class="line">   -b：以批次的方式执行top</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/top.jpg" style="zoom:67%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义:</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">上半部分：</span><br><span class="line">第一行：(top)</span><br><span class="line">04:03:28————目前的时间</span><br><span class="line">up 4:36————开机到目前为止所经过的时间</span><br><span class="line">1 user————已经登入系统的用户人数</span><br><span class="line">load average: 2.14,2.09,2.17————系统在1,5,15分钟的平均工作负载，负载高于1就有点繁复，显然我的过分繁复了，呜呜呜</span><br><span class="line"></span><br><span class="line">第二行：(任务Tasks)</span><br><span class="line">289 total————目前程序总量</span><br><span class="line">3个处在运行态，286个睡眠态，0个停止，0个僵尸</span><br><span class="line"></span><br><span class="line">第三行：(cpus)</span><br><span class="line">显示的是 CPU 的整体负载，每个顷目可使用? </span><br><span class="line">查阅。需要特别注意癿是 %wa ，那个项目代表的是 I/O wait， 通常你癿系统会变慢都是I/O产生癿问题比较大！因此这里得要注意这个项目耗用CPU的资源喔！</span><br><span class="line"></span><br><span class="line">第四行与第五行：表示目前的物理内存与虚拟内存 (Mem/Swap) 的使用情况</span><br><span class="line"></span><br><span class="line">第六行：这个是当在 top 程序当中输入指令时，显示状态的地方。</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">下半部分：</span><br><span class="line">PID ：每个process的ID 啦！</span><br><span class="line">USER：该process所属的使用者；</span><br><span class="line">PR ：Priority癿简写，程序的优先执行顺序，越小越早被执行；</span><br><span class="line">NI ：Nice的简写，与Priority有关，也是越小越早被执行；</span><br><span class="line"><span class="meta">%</span><span class="bash">CPU：CPU的使用率；</span></span><br><span class="line"><span class="meta">%</span><span class="bash">MEM：内存的使用率；</span></span><br><span class="line">TIME+：CPU 使用时间的累加；</span><br></pre></td></tr></tbody></table></figure>
 ]]></content>
       <categories>
         <category>操作系统</category>
       </categories>
       <tags>
-        <tag>Linux-C</tag>
+        <tag>Linux</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>hexo基本操作</title>
+    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>1、写博客 </p>
+<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
+<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
+<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
+<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
+<span id="more"></span>
+<p>2、一些命令</p>
+<p><code>hexo clean</code> 清除缓存</p>
+<p><code>hexo g</code> 部署</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
+<p>3、摘要（阅读全文）</p>
+<p>在想展示的内容后添加如下代码</p>
+<!-- more -->
+<p>4、部署到远端的github</p>
+<p><code>hexo deploy</code></p>
+<p>5、hexo使用说明</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
+<p>6、解决报错Error: Spawn failed</p>
+<ul>
+<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
+<ul>
+<li>删除<code>.deploy_git</code>文件夹;</li>
+<li>输入<code>git config --global core.autocrlf false</code></li>
+<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
+</ul>
+</li>
+<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
+<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
+<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Failed to connect to github.com</p>
+<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>7、如果有图片插入 要在头部加入</p>
+<p><code>typora-root-url: ..</code></p>
+]]></content>
+      <categories>
+        <category>博客基本操作及报错解决方案</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/03/05/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Linux文件权限管理</title>
@@ -155,129 +212,72 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux命令总结</title>
-    <url>/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="2、touch命令"><a href="#2、touch命令" class="headerlink" title="2、touch命令"></a>2、touch命令</h4><p>建立新文件、更新时间情况</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">touch /home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
+    <title>Linux中的C语言</title>
+    <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
+    <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
 <span id="more"></span>
-<h4 id="3、编译命令"><a href="#3、编译命令" class="headerlink" title="3、编译命令"></a>3、编译命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.c -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gcc filename.cpp -o /filepath/filename</span><br></pre></td></tr></tbody></table></figure>
-<p>filepath是决定把编译生成的可执行文件放在哪里</p>
-<p>执行生成的可执行文件：</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/filepath/filename</span><br><span class="line">或者./filename</span><br></pre></td></tr></tbody></table></figure>
-<p>在后台执行生成的可执行文件：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./filename&amp;</span><br></pre></td></tr></tbody></table></figure>
-<p>eg.回车之后可以再运行，进程自己更换pid了，也就是他会派生出子进程</p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C.jpg" style="zoom:50%;"></p>
-<p>且通过top查看 三者都在运行态R</p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/%E8%BF%9B%E7%A8%8B%E8%BF%90%E8%A1%8C%E6%80%81.jpg" style="zoom:50%;"></p>
-<h4 id="4、复制"><a href="#4、复制" class="headerlink" title="4、复制"></a>4、复制</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cp /home/laylay(源文件路径)/filename /home/laylay(目的文件路径)/filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="5、新建目录-删除目录"><a href="#5、新建目录-删除目录" class="headerlink" title="5、新建目录/删除目录"></a>5、新建目录/删除目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mkdir filename</span><br><span class="line"></span><br><span class="line">使用-p选项可以创建一个还不存在的目录，比如我要在backup目录下新建一个目录test，并且在test目录下新建一个目录abc，当前状态是不存在test目录的，此时可以执行mkdir -p /home/laylay/backup/test/abc</span><br><span class="line"></span><br><span class="line">使用-m选项可以设置你将要创建的目录的权限，例如，想创建一个任何人都有权限的目录</span><br><span class="line">此时可以执行mkdir -p -m 777 /home/laylay/backup/test/abc</span><br><span class="line">除了上述用数字777表示权限外，也可以通过字母来表示</span><br><span class="line">mkdir -p -m a=rwx /home/laylay/backup/test/abc</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">rmdir filename</span><br><span class="line">只能删除目录，如果目录里还有文件就无法删除该目录</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="6、新建文件"><a href="#6、新建文件" class="headerlink" title="6、新建文件"></a>6、新建文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">vi filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<p>vi可读可写，cat只能读取</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gedit filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<p>用纯文本编辑器打开文件</p>
-<h4 id="7、只读文件"><a href="#7、只读文件" class="headerlink" title="7、只读文件"></a>7、只读文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cat filename.filetype</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="8、编写文件"><a href="#8、编写文件" class="headerlink" title="8、编写文件"></a>8、编写文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">进入文件后先按insert键</span><br><span class="line">然后开始编辑文件</span><br><span class="line">编辑完成后，按esc退出编辑</span><br><span class="line">再输入 :wq 退出当前文件</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="9、查看当前路径"><a href="#9、查看当前路径" class="headerlink" title="9、查看当前路径"></a>9、查看当前路径</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="10、返回到上级目录"><a href="#10、返回到上级目录" class="headerlink" title="10、返回到上级目录"></a>10、返回到上级目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">cd ..</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="11、删除目录以及目录中的文件"><a href="#11、删除目录以及目录中的文件" class="headerlink" title="11、删除目录以及目录中的文件"></a>11、删除目录以及目录中的文件</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">使用rm -rf 目录名字 命令即可</span><br><span class="line"></span><br><span class="line">r 就是向下递归，不管有多少级目录，一并删除</span><br><span class="line">-f 就是直接强行删除，不作任何提示的意思</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="12、查看当前路径下的目录"><a href="#12、查看当前路径下的目录" class="headerlink" title="12、查看当前路径下的目录"></a>12、查看当前路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="13、查看指定路径下的目录"><a href="#13、查看指定路径下的目录" class="headerlink" title="13、查看指定路径下的目录"></a>13、查看指定路径下的目录</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ls -l 路径</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="14、编译脚本文件（改变权限）"><a href="#14、编译脚本文件（改变权限）" class="headerlink" title="14、编译脚本文件（改变权限）"></a>14、编译脚本文件（改变权限）</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">chmod 777 exp1.sh</span><br><span class="line">Linux档案的基本权限就有九个，分别是owner/group/others三种身份各有自己的read/write/execute权限</span><br><span class="line">owner：文件的属主（拥有者）group：用户组内成员other：其他用户</span><br><span class="line">r:4 w:2 x:1</span><br><span class="line">r (read)：可读取此一档案的实际内容，如读取文本文件的文字内容等；</span><br><span class="line">w (write)：可以编辑、新增戒者是修改该档案的内容(但丌吨删除该档案)；</span><br><span class="line">x (eXecute)：该档案具有可以被系统执行的权限。</span><br><span class="line">owner=4+2+1=7</span><br><span class="line">group=4+2+1=7</span><br><span class="line">others=4+2+1=7</span><br><span class="line">也就是修改exp1.sh的权限为owner/group/others均可读可写可执行</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="15、移动-amp-amp-换名"><a href="#15、移动-amp-amp-换名" class="headerlink" title="15、移动&amp;&amp;换名"></a>15、移动&amp;&amp;换名</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">mv</span><br><span class="line">文件移动：mv 目标文件所在路径 目的地路径</span><br><span class="line">文件换名：mv 旧名 新名</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="16、计算运行时间"><a href="#16、计算运行时间" class="headerlink" title="16、计算运行时间"></a>16、计算运行时间</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">time 执行命令</span><br><span class="line">例如：</span><br><span class="line">time ./exp2</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="17、查看详细文件存储情况"><a href="#17、查看详细文件存储情况" class="headerlink" title="17、查看详细文件存储情况"></a>17、查看详细文件存储情况</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">od -c filename</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="18、kill向进程发送信号"><a href="#18、kill向进程发送信号" class="headerlink" title="18、kill向进程发送信号"></a>18、kill向进程发送信号</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill1.jpg" style="zoom:50%;"></p>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/kill2.jpg" style="zoom:50%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">kill -9 pid(进程号) </span><br><span class="line">向进程发送信号终止进程</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">参数： </span><br><span class="line">-l：列出目前 kill 能够使用的讯号 (signal) 有哪些</span><br><span class="line">signal：代表给予后面接的那个工作什么样的指令</span><br><span class="line">-1(数字1)：重新读取一次参数的配置文件 (类似 reload)；</span><br><span class="line">-2：代表与由键盘输入ctrl c同样的动作；</span><br><span class="line">-9：立刻强制删除一个工作； </span><br><span class="line">-15：以正常的程序方式终止一项工作。与-9是不一样的</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="19、查看历史命令"><a href="#19、查看历史命令" class="headerlink" title="19、查看历史命令"></a>19、查看历史命令</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">history</span><br></pre></td></tr></tbody></table></figure>
-<h4 id="20、观察程序进程"><a href="#20、观察程序进程" class="headerlink" title="20、观察程序进程"></a>20、观察程序进程</h4><p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/proc.jpg" style="zoom: 50%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">proc里记录了进程的运行状态</span><br><span class="line">可以通过ls /proc/</span><br><span class="line">来查看某个进程是否运行</span><br><span class="line">通过ls /proc/进程号(也就是pid)</span><br><span class="line">来查看某个进程的具体运行状态</span><br></pre></td></tr></tbody></table></figure>
-<h5 id="（1）静态（ps）"><a href="#（1）静态（ps）" class="headerlink" title="（1）静态（ps）"></a>（1）静态（ps）</h5><p>将某个时间点的程序运作情况撷取下来</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">ps所带参数含义</span><br><span class="line">参数：</span><br><span class="line">-A ：所有的进程均显示出来，与 -e 具有同样的效用；</span><br><span class="line">-a ： 显示现行终端机下的所有进程，包括其他用户的进程；</span><br><span class="line">-u ：以用户为主的进程状态 ；</span><br><span class="line">x ：通常与 a 这个参数一起使用，可列出较完整信息。</span><br><span class="line"></span><br><span class="line">输出格式规划：</span><br><span class="line">l ：较长、较详细的将该PID 的的信息列出；</span><br><span class="line">j ：工作的格式 (jobs format)</span><br><span class="line">-f ：做一个更为完整的输出。</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/ps.jpg" style="zoom:67%;"></p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义</span><br><span class="line">UID： 说明该程序被谁拥有</span><br><span class="line">PID：就是指该程序的PID号码</span><br><span class="line">PPID： 就是指该程序父级程序的PID号码</span><br><span class="line">C： 指的是 CPU 使用率，单位为百分比</span><br><span class="line">STIME： 程序的启动时间</span><br><span class="line">TTY： 指的是登录终端</span><br><span class="line">TIME : 指程序使用掉 CPU 的时间</span><br><span class="line">CMD： 下达的指令就是 command 的缩写</span><br></pre></td></tr></tbody></table></figure>
-<h5 id="（2）动态（top）"><a href="#（2）动态（top）" class="headerlink" title="（2）动态（top）"></a>（2）动态（top）</h5><p>top可以持续侦测程序的变化</p>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">top -d 2</span><br><span class="line">解释：动态观察程序状态，每两秒刷新一次</span><br><span class="line">选项与参数： </span><br><span class="line">   -d：后面可以接秒数，就是整个程序画面更新的秒数。预设是5秒；</span><br><span class="line">   -b：以批次的方式执行top</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/top.jpg" style="zoom:67%;"></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">输出信息的含义:</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">上半部分：</span><br><span class="line">第一行：(top)</span><br><span class="line">04:03:28————目前的时间</span><br><span class="line">up 4:36————开机到目前为止所经过的时间</span><br><span class="line">1 user————已经登入系统的用户人数</span><br><span class="line">load average: 2.14,2.09,2.17————系统在1,5,15分钟的平均工作负载，负载高于1就有点繁复，显然我的过分繁复了，呜呜呜</span><br><span class="line"></span><br><span class="line">第二行：(任务Tasks)</span><br><span class="line">289 total————目前程序总量</span><br><span class="line">3个处在运行态，286个睡眠态，0个停止，0个僵尸</span><br><span class="line"></span><br><span class="line">第三行：(cpus)</span><br><span class="line">显示的是 CPU 的整体负载，每个顷目可使用? </span><br><span class="line">查阅。需要特别注意癿是 %wa ，那个项目代表的是 I/O wait， 通常你癿系统会变慢都是I/O产生癿问题比较大！因此这里得要注意这个项目耗用CPU的资源喔！</span><br><span class="line"></span><br><span class="line">第四行与第五行：表示目前的物理内存与虚拟内存 (Mem/Swap) 的使用情况</span><br><span class="line"></span><br><span class="line">第六行：这个是当在 top 程序当中输入指令时，显示状态的地方。</span><br></pre></td></tr></tbody></table></figure>
-<figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">下半部分：</span><br><span class="line">PID ：每个process的ID 啦！</span><br><span class="line">USER：该process所属的使用者；</span><br><span class="line">PR ：Priority癿简写，程序的优先执行顺序，越小越早被执行；</span><br><span class="line">NI ：Nice的简写，与Priority有关，也是越小越早被执行；</span><br><span class="line"><span class="meta">%</span><span class="bash">CPU：CPU的使用率；</span></span><br><span class="line"><span class="meta">%</span><span class="bash">MEM：内存的使用率；</span></span><br><span class="line">TIME+：CPU 使用时间的累加；</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="2、通过open-read-write函数实现“cp”功能"><a href="#2、通过open-read-write函数实现“cp”功能" class="headerlink" title="2、通过open read write函数实现“cp”功能"></a>2、通过open read write函数实现“cp”功能</h1><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">flags:</span><br><span class="line">O_RDONLY 以只读方式打开文件</span><br><span class="line">O_WRONLY 以只写方式打开文件</span><br><span class="line">O_RDWR 以可读写方式打开文件。上述三种旗标是互斥的，也就是不可同时使用，但可与下列的旗标利用OR(|)运算符组合。</span><br><span class="line">O_CREAT 若欲打开的文件不存在则自动建立该文件。</span><br><span class="line">O_EXCL 如果O_CREAT 也被设置，此指令会去检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误。此外，若O_CREAT与O_EXCL同时设置，并且欲打开的文件为符号连接，则会打开文件失败。</span><br><span class="line">O_NOCTTY 如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。</span><br><span class="line">O_TRUNC 若文件存在并且以可写的方式打开时，此旗标会令文件长度清为0，而原来存于该文件的资料也会消失。</span><br><span class="line">O_APPEND 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。</span><br><span class="line">O_NONBLOCK 以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。</span><br><span class="line">O_NDELAY 同O_NONBLOCK。</span><br><span class="line">O_SYNC 以同步的方式打开文件。</span><br><span class="line">O_NOFOLLOW 如果参数pathname 所指的文件为一符号连接，则会令打开文件失败。</span><br><span class="line">O_DIRECTORY 如果参数pathname 所指的文件并非为一目录，则会令打开文件失败。</span><br><span class="line">此为Linux2.2以后特有的旗标，以避免一些系统安全问题。参数mode 则有下列数种组合，只有在建立新文件时才会生效，此外真正建文件时的权限会受到umask值所影响，因此该文件权限应该为（mode-umaks）。</span><br><span class="line">S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限。</span><br><span class="line">S_IRUSR 或S_IREAD，00400权限，代表该文件所有者具有可读取的权限。</span><br><span class="line">S_IWUSR 或S_IWRITE，00200 权限，代表该文件所有者具有可写入的权限。</span><br><span class="line">S_IXUSR 或S_IEXEC，00100 权限，代表该文件所有者具有可执行的权限。</span><br><span class="line">S_IRWXG 00070权限，代表该文件用户组具有可读、可写及可执行的权限。</span><br><span class="line">S_IRGRP 00040 权限，代表该文件用户组具有可读的权限。</span><br><span class="line">S_IWGRP 00020权限，代表该文件用户组具有可写入的权限。</span><br><span class="line">S_IXGRP 00010 权限，代表该文件用户组具有可执行的权限。</span><br><span class="line">S_IRWXO 00007权限，代表其他用户具有可读、可写及可执行的权限。</span><br><span class="line">S_IROTH 00004 权限，代表其他用户具有可读的权限</span><br><span class="line">S_IWOTH 00002权限，代表其他用户具有可写入的权限。</span><br><span class="line">S_IXOTH 00001 权限，代表其他用户具有可执行的权限。</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（1）open-函数"><a href="#（1）open-函数" class="headerlink" title="（1）open()函数"></a>（1）open()函数</h2><p><strong>注意打开了的函数用完要关掉释放内存</strong></p>
+<p>表头文件 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：文件打开路径，打开方式</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname,<span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：相比上面的，这一种加上了第三个参数mode，主要是搭配O_CREAT使用，同样地，这个参数规定了属主、同组和其他人对文件的文件操作权限</span></span><br><span class="line"><span class="comment">//mode_t mode规定文件操作权限</span></span><br><span class="line">eg.</span><br><span class="line">    open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>)</span><br><span class="line">    <span class="comment">//解读：以只写（O_WRONLY），附加（O_APPEND）方式打开argv[2]文件，若argv[2]文件不存在，则以0644权限（O_CREAT）建立该文件</span></span><br><span class="line">    <span class="comment">//0644:6表示owner有可读可写权限，group可读，others可读</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若所有欲核查的权限都通过了检查则返回0 值，表示成功，只要有一个权限被禁止则返回-1。</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（2）read-函数"><a href="#（2）read-函数" class="headerlink" title="（2）read()函数"></a>（2）read()函数</h2><p>表头文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd,<span class="keyword">void</span> * buf ,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//read()会把参数fd 所指的文件传送count个字节到buf指针所指的内存中。若参数count为0，则read()不会有作用并返回0</span></span><br><span class="line">eg.</span><br><span class="line">    read(from,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">    <span class="comment">//把from中的内容读入缓冲区</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">返回值为实际读取到的字节数，如果返回0，表示已到达文件尾或是无可读取的数据，此外文件读写位置会随读取到的字节移动</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（3）write-函数"><a href="#（3）write-函数" class="headerlink" title="（3）write()函数"></a>（3）write()函数</h2><p>表头文件 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span> <span class="params">(<span class="keyword">int</span> fd,<span class="keyword">const</span> <span class="keyword">void</span> * buf,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//write()会把参数buf所指的内存写入count个字节到参数fd所指的文件内。当然，文件读写位置也会随之移动。</span></span><br><span class="line">eg.</span><br><span class="line">    write(to,buf,n)</span><br><span class="line">    <span class="comment">//把buf缓冲区的内容写入to文件中</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">如果顺利write()会返回实际写入的字节数。当有错误发生时则返回<span class="number">-1</span>，错误代码存入errno中</span><br></pre></td></tr></tbody></table></figure>
+<p>（4）举例</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//通过open read write函数实现“cp”功能</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="keyword">int</span> n,from,to;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">if</span>(argc!=<span class="number">3</span>){</span><br><span class="line">		perror(<span class="string">"argc error\n"</span>);</span><br><span class="line">	        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">if</span>((from=open(argv[<span class="number">1</span>],O_RDONLY))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"from fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">if</span>((to=open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"to fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">while</span>((n=read(from,buf,<span class="keyword">sizeof</span>(buf)))&gt;<span class="number">0</span>)</span><br><span class="line">		write(to,buf,n);</span><br><span class="line">	close(to);</span><br><span class="line">	close(from);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-1.</span>c -o exp3<span class="number">-1</span></span><br><span class="line">执行：./exp3<span class="number">-1</span> /proc/meminfo /home/laylay/exp3/my.meminfo</span><br><span class="line">     (./exp3<span class="number">-1</span> 要复制的文件源文件 要复制到的目的文件（可以顺带改名）)</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="3、移动指针用lseek函数"><a href="#3、移动指针用lseek函数" class="headerlink" title="3、移动指针用lseek函数"></a>3、移动指针用lseek函数</h1><p>表头文件</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>函数原型</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">off_t</span> <span class="title">lseek</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset, <span class="keyword">int</span> whence)</span></span>;</span><br><span class="line">参数：</span><br><span class="line">fd：文件描述符，指向打开的文件</span><br><span class="line">whence：粗定位，选项有：</span><br><span class="line">   SEEK_SET：调到文件起始位置</span><br><span class="line">   SEEK_CUR：调到文件当前读写的位置</span><br><span class="line">   SEEK_END：调到文件末尾位置</span><br><span class="line">offset：精定位：微调位置</span><br><span class="line">   从whence指定的位置，向前或者向后移动指定字节数。</span><br><span class="line">   为负数：向前移动指定字节数</span><br><span class="line">   为正数：向后移动指定字节数</span><br><span class="line"></span><br><span class="line">不过当whence被指定为SEEK_SET时，如果offset被指定为负数的话，是没有意义，因为已经到文件头上了，在向前移动就越界了，不再当前文件的范围内了，如果非要向前调整，lseek函数会报错。</span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">调用成功</span><br><span class="line">返回当前读写位置相对于文件开始位置的偏移量（字节）。</span><br><span class="line">可以使用lseek函数获取文件的大小，将文件读写的位置移动到最末尾，然后获取返回值，这个返回值就是文件头与文件尾之间的字节数，也就是文件大小。</span><br><span class="line"></span><br><span class="line">调用失败</span><br><span class="line">返回-1，并给errno设置错误号。</span><br></pre></td></tr></tbody></table></figure>
+<p>应用举例：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.1"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.1</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
+<p>执行结果中可以看出</p>
+<ul>
+<li>以只写方式创建的文件中，写入数据时候，会按照lseek中的指示，将指针从起始位置移动40后再写入</li>
+<li>可以看到此种情况下file.hole.1文件大小为50<ul>
+<li>如果后边不加write写入操作，仅仅移动指针，结果file.hole.1文件大小为10，因为仅仅拨动指针是没办法改变文件大小的，必须写入数据才会改变文件大小</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408230331195.png" alt="image-20210408230331195"></p>
+<p>如果将fd打开方式变为追加打开</p>
+<p>即<code>fd=open("file.hole.1",O_WRONLY|O_CREAT|O_APPEND,0644);</code>时</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.2"</span>,O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.2</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.2</span></span><br></pre></td></tr></tbody></table></figure>
+<p>lseek就会不起作用，数据依旧按照顺序已追加方式写入（对比如下）</p>
+<p>file.hole.1以只写方式创建</p>
+<p>file.hole.2以只写追加方式创建</p>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408231408315.png" alt="image-20210408231408315"></p>
+<h1 id="4、输出重定向"><a href="#4、输出重定向" class="headerlink" title="4、输出重定向"></a>4、输出重定向</h1><h2 id="（1）dup1-dup2"><a href="#（1）dup1-dup2" class="headerlink" title="（1）dup1()/dup2()"></a>（1）dup1()/dup2()</h2><p>表头文件</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>函数原型</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> oldfd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> oldfd, <span class="keyword">int</span> newfd)</span></span>;</span><br><span class="line">相同点：dup和dup2两个函数都可以用来复制一个已经存在的文件描述符。</span><br><span class="line">不同点：dup返回的新文件描述符一定是当前可用文件描述符中最小数值，</span><br><span class="line">       dup2则可以是用filedes2参数指定新的描述符。</span><br><span class="line">注意：如果filedes已经打开，则先将其关闭。若filedes2等于filedes，则dup2返回filedes2，而不关闭它。</span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若成功则返回新的文件秒速符，若出错则返回-1</span><br></pre></td></tr></tbody></table></figure>
+<p>应用举例</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="comment">//输出重定向</span></span><br><span class="line"><span class="comment">//将before redirct!直接输出，将after redirct!转到out文件中输出</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        <span class="comment">//新建out文件</span></span><br><span class="line">        fd=open(<span class="string">"out"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before redirct!\n"</span>);</span><br><span class="line">        dup2(fd,STDOUT_FILENO);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"after redirct!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-3.</span>c -o exp3<span class="number">-3</span></span><br><span class="line">执行：./exp3<span class="number">-3</span></span><br><span class="line">查看out文件：vi out</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233211954.png" alt="image-20210408233211954"></p>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233144551.png" alt="image-20210408233144551"></p>
 ]]></content>
       <categories>
         <category>操作系统</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/03/05/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>hexo基本操作</title>
-    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>1、写博客 </p>
-<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
-<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
-<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
-<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
-<span id="more"></span>
-<p>2、一些命令</p>
-<p><code>hexo clean</code> 清除缓存</p>
-<p><code>hexo g</code> 部署</p>
-<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
-<p>3、摘要（阅读全文）</p>
-<p>在想展示的内容后添加如下代码</p>
-<!-- more -->
-<p>4、部署到远端的github</p>
-<p><code>hexo deploy</code></p>
-<p>5、hexo使用说明</p>
-<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
-<p>6、解决报错Error: Spawn failed</p>
-<ul>
-<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
-<ul>
-<li>删除<code>.deploy_git</code>文件夹;</li>
-<li>输入<code>git config --global core.autocrlf false</code></li>
-<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
-</ul>
-</li>
-<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
-<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
-<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>Failed to connect to github.com</p>
-<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<p>7、如果有图片插入 要在头部加入</p>
-<p><code>typora-root-url: ..</code></p>
-]]></content>
-      <categories>
-        <category>博客基本操作及报错解决方案</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
+        <tag>Linux-C</tag>
       </tags>
   </entry>
   <entry>
@@ -550,6 +550,17 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </tags>
   </entry>
   <entry>
+    <title>测试用例设计</title>
+    <url>/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>测试基础</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>测试报告</title>
     <url>/2024/04/24/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</url>
     <content><![CDATA[<ul>
@@ -657,17 +668,6 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
 <p>3、功能交互验证<br>模块之间传递的信息和数据，对存在功能交互的功能项</p>
 <p>4、非功能性测试:<br>界面、易用性、兼容性、安全性、性能压力</p>
 <span id="more"></span>]]></content>
-      <categories>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>测试基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试用例设计</title>
-    <url>/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
       <categories>
         <category>测试</category>
       </categories>
@@ -854,120 +854,6 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </categories>
       <tags>
         <tag>进程与线程</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>软件测试基础</title>
-    <url>/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="一、目的、原则、流程、职责"><a href="#一、目的、原则、流程、职责" class="headerlink" title="一、目的、原则、流程、职责"></a>一、目的、原则、流程、职责</h1><h2 id="1、软件测试目的、概念"><a href="#1、软件测试目的、概念" class="headerlink" title="1、软件测试目的、概念"></a>1、软件测试目的、概念</h2><h3 id="（1）测试目的"><a href="#（1）测试目的" class="headerlink" title="（1）测试目的"></a>（1）测试目的</h3><ul>
-<li>软件测试是程序的执行过程，目的在于<strong>发现错误</strong>,尽可能多的找出缺陷</li>
-<li>软件测试的目的是确保交给用户的软件产品<strong>符合用户的需求</strong></li>
-<li>软件测试的目的是检验软件产品是否满足用户的<strong>显性和隐性需求</strong><ul>
-<li>显性需求:产品经理(跟客户对接、整理需求)—-》需求文档</li>
-<li>隐形需求:按照约定俗成，应该要实现的需求（删除弹出确认对话框、金额小数点2位、密码*显示)</li>
-</ul>
-</li>
-</ul>
-<h3 id="（2）测试的概念"><a href="#（2）测试的概念" class="headerlink" title="（2）测试的概念"></a>（2）测试的概念</h3><ul>
-<li>60-70年代梅耶执行程序，发现错误</li>
-<li>80-90年代特定条件下操作软件，发现错误，评估质量（是否达到质量标准)</li>
-<li>2000 IEEE 使用人工或自动化手段，来<strong>运行</strong>或<strong>测试</strong>某个系统的过程，其目的在于检验它<strong>是否满足规定的需求</strong>或<strong>弄清预期结果与实际结果之间的差别</strong>。</li>
-</ul>
-<span id="more"></span>
-<h2 id="2、软件测试的原则"><a href="#2、软件测试的原则" class="headerlink" title="2、软件测试的原则"></a>2、软件测试的原则</h2><ul>
-<li><p>测试证明软件存在缺陷</p>
-<p>只能证明软件存在缺陷，而无法证明软件不存在哪些缺陷</p>
-</li>
-<li><p>测试不能穷尽</p>
-<p>测试的场景和数据非常多，无法穷尽</p>
-</li>
-<li><p>测试的2/8现象</p>
-<p>80%的缺陷集中在20%的模块中</p>
-</li>
-<li><p>测试应尽早介入</p>
-<p>越早发现问题，修复的成本就越低</p>
-</li>
-<li><p>杀虫剂现象</p>
-<p>避免杀虫剂现象，不断调整测试计划、策略、优化测试用例</p>
-</li>
-<li><p>避免开发测试自己的代码</p>
-<p>避免思维定式，很难发现问题</p>
-</li>
-<li><p>用例包含合理和不合理的输入条件</p>
-<p>应该有正确的和不正确的条件</p>
-</li>
-<li><p>所有的软件测试都应追溯到用户需求</p>
-<p>黑盒测试（根据需求文档&lt;———客户的需求)</p>
-</li>
-</ul>
-<h2 id="3、测试流程"><a href="#3、测试流程" class="headerlink" title="3、测试流程"></a>3、测试流程</h2><p><img src="/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/image-20240425201450519.png" alt="image-20240425201450519" style="zoom:80%;"></p>
-<ul>
-<li>1、需求分析：测试首先要对软件需求有着深入的理解，所以我们会开需求评审会议，分析和讨论需求。</li>
-<li>2、指定测试计划：这个计划会明确测试的范围、方法、资源分配、时间表和目标。</li>
-<li>3、测试用例设计：基于测试计划，设计详细的测试用例。这些用例应该覆盖所有功能点，包括正常情况和边界情况的测试。</li>
-<li>4、测试用例评审</li>
-<li>5、搭建和配置适合的测试环境，执行测试用例，记录测试结果(找bug),将在测试过程中发现的缺陷报告给开发团队</li>
-<li>6、回归测试：每当代码发生更改后，执行回归测试以确保新的更改没有破坏现有的功能</li>
-<li>7、性能测试:评估系统的响应时间、稳定性和扩展性。</li>
-<li>8、部署项目到预生产环境，在预生产环境测试</li>
-<li>9、编写测试报告，总结测试活动的结果，包括测试覆盖率、发现的缺陷和未解决的问题。</li>
-<li>10、项目上线后，根据反馈进行复盘和总结。</li>
-</ul>
-<h2 id="4、软件测试对象"><a href="#4、软件测试对象" class="headerlink" title="4、软件测试对象"></a>4、软件测试对象</h2><p>程序+数据+文档</p>
-<h2 id="5、测试的风险"><a href="#5、测试的风险" class="headerlink" title="5、测试的风险"></a>5、测试的风险</h2><ul>
-<li><p>进度风险</p>
-<p>开发提交测试时延迟，进度被耽误</p>
-</li>
-<li><p>人员风险</p>
-<p>人员数量不够：解决方法就是加班，加人，优先级高的部分优先测试</p>
-<p>人员技术不足：集中培训、一对一辅导、自学</p>
-</li>
-<li><p>成本风险</p>
-<p>与进度、人员、质量风险都有关</p>
-</li>
-<li><p>质量风险</p>
-<p>开发和测试对质量的理解不一致</p>
-<ul>
-<li><p>如果测试提交了一个问题，开发认为不是问题，你会怎么办？</p>
-<p>沟通，讲清楚问题的原因，找产品经理，问题要跟踪到底</p>
-</li>
-</ul>
-</li>
-<li><p>变更风险</p>
-<p>需求变更：新增、修改、删除</p>
-<p>（难点在于，需求变更之后，对其他模块的影响分析，需要刷新测试用例）</p>
-</li>
-</ul>
-<h2 id="6、测试工程师具备的技能"><a href="#6、测试工程师具备的技能" class="headerlink" title="6、测试工程师具备的技能"></a>6、测试工程师具备的技能</h2><ul>
-<li>计算机相关基础知识</li>
-<li>软件基础知识：软件生命周期，测试理论和测试方式有较深的理解</li>
-<li>软件测试技术，方法，流程，测试文档编写，能独立设计和执行测试用例，提交完整的缺陷报告单,编写测试报告</li>
-<li>软件开发语言：Python</li>
-<li>数据库：MySQL，Redis</li>
-<li>操作系统：Linux，iOS，Android，DOS</li>
-<li>业务知识</li>
-<li>网络基本知识，能够独立完成测试环境的搭建</li>
-<li>学好一门或多门外语</li>
-</ul>
-<h2 id="7、测试人员具备素质"><a href="#7、测试人员具备素质" class="headerlink" title="7、测试人员具备素质"></a>7、测试人员具备素质</h2><p>三心二力一精神</p>
-<ul>
-<li>三心：细心、耐心、责任心</li>
-<li>二力：洞察力沟通能力</li>
-<li>—精神：团队合作精神</li>
-</ul>
-<h2 id="8、测试工程师的工作职责"><a href="#8、测试工程师的工作职责" class="headerlink" title="8、测试工程师的工作职责"></a>8、测试工程师的工作职责</h2><p>1、编写测试计划</p>
-<p>2、提取测试点</p>
-<p>3、编写测试用例</p>
-<p>4、搭建测试环境</p>
-<p>5、测试执行、缺陷管理</p>
-<p>6、编写测试报告</p>
-<h1 id="二、研发流程与模型"><a href="#二、研发流程与模型" class="headerlink" title="二、研发流程与模型"></a>二、研发流程与模型</h1><h3 id="1、软件开发过程"><a href="#1、软件开发过程" class="headerlink" title="1、软件开发过程"></a>1、软件开发过程</h3><p>从最初的想法到公开发行的过程，称为软件开发过程</p>
-<h1 id="三、测试分类"><a href="#三、测试分类" class="headerlink" title="三、测试分类"></a>三、测试分类</h1><h1 id="四、软件八大质量特性"><a href="#四、软件八大质量特性" class="headerlink" title="四、软件八大质量特性"></a>四、软件八大质量特性</h1>]]></content>
-      <categories>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>测试基础</tag>
       </tags>
   </entry>
   <entry>
@@ -1197,6 +1083,120 @@ D =\frac{D~0~}{1-U}</script><p>根据排队理论，信道的利用率高，就�
       </categories>
       <tags>
         <tag>计算机网络</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>软件测试基础</title>
+    <url>/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="一、目的、原则、流程、职责"><a href="#一、目的、原则、流程、职责" class="headerlink" title="一、目的、原则、流程、职责"></a>一、目的、原则、流程、职责</h1><h2 id="1、软件测试目的、概念"><a href="#1、软件测试目的、概念" class="headerlink" title="1、软件测试目的、概念"></a>1、软件测试目的、概念</h2><h3 id="（1）测试目的"><a href="#（1）测试目的" class="headerlink" title="（1）测试目的"></a>（1）测试目的</h3><ul>
+<li>软件测试是程序的执行过程，目的在于<strong>发现错误</strong>,尽可能多的找出缺陷</li>
+<li>软件测试的目的是确保交给用户的软件产品<strong>符合用户的需求</strong></li>
+<li>软件测试的目的是检验软件产品是否满足用户的<strong>显性和隐性需求</strong><ul>
+<li>显性需求:产品经理(跟客户对接、整理需求)—-》需求文档</li>
+<li>隐形需求:按照约定俗成，应该要实现的需求（删除弹出确认对话框、金额小数点2位、密码*显示)</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）测试的概念"><a href="#（2）测试的概念" class="headerlink" title="（2）测试的概念"></a>（2）测试的概念</h3><ul>
+<li>60-70年代梅耶执行程序，发现错误</li>
+<li>80-90年代特定条件下操作软件，发现错误，评估质量（是否达到质量标准)</li>
+<li>2000 IEEE 使用人工或自动化手段，来<strong>运行</strong>或<strong>测试</strong>某个系统的过程，其目的在于检验它<strong>是否满足规定的需求</strong>或<strong>弄清预期结果与实际结果之间的差别</strong>。</li>
+</ul>
+<span id="more"></span>
+<h2 id="2、软件测试的原则"><a href="#2、软件测试的原则" class="headerlink" title="2、软件测试的原则"></a>2、软件测试的原则</h2><ul>
+<li><p>测试证明软件存在缺陷</p>
+<p>只能证明软件存在缺陷，而无法证明软件不存在哪些缺陷</p>
+</li>
+<li><p>测试不能穷尽</p>
+<p>测试的场景和数据非常多，无法穷尽</p>
+</li>
+<li><p>测试的2/8现象</p>
+<p>80%的缺陷集中在20%的模块中</p>
+</li>
+<li><p>测试应尽早介入</p>
+<p>越早发现问题，修复的成本就越低</p>
+</li>
+<li><p>杀虫剂现象</p>
+<p>避免杀虫剂现象，不断调整测试计划、策略、优化测试用例</p>
+</li>
+<li><p>避免开发测试自己的代码</p>
+<p>避免思维定式，很难发现问题</p>
+</li>
+<li><p>用例包含合理和不合理的输入条件</p>
+<p>应该有正确的和不正确的条件</p>
+</li>
+<li><p>所有的软件测试都应追溯到用户需求</p>
+<p>黑盒测试（根据需求文档&lt;———客户的需求)</p>
+</li>
+</ul>
+<h2 id="3、测试流程"><a href="#3、测试流程" class="headerlink" title="3、测试流程"></a>3、测试流程</h2><p><img src="/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/image-20240425201450519.png" alt="image-20240425201450519" style="zoom:80%;"></p>
+<ul>
+<li>1、需求分析：测试首先要对软件需求有着深入的理解，所以我们会开需求评审会议，分析和讨论需求。</li>
+<li>2、指定测试计划：这个计划会明确测试的范围、方法、资源分配、时间表和目标。</li>
+<li>3、测试用例设计：基于测试计划，设计详细的测试用例。这些用例应该覆盖所有功能点，包括正常情况和边界情况的测试。</li>
+<li>4、测试用例评审</li>
+<li>5、搭建和配置适合的测试环境，执行测试用例，记录测试结果(找bug),将在测试过程中发现的缺陷报告给开发团队</li>
+<li>6、回归测试：每当代码发生更改后，执行回归测试以确保新的更改没有破坏现有的功能</li>
+<li>7、性能测试:评估系统的响应时间、稳定性和扩展性。</li>
+<li>8、部署项目到预生产环境，在预生产环境测试</li>
+<li>9、编写测试报告，总结测试活动的结果，包括测试覆盖率、发现的缺陷和未解决的问题。</li>
+<li>10、项目上线后，根据反馈进行复盘和总结。</li>
+</ul>
+<h2 id="4、软件测试对象"><a href="#4、软件测试对象" class="headerlink" title="4、软件测试对象"></a>4、软件测试对象</h2><p>程序+数据+文档</p>
+<h2 id="5、测试的风险"><a href="#5、测试的风险" class="headerlink" title="5、测试的风险"></a>5、测试的风险</h2><ul>
+<li><p>进度风险</p>
+<p>开发提交测试时延迟，进度被耽误</p>
+</li>
+<li><p>人员风险</p>
+<p>人员数量不够：解决方法就是加班，加人，优先级高的部分优先测试</p>
+<p>人员技术不足：集中培训、一对一辅导、自学</p>
+</li>
+<li><p>成本风险</p>
+<p>与进度、人员、质量风险都有关</p>
+</li>
+<li><p>质量风险</p>
+<p>开发和测试对质量的理解不一致</p>
+<ul>
+<li><p>如果测试提交了一个问题，开发认为不是问题，你会怎么办？</p>
+<p>沟通，讲清楚问题的原因，找产品经理，问题要跟踪到底</p>
+</li>
+</ul>
+</li>
+<li><p>变更风险</p>
+<p>需求变更：新增、修改、删除</p>
+<p>（难点在于，需求变更之后，对其他模块的影响分析，需要刷新测试用例）</p>
+</li>
+</ul>
+<h2 id="6、测试工程师具备的技能"><a href="#6、测试工程师具备的技能" class="headerlink" title="6、测试工程师具备的技能"></a>6、测试工程师具备的技能</h2><ul>
+<li>计算机相关基础知识</li>
+<li>软件基础知识：软件生命周期，测试理论和测试方式有较深的理解</li>
+<li>软件测试技术，方法，流程，测试文档编写，能独立设计和执行测试用例，提交完整的缺陷报告单,编写测试报告</li>
+<li>软件开发语言：Python</li>
+<li>数据库：MySQL，Redis</li>
+<li>操作系统：Linux，iOS，Android，DOS</li>
+<li>业务知识</li>
+<li>网络基本知识，能够独立完成测试环境的搭建</li>
+<li>学好一门或多门外语</li>
+</ul>
+<h2 id="7、测试人员具备素质"><a href="#7、测试人员具备素质" class="headerlink" title="7、测试人员具备素质"></a>7、测试人员具备素质</h2><p>三心二力一精神</p>
+<ul>
+<li>三心：细心、耐心、责任心</li>
+<li>二力：洞察力沟通能力</li>
+<li>—精神：团队合作精神</li>
+</ul>
+<h2 id="8、测试工程师的工作职责"><a href="#8、测试工程师的工作职责" class="headerlink" title="8、测试工程师的工作职责"></a>8、测试工程师的工作职责</h2><p>1、编写测试计划</p>
+<p>2、提取测试点</p>
+<p>3、编写测试用例</p>
+<p>4、搭建测试环境</p>
+<p>5、测试执行、缺陷管理</p>
+<p>6、编写测试报告</p>
+<h1 id="二、研发流程与模型"><a href="#二、研发流程与模型" class="headerlink" title="二、研发流程与模型"></a>二、研发流程与模型</h1><h3 id="1、软件开发过程"><a href="#1、软件开发过程" class="headerlink" title="1、软件开发过程"></a>1、软件开发过程</h3><p>从最初的想法到公开发行的过程，称为软件开发过程</p>
+<h1 id="三、测试分类"><a href="#三、测试分类" class="headerlink" title="三、测试分类"></a>三、测试分类</h1><h1 id="四、软件八大质量特性"><a href="#四、软件八大质量特性" class="headerlink" title="四、软件八大质量特性"></a>四、软件八大质量特性</h1>]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>测试基础</tag>
       </tags>
   </entry>
   <entry>
