@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、进程1、进程的基本概念程序：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘 进程：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程  程序是静态的文件，进程是程序的一次执行过程，进程是动态的。  2、查看进程的命令ps（1）查看当前终端的当前用户的所有进程12ps不带参数  （2）查看所有进程&#x3D;&#x3D;-ef&#x3D;&#x3D;12345ps -efe表示所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="进程与定时任务">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、进程1、进程的基本概念程序：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘 进程：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程  程序是静态的文件，进程是程序的一次执行过程，进程是动态的。  2、查看进程的命令ps（1）查看当前终端的当前用户的所有进程12ps不带参数  （2）查看所有进程&#x3D;&#x3D;-ef&#x3D;&#x3D;12345ps -efe表示所有">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153313142.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153547534.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429154319786.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155555790.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155827917.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155734396.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160015162.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160236129.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160715405.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161023416.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161140147.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161239449.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430104020588.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430101423743.png">
+<meta property="article:published_time" content="2024-04-29T07:22:29.000Z">
+<meta property="article:modified_time" content="2024-05-05T08:42:36.777Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>进程与定时任务 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">一、进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1、进程的基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%9F%A5%E7%9C%8B%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%91%BD%E4%BB%A4ps"><span class="nav-number">1.2.</span> <span class="nav-text">2、查看进程的命令ps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E7%BB%88%E7%AB%AF%E7%9A%84%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%E7%9A%84%E6%89%80%E6%9C%89%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">（1）查看当前终端的当前用户的所有进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%9F%A5%E7%9C%8B%E6%89%80%E6%9C%89%E8%BF%9B%E7%A8%8B-ef"><span class="nav-number">1.2.2.</span> <span class="nav-text">（2）查看所有进程&#x3D;&#x3D;-ef&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%98%BE%E7%A4%BACPU%E5%92%8C%E5%86%85%E5%AD%98%E5%8D%A0%E7%94%A8%E6%83%85%E5%86%B5%E4%BB%A5%E5%8F%8A%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81-axu"><span class="nav-number">1.2.3.</span> <span class="nav-text">（3）显示CPU和内存占用情况以及进程状态&#x3D;&#x3D;-axu&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%89%8D%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">3、前、后台运行进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%89%8D%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%E6%A6%82%E5%BF%B5"><span class="nav-number">1.3.1.</span> <span class="nav-text">（1）前后台进程概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%89%8D%E5%8F%B0%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">1）前台进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%EF%BC%88-%E5%9C%A8%E5%91%BD%E4%BB%A4%E5%90%8E%E5%8A%A0-amp-%E5%9C%A8%E5%90%8E%E5%8F%B0%E6%89%A7%E8%A1%8C-%EF%BC%89"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">2）后台进程（&#x3D;&#x3D;在命令后加&amp;在后台执行&#x3D;&#x3D;）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E8%BF%9B%E7%A8%8B%E5%89%8D%E3%80%81%E5%90%8E%E5%8F%B0%E5%88%87%E6%8D%A2-fg-bg-%EF%BC%8C%E6%9F%A5%E7%9C%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E8%BF%9B%E7%A8%8B-jobs"><span class="nav-number">1.3.2.</span> <span class="nav-text">（2）进程前、后台切换&#x3D;&#x3D;fg\bg&#x3D;&#x3D;，查看在后台运行的进程&#x3D;&#x3D;jobs&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%90%8E%E5%8F%B0%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94-gt-%E5%89%8D%E5%8F%B0-fg"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">1）后台进程——&gt;前台&#x3D;&#x3D;fg&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%89%8D%E5%8F%B0%E8%BF%9B%E7%A8%8B%E2%80%94%E2%80%94-gt-%E5%90%8E%E5%8F%B0-bg"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2）前台进程——&gt;后台&#x3D;&#x3D;bg&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E6%9F%A5%E7%9C%8B%E5%9C%A8%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E7%9A%84%E8%BF%9B%E7%A8%8B-jobs"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">3）查看在后台运行的进程&#x3D;&#x3D;jobs&#x3D;&#x3D;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%A6%82%E4%BD%95%E7%BB%88%E6%AD%A2%E8%BF%9B%E7%A8%8B-kill"><span class="nav-number">1.4.</span> <span class="nav-text">4、如何终止进程&#x3D;&#x3D;kill&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E8%87%AA%E8%A1%8C%E7%BB%88%E6%AD%A2"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">1）自行终止</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E7%94%A8%E6%88%B7%E6%89%8B%E5%8A%A8%E6%9D%80%E6%AD%BB%E8%BF%9B%E7%A8%8B"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">2）用户手动杀死进程</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-crontab"><span class="nav-number">2.</span> <span class="nav-text">二、定时任务&#x3D;&#x3D;crontab&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.0.1.1.</span> <span class="nav-text">（1）定时任务适用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.0.1.2.</span> <span class="nav-text">（2）工作原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%97%A5%E5%BF%97"><span class="nav-number">2.0.1.3.</span> <span class="nav-text">（3）日志</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81crontab%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、crontab格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81crontab%E8%AF%AD%E6%B3%95"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、crontab语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%9F%A5%E7%9C%8B%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-l"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">（1）查看定时任务&#x3D;&#x3D;-l&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%BC%96%E8%BE%91%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-e"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">（2）编辑定时任务&#x3D;&#x3D;-e&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E8%BF%9B%E5%85%A5%E7%BC%96%E8%BE%91%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.0.3.2.1.</span> <span class="nav-text">1）进入编辑模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E4%BE%8B%E5%AD%90"><span class="nav-number">2.0.3.2.2.</span> <span class="nav-text">2）例子</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%88%A0%E9%99%A4%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-r"><span class="nav-number">2.0.3.3.</span> <span class="nav-text">（3）删除定时任务&#x3D;&#x3D;-r&#x3D;&#x3D;</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          进程与定时任务
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 15:22:29" itemprop="dateCreated datePublished" datetime="2024-04-29T15:22:29+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 16:42:36" itemprop="dateModified" datetime="2024-05-05T16:42:36+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h1><h2 id="1、进程的基本概念"><a href="#1、进程的基本概念" class="headerlink" title="1、进程的基本概念"></a>1、进程的基本概念</h2><p><strong>程序</strong>：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘</p>
+<p><strong>进程</strong>：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程</p>
+<ul>
+<li>程序是<strong>静态的文件</strong>，进程是程序的<strong>一次执行过程</strong>，进程是动态的。</li>
+</ul>
+<h2 id="2、查看进程的命令ps"><a href="#2、查看进程的命令ps" class="headerlink" title="2、查看进程的命令ps"></a>2、查看进程的命令ps</h2><h3 id="（1）查看当前终端的当前用户的所有进程"><a href="#（1）查看当前终端的当前用户的所有进程" class="headerlink" title="（1）查看当前终端的当前用户的所有进程"></a>（1）查看当前终端的当前用户的所有进程</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps</span><br><span class="line">不带参数</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png" alt="image-20240429153931760" style="zoom:50%;"></p>
+<h3 id="（2）查看所有进程-ef"><a href="#（2）查看所有进程-ef" class="headerlink" title="（2）查看所有进程==-ef=="></a>（2）查看所有进程==-ef==</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br><span class="line">e表示所有，f表示full-format，尤其是PPID和command内容</span><br><span class="line"></span><br><span class="line">经常和管道符连用</span><br><span class="line">ps -ef | grep java</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 参数最常用的操作是查看某个服务的进程：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep 服务名</span><br><span class="line">服务名: tomcat、nginx、redis、java、mysal</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 查询结果含义：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153313142.png" alt="image-20240429153313142" style="zoom:50%;"></p>
+<ul>
+<li><p>子进程和父进程：</p>
+<ul>
+<li><p>在root下切换为jack用户，然后再jack进程下执行bash，那么root用户su切换为jack用户这个进程是jack的bash进程的父进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153547534.png" alt="image-20240429153547534" style="zoom:50%;"></p>
+<p><strong>当父进程结束时，子进程也会结束</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+<h3 id="（3）显示CPU和内存占用情况以及进程状态-axu"><a href="#（3）显示CPU和内存占用情况以及进程状态-axu" class="headerlink" title="（3）显示CPU和内存占用情况以及进程状态==-axu=="></a>（3）显示CPU和内存占用情况以及进程状态==-axu==</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -axu</span><br><span class="line">-axu参数：ax表示所有，u表示user-oriented</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429154319786.png" alt="image-20240429154319786" style="zoom:50%;"></p>
+<h2 id="3、前、后台运行进程"><a href="#3、前、后台运行进程" class="headerlink" title="3、前、后台运行进程"></a>3、前、后台运行进程</h2><h3 id="（1）前后台进程概念"><a href="#（1）前后台进程概念" class="headerlink" title="（1）前后台进程概念"></a>（1）前后台进程概念</h3><h4 id="1）前台进程"><a href="#1）前台进程" class="headerlink" title="1）前台进程"></a>1）前台进程</h4><ul>
+<li>Shell里正在执行的和用户进行交互的进程叫前台进程</li>
+<li>举例ps，ls都是前台进程，时间短</li>
+</ul>
+<p>写一个运行时间很长的程序：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155555790.png" alt="image-20240429155555790" style="zoom:50%;"></p>
+<p>运行之后窗口会被占用，只能强制退出</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./test.sh（此命令无法执行的话，看看是不是没权限）</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155827917.png" alt="image-20240429155827917" style="zoom:50%;"></p>
+<h4 id="2）后台进程（-在命令后加-amp-在后台执行-）"><a href="#2）后台进程（-在命令后加-amp-在后台执行-）" class="headerlink" title="2）后台进程（==在命令后加&amp;在后台执行==）"></a>2）后台进程（==在命令后加&amp;在后台执行==）</h4><ul>
+<li><p>有的命令执行时间长，比如备份程序</p>
+</li>
+<li><p>可以在命令后加&amp;在后台执行</p>
+<p>实例bash test.sh&amp;</p>
+</li>
+<li><p>后台运行，意味着不从标准输入读入字符</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./test.sh&amp;</span><br></pre></td></tr></tbody></table></figure>
+<p>同样是上面的程序，命令它在后台执行，这样窗口就不会被占用：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155734396.png" alt="image-20240429155734396" style="zoom:50%;"></p>
+<h3 id="（2）进程前、后台切换-fg-bg-，查看在后台运行的进程-jobs"><a href="#（2）进程前、后台切换-fg-bg-，查看在后台运行的进程-jobs" class="headerlink" title="（2）进程前、后台切换==fg\bg==，查看在后台运行的进程==jobs=="></a>（2）进程前、后台切换==fg\bg==，查看在后台运行的进程==jobs==</h3><h4 id="1）后台进程——-gt-前台-fg"><a href="#1）后台进程——-gt-前台-fg" class="headerlink" title="1）后台进程——>前台==fg=="></a>1）后台进程——&gt;前台==fg==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fg &lt;num&gt;将后台进程调到前台，比如fg 1</span><br><span class="line"></span><br><span class="line">fg 1</span><br><span class="line">f：front前台</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160015162.png" alt="image-20240429160015162" style="zoom:50%;"></p>
+<h4 id="2）前台进程——-gt-后台-bg"><a href="#2）前台进程——-gt-后台-bg" class="headerlink" title="2）前台进程——>后台==bg=="></a>2）前台进程——&gt;后台==bg==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bg &lt;num&gt;可将进程在后台运行，比如在执行Ctrl+Z挂起进程后，再用命令bg 1让进程在后台继续执行</span><br><span class="line"></span><br><span class="line">ctrl Z将进程挂起,注意jobs显示的状态是stopped</span><br><span class="line">bg 1 切换到后台</span><br><span class="line">b：back后台</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160236129.png" alt="image-20240429160236129" style="zoom:50%;"></p>
+<h4 id="3）查看在后台运行的进程-jobs"><a href="#3）查看在后台运行的进程-jobs" class="headerlink" title="3）查看在后台运行的进程==jobs=="></a>3）查看在后台运行的进程==jobs==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">列出后台进程命令jobs</span><br></pre></td></tr></tbody></table></figure>
+<p>无后台进程：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160715405.png" alt="image-20240429160715405" style="zoom:50%;"></p>
+<h2 id="4、如何终止进程-kill"><a href="#4、如何终止进程-kill" class="headerlink" title="4、如何终止进程==kill=="></a>4、如何终止进程==kill==</h2><h4 id="1）自行终止"><a href="#1）自行终止" class="headerlink" title="1）自行终止"></a>1）自行终止</h4><ul>
+<li><p>任务执行完成，比如ps</p>
+</li>
+<li><p>用户让其退出，比如vi，exit</p>
+</li>
+<li><p>异常退出，比如程序里有以0的代码</p>
+</li>
+</ul>
+<h4 id="2）用户手动杀死进程"><a href="#2）用户手动杀死进程" class="headerlink" title="2）用户手动杀死进程"></a>2）用户手动杀死进程</h4><p>==只能是owner和root才能杀死进程==</p>
+<p>比如3496是root的进程，mary用户无法终止该进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161023416.png" alt="image-20240429161023416" style="zoom:50%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill PID #杀死进程</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：</p>
+<p>用户正在使用进程，无法删掉用户时</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161140147.png" alt="image-20240429161140147" style="zoom:50%;"></p>
+<p>可以kill进程，再删除用户</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161239449.png" alt="image-20240429161239449" style="zoom:50%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill -9 PID #强制杀死进程</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>kill和kill -9，两个命令在linux中都有杀死进程的效果，然而两命令的执行过程却大有不同，在程序中如果用错了，可能会造成莫名其妙的现象。</p>
+<ul>
+<li><p>执行kill命令，系统会发送一个SIGTERM信号给对应的程序。当程序接收到该signal信号后，将会发生以下事情：</p>
+<ul>
+<li><p>程序立刻停止</p>
+</li>
+<li><p>当程序释放相应资源后再停止</p>
+</li>
+<li><p>程序可能仍然继续运行</p>
+</li>
+</ul>
+<p>大部分程序接收到SIGTERM信号后，会先释放自己的资源，然后再停止。</p>
+<p>但是也有程序可能接收信号后，做一些其他的事情（如果程序正在等待IO，可能就不会立马做出响应，我在使用wkhtmltopdf转pdf的项目中遇到这现象），也就是说，SIGTERM多半是会被阻塞的。</p>
+</li>
+<li><p>然而kill -9命令，系统给对应程序发送的信号是SIGKILL，即exit。exit信号不会被系统阻塞，所以kill -9能顺利杀掉进程。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ctrl + C 终止执行</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="二、定时任务-crontab"><a href="#二、定时任务-crontab" class="headerlink" title="二、定时任务==crontab=="></a>二、定时任务==crontab==</h1><h3 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h3><h4 id="（1）定时任务适用场景"><a href="#（1）定时任务适用场景" class="headerlink" title="（1）定时任务适用场景"></a>（1）定时任务适用场景</h4><ul>
+<li>定期清除Linux日志文件</li>
+<li>定期备份Linux重要文件</li>
+</ul>
+<h4 id="（2）工作原理"><a href="#（2）工作原理" class="headerlink" title="（2）工作原理"></a>（2）工作原理</h4><p>当用户使用crontab这个命令来新建工作调度之后，该项工作会被记录到/var/spool/cron里面，而且以账号来作为判断。</p>
+<ul>
+<li>举例来说，root使用crontab后，他的工作会被记录到/var/spool/cron/root里面去</li>
+<li>注意不要用vi直接编辑该文件，因为可能由于输入语法错误，会导致无法执行cron</li>
+</ul>
+<h4 id="（3）日志"><a href="#（3）日志" class="headerlink" title="（3）日志"></a>（3）日志</h4><p>cron执行的每一项工作都会被记录到/var/log/cron这个日志中，所以如果你的Linux不知道是否被植入木马时，也可以查询一项/var/log/cron这个日志文件</p>
+<p>例如：设置打印hello world到屏幕的指令，到指定时间后没有打印到屏幕，去查看日志文件：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/log cron</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430104020588.png" alt="image-20240430104020588" style="zoom:50%;"></p>
+<p>发现已经执行，但没有打印</p>
+<p>是因为crontab只会在后台运行，所有不会打印到屏幕</p>
+<h3 id="2、crontab格式"><a href="#2、crontab格式" class="headerlink" title="2、crontab格式"></a>2、crontab格式</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">crontab ***** command</span><br><span class="line">*分钟</span><br><span class="line">*小时</span><br><span class="line">*几号</span><br><span class="line">*几月</span><br><span class="line">*周几</span><br></pre></td></tr></tbody></table></figure>
+<p>crontab格式说明：总共6个字段，前5个表示时间，最后一个表示要执行的操作</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430101423743.png" alt="image-20240430101423743" style="zoom:67%;"></p>
+<p>（0和7都表示星期天）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>特殊字符</strong></th>
+<th><strong>代表意义</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>星号(*)</td>
+<td>代表任何时刻都接受的意思，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作</td>
+</tr>
+<tr>
+<td>逗号(,)</td>
+<td>可以用逗号隔开的值指定一个不连续的范围，例如，周二和周四“2,4”</td>
+</tr>
+<tr>
+<td>减号(-)</td>
+<td>可以用整数之间的减号表示一个连续的范围，例如“2-6”表示“2,3,4,5,6”</td>
+</tr>
+<tr>
+<td>正斜线(/)</td>
+<td>可以用正斜线指定时间的间隔频率，例如“6-22/2”表示从6点到22点期间，每两小时执行一次。同时正斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="3、crontab语法"><a href="#3、crontab语法" class="headerlink" title="3、crontab语法"></a>3、crontab语法</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">语法：</span><br><span class="line">crontab [-u] [-l | -r | -e]</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">-u：user只有root用户才能进行这个任务，也即帮助其他用户创建/删除crontab工作调度</span><br><span class="line">-l：list查看crontab工作内容</span><br><span class="line">-r：remove删除所有的crontab的工作内容，若仅要删除一项，请用-e编辑</span><br><span class="line">-e：edit编辑crontab的工作内容</span><br></pre></td></tr></tbody></table></figure>
+<p>==只有root用户才能进行这个任务，不加-user默认root用户，加-user操作该用户的定时任务==</p>
+<h4 id="（1）查看定时任务-l"><a href="#（1）查看定时任务-l" class="headerlink" title="（1）查看定时任务==-l=="></a>（1）查看定时任务==-l==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -zhangsan -l</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（2）编辑定时任务-e"><a href="#（2）编辑定时任务-e" class="headerlink" title="（2）编辑定时任务==-e=="></a>（2）编辑定时任务==-e==</h4><h5 id="1）进入编辑模式"><a href="#1）进入编辑模式" class="headerlink" title="1）进入编辑模式"></a>1）进入编辑模式</h5><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -zhangsan -e</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="2）例子"><a href="#2）例子" class="headerlink" title="2）例子"></a>2）例子</h5><ul>
+<li>设置每周六晚上21:00-23:00，每隔半小时执行/home/test/test.sh</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*/30 21-23 * * 6 ./home/test.sh</span><br><span class="line">*/30每三十分钟执行一次</span><br><span class="line">21-23从21:00到23:00</span><br><span class="line">*每天</span><br><span class="line">*每个月</span><br><span class="line">6每个星期六</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>每个月15号，12:30发工资</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">30 12 15 * * echo "发工资" &gt;&gt; /home/test/wage.log</span><br><span class="line">30分</span><br><span class="line">12点</span><br><span class="line">15号</span><br><span class="line">每月</span><br><span class="line">每个星期</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（3）删除定时任务-r"><a href="#（3）删除定时任务-r" class="headerlink" title="（3）删除定时任务==-r=="></a>（3）删除定时任务==-r==</h4><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -zhangsan -r</span><br></pre></td></tr></tbody></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" title="进程与定时任务">https://laylaycjl.github.io/2024/04/29/进程与定时任务/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" rel="prev" title="压缩、打包与软件安装">
+                  <i class="fa fa-chevron-left"></i> 压缩、打包与软件安装
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/" rel="next" title="Linux网络配置及工具">
+                  Linux网络配置及工具 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">131k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:59</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

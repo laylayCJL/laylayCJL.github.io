@@ -202,7 +202,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -267,6 +267,394 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">Linux网络配置及工具</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 16:43:44" itemprop="dateCreated datePublished" datetime="2024-04-29T16:43:44+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 21:36:38" itemprop="dateModified" datetime="2024-05-05T21:36:38+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、网络相关命令"><a href="#一、网络相关命令" class="headerlink" title="一、网络相关命令"></a>一、网络相关命令</h1><h2 id="1、查看ip配置信息和网络情况：-ip、ifconfig、ping"><a href="#1、查看ip配置信息和网络情况：-ip、ifconfig、ping" class="headerlink" title="1、查看ip配置信息和网络情况：==ip、ifconfig、ping=="></a>1、查看ip配置信息和网络情况：==ip、ifconfig、ping==</h2><h3 id="（1）ip"><a href="#（1）ip" class="headerlink" title="（1）ip"></a>（1）ip</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ip -4 addr：显示主机的IP v4地址</span><br><span class="line">ip -6 addr：查看主机的IP v6地址</span><br><span class="line">ip addr：查看主机的所有IP地址</span><br></pre></td></tr></tbody></table></figure>
+<p>查看ip配置信息</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip address</span><br><span class="line">也可简写为ip a</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505203605412.png" alt="image-20240505203605412" style="zoom:50%;"></p>
+<p>ens33是虚拟机默认的网络接口，所以后面跟的就是虚拟机的ip地址，24表示的是子网掩码，即255.255.255.0</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429164741792.png" alt="image-20240429164741792" style="zoom:50%;"></p>
+<h3 id="（2）ifconfig（最常用）"><a href="#（2）ifconfig（最常用）" class="headerlink" title="（2）ifconfig（最常用）"></a>（2）ifconfig（最常用）</h3><p>ifconfig查看ip地址、子网掩码和收发包情况（比ip address看到的信息更多）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0：查看指定网卡的IP地址</span><br><span class="line">ifconfig eth0 down：禁用eth0接口</span><br><span class="line">ifconfig eth0 up：启用eth0接口</span><br><span class="line"></span><br><span class="line">ifconfig -a：查看所有网卡的IP地址</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505204146234.png" alt="image-20240505204146234" style="zoom: 50%;"></p>
+<h3 id="（3）ping"><a href="#（3）ping" class="headerlink" title="（3）ping"></a>（3）ping</h3><p>用于检查网络是否联通，ping得快说明网速好</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br><span class="line"></span><br><span class="line">ping -c 5 www.baidu.com</span><br><span class="line">设置发5个包</span><br></pre></td></tr></tbody></table></figure>
+<p>ping成功后，默认一直ping直到ctrl C 结束</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ping www.baidu.com</span><br><span class="line">ctrl+C</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165344925.png" alt="image-20240429165344925" style="zoom:50%;"></p>
+<p>可以通过参数-c设置ping包的数目</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ping -c 5 www.baidu.com</span><br><span class="line">设置发5个包</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165559223.png" alt="image-20240429165559223" style="zoom:50%;"></p>
+<p>Windows默认ping4个包就结束，不用CtrlC手动终止</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165516006.png" alt="image-20240429165516006" style="zoom:50%;"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" class="post-title-link" itemprop="url">进程与定时任务</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 15:22:29" itemprop="dateCreated datePublished" datetime="2024-04-29T15:22:29+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 16:42:36" itemprop="dateModified" datetime="2024-05-05T16:42:36+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h1><h2 id="1、进程的基本概念"><a href="#1、进程的基本概念" class="headerlink" title="1、进程的基本概念"></a>1、进程的基本概念</h2><p><strong>程序</strong>：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘</p>
+<p><strong>进程</strong>：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程</p>
+<ul>
+<li>程序是<strong>静态的文件</strong>，进程是程序的<strong>一次执行过程</strong>，进程是动态的。</li>
+</ul>
+<h2 id="2、查看进程的命令ps"><a href="#2、查看进程的命令ps" class="headerlink" title="2、查看进程的命令ps"></a>2、查看进程的命令ps</h2><h3 id="（1）查看当前终端的当前用户的所有进程"><a href="#（1）查看当前终端的当前用户的所有进程" class="headerlink" title="（1）查看当前终端的当前用户的所有进程"></a>（1）查看当前终端的当前用户的所有进程</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps</span><br><span class="line">不带参数</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png" alt="image-20240429153931760" style="zoom:50%;"></p>
+<h3 id="（2）查看所有进程-ef"><a href="#（2）查看所有进程-ef" class="headerlink" title="（2）查看所有进程==-ef=="></a>（2）查看所有进程==-ef==</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br><span class="line">e表示所有，f表示full-format，尤其是PPID和command内容</span><br><span class="line"></span><br><span class="line">经常和管道符连用</span><br><span class="line">ps -ef | grep java</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 参数最常用的操作是查看某个服务的进程：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep 服务名</span><br><span class="line">服务名: tomcat、nginx、redis、java、mysal</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 查询结果含义：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153313142.png" alt="image-20240429153313142" style="zoom:50%;"></p>
+<ul>
+<li><p>子进程和父进程：</p>
+<ul>
+<li><p>在root下切换为jack用户，然后再jack进程下执行bash，那么root用户su切换为jack用户这个进程是jack的bash进程的父进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153547534.png" alt="image-20240429153547534" style="zoom:50%;"></p>
+<p><strong>当父进程结束时，子进程也会结束</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">压缩、打包与软件安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 10:02:45" itemprop="dateCreated datePublished" datetime="2024-04-29T10:02:45+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 16:29:59" itemprop="dateModified" datetime="2024-05-05T16:29:59+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、压缩与打包"><a href="#一、压缩与打包" class="headerlink" title="一、压缩与打包"></a>一、压缩与打包</h1><h2 id="0、打包和压缩的区别："><a href="#0、打包和压缩的区别：" class="headerlink" title="0、打包和压缩的区别："></a>0、打包和压缩的区别：</h2><ul>
+<li>打包是指把文件和目录的结构和内容==拷贝==到一个文件里</li>
+<li>压缩是把文件经过一些算法变成体积上更小的文件</li>
+</ul>
+<p>以WinRAR为例，一般是既打包也压缩，也可以不压缩，只打包</p>
+<h2 id="1、压缩命令-gzip-、查看压缩内容-zcat"><a href="#1、压缩命令-gzip-、查看压缩内容-zcat" class="headerlink" title="1、压缩命令==gzip==、查看压缩内容==zcat=="></a>1、压缩命令==gzip==、查看压缩内容==zcat==</h2><h3 id="（1）gzip压缩"><a href="#（1）gzip压缩" class="headerlink" title="（1）gzip压缩"></a>（1）gzip压缩</h3><p>1）gzip命令，压缩一个或多个文件，==压缩成分别的压缩文件，不能对整个目录压缩，但可以通过-r参数分别压缩目录下的文件==</p>
+<p>2）压缩完原文件不在，变为.gz文件</p>
+<p>3）格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">压缩格式：</span><br><span class="line">gzip 文件名；(压缩完成后，原来的文件会被替换成&lt;name&gt;.gz，原文件消失)</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：</p>
+<ul>
+<li><p>压缩scp.log文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip scp.out</span><br></pre></td></tr></tbody></table></figure>
+<p>原始文件大小为129</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190259032.png" alt="image-20240429190259032" style="zoom:50%;"></p>
+<p>对其进行压缩，压缩后变为 <code>.gz</code> 文件，大小变为112：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190414673.png" alt="image-20240429190414673" style="zoom:50%;"></p>
+</li>
+<li><p>压缩test目录</p>
+<p><strong>无法压缩目录本身，但是可以-r压缩子文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gzip -r /home/test</span><br><span class="line">-r：递归压缩，压缩其子文件</span><br></pre></td></tr></tbody></table></figure>
+<p>执行命令后，会将test目录下的每个文件进行分别压缩，如图压缩前是<code>catalina.out</code>和<code>locahost.2024-04-29.log</code>文件，压缩后分别变成压缩包</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429101324023.png" alt="image-20240429101324023" style="zoom:50%;"></p></li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -292,7 +680,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2024-04-28 15:42:50 / 修改时间：17:17:08" itemprop="dateCreated datePublished" datetime="2024-04-28T15:42:50+08:00">2024-04-28</time>
+      <time title="创建时间：2024-04-28 15:42:50 / 修改时间：19:55:40" itemprop="dateCreated datePublished" datetime="2024-04-28T15:42:50+08:00">2024-04-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -312,7 +700,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -331,6 +719,16 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="一、文件访问权限和用户种类"><a href="#一、文件访问权限和用户种类" class="headerlink" title="一、文件访问权限和用户种类"></a>一、文件访问权限和用户种类</h1><h2 id="1、文件访问权限"><a href="#1、文件访问权限" class="headerlink" title="1、文件访问权限"></a>1、文件访问权限</h2><h3 id="（1）用ls查看时，显示内容说明："><a href="#（1）用ls查看时，显示内容说明：" class="headerlink" title="（1）用ls查看时，显示内容说明："></a>（1）用ls查看时，显示内容说明：</h3><p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428154306993.png" style="zoom: 67%;"></p>
+<p>文件类型说明：</p>
+<ul>
+<li>“-”表示普通文件；</li>
+<li>“d”表示目录；</li>
+<li>“l”表示链接文件；</li>
+<li>“p”表示管理文件；</li>
+<li>“b”表示块设备文件；</li>
+<li>“c”表示字符设备文件；</li>
+<li>“s”表示套接字文件；</li>
+</ul>
 <p>权限说明：</p>
 <p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428155458149.png" alt="image-20240428155458149" style="zoom:50%;"></p>
 <h3 id="（2）文件权限分类"><a href="#（2）文件权限分类" class="headerlink" title="（2）文件权限分类"></a>（2）文件权限分类</h3><div class="table-container">
@@ -1176,330 +1574,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">测试用例设计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2024-03-27 15:33:18 / 修改时间：15:35:56" itemprop="dateCreated datePublished" datetime="2024-03-27T15:33:18+08:00">2024-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <span id="more"></span>
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/03/27/%E6%B5%8B%E8%AF%95%E9%9C%80%E6%B1%82/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/03/27/%E6%B5%8B%E8%AF%95%E9%9C%80%E6%B1%82/" class="post-title-link" itemprop="url">测试需求</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2024-03-27 15:32:39" itemprop="dateCreated datePublished" datetime="2024-03-27T15:32:39+08:00">2024-03-27</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-03-30 09:52:58" itemprop="dateModified" datetime="2024-03-30T09:52:58+08:00">2024-03-30</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>229</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="一、测什么？"><a href="#一、测什么？" class="headerlink" title="一、测什么？"></a>一、测什么？</h1><p>测试点思路步骤如下：正常+异常</p>
-<p>1、正常功能：单个功能冒烟、看正常功能是否可以使用。</p>
-<p>2、单个功能项验证是否异常（从上到下对每一个输入项进行验证，避免遗漏）</p>
-<p>从三个方面考虑：</p>
-<ul>
-<li><strong>数据长度、数据类型、是否为必填、是否可重复</strong></li>
-<li><strong>限制约束验证（看需求规格说明书中是否对该输入项有相关规则和约束）</strong></li>
-<li><strong>隐性需求（根据个人经验或对比同类产品，发掘隐性需求）</strong></li>
-</ul>
-<p>3、功能交互验证<br>模块之间传递的信息和数据，对存在功能交互的功能项</p>
-<p>4、非功能性测试:<br>界面、易用性、兼容性、安全性、性能压力</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2024/03/27/%E6%B5%8B%E8%AF%95%E9%9C%80%E6%B1%82/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2022/07/01/%E4%BA%92%E6%96%A5%E8%AE%BF%E9%97%AE%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E8%BD%AF-%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/07/01/%E4%BA%92%E6%96%A5%E8%AE%BF%E9%97%AE%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E8%BD%AF-%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">互斥访问临界区的软/硬件实现方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-07-01 18:35:54" itemprop="dateCreated datePublished" datetime="2022-07-01T18:35:54+08:00">2022-07-01</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-03-06 12:36:50" itemprop="dateModified" datetime="2024-03-06T12:36:50+08:00">2024-03-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="一、软件实现"><a href="#一、软件实现" class="headerlink" title="一、软件实现"></a>一、软件实现</h1><h2 id="1、单标志法"><a href="#1、单标志法" class="headerlink" title="1、单标志法"></a>1、单标志法</h2><p>​        <strong>直接上锁</strong><br>​        （1）理解：A，B共用一个标志flag，比如为0就是A用，为1就是B用，用完之后主动把flag设置为对方使用的状态。<br>​        （2）违反 “空闲让进” 原则：限制了只能轮流使用临界资源，只能A用完B用，而不能A用完之后（B不用的情况下）A再用一次。主要原因是只有一个标志，且每次使用后都要把标志换成对方用，这就导致标志不可能连续是1，或者连续是0。</p>
-<h2 id="2、双标志法先检查"><a href="#2、双标志法先检查" class="headerlink" title="2、双标志法先检查"></a>2、双标志法先检查</h2><p>​        <strong>先检查再上锁</strong><br>​        （1）理解：A，B两个进程各一个标志，表示是否上锁（这里上锁指的是有访问临界资源的意愿），A先检查B有没有上锁，B没有的话，A就上锁，然后访问。B先检查A有没有上锁，A没有的话，B就上锁，然后访问。<br>​        （2）违反 “忙则等待” 原则：在A检查完之后，发生中断还没来得及上锁，B此时就可以检查然后上锁，再返回A，虽然B此时已经上锁，但A已经检查完了，不知道B后来又上锁了，A也上个锁，就导致AB同时访问了。主要原因就是检查和上锁不是原子操作，不能一气呵成，很容易卡bug同时访问临界资源</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/07/01/%E4%BA%92%E6%96%A5%E8%AE%BF%E9%97%AE%E4%B8%B4%E7%95%8C%E5%8C%BA%E7%9A%84%E8%BD%AF-%E7%A1%AC%E4%BB%B6%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1582,14 +1656,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">119k</span>
+    <span title="站点总字数">131k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:48</span>
+    <span title="站点阅读时长">1:59</span>
   </span>
 </div>
 <div class="busuanzi-count">

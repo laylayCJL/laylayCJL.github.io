@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux中的C语言</title>
+    <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
+    <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+<span id="more"></span>
+<h1 id="2、通过open-read-write函数实现“cp”功能"><a href="#2、通过open-read-write函数实现“cp”功能" class="headerlink" title="2、通过open read write函数实现“cp”功能"></a>2、通过open read write函数实现“cp”功能</h1><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">flags:</span><br><span class="line">O_RDONLY 以只读方式打开文件</span><br><span class="line">O_WRONLY 以只写方式打开文件</span><br><span class="line">O_RDWR 以可读写方式打开文件。上述三种旗标是互斥的，也就是不可同时使用，但可与下列的旗标利用OR(|)运算符组合。</span><br><span class="line">O_CREAT 若欲打开的文件不存在则自动建立该文件。</span><br><span class="line">O_EXCL 如果O_CREAT 也被设置，此指令会去检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误。此外，若O_CREAT与O_EXCL同时设置，并且欲打开的文件为符号连接，则会打开文件失败。</span><br><span class="line">O_NOCTTY 如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。</span><br><span class="line">O_TRUNC 若文件存在并且以可写的方式打开时，此旗标会令文件长度清为0，而原来存于该文件的资料也会消失。</span><br><span class="line">O_APPEND 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。</span><br><span class="line">O_NONBLOCK 以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。</span><br><span class="line">O_NDELAY 同O_NONBLOCK。</span><br><span class="line">O_SYNC 以同步的方式打开文件。</span><br><span class="line">O_NOFOLLOW 如果参数pathname 所指的文件为一符号连接，则会令打开文件失败。</span><br><span class="line">O_DIRECTORY 如果参数pathname 所指的文件并非为一目录，则会令打开文件失败。</span><br><span class="line">此为Linux2.2以后特有的旗标，以避免一些系统安全问题。参数mode 则有下列数种组合，只有在建立新文件时才会生效，此外真正建文件时的权限会受到umask值所影响，因此该文件权限应该为（mode-umaks）。</span><br><span class="line">S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限。</span><br><span class="line">S_IRUSR 或S_IREAD，00400权限，代表该文件所有者具有可读取的权限。</span><br><span class="line">S_IWUSR 或S_IWRITE，00200 权限，代表该文件所有者具有可写入的权限。</span><br><span class="line">S_IXUSR 或S_IEXEC，00100 权限，代表该文件所有者具有可执行的权限。</span><br><span class="line">S_IRWXG 00070权限，代表该文件用户组具有可读、可写及可执行的权限。</span><br><span class="line">S_IRGRP 00040 权限，代表该文件用户组具有可读的权限。</span><br><span class="line">S_IWGRP 00020权限，代表该文件用户组具有可写入的权限。</span><br><span class="line">S_IXGRP 00010 权限，代表该文件用户组具有可执行的权限。</span><br><span class="line">S_IRWXO 00007权限，代表其他用户具有可读、可写及可执行的权限。</span><br><span class="line">S_IROTH 00004 权限，代表其他用户具有可读的权限</span><br><span class="line">S_IWOTH 00002权限，代表其他用户具有可写入的权限。</span><br><span class="line">S_IXOTH 00001 权限，代表其他用户具有可执行的权限。</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（1）open-函数"><a href="#（1）open-函数" class="headerlink" title="（1）open()函数"></a>（1）open()函数</h2><p><strong>注意打开了的函数用完要关掉释放内存</strong></p>
+<p>表头文件 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：文件打开路径，打开方式</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname,<span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：相比上面的，这一种加上了第三个参数mode，主要是搭配O_CREAT使用，同样地，这个参数规定了属主、同组和其他人对文件的文件操作权限</span></span><br><span class="line"><span class="comment">//mode_t mode规定文件操作权限</span></span><br><span class="line">eg.</span><br><span class="line">    open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>)</span><br><span class="line">    <span class="comment">//解读：以只写（O_WRONLY），附加（O_APPEND）方式打开argv[2]文件，若argv[2]文件不存在，则以0644权限（O_CREAT）建立该文件</span></span><br><span class="line">    <span class="comment">//0644:6表示owner有可读可写权限，group可读，others可读</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若所有欲核查的权限都通过了检查则返回0 值，表示成功，只要有一个权限被禁止则返回-1。</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（2）read-函数"><a href="#（2）read-函数" class="headerlink" title="（2）read()函数"></a>（2）read()函数</h2><p>表头文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd,<span class="keyword">void</span> * buf ,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//read()会把参数fd 所指的文件传送count个字节到buf指针所指的内存中。若参数count为0，则read()不会有作用并返回0</span></span><br><span class="line">eg.</span><br><span class="line">    read(from,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">    <span class="comment">//把from中的内容读入缓冲区</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">返回值为实际读取到的字节数，如果返回0，表示已到达文件尾或是无可读取的数据，此外文件读写位置会随读取到的字节移动</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="（3）write-函数"><a href="#（3）write-函数" class="headerlink" title="（3）write()函数"></a>（3）write()函数</h2><p>表头文件 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>定义函数 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span> <span class="params">(<span class="keyword">int</span> fd,<span class="keyword">const</span> <span class="keyword">void</span> * buf,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//write()会把参数buf所指的内存写入count个字节到参数fd所指的文件内。当然，文件读写位置也会随之移动。</span></span><br><span class="line">eg.</span><br><span class="line">    write(to,buf,n)</span><br><span class="line">    <span class="comment">//把buf缓冲区的内容写入to文件中</span></span><br></pre></td></tr></tbody></table></figure>
+<p>返回值 </p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">如果顺利write()会返回实际写入的字节数。当有错误发生时则返回<span class="number">-1</span>，错误代码存入errno中</span><br></pre></td></tr></tbody></table></figure>
+<p>（4）举例</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//通过open read write函数实现“cp”功能</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="keyword">int</span> n,from,to;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">if</span>(argc!=<span class="number">3</span>){</span><br><span class="line">		perror(<span class="string">"argc error\n"</span>);</span><br><span class="line">	        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">if</span>((from=open(argv[<span class="number">1</span>],O_RDONLY))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"from fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">if</span>((to=open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"to fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">while</span>((n=read(from,buf,<span class="keyword">sizeof</span>(buf)))&gt;<span class="number">0</span>)</span><br><span class="line">		write(to,buf,n);</span><br><span class="line">	close(to);</span><br><span class="line">	close(from);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-1.</span>c -o exp3<span class="number">-1</span></span><br><span class="line">执行：./exp3<span class="number">-1</span> /proc/meminfo /home/laylay/exp3/my.meminfo</span><br><span class="line">     (./exp3<span class="number">-1</span> 要复制的文件源文件 要复制到的目的文件（可以顺带改名）)</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="3、移动指针用lseek函数"><a href="#3、移动指针用lseek函数" class="headerlink" title="3、移动指针用lseek函数"></a>3、移动指针用lseek函数</h1><p>表头文件</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>函数原型</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">off_t</span> <span class="title">lseek</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset, <span class="keyword">int</span> whence)</span></span>;</span><br><span class="line">参数：</span><br><span class="line">fd：文件描述符，指向打开的文件</span><br><span class="line">whence：粗定位，选项有：</span><br><span class="line">   SEEK_SET：调到文件起始位置</span><br><span class="line">   SEEK_CUR：调到文件当前读写的位置</span><br><span class="line">   SEEK_END：调到文件末尾位置</span><br><span class="line">offset：精定位：微调位置</span><br><span class="line">   从whence指定的位置，向前或者向后移动指定字节数。</span><br><span class="line">   为负数：向前移动指定字节数</span><br><span class="line">   为正数：向后移动指定字节数</span><br><span class="line"></span><br><span class="line">不过当whence被指定为SEEK_SET时，如果offset被指定为负数的话，是没有意义，因为已经到文件头上了，在向前移动就越界了，不再当前文件的范围内了，如果非要向前调整，lseek函数会报错。</span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">调用成功</span><br><span class="line">返回当前读写位置相对于文件开始位置的偏移量（字节）。</span><br><span class="line">可以使用lseek函数获取文件的大小，将文件读写的位置移动到最末尾，然后获取返回值，这个返回值就是文件头与文件尾之间的字节数，也就是文件大小。</span><br><span class="line"></span><br><span class="line">调用失败</span><br><span class="line">返回-1，并给errno设置错误号。</span><br></pre></td></tr></tbody></table></figure>
+<p>应用举例：</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.1"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.1</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
+<p>执行结果中可以看出</p>
+<ul>
+<li>以只写方式创建的文件中，写入数据时候，会按照lseek中的指示，将指针从起始位置移动40后再写入</li>
+<li>可以看到此种情况下file.hole.1文件大小为50<ul>
+<li>如果后边不加write写入操作，仅仅移动指针，结果file.hole.1文件大小为10，因为仅仅拨动指针是没办法改变文件大小的，必须写入数据才会改变文件大小</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408230331195.png" alt="image-20210408230331195"></p>
+<p>如果将fd打开方式变为追加打开</p>
+<p>即<code>fd=open("file.hole.1",O_WRONLY|O_CREAT|O_APPEND,0644);</code>时</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.2"</span>,O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.2</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.2</span></span><br></pre></td></tr></tbody></table></figure>
+<p>lseek就会不起作用，数据依旧按照顺序已追加方式写入（对比如下）</p>
+<p>file.hole.1以只写方式创建</p>
+<p>file.hole.2以只写追加方式创建</p>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408231408315.png" alt="image-20210408231408315"></p>
+<h1 id="4、输出重定向"><a href="#4、输出重定向" class="headerlink" title="4、输出重定向"></a>4、输出重定向</h1><h2 id="（1）dup1-dup2"><a href="#（1）dup1-dup2" class="headerlink" title="（1）dup1()/dup2()"></a>（1）dup1()/dup2()</h2><p>表头文件</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
+<p>函数原型</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> oldfd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> oldfd, <span class="keyword">int</span> newfd)</span></span>;</span><br><span class="line">相同点：dup和dup2两个函数都可以用来复制一个已经存在的文件描述符。</span><br><span class="line">不同点：dup返回的新文件描述符一定是当前可用文件描述符中最小数值，</span><br><span class="line">       dup2则可以是用filedes2参数指定新的描述符。</span><br><span class="line">注意：如果filedes已经打开，则先将其关闭。若filedes2等于filedes，则dup2返回filedes2，而不关闭它。</span><br></pre></td></tr></tbody></table></figure>
+<p>返回值</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若成功则返回新的文件秒速符，若出错则返回-1</span><br></pre></td></tr></tbody></table></figure>
+<p>应用举例</p>
+<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="comment">//输出重定向</span></span><br><span class="line"><span class="comment">//将before redirct!直接输出，将after redirct!转到out文件中输出</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        <span class="comment">//新建out文件</span></span><br><span class="line">        fd=open(<span class="string">"out"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before redirct!\n"</span>);</span><br><span class="line">        dup2(fd,STDOUT_FILENO);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"after redirct!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-3.</span>c -o exp3<span class="number">-3</span></span><br><span class="line">执行：./exp3<span class="number">-3</span></span><br><span class="line">查看out文件：vi out</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233211954.png" alt="image-20210408233211954"></p>
+<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233144551.png" alt="image-20210408233144551"></p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux-C</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux命令总结</title>
     <url>/2021/03/14/Linux%E5%91%BD%E4%BB%A4%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h4 id="1、绝对定位"><a href="#1、绝对定位" class="headerlink" title="1、绝对定位"></a>1、绝对定位</h4><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">/home/laylay/filename</span><br></pre></td></tr></tbody></table></figure>
@@ -63,73 +132,19 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo基本操作</title>
-    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>1、写博客 </p>
-<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
-<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
-<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
-<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
-<span id="more"></span>
-<p>2、一些命令</p>
-<p><code>hexo clean</code> 清除缓存</p>
-<p><code>hexo g</code> 部署</p>
-<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
-<p>3、摘要（阅读全文）</p>
-<p>在想展示的内容后添加如下代码</p>
-<!-- more -->
-<p>4、部署到远端的github</p>
-<p><code>hexo deploy</code></p>
-<p>5、hexo使用说明</p>
-<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
-<p>6、解决报错Error: Spawn failed</p>
-<ul>
-<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
-<ul>
-<li>删除<code>.deploy_git</code>文件夹;</li>
-<li>输入<code>git config --global core.autocrlf false</code></li>
-<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
-</ul>
-</li>
-<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
-<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
-<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
-</li>
-<li><p>Failed to connect to github.com</p>
-<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-</li>
-</ul>
-<p>7、如果有图片插入 要在头部加入</p>
-<p><code>typora-root-url: ..</code></p>
-]]></content>
-      <categories>
-        <category>博客基本操作及报错解决方案</category>
-      </categories>
-      <tags>
-        <tag>blog</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2021/03/05/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Linux文件权限管理</title>
     <url>/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h1 id="一、文件访问权限和用户种类"><a href="#一、文件访问权限和用户种类" class="headerlink" title="一、文件访问权限和用户种类"></a>一、文件访问权限和用户种类</h1><h2 id="1、文件访问权限"><a href="#1、文件访问权限" class="headerlink" title="1、文件访问权限"></a>1、文件访问权限</h2><h3 id="（1）用ls查看时，显示内容说明："><a href="#（1）用ls查看时，显示内容说明：" class="headerlink" title="（1）用ls查看时，显示内容说明："></a>（1）用ls查看时，显示内容说明：</h3><p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428154306993.png" style="zoom: 67%;"></p>
+<p>文件类型说明：</p>
+<ul>
+<li>“-”表示普通文件；</li>
+<li>“d”表示目录；</li>
+<li>“l”表示链接文件；</li>
+<li>“p”表示管理文件；</li>
+<li>“b”表示块设备文件；</li>
+<li>“c”表示字符设备文件；</li>
+<li>“s”表示套接字文件；</li>
+</ul>
 <p>权限说明：</p>
 <p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428155458149.png" alt="image-20240428155458149" style="zoom:50%;"></p>
 <h3 id="（2）文件权限分类"><a href="#（2）文件权限分类" class="headerlink" title="（2）文件权限分类"></a>（2）文件权限分类</h3><div class="table-container">
@@ -212,72 +227,189 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux中的C语言</title>
-    <url>/2021/04/01/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/</url>
-    <content><![CDATA[<h1 id="1、在指定路径下新建目录"><a href="#1、在指定路径下新建目录" class="headerlink" title="1、在指定路径下新建目录"></a>1、在指定路径下新建目录</h1><figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">mkdir函数原型： </span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt; </span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, <span class="keyword">mode_t</span> mode)</span></span>; </span><br><span class="line">参数： path是目录名，mode是目录权限</span><br><span class="line"></span><br><span class="line">在/home/laylay路径下建立可读可写目录lab<span class="number">-2</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mkdir</span><span class="params">(<span class="string">"/home/laylay/lab-2"</span>,<span class="number">777</span>)</span></span>;</span><br></pre></td></tr></tbody></table></figure>
+    <title>Linux网络配置及工具</title>
+    <url>/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<h1 id="一、网络相关命令"><a href="#一、网络相关命令" class="headerlink" title="一、网络相关命令"></a>一、网络相关命令</h1><h2 id="1、查看ip配置信息和网络情况：-ip、ifconfig、ping"><a href="#1、查看ip配置信息和网络情况：-ip、ifconfig、ping" class="headerlink" title="1、查看ip配置信息和网络情况：==ip、ifconfig、ping=="></a>1、查看ip配置信息和网络情况：==ip、ifconfig、ping==</h2><h3 id="（1）ip"><a href="#（1）ip" class="headerlink" title="（1）ip"></a>（1）ip</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ip -4 addr：显示主机的IP v4地址</span><br><span class="line">ip -6 addr：查看主机的IP v6地址</span><br><span class="line">ip addr：查看主机的所有IP地址</span><br></pre></td></tr></tbody></table></figure>
+<p>查看ip配置信息</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ip address</span><br><span class="line">也可简写为ip a</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505203605412.png" alt="image-20240505203605412" style="zoom:50%;"></p>
+<p>ens33是虚拟机默认的网络接口，所以后面跟的就是虚拟机的ip地址，24表示的是子网掩码，即255.255.255.0</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429164741792.png" alt="image-20240429164741792" style="zoom:50%;"></p>
+<h3 id="（2）ifconfig（最常用）"><a href="#（2）ifconfig（最常用）" class="headerlink" title="（2）ifconfig（最常用）"></a>（2）ifconfig（最常用）</h3><p>ifconfig查看ip地址、子网掩码和收发包情况（比ip address看到的信息更多）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ifconfig eth0：查看指定网卡的IP地址</span><br><span class="line">ifconfig eth0 down：禁用eth0接口</span><br><span class="line">ifconfig eth0 up：启用eth0接口</span><br><span class="line"></span><br><span class="line">ifconfig -a：查看所有网卡的IP地址</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505204146234.png" alt="image-20240505204146234" style="zoom: 50%;"></p>
+<h3 id="（3）ping"><a href="#（3）ping" class="headerlink" title="（3）ping"></a>（3）ping</h3><p>用于检查网络是否联通，ping得快说明网速好</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ping www.baidu.com</span><br><span class="line"></span><br><span class="line">ping -c 5 www.baidu.com</span><br><span class="line">设置发5个包</span><br></pre></td></tr></tbody></table></figure>
+<p>ping成功后，默认一直ping直到ctrl C 结束</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ping www.baidu.com</span><br><span class="line">ctrl+C</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165344925.png" alt="image-20240429165344925" style="zoom:50%;"></p>
+<p>可以通过参数-c设置ping包的数目</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ping -c 5 www.baidu.com</span><br><span class="line">设置发5个包</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165559223.png" alt="image-20240429165559223" style="zoom:50%;"></p>
+<p>Windows默认ping4个包就结束，不用CtrlC手动终止</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429165516006.png" alt="image-20240429165516006" style="zoom:50%;"></p>
 <span id="more"></span>
-<h1 id="2、通过open-read-write函数实现“cp”功能"><a href="#2、通过open-read-write函数实现“cp”功能" class="headerlink" title="2、通过open read write函数实现“cp”功能"></a>2、通过open read write函数实现“cp”功能</h1><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">flags:</span><br><span class="line">O_RDONLY 以只读方式打开文件</span><br><span class="line">O_WRONLY 以只写方式打开文件</span><br><span class="line">O_RDWR 以可读写方式打开文件。上述三种旗标是互斥的，也就是不可同时使用，但可与下列的旗标利用OR(|)运算符组合。</span><br><span class="line">O_CREAT 若欲打开的文件不存在则自动建立该文件。</span><br><span class="line">O_EXCL 如果O_CREAT 也被设置，此指令会去检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误。此外，若O_CREAT与O_EXCL同时设置，并且欲打开的文件为符号连接，则会打开文件失败。</span><br><span class="line">O_NOCTTY 如果欲打开的文件为终端机设备时，则不会将该终端机当成进程控制终端机。</span><br><span class="line">O_TRUNC 若文件存在并且以可写的方式打开时，此旗标会令文件长度清为0，而原来存于该文件的资料也会消失。</span><br><span class="line">O_APPEND 当读写文件时会从文件尾开始移动，也就是所写入的数据会以附加的方式加入到文件后面。</span><br><span class="line">O_NONBLOCK 以不可阻断的方式打开文件，也就是无论有无数据读取或等待，都会立即返回进程之中。</span><br><span class="line">O_NDELAY 同O_NONBLOCK。</span><br><span class="line">O_SYNC 以同步的方式打开文件。</span><br><span class="line">O_NOFOLLOW 如果参数pathname 所指的文件为一符号连接，则会令打开文件失败。</span><br><span class="line">O_DIRECTORY 如果参数pathname 所指的文件并非为一目录，则会令打开文件失败。</span><br><span class="line">此为Linux2.2以后特有的旗标，以避免一些系统安全问题。参数mode 则有下列数种组合，只有在建立新文件时才会生效，此外真正建文件时的权限会受到umask值所影响，因此该文件权限应该为（mode-umaks）。</span><br><span class="line">S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限。</span><br><span class="line">S_IRUSR 或S_IREAD，00400权限，代表该文件所有者具有可读取的权限。</span><br><span class="line">S_IWUSR 或S_IWRITE，00200 权限，代表该文件所有者具有可写入的权限。</span><br><span class="line">S_IXUSR 或S_IEXEC，00100 权限，代表该文件所有者具有可执行的权限。</span><br><span class="line">S_IRWXG 00070权限，代表该文件用户组具有可读、可写及可执行的权限。</span><br><span class="line">S_IRGRP 00040 权限，代表该文件用户组具有可读的权限。</span><br><span class="line">S_IWGRP 00020权限，代表该文件用户组具有可写入的权限。</span><br><span class="line">S_IXGRP 00010 权限，代表该文件用户组具有可执行的权限。</span><br><span class="line">S_IRWXO 00007权限，代表其他用户具有可读、可写及可执行的权限。</span><br><span class="line">S_IROTH 00004 权限，代表其他用户具有可读的权限</span><br><span class="line">S_IWOTH 00002权限，代表其他用户具有可写入的权限。</span><br><span class="line">S_IXOTH 00001 权限，代表其他用户具有可执行的权限。</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（1）open-函数"><a href="#（1）open-函数" class="headerlink" title="（1）open()函数"></a>（1）open()函数</h2><p><strong>注意打开了的函数用完要关掉释放内存</strong></p>
-<p>表头文件 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：文件打开路径，打开方式</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> * pathname,<span class="keyword">int</span> flags, <span class="keyword">mode_t</span> mode)</span></span>;</span><br><span class="line"><span class="comment">//参数列表：相比上面的，这一种加上了第三个参数mode，主要是搭配O_CREAT使用，同样地，这个参数规定了属主、同组和其他人对文件的文件操作权限</span></span><br><span class="line"><span class="comment">//mode_t mode规定文件操作权限</span></span><br><span class="line">eg.</span><br><span class="line">    open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>)</span><br><span class="line">    <span class="comment">//解读：以只写（O_WRONLY），附加（O_APPEND）方式打开argv[2]文件，若argv[2]文件不存在，则以0644权限（O_CREAT）建立该文件</span></span><br><span class="line">    <span class="comment">//0644:6表示owner有可读可写权限，group可读，others可读</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若所有欲核查的权限都通过了检查则返回0 值，表示成功，只要有一个权限被禁止则返回-1。</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（2）read-函数"><a href="#（2）read-函数" class="headerlink" title="（2）read()函数"></a>（2）read()函数</h2><p>表头文件</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd,<span class="keyword">void</span> * buf ,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//read()会把参数fd 所指的文件传送count个字节到buf指针所指的内存中。若参数count为0，则read()不会有作用并返回0</span></span><br><span class="line">eg.</span><br><span class="line">    read(from,buf,<span class="keyword">sizeof</span>(buf));</span><br><span class="line">    <span class="comment">//把from中的内容读入缓冲区</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">返回值为实际读取到的字节数，如果返回0，表示已到达文件尾或是无可读取的数据，此外文件读写位置会随读取到的字节移动</span><br></pre></td></tr></tbody></table></figure>
-<h2 id="（3）write-函数"><a href="#（3）write-函数" class="headerlink" title="（3）write()函数"></a>（3）write()函数</h2><p>表头文件 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>定义函数 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">write</span> <span class="params">(<span class="keyword">int</span> fd,<span class="keyword">const</span> <span class="keyword">void</span> * buf,<span class="keyword">size_t</span> count)</span></span>;</span><br><span class="line"><span class="comment">//write()会把参数buf所指的内存写入count个字节到参数fd所指的文件内。当然，文件读写位置也会随之移动。</span></span><br><span class="line">eg.</span><br><span class="line">    write(to,buf,n)</span><br><span class="line">    <span class="comment">//把buf缓冲区的内容写入to文件中</span></span><br></pre></td></tr></tbody></table></figure>
-<p>返回值 </p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line">如果顺利write()会返回实际写入的字节数。当有错误发生时则返回<span class="number">-1</span>，错误代码存入errno中</span><br></pre></td></tr></tbody></table></figure>
-<p>（4）举例</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">//通过open read write函数实现“cp”功能</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">	<span class="keyword">int</span> n,from,to;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">if</span>(argc!=<span class="number">3</span>){</span><br><span class="line">		perror(<span class="string">"argc error\n"</span>);</span><br><span class="line">	        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">	}</span><br><span class="line">	<span class="keyword">if</span>((from=open(argv[<span class="number">1</span>],O_RDONLY))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"from fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">if</span>((to=open(argv[<span class="number">2</span>],O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>))&lt;<span class="number">0</span>){</span><br><span class="line">                perror(<span class="string">"to fail\n"</span>);</span><br><span class="line">                <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">        }</span><br><span class="line">	<span class="keyword">while</span>((n=read(from,buf,<span class="keyword">sizeof</span>(buf)))&gt;<span class="number">0</span>)</span><br><span class="line">		write(to,buf,n);</span><br><span class="line">	close(to);</span><br><span class="line">	close(from);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-1.</span>c -o exp3<span class="number">-1</span></span><br><span class="line">执行：./exp3<span class="number">-1</span> /proc/meminfo /home/laylay/exp3/my.meminfo</span><br><span class="line">     (./exp3<span class="number">-1</span> 要复制的文件源文件 要复制到的目的文件（可以顺带改名）)</span><br></pre></td></tr></tbody></table></figure>
-<h1 id="3、移动指针用lseek函数"><a href="#3、移动指针用lseek函数" class="headerlink" title="3、移动指针用lseek函数"></a>3、移动指针用lseek函数</h1><p>表头文件</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>函数原型</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">off_t</span> <span class="title">lseek</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset, <span class="keyword">int</span> whence)</span></span>;</span><br><span class="line">参数：</span><br><span class="line">fd：文件描述符，指向打开的文件</span><br><span class="line">whence：粗定位，选项有：</span><br><span class="line">   SEEK_SET：调到文件起始位置</span><br><span class="line">   SEEK_CUR：调到文件当前读写的位置</span><br><span class="line">   SEEK_END：调到文件末尾位置</span><br><span class="line">offset：精定位：微调位置</span><br><span class="line">   从whence指定的位置，向前或者向后移动指定字节数。</span><br><span class="line">   为负数：向前移动指定字节数</span><br><span class="line">   为正数：向后移动指定字节数</span><br><span class="line"></span><br><span class="line">不过当whence被指定为SEEK_SET时，如果offset被指定为负数的话，是没有意义，因为已经到文件头上了，在向前移动就越界了，不再当前文件的范围内了，如果非要向前调整，lseek函数会报错。</span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">调用成功</span><br><span class="line">返回当前读写位置相对于文件开始位置的偏移量（字节）。</span><br><span class="line">可以使用lseek函数获取文件的大小，将文件读写的位置移动到最末尾，然后获取返回值，这个返回值就是文件头与文件尾之间的字节数，也就是文件大小。</span><br><span class="line"></span><br><span class="line">调用失败</span><br><span class="line">返回-1，并给errno设置错误号。</span><br></pre></td></tr></tbody></table></figure>
-<p>应用举例：</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.1"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.1</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
-<p>执行结果中可以看出</p>
+<h2 id="2、禁用、启用网络接口"><a href="#2、禁用、启用网络接口" class="headerlink" title="2、禁用、启用网络接口"></a>2、禁用、启用网络接口</h2><h3 id="（1）-ifdown、ifup"><a href="#（1）-ifdown、ifup" class="headerlink" title="（1）==ifdown、ifup=="></a>（1）==ifdown、ifup==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ifdown eth0：禁用eth0接口</span><br><span class="line">ifup eth0：启用eth0接口</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（2）-ifconfig"><a href="#（2）-ifconfig" class="headerlink" title="（2）==ifconfig=="></a>（2）==ifconfig==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ifconfig eth0 down：禁用eth0接口</span><br><span class="line">ifconfig eth0 up：启用eth0接口</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（3）-service-network"><a href="#（3）-service-network" class="headerlink" title="（3）==service network=="></a>（3）==service network==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">service network stop：关闭网卡</span><br><span class="line">service network start：启动网卡</span><br><span class="line">service network status：查看网卡状态</span><br><span class="line">service network restart：重启网卡</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="3、查看服务器资源-free、top-命令"><a href="#3、查看服务器资源-free、top-命令" class="headerlink" title="3、查看服务器资源==free、top==命令"></a>3、查看服务器资源==free、top==命令</h2><h3 id="（1）查看服务器内存占用情况-free"><a href="#（1）查看服务器内存占用情况-free" class="headerlink" title="（1）查看服务器内存占用情况==free=="></a>（1）查看服务器内存占用情况==free==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">free </span><br><span class="line">free -m</span><br><span class="line">free -k</span><br><span class="line">free -g</span><br></pre></td></tr></tbody></table></figure>
+<p>不带参数：</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429170151242.png" alt="image-20240429170151242" style="zoom:67%;"></p>
+<p>以Mb，Kb，Gb大小显示内存占用情况</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429170327675.png" alt="image-20240429170327675" style="zoom:50%;"></p>
+<h3 id="（2）同时查看内存和CPU占用情况-top"><a href="#（2）同时查看内存和CPU占用情况-top" class="headerlink" title="（2）同时查看内存和CPU占用情况==top=="></a>（2）同时查看内存和CPU占用情况==top==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">top</span><br></pre></td></tr></tbody></table></figure>
+<p>会显示总的CPU使用情况，还会显示每个进程的CPU和内存占用情况</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429170853759.png" alt="image-20240429170853759" style="zoom:50%;"></p>
+<h2 id="4、网络数据包统计（不常用）"><a href="#4、网络数据包统计（不常用）" class="headerlink" title="4、网络数据包统计（不常用）"></a>4、网络数据包统计（不常用）</h2><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">显示网络数据包统计详细信息</span><br><span class="line">netstat -s</span><br><span class="line"></span><br><span class="line">显示网络数据包统计详细</span><br><span class="line">ifconfig -s</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="5、动态ip和静态ip的配置"><a href="#5、动态ip和静态ip的配置" class="headerlink" title="5、动态ip和静态ip的配置"></a>5、动态ip和静态ip的配置</h2><h3 id="（1）动态ip地址"><a href="#（1）动态ip地址" class="headerlink" title="（1）动态ip地址"></a>（1）动态ip地址</h3><p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505205226936.png" alt="image-20240505205226936" style="zoom:50%;"></p>
+<p>DHCP client（PC/虚拟机）向服务器申请ip地址，DHCP server（路由器）动态给client分配ip地址</p>
+<p>如图，虚拟机可以选择使用本地DHCP服务器分配ip地址</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429171428574.png" alt="image-20240429171428574" style="zoom: 67%;"></p>
+<p>动态申请有租用时间，租期到了之后，DHCP client需要重新申请ip地址，所以分配到的ip是动态的，租期到了就会改变</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429171609999.png" alt="image-20240429171609999" style="zoom:67%;"></p>
+<h3 id="（2）静态ip地址"><a href="#（2）静态ip地址" class="headerlink" title="（2）静态ip地址"></a>（2）静态ip地址</h3><p>需要手动配置，无法自动分配</p>
+<h4 id="1）临时方案"><a href="#1）临时方案" class="headerlink" title="1）临时方案"></a>1）临时方案</h4><p>命令行方式配置IP</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ifconfig eth0 192.168.1.10 netmask 255.255.255.0 up</span><br><span class="line">eth0一般对应的是第一个网卡，</span><br><span class="line">192.168.1.10是给eth0配置的IP地址</span><br><span class="line">netmask 255.255.255.0配置的是子网掩码</span><br><span class="line">up表示立即生效</span><br></pre></td></tr></tbody></table></figure>
+<p>一块网卡配置多个IP地址</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ifconfig eth0:1 192.168.1.11 netmask 255.255.255.0 up</span><br><span class="line">ifconfig eth0:2 192.168.1.12 netmask 255.255.255.0 up</span><br></pre></td></tr></tbody></table></figure>
+<p>临时方案配置的IP地址在重启后就会丢失</p>
+<h4 id="2）永久方案——手动配置静态ip地址"><a href="#2）永久方案——手动配置静态ip地址" class="headerlink" title="2）永久方案——手动配置静态ip地址"></a>2）永久方案——手动配置静态ip地址</h4><p><strong>1))进入网络配置文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">cd /etc/sysconfig/network-scripts/</span><br></pre></td></tr></tbody></table></figure>
+<p>每个网络接口都有对应的配置文件，虚拟机默认的网络接口是ens33，所以进入ifcfg-ens33编辑配置文件</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429171823614.png" alt="image-20240429171823614" style="zoom:67%;"></p>
+<p><strong>2))进入ens33接口对应的配置文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">vim ifcfg-ens33</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429171914778.png" alt="image-20240429171914778" style="zoom:50%;"></p>
+<p><strong>3))修改配置文件</strong></p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429172048676.png" alt="image-20240429172048676" style="zoom:50%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">BOOTPROTO="static"    #static表示静态IP</span><br><span class="line">IPADDR=192.168.38.133 #配置IP地址</span><br><span class="line">NETMASK=255.255.255.e #配置掩码地址</span><br><span class="line">GATEWAY=192.168.38.2  #配置网关</span><br><span class="line">DNS1=8.8.8.8          #配置DNS服务器地址，8.8.8.8是谷歌免费的DNS服务器</span><br></pre></td></tr></tbody></table></figure>
 <ul>
-<li>以只写方式创建的文件中，写入数据时候，会按照lseek中的指示，将指针从起始位置移动40后再写入</li>
-<li>可以看到此种情况下file.hole.1文件大小为50<ul>
-<li>如果后边不加write写入操作，仅仅移动指针，结果file.hole.1文件大小为10，因为仅仅拨动指针是没办法改变文件大小的，必须写入数据才会改变文件大小</li>
-</ul>
+<li><p>配置ip地址：注意ip地址选择的时候，需要ping一下该地址，如果ping通了，说明有人正在使用，所以不能使用该ip地址</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429172550459.png" alt="image-20240429172550459" style="zoom:67%;"></p>
+<p>子网ip显示192.168.249.0，那么可选的ip地址就是192.168.249.0到192.168.249.254</p>
+</li>
+<li><p>子网掩码：查询一下当前虚拟机的子网掩码，就使用这个子网掩码</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429172509305.png" alt="image-20240429172509305" style="zoom: 67%;"></p>
+</li>
+<li><p>网关：查看虚拟机的网络设置中的NAT设置的网关ip</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429172831789.png" alt="image-20240429172831789" style="zoom:80%;"></p>
+</li>
+<li><p>DNS文件就使用谷歌的免费服务器</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">8.8.8.8</span><br><span class="line"></span><br><span class="line">国内可以使用14.14.14.14</span><br></pre></td></tr></tbody></table></figure>
 </li>
 </ul>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408230331195.png" alt="image-20210408230331195"></p>
-<p>如果将fd打开方式变为追加打开</p>
-<p>即<code>fd=open("file.hole.1",O_WRONLY|O_CREAT|O_APPEND,0644);</code>时</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">      <span class="keyword">char</span> buf1[]=<span class="string">"0123456789"</span>;</span><br><span class="line">      <span class="keyword">char</span> buf2[]=<span class="string">"abcdefghij"</span>;</span><br><span class="line">      <span class="keyword">int</span> fd;</span><br><span class="line">      fd=open(<span class="string">"file.hole.2"</span>,O_WRONLY|O_CREAT|O_APPEND,<span class="number">0644</span>);</span><br><span class="line">      write(fd,buf1,<span class="number">10</span>);</span><br><span class="line">      lseek(fd,<span class="number">40</span>,SEEK_SET);</span><br><span class="line">      write(fd,buf2,<span class="number">10</span>);</span><br><span class="line">      close(fd);</span><br><span class="line">      <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-2.</span>c -o exp3<span class="number">-2</span></span><br><span class="line">执行：./exp3<span class="number">-2</span></span><br><span class="line">查看当前目录详细信息：ls -l</span><br><span class="line">查看以只写方式创建的file.hole<span class="number">.1</span>文件：cat file.hole<span class="number">.2</span></span><br><span class="line">查看file.hole<span class="number">.1</span>的详细存储方式：od -c file.hole<span class="number">.2</span></span><br></pre></td></tr></tbody></table></figure>
-<p>lseek就会不起作用，数据依旧按照顺序已追加方式写入（对比如下）</p>
-<p>file.hole.1以只写方式创建</p>
-<p>file.hole.2以只写追加方式创建</p>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408231408315.png" alt="image-20210408231408315"></p>
-<h1 id="4、输出重定向"><a href="#4、输出重定向" class="headerlink" title="4、输出重定向"></a>4、输出重定向</h1><h2 id="（1）dup1-dup2"><a href="#（1）dup1-dup2" class="headerlink" title="（1）dup1()/dup2()"></a>（1）dup1()/dup2()</h2><p>表头文件</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br></pre></td></tr></tbody></table></figure>
-<p>函数原型</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> oldfd)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> oldfd, <span class="keyword">int</span> newfd)</span></span>;</span><br><span class="line">相同点：dup和dup2两个函数都可以用来复制一个已经存在的文件描述符。</span><br><span class="line">不同点：dup返回的新文件描述符一定是当前可用文件描述符中最小数值，</span><br><span class="line">       dup2则可以是用filedes2参数指定新的描述符。</span><br><span class="line">注意：如果filedes已经打开，则先将其关闭。若filedes2等于filedes，则dup2返回filedes2，而不关闭它。</span><br></pre></td></tr></tbody></table></figure>
-<p>返回值</p>
-<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">若成功则返回新的文件秒速符，若出错则返回-1</span><br></pre></td></tr></tbody></table></figure>
-<p>应用举例</p>
-<figure class="highlight c"><table><tbody><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"my.h"</span></span></span><br><span class="line"><span class="comment">//输出重定向</span></span><br><span class="line"><span class="comment">//将before redirct!直接输出，将after redirct!转到out文件中输出</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>{</span><br><span class="line">        <span class="keyword">int</span> fd;</span><br><span class="line">        <span class="comment">//新建out文件</span></span><br><span class="line">        fd=open(<span class="string">"out"</span>,O_WRONLY|O_CREAT,<span class="number">0644</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"before redirct!\n"</span>);</span><br><span class="line">        dup2(fd,STDOUT_FILENO);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"after redirct!\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br><span class="line">执行该程序的指令：</span><br><span class="line">编译：gcc exp3<span class="number">-3.</span>c -o exp3<span class="number">-3</span></span><br><span class="line">执行：./exp3<span class="number">-3</span></span><br><span class="line">查看out文件：vi out</span><br></pre></td></tr></tbody></table></figure>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233211954.png" alt="image-20210408233211954"></p>
-<p><img src="/images/Linux%E4%B8%AD%E7%9A%84C%E8%AF%AD%E8%A8%80/image-20210408233144551.png" alt="image-20210408233144551"></p>
+<p><strong>4))最后重启网卡</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">立即生效需要重启网卡service network restart</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="6、查看端口是否空闲-lsof、ss、netstat"><a href="#6、查看端口是否空闲-lsof、ss、netstat" class="headerlink" title="6、查看端口是否空闲==lsof、ss、netstat=="></a>6、查看端口是否空闲==lsof、ss、netstat==</h2><h4 id="（1）端口的作用"><a href="#（1）端口的作用" class="headerlink" title="（1）端口的作用"></a>（1）端口的作用</h4><p>用于区分不同应用，每个应用都有自己的端口</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429173824101.png" alt="image-20240429173824101" style="zoom:50%;"></p>
+<h4 id="（2）查看端口是否被占用-lsof、ss、netstat"><a href="#（2）查看端口是否被占用-lsof、ss、netstat" class="headerlink" title="（2）查看端口是否被占用==lsof、ss、netstat=="></a>（2）查看端口是否被占用==lsof、ss、netstat==</h4><h5 id="1-lsof命令"><a href="#1-lsof命令" class="headerlink" title="1))lsof命令"></a>1))lsof命令</h5><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">lsof -i:端口号</span><br></pre></td></tr></tbody></table></figure>
+<p>Nginx没有运行时，查看Nginx端口（默认是80），发现没有被占用</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef | grep ngix</span><br><span class="line">lsof -i:80</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429173538969.png" alt="image-20240429173538969" style="zoom:50%;"></p>
+<p>提起Nginx：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">cd /usr/ local/nginx/sbin</span><br><span class="line">启动nginx</span><br><span class="line">./nginx</span><br></pre></td></tr></tbody></table></figure>
+<p>Nginx运行时，查看Nginx端口，发现被占用(后来发现Nginx的端口被改了，是8099，所以此处查的是8099)</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429173711974.png" alt="image-20240429173711974" style="zoom:50%;"></p>
+<p>释放端口，杀死相应的进程==kill==：</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240429174027193.png" alt="image-20240429174027193" style="zoom:50%;"></p>
+<h5 id="2-ss-tnl命令"><a href="#2-ss-tnl命令" class="headerlink" title="2))ss -tnl命令"></a>2))ss -tnl命令</h5><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ss -tnl | grep 8099</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505211851066.png" alt="image-20240505211851066" style="zoom:50%;"></p>
+<h5 id="3-netstat-tnl命令"><a href="#3-netstat-tnl命令" class="headerlink" title="3))netstat -tnl命令"></a>3))netstat -tnl命令</h5><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">netstat -tnl | grep 8080</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240505211812945.png" alt="image-20240505211812945" style="zoom:50%;"></p>
+<h1 id="二、工具"><a href="#二、工具" class="headerlink" title="二、工具"></a>二、工具</h1><h2 id="1、远程登录-ssh"><a href="#1、远程登录-ssh" class="headerlink" title="1、远程登录==ssh=="></a>1、远程登录==ssh==</h2><h3 id="（1）从win远程连接到Linux服务器"><a href="#（1）从win远程连接到Linux服务器" class="headerlink" title="（1）从win远程连接到Linux服务器"></a>（1）从win远程连接到Linux服务器</h3><p>Xshell、finalshell、Putty</p>
+<h3 id="（2）从Linux主机远程连接到另一台Linux主机"><a href="#（2）从Linux主机远程连接到另一台Linux主机" class="headerlink" title="（2）从Linux主机远程连接到另一台Linux主机"></a>（2）从Linux主机远程连接到另一台Linux主机</h3><h4 id="1）远程登录的场景"><a href="#1）远程登录的场景" class="headerlink" title="1）远程登录的场景"></a>1）远程登录的场景</h4><ul>
+<li><p>工作机器是Linux主机</p>
+</li>
+<li><p>远程Linux主机不能直接登录，比如在异地</p>
+<p>例如：PC只能访问跳板机，要访问目标机器就需要通过远程连接</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430095428497.png" alt="image-20240430095428497" style="zoom:50%;"></p>
+</li>
+</ul>
+<h4 id="2）ssh-用户名-ip地址"><a href="#2）ssh-用户名-ip地址" class="headerlink" title="2）ssh 用户名@ip地址"></a>2）ssh 用户名@ip地址</h4><p>例如：从Linux主机(192.168.249.133)——》远程——》Linux主机(192.168.249.129)</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ssh root@192.168.249.129</span><br><span class="line">输入root密码即可登录成功</span><br><span class="line"></span><br><span class="line">如果不想登录192.168.249.129的root用户，想登录mary用户</span><br><span class="line">ssh mary@192.168.249.129</span><br><span class="line">然后输入mary的密码即可</span><br></pre></td></tr></tbody></table></figure>
+<p>输入129的root密码：</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430094212154.png" alt="image-20240430094212154" style="zoom: 67%;"></p>
+<p>查ip地址，远程登录成功：</p>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430094330591.png" alt="image-20240430094330591"></p>
+<p>断开远程连接：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430094407995.png" alt="image-20240430094407995" style="zoom:67%;"></p>
+<h2 id="2、远程文件传输-scp"><a href="#2、远程文件传输-scp" class="headerlink" title="2、远程文件传输==scp=="></a>2、远程文件传输==scp==</h2><h3 id="（1）windows主机-lt-———-gt-Linux主机"><a href="#（1）windows主机-lt-———-gt-Linux主机" class="headerlink" title="（1）windows主机<———>Linux主机"></a>（1）windows主机&lt;———&gt;Linux主机</h3><p>Xftp或者finalshell上传/下载文件</p>
+<h3 id="（2）Linux主机-lt-———-gt-Linux主机"><a href="#（2）Linux主机-lt-———-gt-Linux主机" class="headerlink" title="（2）Linux主机<———>Linux主机"></a>（2）Linux主机&lt;———&gt;Linux主机</h3><p>例如：从Linux主机(192.168.249.133)&lt;———&gt;Linux主机(192.168.249.129)</p>
+<h4 id="1）133（主机）将file-txt传给129（远程）（上传）"><a href="#1）133（主机）将file-txt传给129（远程）（上传）" class="headerlink" title="1）133（主机）将file.txt传给129（远程）（上传）"></a>1）133（主机）将file.txt传给129（远程）（上传）</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">scp file.txt root@192.168.249.129:/home/test</span><br><span class="line">输入129root用户密码：</span><br><span class="line"></span><br><span class="line">1、root@192.168.249.129的意思是以root身份登录到129</span><br><span class="line">2、默认不指定文件名时，以原文件名传输</span><br><span class="line">如果要改文件名，就直接写在目录下即可</span><br><span class="line">例如：传输后改为file01.txt</span><br><span class="line">scp file.txt root@192.168.249.129:/home/test/file01.txt</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430100141690.png" alt="image-20240430100141690" style="zoom:50%;"></p>
+<h4 id="2）129（远程）将file-txt传给133（主机）（下载）"><a href="#2）129（远程）将file-txt传给133（主机）（下载）" class="headerlink" title="2）129（远程）将file.txt传给133（主机）（下载）"></a>2）129（远程）将file.txt传给133（主机）（下载）</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">scp root@192.168.249.129:/home/test ./file06_bck</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/image-20240430100604919.png" alt="image-20240430100604919" style="zoom:50%;"></p>
 ]]></content>
       <categories>
-        <category>操作系统</category>
+        <category>测试</category>
       </categories>
       <tags>
-        <tag>Linux-C</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2021/03/05/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="Hello-Hexo"><a href="#Hello-Hexo" class="headerlink" title="Hello Hexo"></a>Hello Hexo</h2><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></tbody></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>hexo基本操作</title>
+    <url>/2021/03/07/hexo%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<p>1、写博客 </p>
+<p>cmd中进入D:\blogCreate\From_hexo\laylayCJL</p>
+<p>然后输入命令<code>hexo n 文章名</code> 建立文章</p>
+<p>设置文章的标签和归类：<code>tags: xx</code> <code>categories: xx</code></p>
+<p>再次进入cmd 输入命令<code>hexo s</code>  然后刷新网站即可</p>
+<span id="more"></span>
+<p>2、一些命令</p>
+<p><code>hexo clean</code> 清除缓存</p>
+<p><code>hexo g</code> 部署</p>
+<figure class="highlight powershell"><table><tbody><tr><td class="code"><pre><span class="line">hexo n          <span class="comment"># 新建文章，在\source\_posts文件夹里</span></span><br><span class="line">hexo new page   <span class="comment"># 新建页面，比如想在导航栏新增一个“关于我”的页面</span></span><br><span class="line">hexo clean      <span class="comment"># 清除本地的数据库和生成的public文件夹</span></span><br><span class="line">hexo g          <span class="comment"># 生成博客文件</span></span><br><span class="line">hexo s          <span class="comment"># 运行在本地浏览器，可当预览使用</span></span><br><span class="line">hexo d          <span class="comment"># 部署博客到Github等</span></span><br></pre></td></tr></tbody></table></figure>
+<p>3、摘要（阅读全文）</p>
+<p>在想展示的内容后添加如下代码</p>
+<!-- more -->
+<p>4、部署到远端的github</p>
+<p><code>hexo deploy</code></p>
+<p>5、hexo使用说明</p>
+<figure class="highlight html"><table><tbody><tr><td class="code"><pre><span class="line">Usage: hexo <span class="tag">&lt;<span class="name">command</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">  clean     Remove generated files and cache.</span><br><span class="line">  config    Get or set configurations.</span><br><span class="line">  deploy    Deploy your website.</span><br><span class="line">  generate  Generate static files.</span><br><span class="line">  help      Get help on a command.</span><br><span class="line">  init      Create a new Hexo folder.</span><br><span class="line">  list      List the information of the site</span><br><span class="line">  migrate   Migrate your site from other system to Hexo.</span><br><span class="line">  new       Create a new post.</span><br><span class="line">  publish   Moves a draft post from _drafts to _posts folder.</span><br><span class="line">  render    Render files with renderer plugins.</span><br><span class="line">  server    Start the server.</span><br><span class="line">  version   Display version information.</span><br><span class="line"></span><br><span class="line">Global Options:</span><br><span class="line">  --config  Specify config file instead of using _config.yml</span><br><span class="line">  --cwd     Specify the CWD</span><br><span class="line">  --debug   Display all verbose messages in the terminal</span><br><span class="line">  --draft   Display draft posts</span><br><span class="line">  --safe    Disable all plugins and scripts</span><br><span class="line">  --silent  Hide output on console</span><br><span class="line"></span><br><span class="line">For more help, you can use 'hexo help [command]' for the detailed information</span><br><span class="line">or you can check the docs: http://hexo.io/docs/</span><br></pre></td></tr></tbody></table></figure>
+<p>6、解决报错Error: Spawn failed</p>
+<ul>
+<li><p>fatal: cannot lock ref ‘HEAD’: unable to resolve reference HEAD: Invalid argument error: src refspec</p>
+<ul>
+<li>删除<code>.deploy_git</code>文件夹;</li>
+<li>输入<code>git config --global core.autocrlf false</code></li>
+<li>然后，依次执行：<br><code>hexo clean</code><br><code>hexo g</code><br><code>hexo d</code></li>
+</ul>
+</li>
+<li><p>OpenSSL SSL_read: Connection was reset, errno 10054报错</p>
+<p><em>首先，造成这个错误很有可能是网络不稳定，连接超时导致的，<br> 如果再次尝试后依然报错，可以执行下面的命令。</em></p>
+<p><strong>打开Git命令页面，执行git命令脚本：修改设置，解除ssl验证</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.sslVerify "false"</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>Failed to connect to github.com</p>
+<p>想解决这个问题，在 「pac」文件中找到 「proxy」的值，将其设置为 git 的 http.proxy 的值就行，设置参数可以通过下列两个 git 命令完成。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">git config --global http.proxy 127.0.0.1:1080 为全局的 git 项目都设置代理</span><br><span class="line"></span><br><span class="line">git config --local http.proxy 127.0.0.1:1080 为某个 git 项目单独设置代理</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>7、如果有图片插入 要在头部加入</p>
+<p><code>typora-root-url: ..</code></p>
+]]></content>
+      <categories>
+        <category>博客基本操作及报错解决方案</category>
+      </categories>
+      <tags>
+        <tag>blog</tag>
       </tags>
   </entry>
   <entry>
@@ -550,17 +682,6 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
       </tags>
   </entry>
   <entry>
-    <title>测试用例设计</title>
-    <url>/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/</url>
-    <content><![CDATA[<span id="more"></span>]]></content>
-      <categories>
-        <category>测试</category>
-      </categories>
-      <tags>
-        <tag>测试基础</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>测试报告</title>
     <url>/2024/04/24/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/</url>
     <content><![CDATA[<ul>
@@ -646,6 +767,17 @@ A(数据独立性)--&gt;C(物理独立性)</pre>
 <p><img src="/2024/04/24/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A/%E6%B5%8B%E8%AF%95%E6%8A%A5%E5%91%8A.assets/image-20240424201052974.png" alt="image-20240424201052974" style="zoom:50%;"></p>
 <h4 id="3-5-建议"><a href="#3-5-建议" class="headerlink" title="3.5 建议"></a>3.5 建议</h4><p>对遗留问题对系统商用进行简单评估，给出是否可以商用的建议。<br>缺陷遗留比较多，还有XXX严重问题没解决，建议修改后回归测试再评估。</p>
 ]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>测试基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试用例设计</title>
+    <url>/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/</url>
+    <content><![CDATA[<span id="more"></span>]]></content>
       <categories>
         <category>测试</category>
       </categories>
@@ -1200,6 +1332,168 @@ D =\frac{D~0~}{1-U}</script><p>根据排队理论，信道的利用率高，就�
       </tags>
   </entry>
   <entry>
+    <title>进程与定时任务</title>
+    <url>/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/</url>
+    <content><![CDATA[<h1 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h1><h2 id="1、进程的基本概念"><a href="#1、进程的基本概念" class="headerlink" title="1、进程的基本概念"></a>1、进程的基本概念</h2><p><strong>程序</strong>：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘</p>
+<p><strong>进程</strong>：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程</p>
+<ul>
+<li>程序是<strong>静态的文件</strong>，进程是程序的<strong>一次执行过程</strong>，进程是动态的。</li>
+</ul>
+<h2 id="2、查看进程的命令ps"><a href="#2、查看进程的命令ps" class="headerlink" title="2、查看进程的命令ps"></a>2、查看进程的命令ps</h2><h3 id="（1）查看当前终端的当前用户的所有进程"><a href="#（1）查看当前终端的当前用户的所有进程" class="headerlink" title="（1）查看当前终端的当前用户的所有进程"></a>（1）查看当前终端的当前用户的所有进程</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ps</span><br><span class="line">不带参数</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png" alt="image-20240429153931760" style="zoom:50%;"></p>
+<h3 id="（2）查看所有进程-ef"><a href="#（2）查看所有进程-ef" class="headerlink" title="（2）查看所有进程==-ef=="></a>（2）查看所有进程==-ef==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef</span><br><span class="line">e表示所有，f表示full-format，尤其是PPID和command内容</span><br><span class="line"></span><br><span class="line">经常和管道符连用</span><br><span class="line">ps -ef | grep java</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 参数最常用的操作是查看某个服务的进程：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ps -ef | grep 服务名</span><br><span class="line">服务名: tomcat、nginx、redis、java、mysal</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 查询结果含义：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153313142.png" alt="image-20240429153313142" style="zoom:50%;"></p>
+<ul>
+<li><p>子进程和父进程：</p>
+<ul>
+<li><p>在root下切换为jack用户，然后再jack进程下执行bash，那么root用户su切换为jack用户这个进程是jack的bash进程的父进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153547534.png" alt="image-20240429153547534" style="zoom:50%;"></p>
+<p><strong>当父进程结束时，子进程也会结束</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span>
+<h3 id="（3）显示CPU和内存占用情况以及进程状态-axu"><a href="#（3）显示CPU和内存占用情况以及进程状态-axu" class="headerlink" title="（3）显示CPU和内存占用情况以及进程状态==-axu=="></a>（3）显示CPU和内存占用情况以及进程状态==-axu==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">ps -axu</span><br><span class="line">-axu参数：ax表示所有，u表示user-oriented</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429154319786.png" alt="image-20240429154319786" style="zoom:50%;"></p>
+<h2 id="3、前、后台运行进程"><a href="#3、前、后台运行进程" class="headerlink" title="3、前、后台运行进程"></a>3、前、后台运行进程</h2><h3 id="（1）前后台进程概念"><a href="#（1）前后台进程概念" class="headerlink" title="（1）前后台进程概念"></a>（1）前后台进程概念</h3><h4 id="1）前台进程"><a href="#1）前台进程" class="headerlink" title="1）前台进程"></a>1）前台进程</h4><ul>
+<li>Shell里正在执行的和用户进行交互的进程叫前台进程</li>
+<li>举例ps，ls都是前台进程，时间短</li>
+</ul>
+<p>写一个运行时间很长的程序：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155555790.png" alt="image-20240429155555790" style="zoom:50%;"></p>
+<p>运行之后窗口会被占用，只能强制退出</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./test.sh（此命令无法执行的话，看看是不是没权限）</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155827917.png" alt="image-20240429155827917" style="zoom:50%;"></p>
+<h4 id="2）后台进程（-在命令后加-amp-在后台执行-）"><a href="#2）后台进程（-在命令后加-amp-在后台执行-）" class="headerlink" title="2）后台进程（==在命令后加&amp;在后台执行==）"></a>2）后台进程（==在命令后加&amp;在后台执行==）</h4><ul>
+<li><p>有的命令执行时间长，比如备份程序</p>
+</li>
+<li><p>可以在命令后加&amp;在后台执行</p>
+<p>实例bash test.sh&amp;</p>
+</li>
+<li><p>后台运行，意味着不从标准输入读入字符</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">./test.sh&amp;</span><br></pre></td></tr></tbody></table></figure>
+<p>同样是上面的程序，命令它在后台执行，这样窗口就不会被占用：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429155734396.png" alt="image-20240429155734396" style="zoom:50%;"></p>
+<h3 id="（2）进程前、后台切换-fg-bg-，查看在后台运行的进程-jobs"><a href="#（2）进程前、后台切换-fg-bg-，查看在后台运行的进程-jobs" class="headerlink" title="（2）进程前、后台切换==fg\bg==，查看在后台运行的进程==jobs=="></a>（2）进程前、后台切换==fg\bg==，查看在后台运行的进程==jobs==</h3><h4 id="1）后台进程——-gt-前台-fg"><a href="#1）后台进程——-gt-前台-fg" class="headerlink" title="1）后台进程——>前台==fg=="></a>1）后台进程——&gt;前台==fg==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">fg &lt;num&gt;将后台进程调到前台，比如fg 1</span><br><span class="line"></span><br><span class="line">fg 1</span><br><span class="line">f：front前台</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160015162.png" alt="image-20240429160015162" style="zoom:50%;"></p>
+<h4 id="2）前台进程——-gt-后台-bg"><a href="#2）前台进程——-gt-后台-bg" class="headerlink" title="2）前台进程——>后台==bg=="></a>2）前台进程——&gt;后台==bg==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bg &lt;num&gt;可将进程在后台运行，比如在执行Ctrl+Z挂起进程后，再用命令bg 1让进程在后台继续执行</span><br><span class="line"></span><br><span class="line">ctrl Z将进程挂起,注意jobs显示的状态是stopped</span><br><span class="line">bg 1 切换到后台</span><br><span class="line">b：back后台</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160236129.png" alt="image-20240429160236129" style="zoom:50%;"></p>
+<h4 id="3）查看在后台运行的进程-jobs"><a href="#3）查看在后台运行的进程-jobs" class="headerlink" title="3）查看在后台运行的进程==jobs=="></a>3）查看在后台运行的进程==jobs==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">列出后台进程命令jobs</span><br></pre></td></tr></tbody></table></figure>
+<p>无后台进程：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429160715405.png" alt="image-20240429160715405" style="zoom:50%;"></p>
+<h2 id="4、如何终止进程-kill"><a href="#4、如何终止进程-kill" class="headerlink" title="4、如何终止进程==kill=="></a>4、如何终止进程==kill==</h2><h4 id="1）自行终止"><a href="#1）自行终止" class="headerlink" title="1）自行终止"></a>1）自行终止</h4><ul>
+<li><p>任务执行完成，比如ps</p>
+</li>
+<li><p>用户让其退出，比如vi，exit</p>
+</li>
+<li><p>异常退出，比如程序里有以0的代码</p>
+</li>
+</ul>
+<h4 id="2）用户手动杀死进程"><a href="#2）用户手动杀死进程" class="headerlink" title="2）用户手动杀死进程"></a>2）用户手动杀死进程</h4><p>==只能是owner和root才能杀死进程==</p>
+<p>比如3496是root的进程，mary用户无法终止该进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161023416.png" alt="image-20240429161023416" style="zoom:50%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">kill PID #杀死进程</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：</p>
+<p>用户正在使用进程，无法删掉用户时</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161140147.png" alt="image-20240429161140147" style="zoom:50%;"></p>
+<p>可以kill进程，再删除用户</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429161239449.png" alt="image-20240429161239449" style="zoom:50%;"></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">kill -9 PID #强制杀死进程</span><br></pre></td></tr></tbody></table></figure>
+<blockquote>
+<p>kill和kill -9，两个命令在linux中都有杀死进程的效果，然而两命令的执行过程却大有不同，在程序中如果用错了，可能会造成莫名其妙的现象。</p>
+<ul>
+<li><p>执行kill命令，系统会发送一个SIGTERM信号给对应的程序。当程序接收到该signal信号后，将会发生以下事情：</p>
+<ul>
+<li><p>程序立刻停止</p>
+</li>
+<li><p>当程序释放相应资源后再停止</p>
+</li>
+<li><p>程序可能仍然继续运行</p>
+</li>
+</ul>
+<p>大部分程序接收到SIGTERM信号后，会先释放自己的资源，然后再停止。</p>
+<p>但是也有程序可能接收信号后，做一些其他的事情（如果程序正在等待IO，可能就不会立马做出响应，我在使用wkhtmltopdf转pdf的项目中遇到这现象），也就是说，SIGTERM多半是会被阻塞的。</p>
+</li>
+<li><p>然而kill -9命令，系统给对应程序发送的信号是SIGKILL，即exit。exit信号不会被系统阻塞，所以kill -9能顺利杀掉进程。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">Ctrl + C 终止执行</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="二、定时任务-crontab"><a href="#二、定时任务-crontab" class="headerlink" title="二、定时任务==crontab=="></a>二、定时任务==crontab==</h1><h3 id="1、基本概念"><a href="#1、基本概念" class="headerlink" title="1、基本概念"></a>1、基本概念</h3><h4 id="（1）定时任务适用场景"><a href="#（1）定时任务适用场景" class="headerlink" title="（1）定时任务适用场景"></a>（1）定时任务适用场景</h4><ul>
+<li>定期清除Linux日志文件</li>
+<li>定期备份Linux重要文件</li>
+</ul>
+<h4 id="（2）工作原理"><a href="#（2）工作原理" class="headerlink" title="（2）工作原理"></a>（2）工作原理</h4><p>当用户使用crontab这个命令来新建工作调度之后，该项工作会被记录到/var/spool/cron里面，而且以账号来作为判断。</p>
+<ul>
+<li>举例来说，root使用crontab后，他的工作会被记录到/var/spool/cron/root里面去</li>
+<li>注意不要用vi直接编辑该文件，因为可能由于输入语法错误，会导致无法执行cron</li>
+</ul>
+<h4 id="（3）日志"><a href="#（3）日志" class="headerlink" title="（3）日志"></a>（3）日志</h4><p>cron执行的每一项工作都会被记录到/var/log/cron这个日志中，所以如果你的Linux不知道是否被植入木马时，也可以查询一项/var/log/cron这个日志文件</p>
+<p>例如：设置打印hello world到屏幕的指令，到指定时间后没有打印到屏幕，去查看日志文件：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">/var/log cron</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430104020588.png" alt="image-20240430104020588" style="zoom:50%;"></p>
+<p>发现已经执行，但没有打印</p>
+<p>是因为crontab只会在后台运行，所有不会打印到屏幕</p>
+<h3 id="2、crontab格式"><a href="#2、crontab格式" class="headerlink" title="2、crontab格式"></a>2、crontab格式</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">crontab ***** command</span><br><span class="line">*分钟</span><br><span class="line">*小时</span><br><span class="line">*几号</span><br><span class="line">*几月</span><br><span class="line">*周几</span><br></pre></td></tr></tbody></table></figure>
+<p>crontab格式说明：总共6个字段，前5个表示时间，最后一个表示要执行的操作</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240430101423743.png" alt="image-20240430101423743" style="zoom:67%;"></p>
+<p>（0和7都表示星期天）</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>特殊字符</strong></th>
+<th><strong>代表意义</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>星号(*)</td>
+<td>代表任何时刻都接受的意思，例如month字段如果是星号，则表示在满足其它字段的制约条件后每月都执行该命令操作</td>
+</tr>
+<tr>
+<td>逗号(,)</td>
+<td>可以用逗号隔开的值指定一个不连续的范围，例如，周二和周四“2,4”</td>
+</tr>
+<tr>
+<td>减号(-)</td>
+<td>可以用整数之间的减号表示一个连续的范围，例如“2-6”表示“2,3,4,5,6”</td>
+</tr>
+<tr>
+<td>正斜线(/)</td>
+<td>可以用正斜线指定时间的间隔频率，例如“6-22/2”表示从6点到22点期间，每两小时执行一次。同时正斜线可以和星号一起使用，例如*/10，如果用在minute字段，表示每十分钟执行一次。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="3、crontab语法"><a href="#3、crontab语法" class="headerlink" title="3、crontab语法"></a>3、crontab语法</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">语法：</span><br><span class="line">crontab [-u] [-l | -r | -e]</span><br><span class="line"></span><br><span class="line">参数：</span><br><span class="line">-u：user只有root用户才能进行这个任务，也即帮助其他用户创建/删除crontab工作调度</span><br><span class="line">-l：list查看crontab工作内容</span><br><span class="line">-r：remove删除所有的crontab的工作内容，若仅要删除一项，请用-e编辑</span><br><span class="line">-e：edit编辑crontab的工作内容</span><br></pre></td></tr></tbody></table></figure>
+<p>==只有root用户才能进行这个任务，不加-user默认root用户，加-user操作该用户的定时任务==</p>
+<h4 id="（1）查看定时任务-l"><a href="#（1）查看定时任务-l" class="headerlink" title="（1）查看定时任务==-l=="></a>（1）查看定时任务==-l==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">crontab -zhangsan -l</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（2）编辑定时任务-e"><a href="#（2）编辑定时任务-e" class="headerlink" title="（2）编辑定时任务==-e=="></a>（2）编辑定时任务==-e==</h4><h5 id="1）进入编辑模式"><a href="#1）进入编辑模式" class="headerlink" title="1）进入编辑模式"></a>1）进入编辑模式</h5><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">crontab -zhangsan -e</span><br></pre></td></tr></tbody></table></figure>
+<h5 id="2）例子"><a href="#2）例子" class="headerlink" title="2）例子"></a>2）例子</h5><ul>
+<li>设置每周六晚上21:00-23:00，每隔半小时执行/home/test/test.sh</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">*/30 21-23 * * 6 ./home/test.sh</span><br><span class="line">*/30每三十分钟执行一次</span><br><span class="line">21-23从21:00到23:00</span><br><span class="line">*每天</span><br><span class="line">*每个月</span><br><span class="line">6每个星期六</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>每个月15号，12:30发工资</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">30 12 15 * * echo "发工资" &gt;&gt; /home/test/wage.log</span><br><span class="line">30分</span><br><span class="line">12点</span><br><span class="line">15号</span><br><span class="line">每月</span><br><span class="line">每个星期</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（3）删除定时任务-r"><a href="#（3）删除定时任务-r" class="headerlink" title="（3）删除定时任务==-r=="></a>（3）删除定时任务==-r==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">crontab -zhangsan -r</span><br></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>重定向、管道与环境变量</title>
     <url>/2024/04/26/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/</url>
     <content><![CDATA[<h1 id="一、重定向"><a href="#一、重定向" class="headerlink" title="一、重定向"></a>一、重定向</h1><h2 id="1、标准输入、标准输出、标准错误"><a href="#1、标准输入、标准输出、标准错误" class="headerlink" title="1、标准输入、标准输出、标准错误"></a>1、标准输入、标准输出、标准错误</h2><p>执行一个shell命令行时通常会自动打开三个标准文件，即：</p>
@@ -1345,6 +1639,233 @@ D =\frac{D~0~}{1-U}</script><p>根据排队理论，信道的利用率高，就�
 </ul>
 <h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>执行如下命令使配置生效</p>
 <figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></tbody></table></figure>
+]]></content>
+      <categories>
+        <category>测试</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>压缩、打包与软件安装</title>
+    <url>/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<h1 id="一、压缩与打包"><a href="#一、压缩与打包" class="headerlink" title="一、压缩与打包"></a>一、压缩与打包</h1><h2 id="0、打包和压缩的区别："><a href="#0、打包和压缩的区别：" class="headerlink" title="0、打包和压缩的区别："></a>0、打包和压缩的区别：</h2><ul>
+<li>打包是指把文件和目录的结构和内容==拷贝==到一个文件里</li>
+<li>压缩是把文件经过一些算法变成体积上更小的文件</li>
+</ul>
+<p>以WinRAR为例，一般是既打包也压缩，也可以不压缩，只打包</p>
+<h2 id="1、压缩命令-gzip-、查看压缩内容-zcat"><a href="#1、压缩命令-gzip-、查看压缩内容-zcat" class="headerlink" title="1、压缩命令==gzip==、查看压缩内容==zcat=="></a>1、压缩命令==gzip==、查看压缩内容==zcat==</h2><h3 id="（1）gzip压缩"><a href="#（1）gzip压缩" class="headerlink" title="（1）gzip压缩"></a>（1）gzip压缩</h3><p>1）gzip命令，压缩一个或多个文件，==压缩成分别的压缩文件，不能对整个目录压缩，但可以通过-r参数分别压缩目录下的文件==</p>
+<p>2）压缩完原文件不在，变为.gz文件</p>
+<p>3）格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">压缩格式：</span><br><span class="line">gzip 文件名；(压缩完成后，原来的文件会被替换成&lt;name&gt;.gz，原文件消失)</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：</p>
+<ul>
+<li><p>压缩scp.log文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">gzip scp.out</span><br></pre></td></tr></tbody></table></figure>
+<p>原始文件大小为129</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190259032.png" alt="image-20240429190259032" style="zoom:50%;"></p>
+<p>对其进行压缩，压缩后变为 <code>.gz</code> 文件，大小变为112：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190414673.png" alt="image-20240429190414673" style="zoom:50%;"></p>
+</li>
+<li><p>压缩test目录</p>
+<p><strong>无法压缩目录本身，但是可以-r压缩子文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">gzip -r /home/test</span><br><span class="line">-r：递归压缩，压缩其子文件</span><br></pre></td></tr></tbody></table></figure>
+<p>执行命令后，会将test目录下的每个文件进行分别压缩，如图压缩前是<code>catalina.out</code>和<code>locahost.2024-04-29.log</code>文件，压缩后分别变成压缩包</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429101324023.png" alt="image-20240429101324023" style="zoom:50%;"></p>
+<span id="more"></span>
+</li>
+</ul>
+<h3 id="（2）解压缩-d"><a href="#（2）解压缩-d" class="headerlink" title="（2）解压缩==-d=="></a>（2）解压缩==-d==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">解压缩文件：</span><br><span class="line">gzip -d &lt;filename&gt;.gz；</span><br><span class="line"></span><br><span class="line">解压目录下所有文件：</span><br><span class="line">gzip -d -r dirname</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>解压某个文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">gzip -d scp.log.gz</span><br></pre></td></tr></tbody></table></figure>
+<p>解压缩scp.log.gz文件后，该压缩包会消失</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429191609292.png" alt="image-20240429191609292" style="zoom:50%;"></p>
+</li>
+<li><p>解压某个目录及其子目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">gzip -d -r test</span><br><span class="line">-r：递归解压</span><br></pre></td></tr></tbody></table></figure>
+<p>解压缩后该压缩包会消失</p>
+</li>
+</ul>
+<h3 id="（3）查看压缩内容zcat"><a href="#（3）查看压缩内容zcat" class="headerlink" title="（3）查看压缩内容zcat"></a>（3）查看压缩内容zcat</h3><p>查看某个压缩包的内容：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zcat scp.log.gz</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429192212729.png" alt="image-20240429192212729" style="zoom:50%;"></p>
+<h2 id="2、压缩命令-bzip2"><a href="#2、压缩命令-bzip2" class="headerlink" title="2、压缩命令==bzip2=="></a>2、压缩命令==bzip2==</h2><h3 id="（1）-bzip2-压缩"><a href="#（1）-bzip2-压缩" class="headerlink" title="（1）==bzip2==压缩"></a>（1）==bzip2==压缩</h3><p>1）bzip2的压缩比gzip更好，其用法几乎与gzip相同</p>
+<p>同样一个文件压缩，bzip2可以压缩得更小</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429112816246.png" alt="image-20240429112816246" style="zoom:50%;"></p>
+<p>2）==不能对整个目录压缩，但可以分别压缩目录下的文件==</p>
+<p>3）压缩完原文件不在，变为.bz2文件</p>
+<p>4）格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">压缩文件：</span><br><span class="line">bzip2 文件名(压缩完成后，原来的文件会被替换成&lt;name&gt;.bz2)</span><br><span class="line"></span><br><span class="line">压缩目录下的每个文件：</span><br><span class="line">bzip2 dir01/*</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>压缩catalina.out文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bzip2 catalina.out</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429101913550.png" alt="image-20240429101913550" style="zoom:50%;"></p>
+<p>压缩后变为<code>.bz2</code> 格式，原文件消失</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429101950878.png" alt="image-20240429101950878" style="zoom:50%;"></p>
+</li>
+<li><p>压缩test目录</p>
+<p><strong>不能对目录本身进行压缩，但是可以压缩其子文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bzip2 /home/test/*</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="（2）解压缩-d-1"><a href="#（2）解压缩-d-1" class="headerlink" title="（2）解压缩==-d=="></a>（2）解压缩==-d==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">解压缩文件：</span><br><span class="line">bzip2 -d &lt;name&gt;.bz2(解压缩后，压缩包会消失)</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>解压catalina.out.bz2文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bzip2 -d catalina.bz2</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>解压test目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">bzip2 -d /home/test/*</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3、压缩命令-zip-，查看-zipinfo-，解压-unzip"><a href="#3、压缩命令-zip-，查看-zipinfo-，解压-unzip" class="headerlink" title="3、压缩命令==zip==，查看==zipinfo==，解压==unzip=="></a>3、压缩命令==zip==，查看==zipinfo==，解压==unzip==</h2><h3 id="（1）压缩命令-zip"><a href="#（1）压缩命令-zip" class="headerlink" title="（1）压缩命令==zip=="></a>（1）压缩命令==zip==</h3><p>1）Linux上zip==可以压缩一个或多个文件到一个压缩文件==里</p>
+<p>2）格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">把file01、dir01压缩到文件zipfile.zip里</span><br><span class="line">zip zipfile.zip file01 dir01</span><br><span class="line"></span><br><span class="line">1、zip zipfile.zip file01 dir01，表示把file01、dir01压缩到文zipfile.zip里</span><br><span class="line">2、zip -r root.zip /root，表示将root目录及其子目录子文件进行压缩</span><br><span class="line">3、zip root.zip /root，如果不加r，不会包含文件，只有目录，不对目录下的子文件和子目录进行压缩</span><br><span class="line">4、zip xxx.zip .*，表示将当前目录下的内容压缩到xxx.zip中,不包含这个目录本身</span><br><span class="line">5、zip -r xxx.zip ./* ,表示将当前目录下的内容，包括目录全部压缩</span><br></pre></td></tr></tbody></table></figure>
+<p>3）例子</p>
+<ul>
+<li><p>对<code>ronghuadb.sql文件</code> <code>localhost.2024-03-04.log文件</code> <code>test目录</code>进行压缩，压缩为<code>rh.zip</code>包</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zip rh.zip ronghuadb.sql localhost.2023-03-04.log test</span><br></pre></td></tr></tbody></table></figure>
+<p>注意：此时压缩test目录时，==没有加<code>-r</code>参数，<strong>只压缩空目录</strong>==</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429104323099.png" alt="image-20240429104323099" style="zoom: 50%;"></p>
+</li>
+<li><p><strong>对目录进行压缩，要加参数<code>-r</code></strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zip -r rh.zip ronghuadb.sql localhost.2023-03-04.log test</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429103153488.png" alt="image-20240429103153488" style="zoom:50%;"></p>
+</li>
+<li><p><strong>不压缩目录，只压缩test目录下的子文件和子目录进行压缩</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zip test.zip test/*</span><br></pre></td></tr></tbody></table></figure>
+<p>文件结构如下：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429110644313.png" alt="image-20240429110644313" style="zoom:50%;"></p>
+<p>压缩结果：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429110815424.png" alt="image-20240429110815424" style="zoom:50%;"></p>
+</li>
+<li><p>压缩目录及目录下的子文件和子目录</p>
+<p>需要加参数-r</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zip -r test.zip test/*</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p>  <img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429110950952.png" alt="image-20240429110950952" style="zoom:50%;"></p>
+<h3 id="（2）查看压缩包-zipinfo"><a href="#（2）查看压缩包-zipinfo" class="headerlink" title="（2）查看压缩包==zipinfo=="></a>（2）查看压缩包==zipinfo==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">zipinfo xxx.zip</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：查看test.zip压缩包</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429111157882.png" alt="image-20240429111157882" style="zoom:50%;"></p>
+<h3 id="（3）解压缩-unzip"><a href="#（3）解压缩-unzip" class="headerlink" title="（3）解压缩==unzip=="></a>（3）解压缩==unzip==</h3><p>解压格式：解压缩后压缩包并不会消失</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">unzip zipfile.zip</span><br></pre></td></tr></tbody></table></figure>
+<h2 id="4、打包压缩命令tar（重点）"><a href="#4、打包压缩命令tar（重点）" class="headerlink" title="4、打包压缩命令tar（重点）"></a>4、打包压缩命令tar（重点）</h2><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar的常用参数：</span><br><span class="line">-c：create 新建打包文件，可搭配-v来查看过程中被打包的文件名；</span><br><span class="line">-t：list查看打包文件的内容包含哪些文件名重点,查看文件名；</span><br><span class="line">-x：extract解打包或解压缩的功能，可以搭配-C（大写）在特定目录解开；</span><br><span class="line"></span><br><span class="line">特别留意的是，-c，-t，-x不可同时出现在一串命令行中；</span><br><span class="line"></span><br><span class="line">-z：通过gzip的支持进行压缩/解压缩，此时文件名最好为*.tar.gz</span><br><span class="line">-j：通过bzip2的支持进行压缩/解压缩，此时文件名最好为*.tar.bz2</span><br><span class="line"></span><br><span class="line">-v：verbose可视化，在压缩/解压缩的过程中，将正在处理的文件名显示出来</span><br><span class="line"></span><br><span class="line">-f filename： -f后面要接被处理的文件名。建议 -f 单独写一个参数</span><br><span class="line"></span><br><span class="line">-C directory目录:这个参数用在解压缩是，若要在特定目录解压缩，可以使用这个参数</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（1）打包、打包压缩-c"><a href="#（1）打包、打包压缩-c" class="headerlink" title="（1）打包、打包压缩==-c=="></a>（1）打包、打包压缩==-c==</h3><p>1）tar命令是先打包再压缩，tar可以将多个目录或文件打包成一个大文件，同时还可以通过gzip/bzip2对文件进行压缩；</p>
+<p>2）由于tar的使用太广泛，目前Windows的WinRAR也支持.tar.gz文件的解压缩；</p>
+<p>3）打包压缩格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">格式：</span><br><span class="line">tar -参数 打包成功后放在哪里以及包名 文件1 文件2 目录</span><br><span class="line">eg.压缩组合</span><br><span class="line"></span><br><span class="line">只打包，不压缩：</span><br><span class="line">tar -cvf test file1 file2 </span><br><span class="line">打包，并以gzip的方式压缩</span><br><span class="line">tar -zcvf test file01 dir01</span><br><span class="line">打包，并以bzip2的方式压缩：</span><br><span class="line">tar -jcvf test file</span><br></pre></td></tr></tbody></table></figure>
+<p>举例：</p>
+<ul>
+<li><p>-c创建打包，用gzip压缩，-v表示可视化，-f打包后命名为test.tar.gz，把<code>localhost.2024-03-04.log文件</code>，<code>crashcourse.sql文件</code> ，<code>test目录</code></p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar -zcvf test.tar.gz localhost.2024-03-04.log crashcourse.sql test</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429112612507.png" alt="image-20240429112612507" style="zoom:50%;"></p>
+<p>生成一个.gz压缩包</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429112946141.png" alt="image-20240429112946141" style="zoom:50%;"></p>
+</li>
+<li><p>-f必须在参数最后面，因为f参数后面必须跟文件名</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429113813934.png" alt="image-20240429113813934" style="zoom:50%;"></p>
+</li>
+</ul>
+<h3 id="（2）解压缩-x"><a href="#（2）解压缩-x" class="headerlink" title="（2）解压缩==-x=="></a>（2）解压缩==-x==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar 参数 要解压的包 -C 解压到的目录</span><br><span class="line">默认解压到当前目录下：</span><br><span class="line">tar -zxvf xxx.tar.gz(以gzip方式解压缩)</span><br><span class="line">tar -jxvf xxx.tar.bz2(以bzip2方式解压缩)</span><br><span class="line"></span><br><span class="line">解压到指定目录下：</span><br><span class="line">tar -zxvf xxx.tar.gz -C /home/test(以gzip方式解压缩)</span><br><span class="line">tar -jxvf xxx.tar.bz2 -C /home/test(以bzip2方式解压缩)</span><br></pre></td></tr></tbody></table></figure>
+<p>举例：</p>
+<ul>
+<li><p>解压时，默认解压到当前目录下</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar -zxvf test60.tar.gz</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429114010329.png" alt="image-20240429114010329" style="zoom:50%;"></p>
+<ul>
+<li><p>解压到指定目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar -zxvf test60.tar.gz -C /home/test</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429114322102.png" alt="image-20240429114322102" style="zoom:50%;"></p>
+</li>
+</ul>
+<h3 id="（3）查看打包内容-t"><a href="#（3）查看打包内容-t" class="headerlink" title="（3）查看打包内容==-t=="></a>（3）查看打包内容==-t==</h3><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">查看打包内容</span><br><span class="line">tar -ztf test60.tar.gz(gzip格式)</span><br><span class="line">tar -jtf test60.tar.bz2(bzip格式)</span><br><span class="line"></span><br><span class="line">查看打包内容，并展示详细信息</span><br><span class="line">tar -ztvf test60.tar.gz(gzip格式)</span><br><span class="line">tar -jtvf test60.tar.bz2(bzip格式)</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>查看打包内容</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar -ztf test60.tar.gz</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429114528812.png" alt="image-20240429114528812" style="zoom:50%;"></p>
+</li>
+<li><p>查看打包内容，并展示详细信息</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">tar -ztvf test60.tar.gz</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429114619426.png" alt="image-20240429114619426" style="zoom:50%;"></p>
+<h1 id="二、常用的安装软件的方式"><a href="#二、常用的安装软件的方式" class="headerlink" title="二、常用的安装软件的方式"></a>二、常用的安装软件的方式</h1><h2 id="1、源码包安装方式"><a href="#1、源码包安装方式" class="headerlink" title="1、源码包安装方式"></a>1、源码包安装方式</h2><h3 id="（1）源码包安装简介"><a href="#（1）源码包安装简介" class="headerlink" title="（1）源码包安装简介"></a>（1）源码包安装简介</h3><ul>
+<li>Linux上的软件几乎都是经过GPL（GNU General Public License）授权，所以每个软件几乎都会提供源代码，并且你可以自行修改程序代码，以符合你个人的需求，这就是开放源码的优势；</li>
+<li>源代码Linux无法识别，Linux系统上真正识别的可执行文件是二进制文件，比如/bin/cat二进制程序代码，所以是无法直接运行的，需要编译</li>
+<li>通过源码包安装软件的过程就是把软件的源代码<strong>编译</strong>成可执行的二进制文件然后进行安装；</li>
+</ul>
+<h3 id="（2）通过源码包安装的步骤"><a href="#（2）通过源码包安装的步骤" class="headerlink" title="（2）通过源码包安装的步骤"></a>（2）通过源码包安装的步骤</h3><p>安装工具 —&gt; 配置 —&gt; 编译 —&gt; 安装</p>
+<ul>
+<li>1.安装需要的编译器，如<code>gcc</code>；</li>
+<li>2.执行<code>configure命令</code>找到所需要的<strong>函数库</strong>、<strong>编译器</strong>及<strong>其他资料</strong>，生成<strong>Makefile文件</strong>；</li>
+<li>3.执行<code>make命令</code>，根据Makefile文件进行编译；</li>
+<li>4.执行<code>make install</code>命令完成安装。</li>
+</ul>
+<p>举例，以源码方式安装nginx：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">1、安装编译器gcc：</span><br><span class="line">yum -y install gcc-c++ pcre* openssl*</span><br><span class="line"></span><br><span class="line">2、下载源码包</span><br><span class="line">cd /usr/local/src/（进入该目录下，因为安装包都放在该目录下）</span><br><span class="line">wget http://nginx.org/download/nginx-1.14.0.tar.gz（通过wget工具下载源码包）</span><br><span class="line"></span><br><span class="line">3、解压源码包到指定目录</span><br><span class="line">tar -zxvf nginx-1.14.0.tar.gz -C /usr/local/</span><br><span class="line"></span><br><span class="line">4、配置源码</span><br><span class="line">cd /usr/local/nginx-1.14.0</span><br><span class="line">./configure --prefix=/usr/local/nginx</span><br><span class="line"></span><br><span class="line">5、编译并完成安装</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（3）源码包安装的优缺点"><a href="#（3）源码包安装的优缺点" class="headerlink" title="（3）源码包安装的优缺点"></a>（3）源码包安装的优缺点</h3><p>优点：获取到的是源代码，可以根据需求修改源代码</p>
+<p>缺点：安装过程复杂，需要安装工具gcc，还需要config配置，make编译，最后 才能安装，四个步骤中出现问题还需要自己解决</p>
+<h2 id="2、RPM"><a href="#2、RPM" class="headerlink" title="2、RPM"></a>2、RPM</h2><h3 id="（1）RPM安装简介"><a href="#（1）RPM安装简介" class="headerlink" title="（1）RPM安装简介"></a>（1）RPM安装简介</h3><ul>
+<li>RPM的全称是RedHat Package Manager，是RedHat发明的一种软件包安装工具和安装包格式；</li>
+<li>RPM的最大特点是将你要安装的软件先编译好，并且打包成RPM机制的安装包，用户只需要下载相应的RPM包安装即可；</li>
+</ul>
+<h3 id="（2）RPM安装步骤"><a href="#（2）RPM安装步骤" class="headerlink" title="（2）RPM安装步骤"></a>（2）RPM安装步骤</h3><h4 id="1）下载所需软件的RPM包-wget"><a href="#1）下载所需软件的RPM包-wget" class="headerlink" title="1）下载所需软件的RPM包==wget=="></a>1）下载所需软件的RPM包==wget==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">wget http://www.rpmfind.net/linux/centos/6.9/os/x86_64/Packages/unix2dos-2.2-35.el6.x86_64.rpm</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2）安装-rpm-ivh"><a href="#2）安装-rpm-ivh" class="headerlink" title="2）安装==rpm -ivh=="></a>2）安装==rpm -ivh==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">rpm -ivh unix2dos-2.2-35.el6.x86_64.rpm</span><br><span class="line"></span><br><span class="line">参数</span><br><span class="line">-i install安装</span><br><span class="line">-v verbose打印安装过程中的信息</span><br><span class="line">-h hash哈希，套件安装时列出标记</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="3）查看已安装的软件-rpm-qa"><a href="#3）查看已安装的软件-rpm-qa" class="headerlink" title="3）查看已安装的软件==rpm -qa=="></a>3）查看已安装的软件==rpm -qa==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">查询所有已安装的软件</span><br><span class="line">rmp -qa</span><br><span class="line">查询是否安装某个软件：</span><br><span class="line">rpm -qa | grep xxx</span><br><span class="line"></span><br><span class="line">参数</span><br><span class="line">-q 询问</span><br><span class="line">-a 查询</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="4）删除已安装的软件-rpm-e"><a href="#4）删除已安装的软件-rpm-e" class="headerlink" title="4）删除已安装的软件==rpm -e=="></a>4）删除已安装的软件==rpm -e==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">rpm -e unix2dos-2.2-35.el6.x86_64</span><br><span class="line"></span><br><span class="line">参数</span><br><span class="line">-e eraser擦除，也就是删除</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（3）RPM安装的优缺点"><a href="#（3）RPM安装的优缺点" class="headerlink" title="（3）RPM安装的优缺点"></a>（3）RPM安装的优缺点</h3><p>优点：</p>
+<ul>
+<li>由于已经编译完成并且打包完毕，所以软件传输与安装上很方便 (不需要再重新编译)</li>
+<li>由于软件的信息都已经记录在Linux主机的数据库上，很<strong>方便查询、升级与卸载</strong></li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>不能根据自己的需求灵活配置</li>
+<li>可能存在打包环境与安装环境不一致，运行不起来，导致安装失败；或者存在依赖，也会安装失败，比如安装tomcat之前需要安装jdk</li>
+<li>更新慢</li>
+</ul>
+<h2 id="3、yum（centOS）"><a href="#3、yum（centOS）" class="headerlink" title="3、yum（centOS）"></a>3、yum（centOS）</h2><h3 id="（1）yum安装方式简介"><a href="#（1）yum安装方式简介" class="headerlink" title="（1）yum安装方式简介"></a>（1）yum安装方式简介</h3><p>yum安装概念：在Fedora和Redhat以及SUSE、CentOS中的软件包管理器</p>
+<p>yum安装的特点：</p>
+<ul>
+<li><p>yum是基于rpm包的</p>
+</li>
+<li><p>但是，对比rpm，yum有以下不同</p>
+<ul>
+<li><p>yum能够从指定的服务器自动下载rpm包并且安装</p>
+</li>
+<li><p>可以自动处理包依赖关系，并且一次安装所有依赖的软件包</p>
+<p>如何实现的：镜像mirror：软件运行时所需要的其他软件（依赖），以及运行环境都打成一个包，保证yum必然可以运行</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）安装步骤"><a href="#（2）安装步骤" class="headerlink" title="（2）安装步骤"></a>（2）安装步骤</h3><p>以wget命令的安装为例演示过程：</p>
+<h4 id="1）安装包-yum-y-install"><a href="#1）安装包-yum-y-install" class="headerlink" title="1）安装包==yum -y install=="></a>1）安装包==yum -y install==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">yum -y install wget</span><br><span class="line"></span><br><span class="line">-y（当安装过程提示选择全部为 "yes"），-q（不显示安装的过程）等等</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="2）列出通过yum已安装的软件-yum-list-installed"><a href="#2）列出通过yum已安装的软件-yum-list-installed" class="headerlink" title="2）列出通过yum已安装的软件==yum list installed=="></a>2）列出通过yum已安装的软件==yum list installed==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">yum list installed | grep 名称</span><br><span class="line">查询是否安装某个软件</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>查所有通过yum安装的软件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">yum list installed</span><br></pre></td></tr></tbody></table></figure>
+<p>每一行就是一个软件：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429144605962.png" alt="image-20240429144605962" style="zoom: 50%;"></p>
+</li>
+<li><p>具体查询是否通过yum安装过wget</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">yum list installed | grep wget</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429144643834.png" alt="image-20240429144643834" style="zoom:50%;"></p>
+</li>
+</ul>
+<h4 id="3）删除包-yum-y-remove"><a href="#3）删除包-yum-y-remove" class="headerlink" title="3）删除包==yum -y remove=="></a>3）删除包==yum -y remove==</h4><figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">yum -y remove wget</span><br><span class="line">-y（当安装过程提示选择全部为 "yes"），-q（不显示安装的过程）等等</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（3）优缺点"><a href="#（3）优缺点" class="headerlink" title="（3）优缺点"></a>（3）优缺点</h3><p>优点：</p>
+<ul>
+<li>从指定服务器下载软件包，不需要手动下载</li>
+<li>自动解决依赖包的问题，基本上就是一键式安装。</li>
+</ul>
+<h2 id="4、apt-get（Ubuntu）"><a href="#4、apt-get（Ubuntu）" class="headerlink" title="4、apt-get（Ubuntu）"></a>4、apt-get（Ubuntu）</h2><p>概念：Debian，Ubuntu发行版的包管理工具、与Redhat中的yum工具类似</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="code"><pre><span class="line">apt-get install wget</span><br></pre></td></tr></tbody></table></figure>
 ]]></content>
       <categories>
         <category>测试</category>
