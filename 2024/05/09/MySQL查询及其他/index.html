@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="0. 演示的数据库的表结构说明 1. 表的查询1.1 查询表的一个或多个字段的值 语法：select 字段1,字段2,… from 表名;  举例： 12#查询客户ID和Nameselect cust_id,cust_name from customers;   1.2 查询表中所有字段的值 语法：select  from 表名;  这是的表示所有字段。  举例： 12#查询所有订单信息sele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL查询及其他">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="0. 演示的数据库的表结构说明 1. 表的查询1.1 查询表的一个或多个字段的值 语法：select 字段1,字段2,… from 表名;  举例： 12#查询客户ID和Nameselect cust_id,cust_name from customers;   1.2 查询表中所有字段的值 语法：select  from 表名;  这是的表示所有字段。  举例： 12#查询所有订单信息sele">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/image-20240509151831003.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/image-20240509200717064.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/452c3aa4-9591-415f-95b5-4bef373bbed4-3400539.jpg">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/731bc683-f046-45a7-9264-8e5bc0a113a4-3400539.jpg">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/b181e2e9-b93f-4f1e-a5cf-c3ad79307de8-3400539.jpg">
+<meta property="article:published_time" content="2024-05-09T07:15:32.000Z">
+<meta property="article:modified_time" content="2024-05-09T12:07:22.191Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/image-20240509151831003.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>MySQL查询及其他 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#0-%E6%BC%94%E7%A4%BA%E7%9A%84%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%A1%A8%E7%BB%93%E6%9E%84%E8%AF%B4%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">0. 演示的数据库的表结构说明</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E8%A1%A8%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.</span> <span class="nav-text">1. 表的查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E6%9F%A5%E8%AF%A2%E8%A1%A8%E7%9A%84%E4%B8%80%E4%B8%AA%E6%88%96%E5%A4%9A%E4%B8%AA%E5%AD%97%E6%AE%B5%E7%9A%84%E5%80%BC"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 查询表的一个或多个字段的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%9F%A5%E8%AF%A2%E8%A1%A8%E4%B8%AD%E6%89%80%E6%9C%89%E5%AD%97%E6%AE%B5%E7%9A%84%E5%80%BC"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 查询表中所有字段的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E5%AF%B9%E6%9F%A5%E8%AF%A2%E7%9A%84%E7%BB%93%E6%9E%9C%E5%8E%BB%E9%87%8Dselect-distinct"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 对查询的结果去重select distinct</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E8%AE%BE%E5%AE%9A%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E8%BF%94%E5%9B%9E%E7%9A%84%E8%A1%8C%E6%95%B0limit"><span class="nav-number">2.4.</span> <span class="nav-text">1.4 设定查询结果返回的行数limit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-5-%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E6%8E%92%E5%BA%8Forder-by"><span class="nav-number">2.5.</span> <span class="nav-text">1.5 查询结果排序order by</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-6-%E4%BD%BF%E7%94%A8order-by%E5%92%8Climit%E7%9A%84%E7%BB%84%E5%90%88%EF%BC%8C%E8%83%BD%E5%A4%9F%E6%89%BE%E5%87%BA%E4%B8%80%E4%B8%AA%E5%88%97%E4%B8%AD%E6%9C%80%E9%AB%98%E6%88%96%E8%80%85%E6%9C%80%E4%BD%8E%E7%9A%84%E5%80%BC"><span class="nav-number">2.6.</span> <span class="nav-text">1.6 使用order by和limit的组合，能够找出一个列中最高或者最低的值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-7-%E9%9A%8F%E6%9C%BA%E6%9F%A5%E8%AF%A2%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AEorder-by-rand-limit-m"><span class="nav-number">2.7.</span> <span class="nav-text">1.7 随机查询一条数据order by rand() limit m</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-8-%E6%9F%A5%E8%AF%A2%E6%9D%A1%E4%BB%B6%E8%BF%87%E6%BB%A4"><span class="nav-number">2.8.</span> <span class="nav-text">1.8 查询条件过滤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MySQL%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">2. MySQL的函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%81%9A%E9%9B%86%E5%87%BD%E6%95%B0%EF%BC%88avg%EF%BC%8Ccount%EF%BC%8Cmax%EF%BC%8Cmin%EF%BC%8Csum%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">2.1 聚集函数（avg，count，max，min，sum）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#avg"><span class="nav-number">3.1.1.</span> <span class="nav-text">avg()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#count"><span class="nav-number">3.1.2.</span> <span class="nav-text">count()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#max"><span class="nav-number">3.1.3.</span> <span class="nav-text">max()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#min"><span class="nav-number">3.1.4.</span> <span class="nav-text">min()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sum"><span class="nav-number">3.1.5.</span> <span class="nav-text">sum()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%97%A5%E6%9C%9F%E4%B8%8E%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0%EF%BC%88curdate%EF%BC%8Ccurtime%EF%BC%8Cnow%EF%BC%8Cadddate%EF%BC%8Cdate-del%EF%BC%8Caddtime%EF%BC%8Cdate%EF%BC%8Cyear%EF%BC%8Cmonth%EF%BC%8Cday%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">2.2 日期与时间函数（curdate，curtime，now，adddate，date_del，addtime，date，year，month，day）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8D%E6%97%B6%E9%97%B4curdate%EF%BC%8Ccurtime%EF%BC%8Cnow"><span class="nav-number">3.2.1.</span> <span class="nav-text">（1）返回当前时间curdate，curtime，now</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#curdate"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">curdate()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#curtime"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">curtime()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#now"><span class="nav-number">3.2.1.3.</span> <span class="nav-text">now()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%A2%9E%E5%8A%A0%E6%88%96%E5%87%8F%E5%B0%91%E6%97%B6%E9%97%B4adddate%EF%BC%8Cdate-del%EF%BC%8Caddtime"><span class="nav-number">3.2.2.</span> <span class="nav-text">（2）增加或减少时间adddate，date_del，addtime</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#adddate"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">&#x3D;&#x3D;adddate()&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#date-sub"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">&#x3D;&#x3D;date_sub()&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#addtime"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">&#x3D;&#x3D;addtime()&#x3D;&#x3D;</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%8F%96%E6%97%A5%E6%9C%9F%E6%9F%90%E4%B8%AA%E9%83%A8%E5%88%86date%EF%BC%8Cyear%EF%BC%8Cmonth%EF%BC%8Cday"><span class="nav-number">3.2.3.</span> <span class="nav-text">（3）取日期某个部分date，year，month，day</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#date"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">date()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#year"><span class="nav-number">3.2.3.2.</span> <span class="nav-text">year()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#month"><span class="nav-number">3.2.3.3.</span> <span class="nav-text">month()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#day"><span class="nav-number">3.2.3.4.</span> <span class="nav-text">day()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E6%95%B0%E5%80%BC%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0%EF%BC%88round%EF%BC%8Ctruncate%EF%BC%8Cabs%EF%BC%8Crand%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">2.3 数值处理函数（round，truncate，abs，rand）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#round-x-y"><span class="nav-number">3.3.1.</span> <span class="nav-text">round(x,y)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#truncate-x-y"><span class="nav-number">3.3.2.</span> <span class="nav-text">truncate(x,y)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abs-x"><span class="nav-number">3.3.3.</span> <span class="nav-text">abs(x)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rand"><span class="nav-number">3.3.4.</span> <span class="nav-text">rand()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%B3%BB%E7%BB%9F%E5%87%BD%E6%95%B0%EF%BC%88version%EF%BC%8Cdatabase%EF%BC%8Cuser%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">2.4 系统函数（version，database，user）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#version"><span class="nav-number">3.4.1.</span> <span class="nav-text">version()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#database"><span class="nav-number">3.4.2.</span> <span class="nav-text">database()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#user"><span class="nav-number">3.4.3.</span> <span class="nav-text">user()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">4.</span> <span class="nav-text">3. 分组查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2group-by"><span class="nav-number">4.1.</span> <span class="nav-text">3.1 分组查询group by</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%BF%87%E6%BB%A4%E5%88%86%E7%BB%84having"><span class="nav-number">4.2.</span> <span class="nav-text">3.2 过滤分组having</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E8%BF%87%E6%BB%A4%E8%A1%8C%E4%B8%8E%E8%BF%87%E6%BB%A4%E5%88%86%E7%BB%84%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">4.3.</span> <span class="nav-text">3.3 过滤行与过滤分组的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E5%88%86%E7%BB%84%E6%9F%A5%E8%AF%A2%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.4.</span> <span class="nav-text">3.4 分组查询的使用场景</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-select%E6%9F%A5%E8%AF%A2%E4%B8%AD%E5%AD%90%E5%8F%A5%E7%9A%84%E5%87%BA%E7%8E%B0%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">4. select查询中子句的出现顺序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="nav-number">6.</span> <span class="nav-text">5. 子查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E8%BF%9E%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="nav-number">7.</span> <span class="nav-text">6. 连表查询</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E5%86%85%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.1.</span> <span class="nav-text">6.1 内连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E5%A4%96%E8%BF%9E%E6%8E%A5"><span class="nav-number">7.2.</span> <span class="nav-text">6.2 外连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-inner-join%E3%80%81left-join%E3%80%81right-join%E4%B8%89%E8%80%85%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">7.3.</span> <span class="nav-text">6.3 inner join、left join、right join三者的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-%E7%BB%84%E5%90%88%E6%9F%A5%E8%AF%A2"><span class="nav-number">8.</span> <span class="nav-text">7. 组合查询</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-%E7%B4%A2%E5%BC%95Index"><span class="nav-number">9.</span> <span class="nav-text">8. 索引Index</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-%E8%A7%86%E5%9B%BEView"><span class="nav-number">10.</span> <span class="nav-text">9. 视图View</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-SQL%E8%AF%AD%E5%8F%A5%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">11.</span> <span class="nav-text">10. SQL语句的分类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%AF%BC%E5%85%A5%E5%92%8C%E5%AF%BC%E5%87%BA"><span class="nav-number">12.</span> <span class="nav-text">11. 数据库的导入和导出</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL查询及其他
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-05-09 15:15:32 / 修改时间：20:07:22" itemprop="dateCreated datePublished" datetime="2024-05-09T15:15:32+08:00">2024-05-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <span id="more"></span>
+<h1 id="0-演示的数据库的表结构说明"><a href="#0-演示的数据库的表结构说明" class="headerlink" title="0. 演示的数据库的表结构说明"></a>0. 演示的数据库的表结构说明</h1><p><img src="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/image-20240509151831003.png" alt="image-20240509151831003" style="zoom: 67%;"></p>
+<h1 id="1-表的查询"><a href="#1-表的查询" class="headerlink" title="1. 表的查询"></a>1. 表的查询</h1><h2 id="1-1-查询表的一个或多个字段的值"><a href="#1-1-查询表的一个或多个字段的值" class="headerlink" title="1.1 查询表的一个或多个字段的值"></a>1.1 查询表的一个或多个字段的值</h2><ul>
+<li><p>语法：select 字段1,字段2,… from 表名;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询客户ID和Name</span><br><span class="line">select cust_id,cust_name from customers;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-2-查询表中所有字段的值"><a href="#1-2-查询表中所有字段的值" class="headerlink" title="1.2 查询表中所有字段的值"></a>1.2 查询表中所有字段的值</h2><ul>
+<li><p>语法：select <em> from 表名;  这是的</em>表示所有字段。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询所有订单信息</span><br><span class="line">select * from orders;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-3-对查询的结果去重select-distinct"><a href="#1-3-对查询的结果去重select-distinct" class="headerlink" title="1.3 对查询的结果去重select distinct"></a>1.3 对查询的结果去重select distinct</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>select distinct 字段1 from 表名;</li>
+<li>select distinct 字段1,字段2 from 表名;    #表示对两个字段的组合去重</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询所有下过订单的客户ID</span><br><span class="line">select distinct cust_id from orders;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-4-设定查询结果返回的行数limit"><a href="#1-4-设定查询结果返回的行数limit" class="headerlink" title="1.4 设定查询结果返回的行数limit"></a>1.4 设定查询结果返回的行数limit</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li><p>格式一：select * from 表名 limit n,m; </p>
+<p>说明：当limit后面跟两个参数时，第一个参数为偏移量，第二个参数为返回的行数，意思是从行号为n的行开始的后面m行；MySQL中的行号是从0开始计算的，limit 2,3是第3行开始往后数3行，也就是第3，4，5行。</p>
+</li>
+<li><p>格式二：select * from 表名 limit m; </p>
+<p>说明：当limit后面跟一个参数时，表示返回的行数，从第1行开始计算，可以理解成此时的偏移量是0，比如limit 3是指前三行</p>
+</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#例如查询第3行到第10行的商户</span><br><span class="line">select vend_id from vendors limit 2,8; </span><br><span class="line">#2代表行号，行号从0开始，所以第3行的行号为2</span><br><span class="line">#8代表展示多少行，从第3行到第10行一共有8行</span><br><span class="line"></span><br><span class="line">#查询订单中的前4行</span><br><span class="line">select * from orders limit 4;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-5-查询结果排序order-by"><a href="#1-5-查询结果排序order-by" class="headerlink" title="1.5 查询结果排序order by"></a>1.5 查询结果排序order by</h2><ul>
+<li><p>语法：asc：ascending；desc：descending</p>
+<ul>
+<li>select <em>  from 表名 order by 字段 asc|desc;     注：asc表示升序，desc表示降序，如果不写关键字<em>*默认是升序</em></em></li>
+<li>select *  from 表名 order by 字段1 asc|desc, 字段2 asc|desc;    表示先按字段1排序，在字段1相同的情况下再按字段2排序</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#查询所有订单信息，按订单编号升序排列</span><br><span class="line">select * from orders order by order_num asc;</span><br><span class="line"></span><br><span class="line">#查询所有订单信息，按订单编号降序排列</span><br><span class="line">select * from orders order by order_num desc;</span><br><span class="line"></span><br><span class="line">#查询所有订单信息，按客户ID升序排列，客户ID相同的情况下按订单编号降序排列</span><br><span class="line">select * from orders order by cust_id asc, order_num desc;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-6-使用order-by和limit的组合，能够找出一个列中最高或者最低的值"><a href="#1-6-使用order-by和limit的组合，能够找出一个列中最高或者最低的值" class="headerlink" title="1.6 使用order by和limit的组合，能够找出一个列中最高或者最低的值"></a>1.6 使用order by和limit的组合，能够找出一个列中最高或者最低的值</h2><ul>
+<li><p>语法：select 字段 from 表名 order by 字段 asc|desc limit 1;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#查询价格最高的产品(降序排序列取第一行)</span><br><span class="line">select * from products order by prod_price desc limit 1;</span><br><span class="line"></span><br><span class="line">缺陷：当价格最高的产品有多个时，无法查询到所有最高价产品（需借助函数）</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>注意：这种方式只能查出最高或最低的价格，不能查询最高或最低值的产品，因为可能有多个相同价格的产品。</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">需借助函数</span><br><span class="line">select max(prod_price),min(prod_price) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-7-随机查询一条数据order-by-rand-limit-m"><a href="#1-7-随机查询一条数据order-by-rand-limit-m" class="headerlink" title="1.7 随机查询一条数据order by rand() limit m"></a>1.7 随机查询一条数据order by rand() limit m</h2><ul>
+<li><p>语法：select *  from 表名 order by rand() limit 1;</p>
+</li>
+<li><p>举例</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#随机查询一个产品的信息</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> products <span class="keyword">order</span> <span class="keyword">by</span> rand() limit <span class="number">1</span>;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="1-8-查询条件过滤"><a href="#1-8-查询条件过滤" class="headerlink" title="1.8 查询条件过滤"></a>1.8 查询条件过滤</h2><ul>
+<li><p>语法：select *  from 表名 where 条件;</p>
+</li>
+<li><p>where子句中支持的操作符：</p>
+<p>| 操作符             | 说明                                                         |<br>| ————————— | —————————————————————————————— |<br>| =                  | 等于                                                         |<br>| &lt;&gt;                 | 不等于                                                       |<br>| !=                 | 不等于                                                       |<br>| &lt;                  | 小于                                                         |<br>| &lt;=                 | 小于等于                                                     |<br>| &gt;                  | 大于                                                         |<br>| &gt;=                 | 大于等于                                                     |<br>| between…  and… | 在指定的两个值之间，包含边界                                 |<br>| and                | 表示两个条件同时满足                                         |<br>| or                 | 表示两个条件满足其中一个                                     |<br>| in                 | 指定条件范围，范围内的每个条件都可以进行匹配。in取值包含在圆括号中，以逗号分隔 |<br>| not                | 表示否定它之后所跟的任何条件，not一般跟in、is、between…and…组合起来用，not in, is not, not between…and… |<br>| is                 | 举例：is null表示为空，is not null表示不为空                 |<br>| like               | like后面跟通配符，表示查找模式利用通配符匹配而不是直接相等的匹配，MySQL中的通配符：%（任意多个任意字符）    _（一个任意字符） |</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#查询1001供应商供应的产品名称及价格?</span><br><span class="line">select prod_name,prod_price from products where vend_id=1001;</span><br><span class="line"></span><br><span class="line">#查询1001供应商之外的其它供应商供应的产品名称及价格?</span><br><span class="line">select prod_name,prod_price,vend_id from products where vend_id!=1001;</span><br><span class="line"></span><br><span class="line">#查询产品价格高于5的产品ID和价格</span><br><span class="line">select prod_id,prod_price from products where prod_price&gt;5;</span><br><span class="line"></span><br><span class="line">#查询产品价格介于5到10之间的产品ID和价格</span><br><span class="line">select prod_id,prod_price from products where prod_price between 5 and 10;</span><br><span class="line"></span><br><span class="line">#查询产品价格不在5到10之间的产品ID和价格</span><br><span class="line">select prod_id,prod_price from products where prod_price not between 5 and 10;</span><br><span class="line"></span><br><span class="line">#查询1003供应商供应的价格不在5到10之间的产品ID和价格</span><br><span class="line">select prod_id,prod_price,vend_id from products where vend_id=1003 and prod_price not between 5 and 10;</span><br><span class="line"></span><br><span class="line">#查询1001供应商的产品，以及价格介于10到20之间的产品（不分供应商）的名称及价格？</span><br><span class="line">select prod_name,prod_price,vend_id from products p where p.vend_id=1001 or p.prod_price between 10 and 20;</span><br><span class="line"></span><br><span class="line">#查询1001，1002,1003供应商的产品的名称及价格？</span><br><span class="line">select prod_name,prod_price,vend_id from products p where p.vend_id=1001 or p.vend_id=1002 or p.vend_id=1003;</span><br><span class="line"></span><br><span class="line">#也可以使用IN来表示多个OR并列</span><br><span class="line">select prod_name,prod_price,vend_id from products p where p.vend_id in (1001,1002,1003);</span><br><span class="line"></span><br><span class="line">#查询1001,1002,1003供应商之外的其它供应商的产品的名称及价格？</span><br><span class="line">select prod_name,prod_price,vend_id from products p where p.vend_id!=1001 and p.vend_id!=1002 and p.vend_id!=1003;</span><br><span class="line"></span><br><span class="line">#也可以使用not in来实现</span><br><span class="line">select prod_name,prod_price,vend_id from products p where p.vend_id not in (1001,1002,1003);</span><br><span class="line"></span><br><span class="line">#查询邮箱地址为空的客户信息</span><br><span class="line">select * from customers c where c.cust_email is null;</span><br><span class="line"></span><br><span class="line">#查询邮箱地址不为空的客户信息</span><br><span class="line">select * from customers c where c.cust_email is not null;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>通配符举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#查询产品名称以JetPack开头的产品信息</span><br><span class="line">SELECT * FROM PRODUCTS WHERE PROD_NAME LIKE "JetPack%";</span><br><span class="line"></span><br><span class="line">#查询客户联系人是以Y开头的客户的信息</span><br><span class="line">select * from customers c where c.cust_contact like "Y%";</span><br><span class="line"></span><br><span class="line">#查询客户联系人是以e结尾的客户的信息</span><br><span class="line">select * from customers c where c.cust_contact like "%e";</span><br><span class="line"></span><br><span class="line">#查询客户联系人包含e的客户的信息</span><br><span class="line">select * from customers c where c.cust_contact like "%e%";</span><br><span class="line"></span><br><span class="line">#查询产品id以ANV开头，后面还有2个字符的产品信息</span><br><span class="line">select * from products where prod_id like "ANV__";</span><br><span class="line"></span><br><span class="line">#查询名称以anvil结尾,前面还有6个字符的产品信息</span><br><span class="line">select * from products where prod_name like "______anvil";</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>通配符使用注意事项：</p>
+<ul>
+<li>%与_的区别：%表示任意多个任意字符，_表示匹配一个字符，不能多也不能少；</li>
+<li>使用通配符会比没有通配符更消耗数据库执行查询的时间，应该在需要使用通配符的地方才使用。</li>
+</ul>
+</li>
+</ul>
+<h1 id="2-MySQL的函数"><a href="#2-MySQL的函数" class="headerlink" title="2. MySQL的函数"></a>2. MySQL的函数</h1><h2 id="2-1-聚集函数（avg，count，max，min，sum）"><a href="#2-1-聚集函数（avg，count，max，min，sum）" class="headerlink" title="2.1 聚集函数（avg，count，max，min，sum）"></a>2.1 聚集函数（avg，count，max，min，sum）</h2><p>聚集函数：聚集函数是在列上的运算，比如找这一列的最大、最小、平均、求和、统计行数等。</p>
+<h3 id="avg"><a href="#avg" class="headerlink" title="avg()"></a>avg()</h3><ul>
+<li><p>作用：返回某列的平均值 </p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#计算产品的平均价格</span><br><span class="line">select avg(prod_price) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="count"><a href="#count" class="headerlink" title="count()"></a>count()</h3><ul>
+<li><p>作用：返回某列的行数，注意：<strong>count统计的是某个列上非空的行的数量，如果某一行是null，就不会被统计在内</strong>，在实际使用中如果要统计表的行数，直接用count(*)，只要行上有一个字段非null，就会被统计在内。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计产品的数量</span><br><span class="line">select count(*) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="max"><a href="#max" class="headerlink" title="max()"></a>max()</h3><ul>
+<li><p>作用：返回某列的最大值</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计产品的最高价</span><br><span class="line">select max(prod_price) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="min"><a href="#min" class="headerlink" title="min()"></a>min()</h3><ul>
+<li><p>作用：返回某列的最小值</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计产品的最低价</span><br><span class="line">select min(prod_price) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="sum"><a href="#sum" class="headerlink" title="sum()"></a>sum()</h3><ul>
+<li><p>作用：返回某列值之和</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计产品单价的总和</span><br><span class="line">select sum(prod_price) from products;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="2-2-日期与时间函数（curdate，curtime，now，adddate，date-del，addtime，date，year，month，day）"><a href="#2-2-日期与时间函数（curdate，curtime，now，adddate，date-del，addtime，date，year，month，day）" class="headerlink" title="2.2 日期与时间函数（curdate，curtime，now，adddate，date_del，addtime，date，year，month，day）"></a>2.2 日期与时间函数（curdate，curtime，now，adddate，date_del，addtime，date，year，month，day）</h2><h3 id="（1）返回当前时间curdate，curtime，now"><a href="#（1）返回当前时间curdate，curtime，now" class="headerlink" title="（1）返回当前时间curdate，curtime，now"></a>（1）返回当前时间curdate，curtime，now</h3><h4 id="curdate"><a href="#curdate" class="headerlink" title="curdate()"></a>curdate()</h4><ul>
+<li><p>作用：返回系统当前日期</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> curdate();</span><br><span class="line"><span class="number">2024</span><span class="number">-05</span><span class="number">-09</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="curtime"><a href="#curtime" class="headerlink" title="curtime()"></a>curtime()</h4><ul>
+<li><p>作用：返回当前时间</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> curtime();</span><br><span class="line"><span class="number">03</span>:<span class="number">27</span>:<span class="number">39</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="now"><a href="#now" class="headerlink" title="now()"></a>now()</h4><ul>
+<li><p>作用：返回当前日期和时间</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> now();</span><br><span class="line"><span class="number">2024</span><span class="number">-05</span><span class="number">-09</span> <span class="number">03</span>:<span class="number">28</span>:<span class="number">30</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="（2）增加或减少时间adddate，date-del，addtime"><a href="#（2）增加或减少时间adddate，date-del，addtime" class="headerlink" title="（2）增加或减少时间adddate，date_del，addtime"></a>（2）增加或减少时间adddate，date_del，addtime</h3><h4 id="adddate"><a href="#adddate" class="headerlink" title="==adddate()=="></a>==adddate()==</h4><ul>
+<li><p>作用：增加一个日期（天、周、月、年等）</p>
+</li>
+<li><p>语法：ADDDATE(date, INTERVAL expr unit)</p>
+<ul>
+<li>date:可以手动设置具体时间，也可以使用now(),date()等函数表达</li>
+<li>INTERVAL：固定写法，表示间隔;</li>
+<li>expr:表达式，一般用数字来表示,例如3表示三天后，-3表示三天前;</li>
+<li>unit:表示时间的单位，例如: year、month、day、week、hour、minute、second等</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#查询当前时间三天后的时间</span><br><span class="line">select adddate(curdate(),INTERVAL 3 day);</span><br><span class="line">2024-05-12</span><br><span class="line"></span><br><span class="line">#查询一周前的时间</span><br><span class="line">select adddate(curdate(),INTERVAL -1 week);</span><br><span class="line">2024-05-02</span><br><span class="line"></span><br><span class="line">#查询20005订单下单前2周的时间</span><br><span class="line">select adddate(order_date,INTERVAL -2 WEEK) from orders where order_num=20005;</span><br><span class="line">2005-08-18 00:00:00</span><br><span class="line"></span><br><span class="line">#面试题:(当前5月9日)</span><br><span class="line">#查询最近1小时的订单</span><br><span class="line">select * from orders where order_date &gt;= adddate(curdate(),interval 30 minute);</span><br><span class="line">#查询最近2周的订单</span><br><span class="line">select * from orders where order_date &gt;= adddate(curdate(),interval -2 week);</span><br><span class="line">#查询最近19年的订单</span><br><span class="line">select * from orders where order_date &gt;= adddate(curdate(),interval -19 year);</span><br><span class="line"></span><br><span class="line">#难点：</span><br><span class="line">#统计20005和20006订单间隔多少天?</span><br><span class="line">#先查出来20005和20006两个订单的日期</span><br><span class="line">select date(order_date) as date1 from orders where order_num=20005;</span><br><span class="line">select date(order_date) as date2 from orders where order_num=20006;</span><br><span class="line">#再把查出来的结果放在a，b两张临时表里，计算日期差</span><br><span class="line">#框架</span><br><span class="line">select b.date2-a.date1 from () as a, () as b;</span><br><span class="line">#指令</span><br><span class="line">select b.date2-a.date1 from </span><br><span class="line">(select date(order_date) as date1 from orders where order_num=20005) as a, </span><br><span class="line">(select date(order_date) as date2 from orders where order_num=20006) as b;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+  <figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#原笔记例子：</span><br><span class="line">#计算订单下单日期之后30天的日期</span><br><span class="line">select cust_id,order_num,order_date,adddate(order_date, interval 30 day) from orders;</span><br><span class="line"></span><br><span class="line">#计算订单下单日期之后1周的日期</span><br><span class="line">select cust_id,order_num,order_date,adddate(order_date, interval 1 week) from orders;</span><br><span class="line"></span><br><span class="line">#计算订单下单日期之后1个月的日期</span><br><span class="line">select cust_id,order_num,order_date,adddate(order_date, interval 1 month) from orders;</span><br><span class="line"></span><br><span class="line">#计算订单下单日期之后1年的日期</span><br><span class="line">select cust_id,order_num,order_date,adddate(order_date, interval 1 year) from orders;</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="date-sub"><a href="#date-sub" class="headerlink" title="==date_sub()=="></a>==date_sub()==</h4><ul>
+<li><p>作用：减少一个日期（天、周、月、年等）</p>
+</li>
+<li><p>语法：<strong>和adddate一致</strong></p>
+<p>date_sub(date, INTERVAL expr unit)</p>
+<ul>
+<li>date:可以手动设置具体时间，也可以使用now(),date()等函数表达</li>
+<li>INTERVAL：固定写法，表示间隔;</li>
+<li>expr:表达式，一般用数字来表示,例如3表示三天后，-3表示三天前;</li>
+<li>unit:表示时间的单位，例如: year、month、day、week、hour、minute、second等</li>
+</ul>
+</li>
+<li><p>举例：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#DATE_SUB(date,INTERVAL expr unit)</span><br><span class="line">#和dateadd语法一致,唯一区别是date_sub是减日期，dateadd是加日期</span><br><span class="line">#查询当前时间三天后的时间</span><br><span class="line">select date_sub(curdate(),INTERVAL -3 day);</span><br><span class="line">2024-05-12</span><br><span class="line"></span><br><span class="line">#查询一周前的时间</span><br><span class="line">select date_sub(curdate(),INTERVAL 1 week);</span><br><span class="line">2024-05-02</span><br><span class="line"></span><br><span class="line">#用date sub函数，统计最近10天的订单(两条语句都可以)</span><br><span class="line">select * from orders where order_date &gt;= date_sub(curdate(),interval 10 day);</span><br><span class="line">select * from orders where date(order_date) &gt;= date_sub(curdate(),interval 10 day);</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="addtime"><a href="#addtime" class="headerlink" title="==addtime()=="></a>==addtime()==</h4><ul>
+<li><p>作用：增加一个时间（时、分、秒等）</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#计算订单时间之后的30分钟的时间</span><br><span class="line">select *,addtime(order_date,"00:30:00") from orders;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="（3）取日期某个部分date，year，month，day"><a href="#（3）取日期某个部分date，year，month，day" class="headerlink" title="（3）取日期某个部分date，year，month，day"></a>（3）取日期某个部分date，year，month，day</h3><h4 id="date"><a href="#date" class="headerlink" title="date()"></a>date()</h4><ul>
+<li><p>作用：返回日期时间的日期部分</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#查询2005-11-08号的订单信息</span><br><span class="line">select * from orders where date(order_date)="2005-11-08";</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="year"><a href="#year" class="headerlink" title="year()"></a>year()</h4><ul>
+<li><p>作用：返回日期时间的年的部分</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#例1：查询所有订单的下单年份</span><br><span class="line">select distinct year(order_date) from orders;</span><br><span class="line">#例2:查询2005年的订单</span><br><span class="line">select * from orders where year(order_date)=2005;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="month"><a href="#month" class="headerlink" title="month()"></a>month()</h4><ul>
+<li><p>作用：返回日期时间的月的部分</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#例<span class="number">1</span>：显示所有<span class="number">2009</span>年<span class="number">9</span>月的订单信息</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> orders <span class="keyword">where</span> <span class="keyword">year</span>(order_date)<span class="operator">=</span><span class="number">2005</span> <span class="keyword">and</span> <span class="keyword">month</span>(order_date)<span class="operator">=</span><span class="number">9</span>;</span><br><span class="line">#例<span class="number">2</span>：查询<span class="number">2005</span>年<span class="number">9</span>月的订单数目</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> orders <span class="keyword">where</span> <span class="keyword">year</span>(order_date)<span class="operator">=</span><span class="number">2005</span> <span class="keyword">and</span> <span class="keyword">month</span>(order_date)<span class="operator">=</span><span class="number">9</span>;</span><br><span class="line">#用<span class="keyword">like</span>模糊查询（查询效率低）</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> orders <span class="keyword">where</span> order_date <span class="keyword">like</span> "2005_09%";</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="day"><a href="#day" class="headerlink" title="day()"></a>day()</h4><ul>
+<li><p>作用：返回日期时间的天的部分</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#例1:查询2005年9月哪几天有订单</span><br><span class="line">select day(order_date) from orders where year(order_date)=2005 and month(order_date)=9;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="2-3-数值处理函数（round，truncate，abs，rand）"><a href="#2-3-数值处理函数（round，truncate，abs，rand）" class="headerlink" title="2.3 数值处理函数（round，truncate，abs，rand）"></a>2.3 数值处理函数（round，truncate，abs，rand）</h2><h3 id="round-x-y"><a href="#round-x-y" class="headerlink" title="round(x,y)"></a>round(x,y)</h3><ul>
+<li><p>作用：对x四舍五入保留y位小数</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#例<span class="number">1</span>：统计供应商<span class="number">1003</span>产品的均价，四舍五入保留<span class="number">2</span>位小数</span><br><span class="line"><span class="keyword">select</span> round(<span class="built_in">avg</span>(prod_price),<span class="number">2</span>) <span class="keyword">from</span> products <span class="keyword">where</span> vend_id<span class="operator">=</span><span class="number">1003</span>;</span><br><span class="line">#例<span class="number">2</span>：统计订单<span class="number">20009</span>年总价，保留<span class="number">1</span>位小数:</span><br><span class="line"><span class="keyword">select</span> round(<span class="built_in">sum</span>(item_price<span class="operator">*</span>quantity),<span class="number">1</span>) <span class="keyword">from</span> orderitems <span class="keyword">where</span> order_num<span class="operator">=</span><span class="number">20009</span>; </span><br><span class="line">#例<span class="number">3</span>：统计订单<span class="number">20005</span>购买的产品均价，不保留小数</span><br><span class="line"><span class="keyword">select</span> round(<span class="built_in">avg</span>(item_price),<span class="number">0</span>) <span class="keyword">from</span> orderitems <span class="keyword">where</span> order_num<span class="operator">=</span><span class="number">20005</span>;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="truncate-x-y"><a href="#truncate-x-y" class="headerlink" title="truncate(x,y)"></a>truncate(x,y)</h3><ul>
+<li><p>作用：对x截断保留y位小数（与round的唯一区别就是不会四舍五入）</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#例<span class="number">1</span>：统计订单<span class="number">20005</span>购买的产品单价均价，不保留小数</span><br><span class="line"><span class="keyword">select</span> <span class="keyword">truncate</span>(<span class="built_in">sum</span>(quantity<span class="operator">*</span>item_price)<span class="operator">/</span><span class="built_in">sum</span>(quantity),<span class="number">2</span>) <span class="keyword">from</span> orderitems <span class="keyword">where</span> order_num<span class="operator">=</span><span class="number">20005</span>;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="abs-x"><a href="#abs-x" class="headerlink" title="abs(x)"></a>abs(x)</h3><ul>
+<li><p>作用：返回x的绝对值，比如算差值时，只需要间隔，不需要正负</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">abs</span>(<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">#统计<span class="number">20005</span>和<span class="number">20006</span>订单间隔多少天?#临时表</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">abs</span>(a.date1<span class="operator">-</span>b.date2) <span class="keyword">from</span></span><br><span class="line">( <span class="keyword">select</span> <span class="type">date</span>(order_date) date1 <span class="keyword">from</span> orderswhere order_num<span class="operator">=</span><span class="number">20005</span>) <span class="keyword">as</span> a,</span><br><span class="line"> ( <span class="keyword">select</span> <span class="type">date</span>(order_date) date2 <span class="keyword">from</span> orderswhere order_num<span class="operator">=</span><span class="number">20006</span>) <span class="keyword">as</span> b;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="rand"><a href="#rand" class="headerlink" title="rand()"></a>rand()</h3><ul>
+<li><p>作用：返回0~1内的随机值</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> rand();</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="2-4-系统函数（version，database，user）"><a href="#2-4-系统函数（version，database，user）" class="headerlink" title="2.4 系统函数（version，database，user）"></a>2.4 系统函数（version，database，user）</h2><h3 id="version"><a href="#version" class="headerlink" title="version()"></a>version()</h3><ul>
+<li><p>作用：返回数据库版本号</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> version();</span><br><span class="line"><span class="number">5.7</span><span class="number">.32</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="database"><a href="#database" class="headerlink" title="database()"></a>database()</h3><ul>
+<li><p>作用：返回当前连接的数据库</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight sql"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> database();</span><br><span class="line">crashcourse</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h3 id="user"><a href="#user" class="headerlink" title="user()"></a>user()</h3><ul>
+<li><p>作用：返回当前登录的用户</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight python"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select user();</span><br><span class="line">root@<span class="number">192.168</span><span class="number">.118</span><span class="number">.1</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h1 id="3-分组查询"><a href="#3-分组查询" class="headerlink" title="3. 分组查询"></a>3. 分组查询</h1><h2 id="3-1-分组查询group-by"><a href="#3-1-分组查询group-by" class="headerlink" title="3.1 分组查询group by"></a>3.1 分组查询group by</h2><p><strong>什么时候使用group by</strong></p>
+<p>==当需要根据某个维度来对数据进行统计或聚集运算时，使用group by==</p>
+<ul>
+<li><p>语法：在select语句中通过group by子句实现分组，通常在group by后面跟一个字段，字段值相同的行作为一组，通常分组的目的是为了对每个分组做聚集运算，在分组查询中，select后面只能跟group by后面的字段和聚集运算的结果。</p>
+</li>
+<li><p>select 字段, 聚集函数 from 表 group by 字段;</p>
+</li>
+<li><p>select 字段1, 字段2,聚集函数 from 表 group by 字段1, 字段2;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#统计每个供应商供应的产品数量</span><br><span class="line">select vend_id,count(*) as 产品数量 from products group by vend_id;</span><br><span class="line">#统计每个学生的总分、最高分、最低分、参考科目?</span><br><span class="line">select sid,sum(score),max( score),min(score) ,count(*) from scoregroup by sid;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>注意：</p>
+<p>1）分组查询select只能查看<strong>group by分组依据字段</strong>以及<strong>根据该字段聚集运算的结果</strong>；</p>
+<p>2）group by可以根据多个列进行分组，多个列分组即对多个列的组合值相同的进行分组；</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#语法: select字段1，字段2,聚集函数from 表 group by字段1，字段2;</span><br><span class="line">#例1:统计来自不同国家、不同州的供应商有多少个，返回国家、州、供应商数量</span><br><span class="line">select vend_country , vend_state,count(*) from vendors group by vend_country , vend_state;</span><br><span class="line">#例3:查询2005年每个月每天的订单数量，返回月份、天、订单数量(可用于分析顾客一个月何时下单最多)</span><br><span class="line">select month(order_date),day(order_date),count(*) from orders where year(order_date)=2005 group by month(order_date),day(order_date);</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>课堂练习：</p>
+<ul>
+<li><p>1、统计2005年每月的订单数量？</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select month(order_date),count(*) from orders where year(order_date)=2005 group by month(order_date); </span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>2、统计2005年每个客户的订单数量？</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select day(order_date),count(*) from orders where year(order_date)=2005 and month(order_date)=10 group by day(order_date);</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-2-过滤分组having"><a href="#3-2-过滤分组having" class="headerlink" title="3.2 过滤分组having"></a>3.2 过滤分组having</h2><p><strong>什么情况用where过滤，什么情况用having过滤</strong></p>
+<p>==having一般和group by组合使用，只有在需要对聚合数据进行筛选时，才需要用到having==</p>
+<ul>
+<li><p>语法：通过having子句实现分组的过滤</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#统计供应了2种以上产品的供应商id及产品数量</span><br><span class="line">select vend_id,count(*) as 产品数量 from products group by vend_id having count(*)&gt;2;</span><br><span class="line">#列出供应商的平均价格大于20的供应商编号(不使用having分组过滤)</span><br><span class="line">select vend_id,avg(prod_price) from products group by vend_id;</span><br><span class="line">select a.vend_id from (select vend_id,avg(prod_price) as average from products group by vend_id) as a where a.average&gt;20;</span><br><span class="line">#使用分组过滤</span><br><span class="line">select vend_id,avg(prod_price) as average from products group by vend_id having average&gt;20;</span><br><span class="line"></span><br><span class="line">#统计2005年下单数量超过3个的客户id、订单数量</span><br><span class="line">select cust_id,count(*) from orders where year(order_date)=2005 group by cust_id having count(*)&gt;3;</span><br><span class="line">#查询供应了2种以上产品的供应商，返回供应商id、产品数量?</span><br><span class="line">select vend_id,count(*) from products group by vend_id having count(*)&gt;2;</span><br><span class="line">#查询订单价格大于100元的订单有哪些，返回订单id和价格</span><br><span class="line">select order_num,sum(item_price*quantity) from orderitems group by order_num having sum(item_price*quantity)&gt;100;</span><br><span class="line"></span><br><span class="line">#查询各科成绩都大于80分的学生学号?（难想）</span><br><span class="line">select stu_id min(score) from score group by stu_id having min(score)&gt;80</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3-3-过滤行与过滤分组的区别"><a href="#3-3-过滤行与过滤分组的区别" class="headerlink" title="3.3 过滤行与过滤分组的区别"></a>3.3 过滤行与过滤分组的区别</h2><ul>
+<li><p>语法：过滤行是在分组前用where来实现，得到的是满足条件的所有行；过滤分组是在分组后通过having来实现，得到的是满足条件的所有分组。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计供应了2种以上价格大于5的产品的供应商id及产品数量（价格大于5通过WHERE过滤，数量大于2通过HAVING过滤）</span><br><span class="line">select vend_id,count(*) as 产品数量 from products where prod_price&gt;5 group by vend_id having count(*)&gt;2;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3-4-分组查询的使用场景"><a href="#3-4-分组查询的使用场景" class="headerlink" title="3.4 分组查询的使用场景"></a>3.4 分组查询的使用场景</h2><p>当需要按某个维度去做聚集运算时，通常会用到分组查询。比如统计每个客户的订单数量，每个供应商的产品数量，每个供应商产品的最高、最低、平均价，每个学生的总分，每门课程的平均分等，都需要用到分组查询。</p>
+<p>分组查询通常和聚集运算结合在一起使用。</p>
+<h1 id="4-select查询中子句的出现顺序"><a href="#4-select查询中子句的出现顺序" class="headerlink" title="4. select查询中子句的出现顺序"></a>4. select查询中子句的出现顺序</h1><p>select语句中使用的子句必须按照一定的次序，下图列出来各个子句在select语句中出现的次序</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>子句</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>是否必须使用</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>select</td>
+<td>要返回的列或表达式</td>
+<td>是</td>
+</tr>
+<tr>
+<td>from</td>
+<td>从中检索数据的表</td>
+<td>仅在从表选择数据时使用</td>
+</tr>
+<tr>
+<td>join</td>
+<td>连表查询关键字</td>
+<td>否，仅在连表查询时用</td>
+</tr>
+<tr>
+<td>on</td>
+<td>连表查询关键字</td>
+<td>否，仅在连表查询时用</td>
+</tr>
+<tr>
+<td>where</td>
+<td>行级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>group by</td>
+<td>分组说明</td>
+<td>仅在按组计算聚集时使用</td>
+</tr>
+<tr>
+<td>having</td>
+<td>组级过滤</td>
+<td>否</td>
+</tr>
+<tr>
+<td>order by</td>
+<td>输出排序顺序</td>
+<td>否</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>要检索的行数</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>出现和执行顺序：</p>
+<h1 id="5-子查询"><a href="#5-子查询" class="headerlink" title="5. 子查询"></a>5. 子查询</h1><ul>
+<li><p>在查询中嵌套查询，用IN实现嵌套，里面的查询的返回值作为外面查询的条件。</p>
+</li>
+<li><p>语法：select * from 表 where 字段 in (select 字段 from 表);</p>
+</li>
+<li><p>举例：</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#例1：查询名称为ACME供应商供应的产品名称？</span><br><span class="line">#方法1：</span><br><span class="line">#先在供应商表中查出ACME供应商的编号</span><br><span class="line">select v.vend_id from vendors v where v.vend_name="ACME";</span><br><span class="line"></span><br><span class="line">#再根据供应商编号在产品表中查出产品名称</span><br><span class="line">select p.prod_name from products p where p.vend_id in (1003);</span><br><span class="line"></span><br><span class="line">#方法2：用子查询实现，把第一个查询嵌套到第二个查询语句中，第一个查询的返回作为第二个查询的条件</span><br><span class="line">select p.prod_name from products p where p.vend_id in (select v.vend_id from vendors v where v.vend_name="ACME");</span><br><span class="line"></span><br><span class="line">#例2：查询购买了编号为TNT2的产品的所有客户姓名</span><br><span class="line">#方法1：</span><br><span class="line">#先查找包含物品TNT2的所有订单的编号</span><br><span class="line">select order_num from orderitems where prod_id='TNT2';</span><br><span class="line"></span><br><span class="line">#再查找前一步骤列出的订单编号的所有客户的ID</span><br><span class="line">select cust_id from orders where order_num in (20005,20007);</span><br><span class="line"></span><br><span class="line">#最后再查找前一步列出的客户ID的客户姓名及其他信息</span><br><span class="line">select cust_id,cust_name from customers where cust_id in (10001,10004);</span><br><span class="line"></span><br><span class="line">#方法2：用子查询实现</span><br><span class="line">select cust_id,cust_name from customers where cust_id in (select cust_id from orders where order_num in (select order_num from orderitems where prod_id = 'TNT2'));</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="6-连表查询"><a href="#6-连表查询" class="headerlink" title="6. 连表查询"></a>6. 连表查询</h1><p><strong>思路：讲清楚三种连表的计算规则、区别，怎么指定正确的连表条件。</strong></p>
+<h2 id="6-1-内连接"><a href="#6-1-内连接" class="headerlink" title="6.1 内连接"></a>6.1 内连接</h2><ul>
+<li><p>为什么要连表？</p>
+<ul>
+<li>关系型数据库的特点就是分表存放数据，把一类的数据放在一张表中，但实际使用时，很多时候需要把不同表中的数据查到一个结果中，这就需要用到连表查询，这也是SQL最强大的功能之一。</li>
+</ul>
+</li>
+<li><p>语法：</p>
+<ul>
+<li>select * from 表1 inner join 表2 on 条件;</li>
+<li>select * from 表1, 表2 where 条件；</li>
+<li>说明：以上两种写法都成立，不管哪种写法，需要注意的是都需要指定连接条件，如果不指定连接条件，会导致第一张表中的每一行跟第二张表的每一行组合，最终得到一个笛卡尔乘积。</li>
+</ul>
+</li>
+<li><p>计算规则：两张表连连接，用左边表的每一行去匹配右边表的每一行，如果满足连接的条件，就组成一行返回，返回的行里面包括两张表的所有字段，如果不满足连接的条件，就不返回。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#1）查询各个供应商的产品名称和价格，按供应商名称和产品名称升序排列（用WHERE指定连接条件）</span><br><span class="line">select vend_name,prod_name,prod_price from vendors,products where vendors.vend_id=products.vend_id order by vend_name,prod_name;</span><br><span class="line"></span><br><span class="line">#2）查询各个供应商的产品名称和价格，按供应商名称和产品名称升序排列（用INNER JOIN结构）</span><br><span class="line">select vend_name,prod_name,prod_price from vendors inner join products on vendors.vend_id=products.vend_id order by vend_name,prod_name;</span><br><span class="line"></span><br><span class="line">#3）查询被购买过的产品名称、订单编号、购买数量</span><br><span class="line">select prod_name,o.order_num,quantity from products p inner join orderitems o on p.prod_id=o.prod_id;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>多表连接的数量：SQL中对一条select语句中可以连接的表的数目没有限制，如果有3张表连接，只需要A和B连接，再和C连接就可以了，依次类推……</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 3张表连接举例：</span><br><span class="line">#查询订单编号为20005的订单中的物品信息（产品名称、供应商名称、产品价格、数量）</span><br><span class="line">select prod_name,vend_name,prod_price,quantity from orderitems,products,vendors where products.vend_id=vendors.vend_id and orderitems.prod_id=products.prod_id and orderitems.order_num=20005;</span><br><span class="line"></span><br><span class="line"># 4张表连接举例：</span><br><span class="line">#查询每个客户的姓名及购买的产品名称？</span><br><span class="line">select c.cust_name,p.prod_name from customers c inner join orders o on c.cust_id=o.cust_id inner join orderitems oi on o.order_num=oi.order_num inner join products p on oi.prod_id=p.prod_id;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>两张表连接课堂练习：</p>
+<ul>
+<li>1、查询被购买过的产品名称、订单编号、购买数量</li>
+<li>2、查询被购买过的价格大于10的产品名称、订单编号、购买数量</li>
+<li>3、查询老师的姓名及教授的课程名称？</li>
+<li>4、查询名叫诸葛孔明的老师教授的课程名称？</li>
+</ul>
+</li>
+<li><p>三张表连接课堂练习：</p>
+<ul>
+<li>1、查询购买了TNT2产品的客户名称及订单编号？</li>
+<li>2、查询客户名称、订单编号及购买的产品名称？</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-2-外连接"><a href="#6-2-外连接" class="headerlink" title="6.2 外连接"></a>6.2 外连接</h2><ul>
+<li><p>外连接又分为左外连接和右外连接两种。</p>
+</li>
+<li><p>左外连接</p>
+<ul>
+<li><p>语法：select * from 表1 left join 表2 on 条件；</p>
+</li>
+<li><p>计算规则：以左边表为基准，用左边表的每一行去匹配右边表的每一行，如果满足连接的条件，就组成一行返回，如果连接的字段只在左边表存在，在右边表不存在，那么在结果中就只显示左边表的字段，右边表中不存在的字段用空值NULL来表示。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">#1）统计每个客户下了哪些订单，包括那些至今尚未下订单的客户</span><br><span class="line">select customers.cust_id,cust_name,order_num from customers left join orders on customers.cust_id=orders.cust_id;</span><br><span class="line"></span><br><span class="line">#2）查询没有被购买过的产品名称</span><br><span class="line">select p.prod_name from products p left join orderitems o on p.prod_id=o.prod_id where o.order_num is null;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#3）查询在2005年9月份没有被购买过的产品信息</span><br><span class="line">#    1、子查询方式</span><br><span class="line">select p.prod_name</span><br><span class="line">from products p</span><br><span class="line">where p.prod_id not in (</span><br><span class="line">select distinct oi.prod_id</span><br><span class="line">from orders o</span><br><span class="line">inner join orderitems oi</span><br><span class="line">on o.order_num = oi.order_num</span><br><span class="line">where (year(o.order_date) = '2005' and month(o.order_date) = '09'));</span><br><span class="line"></span><br><span class="line">#    2、左连接方式</span><br><span class="line">select p.prod_name</span><br><span class="line">from products p</span><br><span class="line">left outer join</span><br><span class="line">(select distinct oi.prod_id</span><br><span class="line">from orders o</span><br><span class="line">inner join orderitems oi</span><br><span class="line">on o.order_num = oi.order_num</span><br><span class="line">where (year(o.order_date) = '2005' and month(o.order_date) = '09')) as a</span><br><span class="line">on p.prod_id = a.prod_id</span><br><span class="line">where a.prod_id is null;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>右外连接</p>
+<ul>
+<li>语法：select * from 表1 right join 表2 on 条件；</li>
+<li>计算规则：与左连接相反，以右边表为基准，用右边表的每一行去匹配左边表的每一行，如果满足连接的条件，就组成一行返回，如果连接的字段只在右边表存在，在左边表不存在，那么在结果中就只显示右边表的字段，左边表中不存在的字段用空值NULL来表示。</li>
+<li>举例：</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#统计每个客户下了哪些订单，包括那些至今尚未下订单的客户。（用右连接实现）</span><br><span class="line">select customers.cust_id,cust_name,order_num from orders right join customers on customers.cust_id=orders.cust_id;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>课堂练习：</p>
+<ul>
+<li>1、查询老师的姓名及教授的课程名称，包括没有上课的老师？</li>
+<li>2、查询没有上课的老师姓名？</li>
+<li>3、查询没有被购买过的产品名称？</li>
+<li>4、查询每个学生的姓名、学习的课程名称、分数？</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-3-inner-join、left-join、right-join三者的区别"><a href="#6-3-inner-join、left-join、right-join三者的区别" class="headerlink" title="6.3 inner join、left join、right join三者的区别"></a>6.3 inner join、left join、right join三者的区别</h2><p>借助集合的概念来理解三种连接的区别：</p>
+<p><img src="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/image-20240509200717064.png" alt="image-20240509200717064" style="zoom:50%;"></p>
+<p>三者的计算规则是不一样的，其中：</p>
+<ul>
+<li><p>inner join的计算规则是，用左边表的每一行去匹配右边表的每一行，如果满足连接的条件，就组成一行返回，返回的行里面包括两张表的所有字段，如果不满足连接的条件，就不返回。</p>
+</li>
+<li><p>left join的计算规则是：以左边表为基准，用左边表的每一行去匹配右边表的每一行，如果满足连接的条件，就组成一行返回，如果连接的字段值只在左边表存在，在右边表不存在，那么在结果中就只显示左边表的字段值，右边表中的字段用空值（null）来表示。</p>
+</li>
+<li><p>right join的计算规则是：以右边表为基准，用右边表的每一行去匹配左边表的每一行，如果满足连接的条件，就组成一行返回，如果连接的字段值只在右边表存在，在左边表不存在，那么在结果中就只显示右边表的字段值，左边表中的字段用空值null来表示。</p>
+</li>
+</ul>
+<h1 id="7-组合查询"><a href="#7-组合查询" class="headerlink" title="7. 组合查询"></a>7. 组合查询</h1><ul>
+<li>可用union操作符来组合数条SQL查询，利用union可以将多条select语句组合起来，将它们的结果组合成单个结果集。</li>
+<li>语法：<ul>
+<li>select <em> from 表 where 条件 union select </em> from 表 where 条件；</li>
+<li>select <em> from 表 where 条件 union all select </em> from 表 where 条件；</li>
+<li>union和union all的区别：union会对结果自动去重，union all不会去重。</li>
+</ul>
+</li>
+<li>注意：两个select语句应该有相同数量的列，数据类型要相同或者可以兼容。</li>
+<li>举例：</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#查询价格小于等于5的产品以及供应商1001和1002生产的所有产品（不考虑价格）。</span><br><span class="line">select vend_id,prod_id,prod_price from products where prod_price&lt;=5</span><br><span class="line">    -&gt; union</span><br><span class="line">    -&gt; select vend_id, prod_id,prod_price from products where vend_id in (1001,1002);</span><br><span class="line"></span><br><span class="line">#查询价格小于等于5的产品以及供应商1001和1002生产的所有物品（不考虑价格）。</span><br><span class="line">select vend_id,prod_id,prod_price from products where prod_price&lt;=5</span><br><span class="line">    -&gt; union all</span><br><span class="line">    -&gt; select vend_id, prod_id,prod_price from products where vend_id in (1001,1002);</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="8-索引Index"><a href="#8-索引Index" class="headerlink" title="8. 索引Index"></a>8. 索引Index</h1><p>索引是一种数据结构，作用是可以提高查询的效率。在数据库表中，可以对某个字段创建索引，有索引的字段在查询效率上会明显比没有索引的要快。索引是针对每个字段创建的。主键和外键会自动创建索引。</p>
+<p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#查询表有哪些索引</span><br><span class="line">show index from customers;</span><br><span class="line">#创建索引</span><br><span class="line">create index state_index on customers(cust_state);</span><br><span class="line">#删除索引</span><br><span class="line">drop index state_index on customers;</span><br></pre></td></tr></tbody></table></figure>
+<p>但是在实际使用中，我们不会对每个字段都创建索引，一般我们会对经常被查询的字段或者是经常被用来作为连表条件的字段创建索引。</p>
+<h1 id="9-视图View"><a href="#9-视图View" class="headerlink" title="9. 视图View"></a>9. 视图View</h1><p>视图是一张虚拟的表，视图的数据来自于SQL语句从真正的表中查询得到，视图支持查询，但不支持增删改操作。</p>
+<p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#创建一个视图</span><br><span class="line">create view cust_name_prod_id as </span><br><span class="line">select customers.`cust_name`,orderitems.`prod_id` from customers inner join orders on customers.`cust_id`=</span><br><span class="line">orders.`cust_id` inner join orderitems on orders.`order_num`=orderitems.`order_num`;</span><br><span class="line">#列出订购物品编号TNT2的所有客户姓名</span><br><span class="line">select * from cust_name_prod_id where prod_id="TNT2";</span><br></pre></td></tr></tbody></table></figure>
+<h1 id="10-SQL语句的分类"><a href="#10-SQL语句的分类" class="headerlink" title="10. SQL语句的分类"></a>10. SQL语句的分类</h1><ul>
+<li>DQL（数据查询语言）：select  (query)</li>
+<li>DML（数据库操纵语言）：insert into/delete from/update等</li>
+<li>DDL（数据库描述语言）：create/alter/drop等</li>
+<li>DCL（数据库控制语言）：grant/commit/rollback等</li>
+</ul>
+<p>SQL语言，所有关系型数据库的操作都是基于SQL语句来实现。</p>
+<h1 id="11-数据库的导入和导出"><a href="#11-数据库的导入和导出" class="headerlink" title="11. 数据库的导入和导出"></a>11. 数据库的导入和导出</h1><ul>
+<li><p>导出：把数据库的结构和数据转储为SQL脚本，也叫备份数据库</p>
+</li>
+<li><p>导入：执行SQL脚本创建数据库、表、插入数据，也叫恢复数据库</p>
+</li>
+<li><p>方法一：在Linux主机上通过命令导出和导入</p>
+<ul>
+<li><p>导出命令：mysqldump -u用户名 -p密码  数据库名称&gt;SQL脚本文件的路径</p>
+<ul>
+<li>举例：mysqldump -uroot -p123456 crashcourse&gt;/usr/local/src/crashcourse_33.sql</li>
+</ul>
+</li>
+<li><p>导入命令：先用mysql命令登录数据库，再用source命令执行SQL脚本，如果SQL脚本中没有创建数据库的语句，就需要先手动创建。</p>
+<ul>
+<li>举例：<img src="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/452c3aa4-9591-415f-95b5-4bef373bbed4-3400539.jpg" alt="img"></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>方法二：通过数据库客户端导出和导入，以SQLyog为例</p>
+<ul>
+<li><p>导出：<img src="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/731bc683-f046-45a7-9264-8e5bc0a113a4-3400539.jpg" alt="img"></p>
+</li>
+<li><p>导入：<img src="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/b181e2e9-b93f-4f1e-a5cf-c3ad79307de8-3400539.jpg" alt="img"></p>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/" title="MySQL查询及其他">https://laylaycjl.github.io/2024/05/09/MySQL查询及其他/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/06/mysql/" rel="prev" title="mysql">
+                  <i class="fa fa-chevron-left"></i> mysql
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">162k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:27</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

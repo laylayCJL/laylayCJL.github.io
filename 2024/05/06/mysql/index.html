@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="1、数据库基础1.1 什么是数据库（DB）数据库：Database，简称DB，是按照数据结构来组织、存储和管理数据的仓库。 1.2 什么是数据库管理系统（DBMS）用于管理数据库的软件称为数据库管理软件（DBMS：Database Management System）。 对数据库的操作与管理是通过该数据库管理软件来完成的。 行业中主流的数据库管理软件有：MySQL、MariaDB、Oracle、D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/06/mysql/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="1、数据库基础1.1 什么是数据库（DB）数据库：Database，简称DB，是按照数据结构来组织、存储和管理数据的仓库。 1.2 什么是数据库管理系统（DBMS）用于管理数据库的软件称为数据库管理软件（DBMS：Database Management System）。 对数据库的操作与管理是通过该数据库管理软件来完成的。 行业中主流的数据库管理软件有：MySQL、MariaDB、Oracle、D">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/06/mysql/mysql/image-20240509150944734.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/06/mysql/mysql/image-20240509150931774.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/06/mysql/mysql/image-20240509150913083.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/06/mysql/mysql/image-20240509150857204.png">
+<meta property="article:published_time" content="2024-05-06T07:24:43.000Z">
+<meta property="article:modified_time" content="2024-05-09T07:17:18.317Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/05/06/mysql/mysql/image-20240509150944734.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/06/mysql/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>mysql | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">1、数据库基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88DB%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 什么是数据库（DB）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E4%BB%80%E4%B9%88%E6%98%AF%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%EF%BC%88DBMS%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 什么是数据库管理系统（DBMS）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 数据库管理系统的类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.1.</span> <span class="nav-text">1、关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E9%9D%9E%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.2.</span> <span class="nav-text">2、非关系型数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-%E5%B7%A5%E4%BD%9C%E4%B8%AD%E5%93%AA%E4%BA%9B%E6%97%B6%E5%80%99%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 工作中哪些时候需要用到数据库</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MySQL%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">2. MySQL数据库的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%A1%A8%EF%BC%88Table%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 表（Table）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E5%88%97%EF%BC%88Column-Field%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 列（Column&#x2F;Field）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E8%A1%8C%EF%BC%88Row%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 行（Row）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-MySQL%E8%BD%AF%E4%BB%B6%E3%80%81%E6%95%B0%E6%8D%AE%E5%BA%93%E3%80%81%E8%A1%A8%E3%80%81%E5%88%97%E3%80%81%E8%A1%8C%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 MySQL软件、数据库、表、列、行的关系</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E3%80%81%E8%BF%9E%E6%8E%A5%E3%80%81%E5%88%A0%E9%99%A4%E7%AD%89%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">3. 数据库的创建、连接、删除等操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93create-database"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 创建数据库create database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%BB%BA%E5%BA%93%E8%AF%AD%E5%8F%A5show-create-database"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 查询数据库的建库语句show create database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%9F%A5%E8%AF%A2%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E5%BA%93show-databases"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 查询有哪些数据库show databases;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E9%80%89%E6%8B%A9%E6%95%B0%E6%8D%AE%E5%BA%93use"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 选择数据库use</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AE%E5%BA%93drop-database"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 删除数据库drop database</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-6-%E6%9F%A5%E7%9C%8BMySQL%E7%9A%84%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8Fshow-variables"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 查看MySQL的系统变量show variables</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.</span> <span class="nav-text">4. 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-%E6%95%B0%E5%80%BC%E5%9E%8B"><span class="nav-number">4.1.</span> <span class="nav-text">4.1 数值型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%9E%8B"><span class="nav-number">4.2.</span> <span class="nav-text">4.2 字符串型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4%E5%9E%8B"><span class="nav-number">4.3.</span> <span class="nav-text">4.3 日期时间型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-4-%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.4.</span> <span class="nav-text">4.4 枚举类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E8%A1%A8%E7%9A%84%E5%88%9B%E5%BB%BA%E3%80%81%E4%BF%AE%E6%94%B9%E3%80%81%E5%88%A0%E9%99%A4%E7%AD%89%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">5. 表的创建、修改、删除等操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E8%A1%A8%E7%9A%84%E4%B8%BB%E9%94%AE%EF%BC%88Primary-Key%EF%BC%89"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 表的主键（Primary Key）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E8%A1%A8%E7%9A%84%E5%A4%96%E9%94%AE%EF%BC%88Foreign-Key%EF%BC%89"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 表的外键（Foreign Key）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%A6%82%E5%BF%B5"><span class="nav-number">5.2.1.</span> <span class="nav-text">（1）概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%A4%96%E9%94%AE%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%9A"><span class="nav-number">5.2.2.</span> <span class="nav-text">（2）外键的作用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%A4%96%E9%94%AE%E7%9A%84%E5%8A%9F%E8%83%BD%E7%94%B1%E4%B8%A4%E7%A7%8D%E6%96%B9%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="nav-number">5.2.3.</span> <span class="nav-text">（3）外键的功能由两种方法实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E9%98%BB%E6%AD%A2%E6%89%A7%E8%A1%8C%EF%BC%88restrict%EF%BC%89"><span class="nav-number">5.2.3.1.</span> <span class="nav-text">1）阻止执行（restrict）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E7%BA%A7%E8%81%94%E6%89%A7%E8%A1%8C%EF%BC%88cascade%EF%BC%89"><span class="nav-number">5.2.3.2.</span> <span class="nav-text">2）级联执行（cascade）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E5%88%9B%E5%BB%BA%E8%A1%A8create"><span class="nav-number">5.3.</span> <span class="nav-text">5.3 创建表create</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-4-%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%9A%84%E7%BB%93%E6%9E%84desc"><span class="nav-number">5.4.</span> <span class="nav-text">5.4 查看表的结构desc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-5-%E4%BF%AE%E6%94%B9%E8%A1%A8%E6%B7%BB%E5%8A%A0%E5%A4%96%E9%94%AEalter-table-add-constaint"><span class="nav-number">5.5.</span> <span class="nav-text">5.5 修改表添加外键alter table add constaint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-6-%E5%9C%A8%E8%A1%A8%E4%B8%AD%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5alter-table-add"><span class="nav-number">5.6.</span> <span class="nav-text">5.6 在表中增加一个字段alter table add</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-7-%E4%BF%AE%E6%94%B9%E8%A1%A8%E7%9A%84%E5%AD%97%E6%AE%B5alter-table-change-modify"><span class="nav-number">5.7.</span> <span class="nav-text">5.7 修改表的字段alter table change&#x2F;modify</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-8-%E5%9C%A8%E8%A1%A8%E4%B8%AD%E5%88%A0%E9%99%A4%E4%B8%80%E4%B8%AA%E5%AD%97%E6%AE%B5alter-table-drop"><span class="nav-number">5.8.</span> <span class="nav-text">5.8 在表中删除一个字段alter table drop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-9-%E9%87%8D%E5%91%BD%E5%90%8D%E8%A1%A8alter-table-rename-to"><span class="nav-number">5.9.</span> <span class="nav-text">5.9 重命名表alter table rename to</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-10-%E5%88%A0%E9%99%A4%E4%B8%80%E5%BC%A0%E8%A1%A8drop-table-truncate-table"><span class="nav-number">5.10.</span> <span class="nav-text">5.10 删除一张表drop table&#x2F;truncate table</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E8%A1%A8%E6%95%B0%E6%8D%AE%E7%9A%84%E5%A2%9E%E5%88%A0%E6%94%B9%E6%93%8D%E4%BD%9C"><span class="nav-number">6.</span> <span class="nav-text">6. 表数据的增删改操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#6-1-%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AEinsert-into%E2%80%A6values"><span class="nav-number">6.1.</span> <span class="nav-text">6.1 插入数据insert into…values</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-2-%E5%88%A0%E9%99%A4%E6%95%B0%E6%8D%AEdelete-from%E2%80%A6-where%E3%80%81truncate-table"><span class="nav-number">6.2.</span> <span class="nav-text">6.2 删除数据delete from… where、truncate table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-3-%E4%BF%AE%E6%94%B9%E6%95%B0%E6%8D%AEupdate-%E2%80%A6-set-%E2%80%A6-where"><span class="nav-number">6.3.</span> <span class="nav-text">6.3 修改数据update … set … where</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/06/mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-06 15:24:43" itemprop="dateCreated datePublished" datetime="2024-05-06T15:24:43+08:00">2024-05-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-09 15:17:18" itemprop="dateModified" datetime="2024-05-09T15:17:18+08:00">2024-05-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1、数据库基础"><a href="#1、数据库基础" class="headerlink" title="1、数据库基础"></a>1、数据库基础</h1><h2 id="1-1-什么是数据库（DB）"><a href="#1-1-什么是数据库（DB）" class="headerlink" title="1.1 什么是数据库（DB）"></a>1.1 什么是数据库（DB）</h2><p>数据库：Database，简称DB，是按照数据结构来<strong>组织</strong>、<strong>存储</strong>和<strong>管理数据</strong>的仓库。</p>
+<h2 id="1-2-什么是数据库管理系统（DBMS）"><a href="#1-2-什么是数据库管理系统（DBMS）" class="headerlink" title="1.2 什么是数据库管理系统（DBMS）"></a>1.2 什么是数据库管理系统（DBMS）</h2><p>用于管理数据库的软件称为数据库管理软件（DBMS：Database Management System）。</p>
+<p>对数据库的操作与管理是通过该数据库管理软件来完成的。</p>
+<p>行业中主流的数据库管理软件有：MySQL、MariaDB、Oracle、DB2、SQL Server、Redis、MongoDB等，本课程讲解MySQL的使用。中国的数据库管理软件：达梦</p>
+<p><img src="/2024/05/06/mysql/mysql/image-20240509150944734.png" alt="image-20240509150944734" style="zoom:50%;"></p>
+<h2 id="1-3-数据库管理系统的类型"><a href="#1-3-数据库管理系统的类型" class="headerlink" title="1.3 数据库管理系统的类型"></a>1.3 数据库管理系统的类型</h2><h3 id="1、关系型数据库"><a href="#1、关系型数据库" class="headerlink" title="1、关系型数据库"></a>1、关系型数据库</h3><p>常用的关系型数据库：MySQL、MariaDB、Oracle、DB2、SQL Server、SQLite、Access等</p>
+<p>特点：</p>
+<ul>
+<li>数据以<strong>二维表格</strong>的形式存储，一类数据一般放在一张表中（类似Excel的表格），比如学生的信息放在学生表中；</li>
+<li>一张表由许多行和列组成，<strong>每列为各种记录名称，也叫字段</strong>，每行为记录名称所对应的数据，也叫一条记录；</li>
+<li>一个数据库由很<strong>多张表</strong>组成；</li>
+<li>在数据库管理系统上可以创建很<strong>多个数据库</strong></li>
+</ul>
+<blockquote>
+<p>常用的关系型数据库介绍：</p>
+<ul>
+<li>MySQL：由瑞典的MySQL AB公司开发，后来被甲骨文（Oracle）公司收购，是最流行的关系型数据库管理系统之一，在Web应用当面MySQL是最好的RDBMS之一。MySQL 软件采用了双授权政策，分为社区版和商业版</li>
+<li>MariaDB：MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在维护，采用GPL授权许可。开发这个分支的原因之一是：甲骨文公司收购了MySQL后，有将MySQL闭源的潜在风险，因此社区采用分支的方式来避开这个风险。CentOS从7版本开始自带的数据库就是MariaDB</li>
+<li>Oracle：商业的软件，甲骨文公司开发，功能强、性能好，在中大型系统中广泛使用，多用于通信、银行等领域</li>
+</ul>
+</blockquote>
+<p><strong>所有关系型数据库的语法都是基于SQL（结构化查询语言）语言实现，MySQL用的是标准的SQL语言</strong></p>
+<h3 id="2、非关系型数据库"><a href="#2、非关系型数据库" class="headerlink" title="2、非关系型数据库"></a>2、非关系型数据库</h3><p>常用的非关系型数据库管理系统：Redis、MongoDB、Memcached、Neo4j等。与关系型数据库中数据是基于表存储的不同，非关系型数据库中的数据有的是<strong>基于键值对</strong>存储的（Redis、Memcached），有的是<strong>基于文档</strong>存储的（MongoDB），有的是<strong>基于图片</strong>存储的（Neo4j）</p>
+<p>特点：</p>
+<ul>
+<li>数据的读写相对更快，性能更好；</li>
+<li>每种非关系数据库的语法不一样，学习成本较高。</li>
+</ul>
+<p>有的项目中，可能是<strong>MySQL+Redis</strong>组合使用，也有可能只用关系型数据库。我们上课主要讲解关系型数据库MySQL。</p>
+<span id="more"></span>
+<h2 id="1-4-工作中哪些时候需要用到数据库"><a href="#1-4-工作中哪些时候需要用到数据库" class="headerlink" title="1.4 工作中哪些时候需要用到数据库"></a>1.4 工作中哪些时候需要用到数据库</h2><ul>
+<li><p><strong>搭建环境</strong>的时候需要安装数据库，并在数据库中<strong>构造初始化数据</strong></p>
+<p>比如系统的管理员账号就是预设在数据库中的；</p>
+</li>
+<li><p>在测试过程中，有时<strong>需要查询数据库来验证用例通过与否</strong></p>
+<p>这个过程叫<strong>断言</strong>，也就是对比预期结果跟实际结果，有的系统没有页面，只能查数据库校验用例通过与否；</p>
+</li>
+<li><p>有些时候<strong>验证功能</strong>，需要修改数据库中的数据来构造对应的场景</p>
+<p>比如某些功能只有特定用户可以使用，此时需要在数据库修改相关标识，从而对该功能进行验证）</p>
+</li>
+<li><p>在测试中，有的数据只能通过查数据库获取到，在页面上查不到</p>
+</li>
+<li><p>有的时候，需要统计一些数据，直接查询数据库<strong>更方便</strong></p>
+</li>
+</ul>
+<h1 id="2-MySQL数据库的基本概念"><a href="#2-MySQL数据库的基本概念" class="headerlink" title="2. MySQL数据库的基本概念"></a>2. MySQL数据库的基本概念</h1><h2 id="2-1-表（Table）"><a href="#2-1-表（Table）" class="headerlink" title="2.1 表（Table）"></a>2.1 表（Table）</h2><ul>
+<li><p>关系数据库中的数据是保存在表里面的，存储在表中的数据是一种特定类型的数据</p>
+</li>
+<li><p>在数据库中，表有一个唯一的名字来标识该表，称为表名</p>
+</li>
+<li><p>表定义了数据在表中如何存储</p>
+<p>如：可以存在什么样的数据、数据如何分解、各部分信息如何命名等；</p>
+<p>比如：将京东的客户信息保存在一个顾客表中可以取名为customers</p>
+</li>
+<li><p>一个数据库可以有很多张表</p>
+</li>
+</ul>
+<h2 id="2-2-列（Column-Field）"><a href="#2-2-列（Column-Field）" class="headerlink" title="2.2 列（Column/Field）"></a>2.2 列（Column/Field）</h2><ul>
+<li><p>表由列组成，列中存储着表中某部分的信息</p>
+</li>
+<li><p>所有表都是由一个或多个列组成的，一列也叫<strong>一个字段</strong>，所以一张表可以有很多个字段</p>
+</li>
+<li><p>比如：在学生表中，一个学生信息如下：学号、姓名、性别、班级、年龄、手机号等，相同的属性的值都存放在一列，比如学号存放在一列，姓名存放在一列</p>
+<p><img src="/2024/05/06/mysql/mysql/image-20240509150931774.png" alt="image-20240509150931774" style="zoom:50%;"></p>
+</li>
+</ul>
+<h2 id="2-3-行（Row）"><a href="#2-3-行（Row）" class="headerlink" title="2.3 行（Row）"></a>2.3 行（Row）</h2><ul>
+<li>表中的数据是按行存储的，一行就是<strong>一条记录</strong></li>
+<li>一张表中可以有多行（多条数据）</li>
+</ul>
+<p>如果将表想象成网格，网格中垂直的行为表列，水平的行为表行。</p>
+<p><img src="/2024/05/06/mysql/mysql/image-20240509150913083.png" alt="image-20240509150913083" style="zoom:50%;"></p>
+<h2 id="2-4-MySQL软件、数据库、表、列、行的关系"><a href="#2-4-MySQL软件、数据库、表、列、行的关系" class="headerlink" title="2.4 MySQL软件、数据库、表、列、行的关系"></a>2.4 MySQL软件、数据库、表、列、行的关系</h2><p>在MySQL软件系统可以创建很多个数据库，每个数据库可以有多个表，每个表可以有多个列（字段），每个表可以有多行数据。</p>
+<p><img src="/2024/05/06/mysql/mysql/image-20240509150857204.png" alt="image-20240509150857204" style="zoom: 50%;"></p>
+<h1 id="3-数据库的创建、连接、删除等操作"><a href="#3-数据库的创建、连接、删除等操作" class="headerlink" title="3. 数据库的创建、连接、删除等操作"></a>3. 数据库的创建、连接、删除等操作</h1><h2 id="3-1-创建数据库create-database"><a href="#3-1-创建数据库create-database" class="headerlink" title="3.1 创建数据库create database"></a>3.1 创建数据库create database</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>create database 数据库名称;</li>
+<li>create database if not exists 数据库名称;    #如果数据库不存在就创建，存在就不创建</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#创建一个不存在的数据库test，会创建成功</span><br><span class="line">create database test;</span><br><span class="line"></span><br><span class="line">#加上IF NOT EXISTS判断，如果存在就不创建，这样就不会报错</span><br><span class="line">create database if not exists test;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3-2-查询数据库的建库语句show-create-database"><a href="#3-2-查询数据库的建库语句show-create-database" class="headerlink" title="3.2 查询数据库的建库语句show create database"></a>3.2 查询数据库的建库语句show create database</h2><ul>
+<li><p>语法：show create database 数据库名称;</p>
+</li>
+<li><p>作用：可以反向地把创建数据库的语句查出来。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show create database student;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3-3-查询有哪些数据库show-databases"><a href="#3-3-查询有哪些数据库show-databases" class="headerlink" title="3.3 查询有哪些数据库show databases;"></a>3.3 查询有哪些数据库show databases;</h2><ul>
+<li><p>语法：show databases;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="3-4-选择数据库use"><a href="#3-4-选择数据库use" class="headerlink" title="3.4 选择数据库use"></a>3.4 选择数据库use</h2><ul>
+<li><p>语法：use 数据库名称; </p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#连接数据库test_db</span><br><span class="line">use test_db;</span><br></pre></td></tr></tbody></table></figure>
+<p>选择数据库后，后续的操作就是在这个数据库里进行的</p>
+</li>
+</ul>
+<h2 id="3-5-删除数据库drop-database"><a href="#3-5-删除数据库drop-database" class="headerlink" title="3.5 删除数据库drop database"></a>3.5 删除数据库drop database</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>drop database 数据库名称;</li>
+<li>drop database if exists 数据库名称;     #如果数据库存在就删除，如果不存在也不报错</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#删除数据库test_db</span><br><span class="line">drop database test_db;</span><br><span class="line"></span><br><span class="line">#删除一个不存在的数据库，加上IF EXISTS就不会报错</span><br><span class="line">drop database if exists test_db;</span><br></pre></td></tr></tbody></table></figure>
+<p>删除数据库，会连同删除数据库里的所有数据。</p>
+</li>
+</ul>
+<h2 id="3-6-查看MySQL的系统变量show-variables"><a href="#3-6-查看MySQL的系统变量show-variables" class="headerlink" title="3.6 查看MySQL的系统变量show variables"></a>3.6 查看MySQL的系统变量show variables</h2><ul>
+<li><p>MySQL中有很多系统变量，在工作中可能需要涉及到修改或查询某个变量。</p>
+</li>
+<li><p>语法：</p>
+<ul>
+<li>查询所有的系统变量：show variables;</li>
+<li>查询指定的某个系统变量，可以用一下两种方式：<ul>
+<li>show variables like “变量名”；       #查询某个变量的值</li>
+<li>show variables like “%关键字%”;   #根据关键字模糊查询变量的值</li>
+<li>select @@变量名;                                 #查询某个变量的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#查询所有系统变量</span><br><span class="line">show variables;</span><br><span class="line"></span><br><span class="line">#查询变量autocommit的值</span><br><span class="line">show variables like "autocommit";</span><br><span class="line"></span><br><span class="line">#查询指定的某个系统变量</span><br><span class="line">show variables like "%commit%";</span><br><span class="line"></span><br><span class="line">#查询指定的某个系统变量，如下autocommit变量为1表示数据库会对增删改操作执行自动提交</span><br><span class="line">select @@autocommit;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h1 id="4-数据类型"><a href="#4-数据类型" class="headerlink" title="4. 数据类型"></a>4. 数据类型</h1><h2 id="4-1-数值型"><a href="#4-1-数值型" class="headerlink" title="4.1 数值型"></a>4.1 数值型</h2><ul>
+<li><p>整型</p>
+<ul>
+<li>tinyint：1字节，非常小的整数，带符号：-128~127，不带符合：0~255；</li>
+<li><font color="red"> int：4字节，标准整型，带符号：-2147483648\~2147483647，不带符号：0~4294967295；</font></li>
+<li>其他类型：smallint（2字节）、mediumint（3字节）、bigint（8字节）；</li>
+</ul>
+</li>
+<li><p>浮点型</p>
+<ul>
+<li>float：4字节，单精度浮点数；7.989999</li>
+<li>double：8字节，双精度浮点数；7.98999999999</li>
+<li><font color="red"> decimal(m,d)：m表示整数加小数的总位数，d表示小数位数，比如decimal(4,2)；</font>7.99</li>
+<li>区别：float与double存储的是近似值，decimal存储的是精确值。<strong>在数据库中涉及到钱的金额，一定要用decimal类型。</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="4-2-字符串型"><a href="#4-2-字符串型" class="headerlink" title="4.2 字符串型"></a>4.2 字符串型</h2><ul>
+<li><p>字符串</p>
+<ul>
+<li><font color="red"> char(m)：最多可以容纳m个字符</font></li>
+<li><font color="red"> varchar(m)：最多可以容纳m个字符，如果存储的字符数n少于m时，实际占用的存储空间是L+1个字节，其中L是n个字符占用的字节数，多出的1个字节是用来记录实际存储长度的</font></li>
+<li>其他类型：blob（longblob），text（longtext）</li>
+<li><p>char和varchar的区别</p>
+<ul>
+<li>char是<strong>固定长度</strong>的，每个值占用相同的字符数，<strong>不够的位数MySQL会在它的右边用空格字符补足</strong>，char不论字符长短都需要占用相同的空间，即使是空值也不例外</li>
+<li>varchar是一种<strong>可变长度</strong>的类型，每个值占用其刚好的字符数再加上一个用来记录其长度的字节即L+1个字节</li>
+</ul>
+</li>
+<li><p>char和varchar怎么选择：</p>
+<ul>
+<li>如果数据都有相同的长度选char，选用varchar会多占用空间，因为有一位用来存储其长度<ul>
+<li>手机号，身份证号等固定长度可以使用char</li>
+</ul>
+</li>
+<li>如果数据长度不一选varchar，<strong>选用varchar能节省存储空间</strong>，例如，varchar(10)则不一定使用了10个空间<ul>
+<li>账号、地址、姓名等不固定长度可以使用varchar</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-3-日期时间型"><a href="#4-3-日期时间型" class="headerlink" title="4.3 日期时间型"></a>4.3 日期时间型</h2><ul>
+<li><font color="red"> year：表示年，比如2000</font></li>
+<li><font color="red">date：日期型，表示一个日期格式，如2020-01-01</font></li>
+<li><font color="red"> time：时间型，表示一个时间格式，如22:10:15</font></li>
+<li><font color="red"> datetime：日期时间型，表示一个日期+时间的组合格式，如2020-01-01 22:10:15</font></li>
+<li>timestamp：时间戳型，如果某列的数据类型为timestamp且该列为not null，当插入数据时不指定该列的值，那么这个列就会自动取值为当前的日期和时间；在创建和修改数据行时，如果没有明确对timestamp数据列进行赋值，则它就会自动取值为当前的日期和时间。如果表中有多个timestamp列，只有第一个会自动取值。</li>
+</ul>
+<h2 id="4-4-枚举类型"><a href="#4-4-枚举类型" class="headerlink" title="4.4 枚举类型"></a>4.4 枚举类型</h2><ul>
+<li>enum：枚举类型，当一个字段的值只能在某个范围内取值，比如性别只能取男或女，可以用enum(“男”,”女”)来表示，这个字段在插入数据时只能取男或者女或者不传值。每个枚举值都有一个索引，第一个值的索引为1。枚举类型的好处是MySQL在存储此类数据时，直接转化成数字存储而不是字符串，可以节省空间，并且在表的.frm文件中存储“数字-字符串”之间的对应关系。</li>
+</ul>
+<h1 id="5-表的创建、修改、删除等操作"><a href="#5-表的创建、修改、删除等操作" class="headerlink" title="5. 表的创建、修改、删除等操作"></a>5. 表的创建、修改、删除等操作</h1><h2 id="5-1-表的主键（Primary-Key）"><a href="#5-1-表的主键（Primary-Key）" class="headerlink" title="5.1 表的主键（Primary Key）"></a>5.1 表的主键（Primary Key）</h2><ul>
+<li>通过primary key(主键字段)来指定主键。</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#给表添加主键</span><br><span class="line">alter table student43 add primary key(s_id);</span><br><span class="line">#设置主键自增</span><br><span class="line">alter table student43 modify s_id int auto_increment;</span><br><span class="line">#删除主键</span><br><span class="line">alter table student43 drop primary key;</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>主键：==唯一标识表中每行的一列==（或几列）称为主键，主键也称主关键字</p>
+</li>
+<li><p>主键要满足的条件：</p>
+<ul>
+<li>任意两行都不具有相同的主键值，即<strong>主键值不重复</strong></li>
+<li>每个行都必须具有一个主键值，即<strong>主键值不能为空</strong>（NULL）</li>
+</ul>
+</li>
+</ul>
+<p><strong>一张表只能有一个主键，但这个主键可以是一列，也可以是多列的组合；如果是多列的组合，那么多列的组合必须满足上面的两个条件</strong></p>
+<h2 id="5-2-表的外键（Foreign-Key）"><a href="#5-2-表的外键（Foreign-Key）" class="headerlink" title="5.2 表的外键（Foreign Key）"></a>5.2 表的外键（Foreign Key）</h2><h3 id="（1）概念"><a href="#（1）概念" class="headerlink" title="（1）概念"></a>（1）概念</h3><ul>
+<li>外键：外键用于关联两张表，==外键为表中的一列，同时又是另一个表的主键==，定义了两个表之间的关系，外键又称作外关键字</li>
+<li>主表与从表：以另一个表的外键作为主键的表被称为主表，具有此外键的表被称为主表的从表</li>
+<li>一张表可以有多个外键，每个外键分别关联不同主表的主键</li>
+</ul>
+<h3 id="（2）外键的作用："><a href="#（2）外键的作用：" class="headerlink" title="（2）外键的作用："></a>（2）外键的作用：</h3><ul>
+<li><p>外键用于<strong>关联</strong>两张表；</p>
+</li>
+<li><p><strong>保持数据一致性，完整性</strong>，主要目的是控制存储在外键表中的数据；</p>
+</li>
+</ul>
+<p>最直观的作用是==防止非法数据录入==，就是说录入外键数据时必须在它所属的主表中存在的相应数据，如果录入其他数据会报错</p>
+<h3 id="（3）外键的功能由两种方法实现"><a href="#（3）外键的功能由两种方法实现" class="headerlink" title="（3）外键的功能由两种方法实现"></a>（3）外键的功能由两种方法实现</h3><p>CASCADE为级联执行、RESTRICT为阻止执行，默认为RESTRICT</p>
+<h4 id="1）阻止执行（restrict）"><a href="#1）阻止执行（restrict）" class="headerlink" title="1）阻止执行（restrict）"></a>1）阻止执行（restrict）</h4><ul>
+<li><p>从表插入新行，其外键值不是主表的主键值便阻止插入</p>
+<ul>
+<li>在成绩表中插入学生表中没有的学生成绩（会失败）</li>
+</ul>
+<p>从表修改外键值，新值不是主表的主键值便阻止修改</p>
+</li>
+<li><p>主表删除行，其主键值在从表里存在便阻止删除(要想删除，必须先删除从表的相关行)</p>
+<ul>
+<li>要删某学生，必须先删除成绩表中该学生的成绩</li>
+</ul>
+<p>主表修改主键值，旧值在从表里存在便阻止修改(要想修改，必须先删除从表的相关行)</p>
+</li>
+</ul>
+<h4 id="2）级联执行（cascade）"><a href="#2）级联执行（cascade）" class="headerlink" title="2）级联执行（cascade）"></a>2）级联执行（cascade）</h4><ul>
+<li><p>主表删除行，连带从表的相关行一起删除</p>
+</li>
+<li><p>主表修改主键值，连带从表相关行的外键值一起修改</p>
+</li>
+</ul>
+<h2 id="5-3-创建表create"><a href="#5-3-创建表create" class="headerlink" title="5.3 创建表create"></a>5.3 创建表create</h2><p>语法：create table 表名 (字段1 数据类型 属性,字段2 数据类型 属性, …, primary key(主键字段));</p>
+<ul>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#创建学生表，包含学号、姓名、性别、出生日期四个字段，指定引擎为INNODB</span><br><span class="line">create table students (</span><br><span class="line">    sid int not null COMMENT"学号",</span><br><span class="line">    sname varchar(20) not null COMMENT"姓名",</span><br><span class="line">    sgender enum("男","女") COMMENT"性别",</span><br><span class="line">    sbirth date COMMENT"出生日期"，</span><br><span class="line">    primary key(sid)</span><br><span class="line">) </span><br><span class="line">engine=innodb   		#数据库安装后默认使用的是InnoDB引擎</span><br><span class="line">DEFAULT CHARSET=utf8;   #指定字符集为utf8</span><br><span class="line"></span><br><span class="line">#创建一个老师表，包括老师编号、姓名、性别、家庭住址，默认家庭住址是蜀都中心</span><br><span class="line">create table teachers (</span><br><span class="line">    id int not null,</span><br><span class="line">    tname varchar(20) not null,</span><br><span class="line">    sex enum("男","女"),</span><br><span class="line">    address varchar(20) default "蜀都中心"，  #设置默认值</span><br><span class="line">    primary key(id)</span><br><span class="line">);</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-4-查看表的结构desc"><a href="#5-4-查看表的结构desc" class="headerlink" title="5.4 查看表的结构desc"></a>5.4 查看表的结构desc</h2><ul>
+<li><p>语法：desc 表名;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">desc test;</span><br><span class="line">+----------------+--------------+------+-----+---------+-------+</span><br><span class="line">| Field          | Type         | Null | Key | Default | Extra |</span><br><span class="line">+----------------+--------------+------+-----+---------+-------+</span><br><span class="line">| ID_            | varchar(64)  | NO   | PRI | NULL    |       |</span><br><span class="line">| DEM_NAME_      | varchar(64)  | YES  |     | NULL    |       |</span><br><span class="line">| CODE_          | varchar(64)  | YES  | MUL | NULL    |       |</span><br><span class="line">+----------------+--------------+------+-----+---------+-------+</span><br><span class="line">14 rows in set (0.00 sec)</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-5-修改表添加外键alter-table-add-constaint"><a href="#5-5-修改表添加外键alter-table-add-constaint" class="headerlink" title="5.5 修改表添加外键alter table add constaint"></a>5.5 修改表添加外键alter table add constaint</h2><ul>
+<li><p>语法：alter table 从表名称 add constraint 外键名称 foreign key(外键) references 主表名称(主键);</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#修改course表，指定teacher_id作为外键，关联教师表的teacher_id，并设置级联执行删除</span><br><span class="line">alter table course add constraint fk_course_teacher foreign key(teacher_id) references teacher(teacher_id) on delete cascade;</span><br><span class="line"></span><br><span class="line">#删除外键</span><br><span class="line">alter table course drop foreign key fk_course_teacher;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-6-在表中增加一个字段alter-table-add"><a href="#5-6-在表中增加一个字段alter-table-add" class="headerlink" title="5.6 在表中增加一个字段alter table add"></a>5.6 在表中增加一个字段alter table add</h2><ul>
+<li><p>语法：alter table 表名 add 字段名 数据类型 属性;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#在students表中增加字段age_</span><br><span class="line">alter table students add age_ int;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-7-修改表的字段alter-table-change-modify"><a href="#5-7-修改表的字段alter-table-change-modify" class="headerlink" title="5.7 修改表的字段alter table change/modify"></a>5.7 修改表的字段alter table change/modify</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>alter table 表名 modify 列名 新类型 新属性;</li>
+<li>alter table 表名  change 旧列名 新列名 新类型 新属性;</li>
+</ul>
+<p>其中，modify只能改变列的属性，change可以改变列名及属性。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#把字段name_的数据类型改成varchar(30)，非空</span><br><span class="line">alter table students modify name_ varchar(30) not null;</span><br><span class="line"></span><br><span class="line">#把字段birthday_的名称改为birthdate_，数据类型为datetime，非空</span><br><span class="line">alter table students change birthday_ birthdate_  datetime not null;</span><br><span class="line"></span><br><span class="line">#修改后查看表的结构，可以看到字段已经被修改成功</span><br><span class="line">desc students;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-8-在表中删除一个字段alter-table-drop"><a href="#5-8-在表中删除一个字段alter-table-drop" class="headerlink" title="5.8 在表中删除一个字段alter table drop"></a>5.8 在表中删除一个字段alter table drop</h2><ul>
+<li><p>语法：alter table 表名 drop 字段名;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#删除students表中的age_字段</span><br><span class="line">alter table students drop age_;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-9-重命名表alter-table-rename-to"><a href="#5-9-重命名表alter-table-rename-to" class="headerlink" title="5.9 重命名表alter table rename to"></a>5.9 重命名表alter table rename to</h2><ul>
+<li><p>语法：alter table 当前表名 rename to 修改后的表名;</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table students rename to students_info;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="5-10-删除一张表drop-table-truncate-table"><a href="#5-10-删除一张表drop-table-truncate-table" class="headerlink" title="5.10 删除一张表drop table/truncate table"></a>5.10 删除一张表drop table/truncate table</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>drop table 表名;</li>
+<li>drop table  if  exists 表名;    #如果表存在就删除，如果不存在也不报错</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#删除表students</span><br><span class="line">drop table students;	</span><br><span class="line"></span><br><span class="line">#删除students表数据</span><br><span class="line">truncate table students;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>drop table和truncate table的区别</p>
+<p>drop是删除表及其中的所有数据</p>
+<p>truncate是先drop表，然后会新建一张空表，相当于只删除表数据</p>
+</li>
+</ul>
+<h1 id="6-表数据的增删改操作"><a href="#6-表数据的增删改操作" class="headerlink" title="6. 表数据的增删改操作"></a>6. 表数据的增删改操作</h1><h2 id="6-1-插入数据insert-into…values"><a href="#6-1-插入数据insert-into…values" class="headerlink" title="6.1 插入数据insert into…values"></a>6.1 插入数据insert into…values</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>insert into 表名 ( 字段1, 字段2,…字段n ) values ( 值1, 值2,…值n );</li>
+<li>insert into 表名 values ( 值1, 值2,…值n );</li>
+</ul>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#场景一：插入一条数据，指定字段名称，插入所有字段的值，</span><br><span class="line">insert into students (id_,name_,sex_,birthday_) values (1,"张三","男","2001-1-1");</span><br><span class="line"></span><br><span class="line">#场景二：插入一条数据，指定字段名称，只插入必填值</span><br><span class="line">insert into students (id_,name_) values (2,"李四");</span><br><span class="line"></span><br><span class="line">#场景三：插入一条数据，不写字段名称，直接写数据，但这种情况下需要对所有字段插入值，并且值的顺序必须与表中的字段顺序保持一致</span><br><span class="line">insert into students values (3,"李四","男","2001-1-1");</span><br><span class="line"></span><br><span class="line">#场景四：插入多条数据：每条数据用小括号括起来，小括号之间用逗号隔开</span><br><span class="line">insert into students values (4,"王五","男","2001-1-1"),(5,"赵六","男","2001-1-1"),(6,"刘七","男","2001-1-1");</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h2 id="6-2-删除数据delete-from…-where、truncate-table"><a href="#6-2-删除数据delete-from…-where、truncate-table" class="headerlink" title="6.2 删除数据delete from… where、truncate table"></a>6.2 删除数据delete from… where、truncate table</h2><ul>
+<li><p>语法：delete from 表名 [where子句];</p>
+<p>在删除数据是一般要使用where子句来指定删除特定的行，否则会删除表的所有行。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#删除张三的信息</span><br><span class="line">delete from students where name_="张三";</span><br><span class="line"></span><br><span class="line">#快速清空学生表的数据</span><br><span class="line">truncate students;</span><br><span class="line">delete from students;</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>快速清空表的数据：truncate table 表名 或者 truncate 表名;</p>
+</li>
+<li><p>delete from与truncate的区别：如果要清空表的所有数据，可以使用truncate语句，而且速度比delete from语句快，truncate语句是先删除整张表，然后重新创建一个空表；另外truncate删除的数据不可恢复，而delete from删除的数据时可以恢复的。</p>
+</li>
+</ul>
+<h2 id="6-3-修改数据update-…-set-…-where"><a href="#6-3-修改数据update-…-set-…-where" class="headerlink" title="6.3 修改数据update … set … where"></a>6.3 修改数据update … set … where</h2><ul>
+<li><p>语法：</p>
+<ul>
+<li>update 表名 set 字段1=值1 [where子句];</li>
+<li>update 表名 set 字段1=值1, 字段2=值2 [where子句];</li>
+</ul>
+<p>在修改数据是一般要使用WHERE子句来指定修改特定的行，否则会修改表的所有行。</p>
+</li>
+<li><p>举例：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#把张三的性别改成女</span><br><span class="line">update students set sex_="女" where name="张三";</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/06/mysql/" title="mysql">https://laylaycjl.github.io/2024/05/06/mysql/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/mysql/" rel="tag"><i class="fa fa-tag"></i> mysql</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/04/29/Linux%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E5%85%B7/" rel="prev" title="Linux网络配置及工具">
+                  <i class="fa fa-chevron-left"></i> Linux网络配置及工具
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/" rel="next" title="MySQL查询及其他">
+                  MySQL查询及其他 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">162k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:27</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
