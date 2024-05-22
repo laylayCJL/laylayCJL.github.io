@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、测试设计概念 测试设计主要解决“测什么”的问题，即指明被测对象中什么需要测试 测试需求通常是以软件需求为基础进行分析，通过对需求的细化和分解，形成可测试的内容（测试点） 测试需求应全部覆盖已定义的业务流程，以及功能和非功能方面的需求  二、测试思路 1、划分功能项分析一个页面有哪些功能模块 例1：一个登录页面可以划分为5个子模块 关闭按钮、账号密码登录、海外手机号登录、验证码快捷登录、第三方登">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试设计方法">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、测试设计概念 测试设计主要解决“测什么”的问题，即指明被测对象中什么需要测试 测试需求通常是以软件需求为基础进行分析，通过对需求的细化和分解，形成可测试的内容（测试点） 测试需求应全部覆盖已定义的业务流程，以及功能和非功能方面的需求  二、测试思路 1、划分功能项分析一个页面有哪些功能模块 例1：一个登录页面可以划分为5个子模块 关闭按钮、账号密码登录、海外手机号登录、验证码快捷登录、第三方登">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517110238391.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104305449.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517110620134.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104340164.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104933576.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518094516507.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145011541.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145522646.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145606252.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145835613.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518093426262.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518094038029.png">
+<meta property="article:published_time" content="2024-05-17T02:12:37.000Z">
+<meta property="article:modified_time" content="2024-05-18T01:54:19.008Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="测试基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517110238391.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>测试设计方法 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">一、测试设计概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%B5%8B%E8%AF%95%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">二、测试思路</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E5%88%92%E5%88%86%E5%8A%9F%E8%83%BD%E9%A1%B9"><span class="nav-number">2.1.</span> <span class="nav-text">1、划分功能项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%AD%A3%E5%90%91%E5%8A%9F%E8%83%BD%E9%AA%8C%E8%AF%81"><span class="nav-number">2.2.</span> <span class="nav-text">2、正向功能验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81-%E5%8D%95%E4%B8%AA%E5%8A%9F%E8%83%BD%E9%A1%B9%E9%AA%8C%E8%AF%81"><span class="nav-number">2.3.</span> <span class="nav-text">3、&#x3D;&#x3D;单个功能项验证&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%8A%9F%E8%83%BD%E4%B9%8B%E9%97%B4%E4%BA%A4%E4%BA%92%E9%AA%8C%E8%AF%81"><span class="nav-number">2.4.</span> <span class="nav-text">4、功能之间交互验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E9%81%BF%E5%85%8D%E9%9A%90%E5%BD%A2%E9%9C%80%E6%B1%82"><span class="nav-number">2.5.</span> <span class="nav-text">5、避免隐形需求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">三、测试设计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E7%AD%89%E4%BB%B7%E7%B1%BB%E5%88%92%E5%88%86%E6%B3%95%EF%BC%88%E6%B5%8B%E5%8D%95%E4%B8%AA%E8%BE%93%E5%85%A5%E5%9F%9F%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">1、等价类划分法（测单个输入域）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%A6%82%E5%BF%B5"><span class="nav-number">3.1.1.</span> <span class="nav-text">（1）概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%AD%89%E4%BB%B7%E7%B1%BB%E5%88%92%E5%88%86%E6%B3%95%E4%BD%BF%E7%94%A8%E4%B8%BE%E4%BE%8B"><span class="nav-number">3.1.2.</span> <span class="nav-text">（2）等价类划分法使用举例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%A0%B9%E6%8D%AE%E7%AD%89%E4%BB%B7%E7%B1%BB%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E7%9A%84%E5%8E%9F%E5%88%99"><span class="nav-number">3.1.3.</span> <span class="nav-text">（3）根据等价类生成测试用例的原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E7%AD%89%E4%BB%B7%E7%B1%BB%E5%88%92%E5%88%86%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">3.1.4.</span> <span class="nav-text">（4）等价类划分的局限性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E8%BE%B9%E7%95%8C%E5%80%BC%E6%B3%95%EF%BC%88%E6%B5%8B%E5%8D%95%E4%B8%AA%E8%BE%93%E5%85%A5%E5%9F%9F%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">2、边界值法（测单个输入域）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E9%97%AD%E5%8C%BA%E9%97%B4%EF%BC%9A"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">1）闭区间：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%8D%8A%E5%BC%80%E5%8C%BA%E9%97%B4%EF%BC%9A"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">2）半开区间：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E5%BC%80%E5%8C%BA%E9%97%B4%EF%BC%9A"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">3）开区间：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E9%94%99%E8%AF%AF%E7%8C%9C%E6%B5%8B%E6%B3%95%EF%BC%88%E6%A0%B9%E6%8D%AE%E7%BB%8F%E9%AA%8C%E5%92%8C%E7%9B%B4%E8%A7%89%EF%BC%89"><span class="nav-number">3.3.</span> <span class="nav-text">3、错误猜测法（根据经验和直觉）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E9%94%99%E8%AF%AF%E6%8E%A8%E6%B5%8B%E6%B3%95%E7%9A%84%E5%B8%B8%E8%A7%81%E4%BE%9D%E6%8D%AE"><span class="nav-number">3.3.1.</span> <span class="nav-text">（1）错误推测法的常见依据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B8%B8%E5%9C%A8%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AF%84%E5%AE%A1%E4%B8%AD%E4%BD%BF%E7%94%A8"><span class="nav-number">3.3.2.</span> <span class="nav-text">（2）常在测试用例评审中使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%9B%A0%E6%9E%9C%E5%9B%BE%E6%B3%95%EF%BC%88%E5%A4%9A%E4%B8%AA%E6%9D%A1%E4%BB%B6%E7%BB%84%E5%90%88%EF%BC%89"><span class="nav-number">3.4.</span> <span class="nav-text">4、因果图法（多个条件组合）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%AD%89%E4%BB%B7%E7%B1%BB%E5%88%92%E5%88%86%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">3.4.1.</span> <span class="nav-text">（1）等价类划分的局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%9B%A0%E6%9E%9C%E5%9B%BE%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="nav-number">3.4.2.</span> <span class="nav-text">（2）因果图法概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%9B%A0%E6%9E%9C%E5%9B%BE%E6%B3%95%E9%80%82%E7%94%A8%E8%8C%83%E5%9B%B4"><span class="nav-number">3.4.3.</span> <span class="nav-text">（3）因果图法适用范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-number">3.4.4.</span> <span class="nav-text">（4）如何生成测试用例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%885%EF%BC%89%E5%88%A4%E5%AE%9A%E8%A1%A8"><span class="nav-number">3.4.5.</span> <span class="nav-text">（5）判定表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%88%A4%E5%AE%9A%E8%A1%A8%E7%9A%84%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86"><span class="nav-number">3.4.5.1.</span> <span class="nav-text">1）判定表的组成部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%88%9B%E5%BB%BA%E5%88%A4%E5%AE%9A%E8%A1%A8%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.4.5.2.</span> <span class="nav-text">2）创建判定表的步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E5%88%A4%E5%AE%9A%E8%A1%A8%E4%B8%BE%E4%BE%8B"><span class="nav-number">3.4.5.3.</span> <span class="nav-text">3）判定表举例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E6%A0%B9%E6%8D%AE%E5%88%A4%E5%AE%9A%E8%A1%A8%E5%AF%BC%E5%87%BA%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-number">3.4.5.4.</span> <span class="nav-text">4）根据判定表导出测试用例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E5%9C%BA%E6%99%AF%E6%B3%95%EF%BC%88%E6%B5%8B%E5%8A%9F%E8%83%BD%E5%92%8C%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="nav-number">3.5.</span> <span class="nav-text">5、场景法（测功能和业务流程）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%9C%BA%E6%99%AF%E6%B3%95%E8%B7%AF%E5%BE%84"><span class="nav-number">3.5.1.</span> <span class="nav-text">（1）场景法路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%9C%BA%E6%99%AF%E6%B3%95%E8%AE%BE%E8%AE%A1%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.5.2.</span> <span class="nav-text">（2）场景法设计步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="nav-number">3.5.3.</span> <span class="nav-text">（3）流程图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B"><span class="nav-number">3.5.4.</span> <span class="nav-text">（4）测试用例</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          测试设计方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-17 10:12:37" itemprop="dateCreated datePublished" datetime="2024-05-17T10:12:37+08:00">2024-05-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-18 09:54:19" itemprop="dateModified" datetime="2024-05-18T09:54:19+08:00">2024-05-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、测试设计概念"><a href="#一、测试设计概念" class="headerlink" title="一、测试设计概念"></a>一、测试设计概念</h1><ul>
+<li>测试设计主要解决“测什么”的问题，即指明被测对象中什么需要测试</li>
+<li>测试需求通常是以<strong>软件需求</strong>为基础进行分析，通过对需求的细化和分解，形成可测试的内容（测试点）</li>
+<li>测试需求应全部覆盖已定义的<u>业务流程</u>，以及<strong>功能和非功能</strong>方面的需求</li>
+</ul>
+<h1 id="二、测试思路"><a href="#二、测试思路" class="headerlink" title="二、测试思路"></a>二、测试思路</h1><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517110238391.png" alt="image-20240517110238391" style="zoom:50%;"></p>
+<h2 id="1、划分功能项"><a href="#1、划分功能项" class="headerlink" title="1、划分功能项"></a>1、划分功能项</h2><p>分析一个页面有哪些功能模块</p>
+<p>例1：一个登录页面可以划分为5个子模块</p>
+<p>关闭按钮、账号密码登录、海外手机号登录、验证码快捷登录、第三方登录</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104305449.png" alt="image-20240517104305449" style="zoom:50%;"></p>
+<p>例2：用户管理页面可以划分为7个子模块</p>
+<p>退出用户管理、查询用户、添加用户、删除用户（勾选功能）、编辑用户、导出用户信息、分页展示</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517110620134.png" alt="image-20240517110620134" style="zoom:50%;"></p>
+<h2 id="2、正向功能验证"><a href="#2、正向功能验证" class="headerlink" title="2、正向功能验证"></a>2、正向功能验证</h2><p>查看正常的操作下，功能是否能正确实现</p>
+<p>例1：以账号密码登录这个子模块为例：</p>
+<p>输入正确的手机号（邮箱）和密码，登录成功</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104340164.png" alt="image-20240517104340164" style="zoom:50%;"></p>
+<p>例2：</p>
+<p>1）以用户管理页面的查询用户这个子模块为例</p>
+<ul>
+<li>输入正确的用户姓名和门店，可以成功查询到该用户</li>
+</ul>
+<p>2）以用户管理页面的删除用户这个子模块为例</p>
+<ul>
+<li>验证单个删除用户时弹出确认对话框，点击确认按钮后用户删除成功</li>
+<li>验证单个删除用户时弹出确认对话框，点击取消按钮或X按钮不进行用户删除</li>
+<li>验证选择1个或多个用户批量删除时弹出确认对话框，点击确认按钮后选中的用户删除成功</li>
+<li>验证选择1个或多个用户批量删除时弹出确认对话框，点击取消按钮或X按钮后不进行删除选中的用户</li>
+</ul>
+<span id="more"></span>
+<h2 id="3、-单个功能项验证"><a href="#3、-单个功能项验证" class="headerlink" title="3、==单个功能项验证=="></a>3、==单个功能项验证==</h2><p>对每个子模块划分出单个模块，进行单个功能验证，包括正常和异常两种情形</p>
+<p>（1）对于输入框类的功能项，一般从四个方面去思考如何设计测试用例</p>
+<ul>
+<li><strong>数据长度验证</strong></li>
+<li><strong>教据类型验证</strong></li>
+<li><strong>是否必填验证</strong></li>
+<li><strong>限制约束验证</strong></li>
+</ul>
+<p>（等价类、边界值）</p>
+<p>（2）举例</p>
+<p>例1：以账号这个输入框为例，可以如何设计测试用例</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517104933576.png" alt="image-20240517104933576" style="zoom:50%;"></p>
+<p>有两种账号登录方式，手机、邮箱</p>
+<ul>
+<li><p>手机号</p>
+<p>账号输入10位数字，输入符合要求的密码，点击登录——&gt;展示手机号错误</p>
+<p>账号输入12位数字，输入符合要求的密码，点击登录——&gt;展示手机号错误</p>
+<p>账号输入11位包含非数字，输入符合要求的密码，点击登录——&gt;提示用户名或者密码错误</p>
+<p>账号输入未注册的手机号，输入符合要求的密码，点击登录——&gt;提示用户名或者密码错误</p>
+<p>账号为空，输入符合要求的密码，点击登录——&gt;提示账号不能为空</p>
+</li>
+<li><p>邮箱<br>账号输入错误的邮箱格式，输入符合要求的密码，点击登录——&gt;提示用户名或者密码错误<br>输入没有注册的邮箱，输入符合要求的密码，点击登录——&gt;提示用户名或者密码错误</p>
+</li>
+</ul>
+<p>例2：</p>
+<p>1）以查询用户这个子模块为例，如何设计单个功能验证</p>
+<ul>
+<li>验证不输入姓名和门店，查询到所有用户</li>
+<li>验证输入姓名的部分字段，可以模糊查询到姓名中包含这个字段的所有用户</li>
+<li>验证输入不存在的用户姓名，查询不到用户信息</li>
+<li>验证点击展开/收起按钮，能展开/收起查询条件框</li>
+<li>验证点击重置按钮，清空查询条件</li>
+</ul>
+<p>2）以删除用户这个子模块为例，如何设计单个功能验证：</p>
+<ul>
+<li>验证没有选中用户将进行批量删除时，给出提示信息</li>
+<li>验证管理员用户不能删除其他的管理员</li>
+</ul>
+<h2 id="4、功能之间交互验证"><a href="#4、功能之间交互验证" class="headerlink" title="4、功能之间交互验证"></a>4、功能之间交互验证</h2><p>例如第三方登录功能</p>
+<h2 id="5、避免隐形需求"><a href="#5、避免隐形需求" class="headerlink" title="5、避免隐形需求"></a>5、避免隐形需求</h2><p>例如：</p>
+<p>输入密码时展示为*</p>
+<p>未勾选导出项目时，弹出提示：未勾选导出项目</p>
+<h1 id="三、测试设计方法"><a href="#三、测试设计方法" class="headerlink" title="三、测试设计方法"></a>三、测试设计方法</h1><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518094516507.png" alt="image-20240518094516507" style="zoom:50%;"></p>
+<h2 id="1、等价类划分法（测单个输入域）"><a href="#1、等价类划分法（测单个输入域）" class="headerlink" title="1、等价类划分法（测单个输入域）"></a>1、等价类划分法（测单个输入域）</h2><p>打印机举例：</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145011541.png" alt="image-20240517145011541"></p>
+<p>等价类划分的办法是把程序的输入域划分成若干等价类，然后从每个部分中选取<strong>少数代表性数据</strong>当作测试输入数据，使用少数测试数据检验程序在一大类情况下的反映</p>
+<h3 id="（1）概念"><a href="#（1）概念" class="headerlink" title="（1）概念"></a>（1）概念</h3><ul>
+<li><p>等价类：某个输入域的集合，在这个集合中每个输入条件都是等效的，如果其中一个的输入不能导致问题发生，那么集合中其它输入条件进行测试也是不可能发生错误</p>
+</li>
+<li><p>有效等价类：有效等价类指的是对程序的规范是有意义的、合理的输入数据所构成的集合（可以是一个也可以是多个）</p>
+</li>
+<li><p>无效等价类：指对程序的规范是不合理的或无意义的输入数据所构成的集合（至少有一个）</p>
+</li>
+</ul>
+<h3 id="（2）等价类划分法使用举例"><a href="#（2）等价类划分法使用举例" class="headerlink" title="（2）等价类划分法使用举例"></a>（2）等价类划分法使用举例</h3><p>1）如果输入条件规定了<strong>取值范围</strong>或<strong>值的个数</strong>，则可确定<u>一个有效等价类</u>和<u>两个无效等价类</u></p>
+<ul>
+<li>例如：程序的输入项n满足“从1-999”<ul>
+<li>有效等价类位“1&lt;=n&lt;=999”</li>
+<li>无效等价类为“n&lt;1” 及“n&gt;999<!--1”--></li>
+</ul>
+</li>
+</ul>
+<p>2）输入条件规定了输入值的集合，或是规定了“<strong>必须如何</strong>”的条件，则可确定<u>一个有效等价类</u>和<u>一个无效等价类</u></p>
+<ul>
+<li>例如：某标识符，条件规定“以字母开头”<ul>
+<li>“以字母开头”作为有效等价类</li>
+<li>“以非字母开头”作为无效等价类</li>
+</ul>
+</li>
+</ul>
+<p>3）如果已划分的等价类中各元素在程序中的处理方式是不同的，则应将此等价类进一步划分成更小等价类</p>
+<ul>
+<li><p>例如：-10&lt;n&lt;10,且有算法m/n</p>
+<p> 有效等价类（ -10,0 ）,（ 0，10 ）</p>
+<p> 无效：&lt;=-10，&gt;=10，0</p>
+</li>
+</ul>
+<p>4）在输入条件是一个<strong>布尔量</strong>的情况下，可以确定<u>一个有效等价类</u>和<u>一个无效等价类</u></p>
+<ul>
+<li>例如：界面输入只提供单选框，是与否</li>
+</ul>
+<h3 id="（3）根据等价类生成测试用例的原则"><a href="#（3）根据等价类生成测试用例的原则" class="headerlink" title="（3）根据等价类生成测试用例的原则"></a>（3）根据等价类生成测试用例的原则</h3><p>根据等价类表，然后从划分出的等价类中按以下三个原则设计测试用例</p>
+<ul>
+<li>为每一个等价类规定一个唯一的编号</li>
+<li>设计一个新的测试用例，使其尽可能多地覆盖尚未被覆盖地<strong>有效等价类</strong>，重复第一步，直到所有的有效等价类都被覆盖为止</li>
+<li>设计一个新的测试用例，使其切覆盖一个尚未被覆盖的<strong>无效等价类</strong>，重复这一步，直到所有的无效等价类都被覆盖为止</li>
+</ul>
+<h3 id="（4）等价类划分的局限性"><a href="#（4）等价类划分的局限性" class="headerlink" title="（4）等价类划分的局限性"></a>（4）等价类划分的局限性</h3><ul>
+<li>该方法孤立地考虑各个输入数据的测试功效，而没有考虑多个输入数据的组合效应，可能会遗漏了输入数据易于出错的组合情况，可以采用因果图设计法弥补上述不足</li>
+<li>多个输入数据孤立的测试，导致测试用例数量非常庞大，不利于维护和执行，可以采用边界值法解决上述不足</li>
+</ul>
+<h2 id="2、边界值法（测单个输入域）"><a href="#2、边界值法（测单个输入域）" class="headerlink" title="2、边界值法（测单个输入域）"></a>2、边界值法（测单个输入域）</h2><p>边界分析法是列出单元功能、输入、状态及控制的<strong>合法边界值</strong>和<strong>非法边界值</strong>，设计测试用例，包含全部边界值的方法</p>
+<h4 id="1）闭区间："><a href="#1）闭区间：" class="headerlink" title="1）闭区间："></a>1）闭区间：</h4><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145522646.png" alt="image-20240517145522646" style="zoom:67%;"></p>
+<p>例如：1&lt;=m&lt;=999</p>
+<ul>
+<li>上点：边界上的点（1,999）</li>
+<li>内点：区间内的点（500）</li>
+<li>离点：离边界值最近且与上点不属于同一等价类的点（0,1000）</li>
+<li><strong>对于小数，没有离点，不可取</strong></li>
+</ul>
+<h4 id="2）半开区间："><a href="#2）半开区间：" class="headerlink" title="2）半开区间："></a>2）半开区间：</h4><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145606252.png" alt="image-20240517145606252" style="zoom:67%;"></p>
+<p>例如：1&lt;m&lt;=999</p>
+<ul>
+<li>上点：边界上的点（1,999）</li>
+<li>内点：区间内的点（500）</li>
+<li>离点：离边界值最近且与上点不属于同一等价类的点（2,1000）</li>
+<li>对于小数，没有离点，不可取</li>
+</ul>
+<h4 id="3）开区间："><a href="#3）开区间：" class="headerlink" title="3）开区间："></a>3）开区间：</h4><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240517145835613.png" alt="image-20240517145835613" style="zoom:67%;"></p>
+<p>例如：1&lt;m&lt;999</p>
+<ul>
+<li>上点：边界上的点（1,999）</li>
+<li>内点：区间内的点（500）</li>
+<li>离点：离边界值最近且与上点不属于同一等价类的点（2,998）</li>
+<li>对于小数，没有离点，不可取</li>
+</ul>
+<h2 id="3、错误猜测法（根据经验和直觉）"><a href="#3、错误猜测法（根据经验和直觉）" class="headerlink" title="3、错误猜测法（根据经验和直觉）"></a>3、错误猜测法（根据经验和直觉）</h2><ul>
+<li><p>基于<strong>经验和直觉</strong>推测程序中所有可能存在的各种错误，从而有针对性的设计测试用例的方法</p>
+</li>
+<li><p>错误推测法的基本思想：列举出程序中所有可能有的错误和容易发生错误的特殊情况，根据他们设计测试用例</p>
+</li>
+</ul>
+<h3 id="（1）错误推测法的常见依据"><a href="#（1）错误推测法的常见依据" class="headerlink" title="（1）错误推测法的常见依据"></a>（1）错误推测法的常见依据</h3><ul>
+<li><p>在单元测试时理出的在模块中的常见错误</p>
+</li>
+<li><p>以前产品测试中曾经发现的错误</p>
+</li>
+<li><p>产品在客户实际使用过程中发现的错误</p>
+<p>回溯流程（从产品、设计、开发、测试不同的角度进行分析、怎么引入、怎么避免再次出现类似的问题、改进措施)</p>
+</li>
+<li><p>容易发生错误的情况</p>
+<p>例如：参数校验</p>
+</li>
+<li><p>一些公共模块，功能</p>
+<p>模块之间的关联可能导致的bug</p>
+</li>
+<li><p>修复了bug的功能和模块</p>
+<p>分析修改所产生的影响，进行推测</p>
+</li>
+</ul>
+<h3 id="（2）常在测试用例评审中使用"><a href="#（2）常在测试用例评审中使用" class="headerlink" title="（2）常在测试用例评审中使用"></a>（2）常在测试用例评审中使用</h3><ul>
+<li>猜错法充分发挥人的经验，在一个测试小组中集思广益，方便实用</li>
+<li>组织测试小组（也可以有外来人员）进行错误猜测，是有效的测试方法</li>
+</ul>
+<h2 id="4、因果图法（多个条件组合）"><a href="#4、因果图法（多个条件组合）" class="headerlink" title="4、因果图法（多个条件组合）"></a>4、因果图法（多个条件组合）</h2><h3 id="（1）等价类划分的局限性"><a href="#（1）等价类划分的局限性" class="headerlink" title="（1）等价类划分的局限性"></a>（1）等价类划分的局限性</h3><ul>
+<li>等价类没有考虑输入情况的组合，这样虽然各个输入条件单独可能出错的情况已经看到了，但多个输入情况组合起来可能出错的情况却被忽略</li>
+<li>采用因果图方法能帮助我们考虑输入条件的联系、相互组合等情况</li>
+</ul>
+<h3 id="（2）因果图法概述"><a href="#（2）因果图法概述" class="headerlink" title="（2）因果图法概述"></a>（2）因果图法概述</h3><ul>
+<li>分析需求规格说明中的描述中那些是原因，那些是结果，原因是输入条件，结果是输出条件</li>
+<li>因果图最终生成判定表，它适合于程序输入条件的各种组合情况，如果有N个条件，每个条件有2个取值，那么将产生2的N次方条路径</li>
+</ul>
+<h3 id="（3）因果图法适用范围"><a href="#（3）因果图法适用范围" class="headerlink" title="（3）因果图法适用范围"></a>（3）因果图法适用范围</h3><p>如果在测试时考虑输入条件的各种组合，可使用一种适合于描述多种条件的组合，相应产生多个动作的形式来设计测试用例</p>
+<h3 id="（4）如何生成测试用例"><a href="#（4）如何生成测试用例" class="headerlink" title="（4）如何生成测试用例"></a>（4）如何生成测试用例</h3><ul>
+<li>分析程序规范描述中哪些是原因，哪些是结果（原因常常是输入条件或是输入条件等价类，结果是输出条件）</li>
+<li>分析程序规范的描述中语义的内容，并将其表示成连接各个原因与各个结果的“因果图”</li>
+<li>由于语法或环境的限制，有些原因和结果的组合情况是不可能出现的。为表明这些特定的情况，在因果图上使用特殊的符号标明约束条件。把因果图转换成判定表。==把判定表的每一列写成一个测试用例==</li>
+</ul>
+<h3 id="（5）判定表"><a href="#（5）判定表" class="headerlink" title="（5）判定表"></a>（5）判定表</h3><ul>
+<li>判定表是分析和表达多条件下执行不同操作的情况下的工具</li>
+</ul>
+<h4 id="1）判定表的组成部分"><a href="#1）判定表的组成部分" class="headerlink" title="1）判定表的组成部分"></a>1）判定表的组成部分</h4><ul>
+<li>条件桩：列出了问题的所有条件</li>
+<li>动作桩：列出了问题规定可能采取的操作</li>
+<li>条件项：列出特定条件的取值</li>
+<li>动作项：列出在条件项目的各种取值情况下应该采取的动作</li>
+</ul>
+<h4 id="2）创建判定表的步骤"><a href="#2）创建判定表的步骤" class="headerlink" title="2）创建判定表的步骤"></a>2）创建判定表的步骤</h4><ul>
+<li>确定规则的个数</li>
+<li>列出所有的条件桩和动作桩</li>
+<li>填入条件项</li>
+<li>填入动作项</li>
+<li>合并相似规则</li>
+</ul>
+<h4 id="3）判定表举例"><a href="#3）判定表举例" class="headerlink" title="3）判定表举例"></a>3）判定表举例</h4><p>需求：订购单的检查</p>
+<p>如果金额超过500元且未过期，则发出批准单和提货单；若金额超过500元且已过期，则不发批准单和提货单；如果金额低于500元，则不论过期与否都发批准单和提货单，在过期的情况下还发出过期通知书</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>金额</th>
+<th>大于等于500</th>
+<th>大于等于500</th>
+<th>小于500</th>
+<th>小于500</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>保质期</td>
+<td>未过期</td>
+<td>已过期</td>
+<td>未过期</td>
+<td>已过期</td>
+</tr>
+<tr>
+<td>发出批准单</td>
+<td>发</td>
+<td></td>
+<td>发</td>
+<td>发</td>
+</tr>
+<tr>
+<td>发出提货单</td>
+<td>发</td>
+<td></td>
+<td>发</td>
+<td>发</td>
+</tr>
+<tr>
+<td>发出通知单</td>
+<td></td>
+<td></td>
+<td></td>
+<td>发</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4 id="4）根据判定表导出测试用例"><a href="#4）根据判定表导出测试用例" class="headerlink" title="4）根据判定表导出测试用例"></a>4）根据判定表导出测试用例</h4><p>以大于等于500这一列为例，导出为测试用例</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>用例编号</th>
+<th>ODER_CHECK_001</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>测试项目</td>
+<td>订购单检查</td>
+</tr>
+<tr>
+<td>测试标题</td>
+<td>验证系统金额小于500，未过期时系统发批准单和提货单</td>
+</tr>
+<tr>
+<td>重要级别</td>
+<td>高</td>
+</tr>
+<tr>
+<td>预置条件</td>
+<td>无</td>
+</tr>
+<tr>
+<td>输入</td>
+<td>499</td>
+</tr>
+<tr>
+<td>操作步骤</td>
+<td>1、输入金额：499； 2、选择未过期；3、点击确定</td>
+</tr>
+<tr>
+<td>预期输出</td>
+<td>发出批准单和提货单</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="5、场景法（测功能和业务流程）"><a href="#5、场景法（测功能和业务流程）" class="headerlink" title="5、场景法（测功能和业务流程）"></a>5、场景法（测功能和业务流程）</h2><ul>
+<li>运用场景来对系统的<strong>功能点</strong>或<strong>业务流程</strong>的描述，从而提高测试效果的一种方法</li>
+<li>模拟特定场景发生的事情，通过事件来触发某个动作的发生，观察事件的最终结果，从而用来发现软件存在的问题</li>
+</ul>
+<h3 id="（1）场景法路径"><a href="#（1）场景法路径" class="headerlink" title="（1）场景法路径"></a>（1）场景法路径</h3><p>场景法一般包括<strong>基本流</strong>和<strong>备选流</strong>。从一个流程开始，图中经过用例的每条路径都可以用基本流和备选流来表示。（基本流，是经过用例的最简单路径）</p>
+<p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518093426262.png" alt="image-20240518093426262" style="zoom:50%;"></p>
+<h3 id="（2）场景法设计步骤"><a href="#（2）场景法设计步骤" class="headerlink" title="（2）场景法设计步骤"></a>（2）场景法设计步骤</h3><ul>
+<li><p>根据说明，描述出程序的基本流及各项备选流</p>
+</li>
+<li><p>根据基本流和各项备选流生成不同的场景</p>
+</li>
+<li><p><strong>对每一个场景生成相应的测试用例</strong></p>
+</li>
+<li><p>对生成的所有测试用例重新复审，去掉多余的测试用例，测试用例确定后，对每一个测试用例确定测试数据值</p>
+</li>
+</ul>
+<h3 id="（3）流程图"><a href="#（3）流程图" class="headerlink" title="（3）流程图"></a>（3）流程图</h3><p><img src="/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/image-20240518094038029.png" alt="image-20240518094038029" style="zoom: 67%;"></p>
+<h3 id="（4）测试用例"><a href="#（4）测试用例" class="headerlink" title="（4）测试用例"></a>（4）测试用例</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>用例编号</th>
+<th>TC_LOGIN_001</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>测试项目</td>
+<td>项目登录</td>
+</tr>
+<tr>
+<td>测试标题</td>
+<td>验证系统输入合法用户名和密码正常登录</td>
+</tr>
+<tr>
+<td>重要级别</td>
+<td>高</td>
+</tr>
+<tr>
+<td>预置条件</td>
+<td>系统数据库内存在该用户名及密码</td>
+</tr>
+<tr>
+<td>输入</td>
+<td>用户名：A1， Aa1-Bb2_Cc3.Dd4E ; <br>密码：000000， 999999.</td>
+</tr>
+<tr>
+<td>操作步骤</td>
+<td>1、启动系统<br>2、分别输入用户名：A1， Aa1-Bb2_Cc3.Dd4E   <br>3、输入密码：100000， 999999999  <br>4、点击确定</td>
+</tr>
+<tr>
+<td>预期输出</td>
+<td>进入系统</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/17/%E6%B5%8B%E8%AF%95%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/" title="测试设计方法">https://laylaycjl.github.io/2024/05/17/测试设计方法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/" rel="tag"><i class="fa fa-tag"></i> 测试基础</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/16/%E6%B5%8B%E8%AF%95%E8%AE%A1%E5%88%92/" rel="prev" title="测试计划">
+                  <i class="fa fa-chevron-left"></i> 测试计划
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/17/%E9%9C%80%E6%B1%82%E8%AF%84%E5%AE%A1/" rel="next" title="需求评审">
+                  需求评审 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">204k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:05</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、App测试概念1、App的分类 iOS是基于Unix内核深度定制的一个移动设备操作系统；Android是一个Linux发行版，用于移动设备；Linux是类Unix系统；iOS是闭源的，Android是开源的；iOS是苹果公司主导，Android是谷歌主导的；  从操作系统平台来分，主要分为如下两种类型：  iOS App 安装在苹果的iOS操作系统上，主要是iPhone、iPad、iWatch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="APP测试">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、App测试概念1、App的分类 iOS是基于Unix内核深度定制的一个移动设备操作系统；Android是一个Linux发行版，用于移动设备；Linux是类Unix系统；iOS是闭源的，Android是开源的；iOS是苹果公司主导，Android是谷歌主导的；  从操作系统平台来分，主要分为如下两种类型：  iOS App 安装在苹果的iOS操作系统上，主要是iPhone、iPad、iWatch">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/charlesshenchuan/markdown-image-bed/raw/master/Typora/img/image-20210728092110573.png">
+<meta property="og:image" content="https://gitee.com/charlesshenchuan/markdown-image-bed/raw/master/Typora/img/image-20210728092130821.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152058480.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152115823.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152128679.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152153394.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152209385.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152225828.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152241066.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152258122.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152319218.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152331991.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152345245.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152358900.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152409115.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152420174.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152440671.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152500994.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152758822.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152813949.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152830079.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210826144949060.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152956985.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210730142504027.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153010295.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153021804.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153031116.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153058833.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210802085220421.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210914114038393.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210914114436140.png">
+<meta property="article:published_time" content="2024-05-16T07:18:24.000Z">
+<meta property="article:modified_time" content="2024-05-16T07:31:26.687Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="APP测试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/charlesshenchuan/markdown-image-bed/raw/master/Typora/img/image-20210728092110573.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>APP测试 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81App%E6%B5%8B%E8%AF%95%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">一、App测试概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81App%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">1、App的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81App%E5%BA%94%E7%94%A8%E5%95%86%E5%BA%97"><span class="nav-number">1.2.</span> <span class="nav-text">2、App应用商店</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81B-S%E6%9E%B6%E6%9E%84%E4%B8%8EC-S%E6%9E%B6%E6%9E%84"><span class="nav-number">1.3.</span> <span class="nav-text">3、B&#x2F;S架构与C&#x2F;S架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81iOS-App%E4%B8%8EAndroid-App%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.4.</span> <span class="nav-text">4、iOS App与Android App的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C-App%E7%9A%84%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二. App的测试点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E3%80%81%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.1.</span> <span class="nav-text">1 、功能测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81UI%E6%98%93%E7%94%A8%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.2.</span> <span class="nav-text">2、UI易用性测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81-%E5%85%BC%E5%AE%B9%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.3.</span> <span class="nav-text">3、 &#x3D;&#x3D;兼容性测试&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%B5%8B%E8%AF%95%E7%AD%96%E7%95%A5"><span class="nav-number">2.3.1.</span> <span class="nav-text">（1）测试策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9%EF%BC%88%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95%EF%BC%89"><span class="nav-number">2.3.2.</span> <span class="nav-text">（2）测试点（测试方法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%85%BC%E5%AE%B9%E6%B5%8B%E8%AF%95%E7%9A%84%E9%9A%BE%E7%82%B9"><span class="nav-number">2.3.3.</span> <span class="nav-text">（3）兼容测试的难点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">2.3.4.</span> <span class="nav-text">（4）测试工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%8D%B8%E8%BD%BD%E3%80%81%E5%8D%87%E7%BA%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.</span> <span class="nav-text">4、安装、卸载、升级测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AE%89%E8%A3%85%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.1.</span> <span class="nav-text">（1）安装测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">1）测试点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%AE%89%E8%A3%85%E6%B5%8B%E8%AF%95%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">2）安装测试方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%8D%B8%E8%BD%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.2.</span> <span class="nav-text">（2）卸载测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9-1"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">1）测试点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89%E5%8D%B8%E8%BD%BD%E6%96%B9%E6%B3%95"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">2）卸载方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%8D%87%E7%BA%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.4.3.</span> <span class="nav-text">（3）升级测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9-2"><span class="nav-number">2.4.3.1.</span> <span class="nav-text">1）测试点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89App%E7%9A%84%E5%8D%87%E7%BA%A7%E6%96%B9%E6%A1%88"><span class="nav-number">2.4.3.2.</span> <span class="nav-text">2）App的升级方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89%E5%8D%87%E7%BA%A7%E5%9C%BA%E6%99%AF%E8%AE%BE%E8%AE%A1%EF%BC%9A"><span class="nav-number">2.4.3.3.</span> <span class="nav-text">3）升级场景设计：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81-%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95"><span class="nav-number">2.5.</span> <span class="nav-text">5、&#x3D;&#x3D;弱网测试&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">2.5.1.</span> <span class="nav-text">（1）测试点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">2.5.2.</span> <span class="nav-text">（2）测试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89QNET"><span class="nav-number">2.5.2.1.</span> <span class="nav-text">1）QNET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89fiddler"><span class="nav-number">2.5.2.2.</span> <span class="nav-text">2）fiddler</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81-App%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.6.</span> <span class="nav-text">6、&#x3D;&#x3D;App稳定性测试&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%B7%A5%E5%85%B7"><span class="nav-number">2.6.1.</span> <span class="nav-text">（1）工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">2.6.2.</span> <span class="nav-text">（2）测试点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90"><span class="nav-number">2.6.3.</span> <span class="nav-text">（3）日志分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81-APP%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.7.</span> <span class="nav-text">7、&#x3D;&#x3D;APP性能测试&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%B5%8B%E8%AF%95%E7%82%B9-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">（1）测试点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7perfDog"><span class="nav-number">2.7.2.</span> <span class="nav-text">（2）测试工具perfDog</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81-%E4%BA%A4%E5%8F%89%E4%BA%8B%E4%BB%B6%E6%B5%8B%E8%AF%95"><span class="nav-number">2.8.</span> <span class="nav-text">8、&#x3D;&#x3D;交叉事件测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E3%80%81%E8%80%97%E7%94%B5%E9%87%8F%E6%B5%8B%E8%AF%95"><span class="nav-number">2.9.</span> <span class="nav-text">9、耗电量测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81%E6%B5%81%E9%87%8F%E6%B5%8B%E8%AF%95"><span class="nav-number">2.10.</span> <span class="nav-text">10、流量测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11%E3%80%81-%E8%BE%B9%E7%95%8C%E6%B5%8B%E8%AF%95"><span class="nav-number">2.11.</span> <span class="nav-text">11、&#x3D;&#x3D;边界测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-number">2.12.</span> <span class="nav-text">面试题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Web%E6%B5%8B%E8%AF%95%E5%92%8CApp%E6%B5%8B%E8%AF%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-number">2.12.1.</span> <span class="nav-text">1、Web测试和App测试有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E4%B8%80%E4%B8%AAAPP%EF%BC%8C%E4%B8%80%E8%88%AC%E6%9C%89%E5%93%AA%E4%BA%9B%E6%B5%8B%E8%AF%95%E6%96%B9%E9%9D%A2"><span class="nav-number">2.12.2.</span> <span class="nav-text">2、一个APP，一般有哪些测试方面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%85%BC%E5%AE%B9%E6%80%A7%E6%80%8E%E4%B9%88%E6%B5%8B%E7%9A%84"><span class="nav-number">2.12.3.</span> <span class="nav-text">3、兼容性怎么测的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%80%8E%E4%B9%88%E6%B5%8B%E7%9A%84"><span class="nav-number">2.12.4.</span> <span class="nav-text">4、稳定性怎么测的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E5%BC%B1%E7%BD%91%E6%80%8E%E4%B9%88%E6%B5%8B"><span class="nav-number">2.12.5.</span> <span class="nav-text">5、弱网怎么测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81app%E6%80%A7%E8%83%BD%E6%80%8E%E4%B9%88%E6%B5%8B"><span class="nav-number">2.12.6.</span> <span class="nav-text">6、app性能怎么测</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">三、测试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81uni-app%E6%89%93%E5%8C%85"><span class="nav-number">3.1.</span> <span class="nav-text">1、uni-app打包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81Android%E6%A8%A1%E6%8B%9F%E5%99%A8%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.2.</span> <span class="nav-text">2、Android模拟器的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%B8%B8%E7%94%A8%E7%9A%84adb%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.</span> <span class="nav-text">3、常用的adb命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BB%80%E4%B9%88%E6%98%AFadb"><span class="nav-number">3.3.1.</span> <span class="nav-text">（1）什么是adb</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89adb%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">3.3.2.</span> <span class="nav-text">（2）adb环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89-%E5%B8%B8%E7%94%A8%E7%9A%84adb%E5%91%BD%E4%BB%A4"><span class="nav-number">3.3.3.</span> <span class="nav-text">（3）&#x3D;&#x3D;常用的adb命令&#x3D;&#x3D;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4"><span class="nav-number">3.3.3.1.</span> <span class="nav-text">1）基本指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89adb-logcat%E6%89%93%E5%8D%B0%E6%97%A5%E5%BF%97"><span class="nav-number">3.3.3.2.</span> <span class="nav-text">2）adb logcat打印日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89adb-monkey%E5%8E%8B%E5%8A%9B%E6%B5%8B%E8%AF%95%EF%BC%88-%E7%A8%B3%E5%AE%9A%E6%80%A7%E6%B5%8B%E8%AF%95-%EF%BC%89"><span class="nav-number">3.3.3.3.</span> <span class="nav-text">3）adb monkey压力测试（&#x3D;&#x3D;稳定性测试&#x3D;&#x3D;）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81-%E5%8A%A9%E6%89%8B%E5%B7%A5%E5%85%B7%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.4.</span> <span class="nav-text">5、 助手工具的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81-%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7"><span class="nav-number">3.5.</span> <span class="nav-text">6、 弱网测试工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">3.5.1.</span> <span class="nav-text">（1）弱网测试基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%BC%B1%E7%BD%91%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%EF%BC%88%E6%A8%A1%E6%8B%9F%E5%BC%B1%E7%BD%91%EF%BC%89"><span class="nav-number">3.5.2.</span> <span class="nav-text">（2）弱网测试工具（模拟弱网）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%EF%BC%89QNET-1"><span class="nav-number">3.5.2.1.</span> <span class="nav-text">1）QNET</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%EF%BC%89fiddler-1"><span class="nav-number">3.5.2.2.</span> <span class="nav-text">2）fiddler</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%EF%BC%89360-WiFi%E9%99%90%E9%80%9F"><span class="nav-number">3.5.2.3.</span> <span class="nav-text">3）360 WiFi限速</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%EF%BC%89%E4%BF%AE%E6%94%B9%E7%BD%91%E7%BB%9C%E5%88%B6%E5%BC%8F"><span class="nav-number">3.5.2.4.</span> <span class="nav-text">4）修改网络制式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81-App%E7%9A%84%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E6%80%A7%E8%83%BD%E7%8B%97"><span class="nav-number">3.6.</span> <span class="nav-text">7、 App的性能测试性能狗</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E4%BB%80%E4%B9%88%E6%98%AF%E6%80%A7%E8%83%BD%E7%8B%97PerfDog"><span class="nav-number">3.6.1.</span> <span class="nav-text">（1）什么是性能狗PerfDog</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E6%80%A7%E8%83%BD%E7%8B%97%E7%9A%84%E4%BD%BF%E7%94%A8%E6%BC%94%E7%A4%BA"><span class="nav-number">3.6.2.</span> <span class="nav-text">（2）性能狗的使用演示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%85%B3%E6%B3%A8%E7%9A%84%E6%8C%87%E6%A0%87"><span class="nav-number">3.6.3.</span> <span class="nav-text">（3）关注的指标</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81-App%E6%8A%93%E5%8C%85"><span class="nav-number">3.7.</span> <span class="nav-text">8、 App抓包</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          APP测试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-05-16 15:18:24 / 修改时间：15:31:26" itemprop="dateCreated datePublished" datetime="2024-05-16T15:18:24+08:00">2024-05-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>20k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>18 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、App测试概念"><a href="#一、App测试概念" class="headerlink" title="一、App测试概念"></a>一、App测试概念</h1><h2 id="1、App的分类"><a href="#1、App的分类" class="headerlink" title="1、App的分类"></a>1、App的分类</h2><ul>
+<li><p>iOS是基于Unix内核深度定制的一个移动设备操作系统；Android是一个Linux发行版，用于移动设备；Linux是类Unix系统；iOS是闭源的，Android是开源的；iOS是苹果公司主导，Android是谷歌主导的；</p>
+</li>
+<li><p>从操作系统平台来分，主要分为如下两种类型：</p>
+<ul>
+<li>iOS App<ul>
+<li>安装在苹果的iOS操作系统上，主要是iPhone、iPad、iWatch等</li>
+<li>同一款应用，通常对iPhone和iPad要出两个不同的版本，因为要针对iPhone和iPad两种终端的不同分辨率、屏幕尺寸分别适配</li>
+<li>iOS App的安装包后缀为.ipa</li>
+</ul>
+</li>
+<li>Android App<ul>
+<li>安装在Android操作系统上，主要是Android手机和Android平板</li>
+<li>同一款应用，通常对Android手机和Android平板要出两个不同的版本，因为要针对Android手机和Android平板两种终端的不同分辨率、屏幕尺寸分别适配</li>
+<li>Android App的安装包后缀为.apk</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>从技术实现上，目前主流的App可以分为原生App、混合App和Web App两种类型：</p>
+<ul>
+<li><p>原生App</p>
+<ul>
+<li>原生App又称Native App，就是利用Android、iOS平台官方的开发语言、开发类库、工具进行开发。比如安卓的Java语言，iOS的Object-c语言。在应用性能上和交互体验上应该是好的。原生App需要针对Android和iOS平台开发两套不同代码，成本高。</li>
+</ul>
+</li>
+<li><p>Web App</p>
+<ul>
+<li>指的是移动端的Web浏览器，主要借助H5网页技术进行开发，相当于开发一个网页，然后分别生成Android和iOS的壳。这种App只需要一套编程开发语言，技术简单，人力少，周期短。缺点是用户体验相对差。</li>
+</ul>
+</li>
+<li><p>混合App</p>
+<ul>
+<li>混合App又称Hybrid App，是介于原生App和Web App之间的一种App形式。</li>
+<li>uni-app是一个使用 Vue.js 开发所有前端应用的框架，开发者编写一套代码，可发布到iOS、Android、H5、以及各种小程序（微信/支付宝/百度/头条/QQ/钉钉）等14个平台。</li>
+<li>了解uni-app：<a href="https://uniapp.dcloud.io/README">https://uniapp.dcloud.io/README</a></li>
+</ul>
+<p><strong>目前国内基本只有大厂还在玩原生App，中小企业以混合App为主。</strong></p>
+</li>
+</ul>
+<span id="more"></span>
+</li>
+</ul>
+<h2 id="2、App应用商店"><a href="#2、App应用商店" class="headerlink" title="2、App应用商店"></a>2、App应用商店</h2><ul>
+<li>常用的App应用商店：<ul>
+<li>App Store：苹果应用商店，所有非越狱的苹果设备，只能从App Store上下载App</li>
+<li>Google Play：谷歌应用商店，国外的智能手机默认使用的应用商店</li>
+<li>App Gallery：华为应用商店，华为手机和平板使用的应用商店</li>
+<li>小米商店应用：小米手机和平板使用的应用商店</li>
+<li>OPPO软件商店：OPPO手机使用的应用商店</li>
+<li>百度手机助手、360手机助手、腾讯应用宝、豌豆荚等其它应用商店，中国有超过400个Android应用商店。</li>
+</ul>
+</li>
+<li><strong>注意：凡是在以上商店能下载的App都是正式版本，测试版本不可能从上面去下载。</strong></li>
+</ul>
+<h2 id="3、B-S架构与C-S架构"><a href="#3、B-S架构与C-S架构" class="headerlink" title="3、B/S架构与C/S架构"></a>3、B/S架构与C/S架构</h2><p>B/S架构：<img src="https://gitee.com/charlesshenchuan/markdown-image-bed/raw/master/Typora/img/image-20210728092110573.png" alt="image-20210728092110573" style="zoom: 67%;"></p>
+<p>C/S架构：<img src="https://gitee.com/charlesshenchuan/markdown-image-bed/raw/master/Typora/img/image-20210728092130821.png" alt="image-20210728092130821" style="zoom:67%;"></p>
+<ol>
+<li><p><strong>访问方式</strong>不同</p>
+<p>B/S：浏览器/服务器，用浏览器去打开的系统</p>
+<p>C/S：客户端/服务器，客户端又分手机客户端（App）以及PC客户端</p>
+</li>
+<li><p><strong>业务处理</strong>方式不同</p>
+<p>B/S架构下核心的业务处理在服务端完成</p>
+<p>C/S架构下可以将业务合理地分配到客户端和服务器端来实现</p>
+</li>
+<li><p>C/S能更好地利用客户端设备的处理能力，具有更好的<strong>用户体验</strong>，响应速度更快，安全性也更高</p>
+<p>对于安全性：</p>
+<p>B/S：browser与服务器之间传输数据用的是http协议，客户端与服务器之间可以定制协议，安全性更高</p>
+</li>
+<li><p>兼容性不同</p>
+<p>在开发、测试时，B/S需要考虑兼容不同的浏览器（内核），相对开发周期更短，共享性更强；</p>
+<ul>
+<li>所有浏览器，按内核分，有如下几种内核：<ul>
+<li>Apple Webkit（谷歌内核）：<strong>Chrome、Safari</strong>、<strong>Edge</strong>、QQ浏览器、360极速版、世界之窗等</li>
+<li>Gecko（火狐内核）：<strong>Firefox</strong></li>
+<li>Trident（IE内核）：<strong>IE</strong>、360兼容版</li>
+</ul>
+</li>
+</ul>
+<p>C/S需要兼容不同的操作系统版本及设备</p>
+<p>因为iOS和Android系统的差异，iOS App和Android App的开发语言是不一样的，对开发人员的能力要求也是不一样的，需要不同的开发人员分别开发出iOS App和Android App两套开发包，同时因为Android系统的碎片化严重，Android App在开发测试阶段需要花费大量的精力适配不同厂家的系统及设备，最后因为手机和平板的尺寸不一样，还需要分别出手机版和平板版（HD）两个版本</p>
+</li>
+<li><p>从维护的角度</p>
+<p>C/S工作量会更大，因为B/S的升级只需要在服务器上升级即可，C/S的升级往往需要同时升级服务器端和客户端；iOS和Android系统有重大更新的时候会需要开发者同步更新App以适配最新的操作系统</p>
+</li>
+</ol>
+<h2 id="4、iOS-App与Android-App的区别"><a href="#4、iOS-App与Android-App的区别" class="headerlink" title="4、iOS App与Android App的区别"></a>4、iOS App与Android App的区别</h2><ol>
+<li><p>开发语言（原生应用）</p>
+<p>iOS App用object-c开发，对应的是iOS开发工程师</p>
+<p>Android App用Java开发，对应的是Android开发工程师</p>
+</li>
+<li><p>上架（商用上线）的市场</p>
+<p>iOS App是统一上架到苹果的App Store，苹果设备只要没有越狱，只能从AppStore上下载app安装</p>
+<p>Android app是上架到各个手机厂家的应用市场上，比如谷歌的Google Play，华为的App Galary等等</p>
+</li>
+<li><p>在做兼容性测试时，Android App会更复杂；</p>
+</li>
+<li><p>iOS是一个相对封闭的操作系统，是苹果基于Unix内核深度定制的一个移动设备操作系统；Android是一个开放的操作系统，谷歌会定期发布基线版本，各个手机厂家会在基线版本的基础上再进行本地化定制，结果就导致Android系统出现很多分支（碎片化），导致Android App对不同分支版本的适配难度会更大；</p>
+</li>
+<li><p>AppStore对应用的审核会更严格，所以iOS APP会相对更安全；</p>
+</li>
+<li><p>Android App的包后缀是.apk，iOS App的包后缀是.ipa；</p>
+<ul>
+<li>MyCamera.apk：Android手机版App</li>
+<li>MyCameraHD.apk：Android平板App</li>
+<li>MyCamera.ipa：iPhone手机版App</li>
+<li>MyCameraHD.ipa：iPad版App</li>
+</ul>
+</li>
+</ol>
+<h1 id="二-App的测试点"><a href="#二-App的测试点" class="headerlink" title="二. App的测试点"></a>二. App的测试点</h1><h2 id="1-、功能测试"><a href="#1-、功能测试" class="headerlink" title="1 、功能测试"></a>1 、功能测试</h2><p>就功能测试而言，App测试和Web测试没有区别，都是基于软件的功能性需求编写测试用例</p>
+<p>设计测试用例的方法都可以采用场景分析、等价类、边界值、错误猜测等</p>
+<p>写好用例之后先安装环境，然后执行用例，对发现的问题提交Bug单跟进解决</p>
+<h2 id="2、UI易用性测试"><a href="#2、UI易用性测试" class="headerlink" title="2、UI易用性测试"></a>2、UI易用性测试</h2><ul>
+<li><p>检测界面是否美观，操作是否简单易用，是否符合用户的操作行为，产品是否有相关的帮助文档，FAQ（常问问题）等</p>
+</li>
+<li><p>参考：UI设计图，检查系统的实现是否与UI设计图一致</p>
+</li>
+</ul>
+<h2 id="3、-兼容性测试"><a href="#3、-兼容性测试" class="headerlink" title="3、 ==兼容性测试=="></a>3、 ==兼容性测试==</h2><h3 id="（1）测试策略"><a href="#（1）测试策略" class="headerlink" title="（1）测试策略"></a>（1）测试策略</h3><ul>
+<li>Web需要兼容不同内核的浏览器（Chrome、Firefox、IE等）</li>
+<li>App需要兼容不同版本的操作系统（iOS14、iOS15、Android10、Android11、Android12、鸿蒙OS等）、<strong>设备尺寸</strong>、<strong>屏幕的类型</strong>（曲面屏、折叠屏、刘海屏、挖孔屏、全面屏）、<strong>分辨率</strong>、网络环境、语言等</li>
+</ul>
+<h3 id="（2）测试点（测试方法）"><a href="#（2）测试点（测试方法）" class="headerlink" title="（2）测试点（测试方法）"></a>（2）测试点（测试方法）</h3><p>在不同的设备上进行安装、启动、运行、卸载测试，需要大量的测试设备才能做好兼容性测试</p>
+<h3 id="（3）兼容测试的难点"><a href="#（3）兼容测试的难点" class="headerlink" title="（3）兼容测试的难点"></a>（3）兼容测试的难点</h3><p>设备类型太多，iPhone目前有20多款设备，Android手机就更多了，Android碎片化严重，想要做充分的兼容性测试，成本很大</p>
+<h3 id="（4）测试工具"><a href="#（4）测试工具" class="headerlink" title="（4）测试工具"></a>（4）测试工具</h3><ul>
+<li><p>真机（优先）</p>
+</li>
+<li><p>wetest平台</p>
+<p>1、注册、登录wetest平台<br>2、提交app、选择测试机型，提交测试<br>3、分析兼容性测试报告（可分享、可导出），对缺陷进行管理</p>
+</li>
+<li><p>模拟器（夜神、mumu、蓝叠）</p>
+</li>
+</ul>
+<h2 id="4、安装、卸载、升级测试"><a href="#4、安装、卸载、升级测试" class="headerlink" title="4、安装、卸载、升级测试"></a>4、安装、卸载、升级测试</h2><h3 id="（1）安装测试"><a href="#（1）安装测试" class="headerlink" title="（1）安装测试"></a>（1）安装测试</h3><h4 id="1）测试点"><a href="#1）测试点" class="headerlink" title="1）测试点"></a>1）测试点</h4><p>直接安装能否安装成功，卸载后再次安装能够成功，安装的App能否正常启动</p>
+<h4 id="2）安装测试方法"><a href="#2）安装测试方法" class="headerlink" title="2）安装测试方法"></a>2）安装测试方法</h4><ul>
+<li><p>Android app</p>
+<ul>
+<li><p>对Android App来讲，可以直接把apk发到手机上下载并安装；</p>
+</li>
+<li><p>通过adb（安卓调试桥）命令安装（仅限于Android App）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb install xxx.apk</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>通过爱思助手等工具安装（iOS App和Android App都可以）</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>iOS app<ul>
+<li>手机助手<ul>
+<li>通过助手工具连接iOS设备前，需要先在电脑上安装iTunes工具</li>
+<li>安装iOS App，需要先获取测试手机的UDID，由开发写入到App的配置文件中再打包，这时得到的App才可以在测试设备上安装</li>
+</ul>
+</li>
+<li>testflight软件<ul>
+<li>测试机上安装Testflight</li>
+<li>获取到邀请码，打开Testflight，输入邀请码</li>
+<li>点击安装，在测试机上就会安装待测的app</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）卸载测试"><a href="#（2）卸载测试" class="headerlink" title="（2）卸载测试"></a>（2）卸载测试</h3><h4 id="1）测试点-1"><a href="#1）测试点-1" class="headerlink" title="1）测试点"></a>1）测试点</h4><p>App能够卸载成功，卸载后是否可以再次安装</p>
+<h4 id="2）卸载方法"><a href="#2）卸载方法" class="headerlink" title="2）卸载方法"></a>2）卸载方法</h4><ol>
+<li><p>在手机上直接卸载</p>
+</li>
+<li><p>通过adb命令卸载（Android）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb uninstall 包名</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>通过助手工具卸载</p>
+</li>
+</ol>
+<h3 id="（3）升级测试"><a href="#（3）升级测试" class="headerlink" title="（3）升级测试"></a>（3）升级测试</h3><h4 id="1）测试点-2"><a href="#1）测试点-2" class="headerlink" title="1）测试点"></a>1）测试点</h4><ul>
+<li>先安装老版本，再安装新版本，看是否能安装成功并覆盖老版本</li>
+<li>新版本覆盖旧版本后，版本号应该为新版本号</li>
+<li>数据是否有丢失</li>
+<li>功能正常：包括原有功能和新增功能</li>
+</ul>
+<h4 id="2）App的升级方案"><a href="#2）App的升级方案" class="headerlink" title="2）App的升级方案"></a>2）App的升级方案</h4><ul>
+<li><p>在线升级：当应用商店已经有新版本时，提示更新，用户点击更新，下载最新版本，进行安装升级，这种就是在线升级</p>
+<ul>
+<li>强制升级：强制更新就是当检测到有新版本时，弹出提示，这个提示框没有关闭按钮，只能更新，一般需要强制更新的版本，主要是功能模板改动较大，或业务比较重要，和功能模板存在风险等</li>
+<li>非强制升级：非强制更新就可以让用户选择是否现在更新或以后更新，旧版本的功能正常使用</li>
+</ul>
+</li>
+<li><p>离线升级：不从线上下载升级包，通过线下的方式安装升级包进行升级，这种就是离线升级</p>
+</li>
+</ul>
+<h4 id="3）升级场景设计："><a href="#3）升级场景设计：" class="headerlink" title="3）升级场景设计："></a>3）升级场景设计：</h4><ul>
+<li><p>第一个版本：用户只有新安装的场景</p>
+</li>
+<li><p>第二个版本：用户有新安装的场景、也有从第一个版本升级到第二个版本的场景</p>
+</li>
+<li><p>第三个版本：用户有新安装的场景、也有从第一个版本升级到第三个版本的场景、也有从第二个版本升级到第三个版本的场景</p>
+</li>
+<li><p>版本越多，跨版本升级的场景也越复杂，一般也不可能把所有场景都验证一遍，通常的做法是分析生产环境的数据，看绝大部分用户都在哪几个版本上，重点考虑从这几个版本升级到新版本的场景。如果App做了强制升级的方案，这种情况下用户的版本就比较新，升级的场景也更简单。</p>
+</li>
+</ul>
+<h2 id="5、-弱网测试"><a href="#5、-弱网测试" class="headerlink" title="5、==弱网测试=="></a>5、==弱网测试==</h2><h3 id="（1）测试点"><a href="#（1）测试点" class="headerlink" title="（1）测试点"></a>（1）测试点</h3><p>观察弱网场景下, app是否会出现crash、anr等异常</p>
+<h3 id="（2）测试工具"><a href="#（2）测试工具" class="headerlink" title="（2）测试工具"></a>（2）测试工具</h3><p>QNET、fiddler、360wifi、修改网络制式到2G、3G模拟弱网环境</p>
+<h4 id="1）QNET"><a href="#1）QNET" class="headerlink" title="1）QNET"></a>1）QNET</h4><ul>
+<li>1、在测试机上安装QNET(独立的app)</li>
+<li>2、打开QNET，选择弱网场景（系统自带的模版、用户自定义的模版)、选择要测试的应用(默认是全局生效，手机上的所有应用都起作用）</li>
+<li>3、启动测试，成功将待测app模拟到弱网场景</li>
+<li>4、操作APP的各项功能，观察app是否出现crash、ANR</li>
+<li>5、分析日志，有缺陷就做缺陷管理</li>
+</ul>
+<h4 id="2）fiddler"><a href="#2）fiddler" class="headerlink" title="2）fiddler"></a>2）fiddler</h4><ul>
+<li>1、fiddler作为手机的代理，所以可以修改fiddler的配置文件，打开限速开关，设置上行和下行的速率，从而将app模拟到弱网环境</li>
+<li>2、操作app，观察是否有crash、ANR</li>
+<li>3、分析日志，有缺陷做缺陷管理</li>
+</ul>
+<h2 id="6、-App稳定性测试"><a href="#6、-App稳定性测试" class="headerlink" title="6、==App稳定性测试=="></a>6、==App稳定性测试==</h2><h3 id="（1）工具"><a href="#（1）工具" class="headerlink" title="（1）工具"></a>（1）工具</h3><p>monkey命令来做压力测试</p>
+<p>工作原理：长时间模拟人对手机的各种操作（点击、二指缩放等12种事件)</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey</span><br><span class="line">-p 包名：对指定的app进行测试</span><br><span class="line">-v -v -v：打印最详细的信息</span><br><span class="line">-s 种子值：种子值，对应一种操作序列，用来复现bug，回归测试使用</span><br><span class="line"></span><br><span class="line">忽略异常，直到完成指定的测试次数：</span><br><span class="line">--ignore-crashes</span><br><span class="line">--ignore-native-crashes</span><br><span class="line">--ignore-timeouts</span><br><span class="line">--ignore-security-exceptions</span><br><span class="line">--monitor-native-crashes</span><br><span class="line"></span><br><span class="line">--throtte 5：设置事件之间等待时间为5ms（毫秒）</span><br><span class="line"></span><br><span class="line">--pct-touch 20：设置touch事件占比20%</span><br><span class="line"></span><br><span class="line">经典例子：</span><br><span class="line">测试10000次，重定向错误和输出：</span><br><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v --ignore-crashes --ignore-native-crashes --ignore-timeouts --ignore-security-exceptions 10000&gt;D:\monkey1.txt 2&gt;&amp;1</span><br><span class="line">修改bug后，回归测试：</span><br><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v --ignore-crashes --ignore-native-crashes --ignore-timeouts --ignore-security-exceptions -s 1637762067514 10000&gt;D:\monkey2.txt 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="（2）测试点"><a href="#（2）测试点" class="headerlink" title="（2）测试点"></a>（2）测试点</h3><p>长时间、频繁操作APP，观察APP是否能够稳定运行</p>
+<h3 id="（3）日志分析"><a href="#（3）日志分析" class="headerlink" title="（3）日志分析"></a>（3）日志分析</h3><p>对定向的日志文件进行分析，搜索: crash、anr、error、exception等</p>
+<h2 id="7、-APP性能测试"><a href="#7、-APP性能测试" class="headerlink" title="7、==APP性能测试=="></a>7、==APP性能测试==</h2><h3 id="（1）测试点-1"><a href="#（1）测试点-1" class="headerlink" title="（1）测试点"></a>（1）测试点</h3><p>APP性能测试，检测的是移动端（手机、pad等)的资源占用情况</p>
+<h3 id="（2）测试工具perfDog"><a href="#（2）测试工具perfDog" class="headerlink" title="（2）测试工具perfDog"></a>（2）测试工具perfDog</h3><ul>
+<li>1、PC连接到测试机（数据线、wifi），选择测试设备</li>
+<li>2、选择要测试的参数，例如，CPU、memory、battery（只能在wifi连接下才能测）、network、fps</li>
+<li>3、选择待测应用，启动测试，操作app的各项功能一段时间后结束测试</li>
+<li>4、可以生成测试报告（可分享），对测试报告进行分析<ul>
+<li>将测试结果平均值与需求规格说明书中的性能规格要求进行对比，如果没有性能规格要求，就与竞品对比，来确定规格。如果有缺陷，对缺陷进行管理</li>
+</ul>
+</li>
+</ul>
+<h2 id="8、-交叉事件测试"><a href="#8、-交叉事件测试" class="headerlink" title="8、==交叉事件测试=="></a>8、==交叉事件测试==</h2><p>交叉事件测试也叫中断测试，是指App执行过程中，有其它事件或者应用中断当前应用执行的测试。比如在App使用过程中出现来电、来消息、响闹钟、弹出电量低、打开其它App等其它事件，验证当其它事件出现的时候，是否会中断当前App的事件</p>
+<p>交叉测试一般采用手工测试的方式在真机上进行</p>
+<h2 id="9、耗电量测试"><a href="#9、耗电量测试" class="headerlink" title="9、耗电量测试"></a>9、耗电量测试</h2><ul>
+<li><p>目的就是检查App的耗电是否过高，电量消耗跟CPU有关系。</p>
+</li>
+<li><p>可以通过手机的电池统计来查看App的耗电情况，也可以通过adb命令来查看，还可以通过第三方工具PerfDog（性能狗）、GT等来检查耗电情况</p>
+</li>
+</ul>
+<h2 id="10、流量测试"><a href="#10、流量测试" class="headerlink" title="10、流量测试"></a>10、流量测试</h2><ul>
+<li>流量测试，指的是监控App的流量使用是否合理，目的是优化App的流量使用，比如有些数据需要缓存到客户端上来避免过多地消耗流量</li>
+<li>有很多方法可以获取App的流量，比如对于Android系统，网络流量信息通常存放在/proc/net/dev目录下，可以直接利用adb工具获取实时的流量信息。另外，推荐一款Android的轻量级性能监控小工具Emmagee。对于iOS系统，可以使用XCode自带的性能分析工具集中的Network Activity，分析具体的流量使用情况</li>
+<li>推荐：使用PerfDog（性能狗）可以很方便地监控App的流量</li>
+</ul>
+<h2 id="11、-边界测试"><a href="#11、-边界测试" class="headerlink" title="11、==边界测试=="></a>11、==边界测试==</h2><p>边界测试是指，移动App在一些临界状态下的行为功能是否正常，基本思想是找出各种潜在的临界场景，并对每一类临界场景做验证和测试。</p>
+<p>比如：</p>
+<ul>
+<li><p>手机提示内存空间不足</p>
+</li>
+<li><p>飞行模式来回切换的场景</p>
+</li>
+<li>App 不具有某些系统访问权限的场景，比如 App 由于隐私设置不能访问相册或者通讯录等</li>
+<li>长时间使用App，系统资源是否有异常，比如内存泄漏、过多的链接数等</li>
+<li>出现ANR的场景（网络差、操作频繁、手机上起的应用过多、不同App之间切换等）</li>
+<li>操作系统时间早于或者晚于标准时间的场景</li>
+<li>时区切换的场景  GMT</li>
+<li>等等……</li>
+</ul>
+<h2 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h2><h3 id="1、Web测试和App测试有什么区别？"><a href="#1、Web测试和App测试有什么区别？" class="headerlink" title="1、Web测试和App测试有什么区别？"></a>1、Web测试和App测试有什么区别？</h3><ul>
+<li>功能、UI、易用性方面的测试，Web和App没有区别</li>
+<li>兼容性: Web兼容不同的浏览器。App兼容不同操作系统的手机、不同的屏幕类型、分辨率、尺寸大小</li>
+<li>App还有一些专项测试:安装卸载升级测试、弱网测试、稳定性测试、性能测试(耗电量、流量、CPU、内存)、边界测试、交叉事件测试等</li>
+</ul>
+<h3 id="2、一个APP，一般有哪些测试方面"><a href="#2、一个APP，一般有哪些测试方面" class="headerlink" title="2、一个APP，一般有哪些测试方面"></a>2、一个APP，一般有哪些测试方面</h3><p>功能、UI、兼容性、卸载安装升级、弱网、稳定性、性能、边界</p>
+<h3 id="3、兼容性怎么测的"><a href="#3、兼容性怎么测的" class="headerlink" title="3、兼容性怎么测的"></a>3、兼容性怎么测的</h3><p>回答要点：Web和App的侧重点不一样、测试工具(真机、wetest、模拟器），怎么观察结果</p>
+<h3 id="4、稳定性怎么测的"><a href="#4、稳定性怎么测的" class="headerlink" title="4、稳定性怎么测的"></a>4、稳定性怎么测的</h3><p>回答要点：用什么工具(monkey)，原理是什么，用的参数，怎么观察结果</p>
+<h3 id="5、弱网怎么测"><a href="#5、弱网怎么测" class="headerlink" title="5、弱网怎么测"></a>5、弱网怎么测</h3><p>回答要点：怎么模拟弱网环境（QNET、fiddler）、怎么观察结果</p>
+<h3 id="6、app性能怎么测"><a href="#6、app性能怎么测" class="headerlink" title="6、app性能怎么测"></a>6、app性能怎么测</h3><p>回答要点：perfdog关注哪些指标，怎么判断指标是否达标</p>
+<h1 id="三、测试工具"><a href="#三、测试工具" class="headerlink" title="三、测试工具"></a>三、测试工具</h1><h2 id="1、uni-app打包"><a href="#1、uni-app打包" class="headerlink" title="1、uni-app打包"></a>1、uni-app打包</h2><p>IDE工具：HBuilder X</p>
+<p>打包前需要准备签名证书，Android证书的生成是自助和免费的，不需要审批或付费，iOS证书需要向苹果官方申请。其中iOS证书分为测试证书和正式证书，测试证书用于打测试版的App（可以在绑定了UDID的苹果设备上安装），正式证书用于打最终上架的App。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152058480.png" alt="image-20240516152058480" style="zoom:50%;"></p>
+<p>App的包名：就是App的名字，包名一般用反写域名的方式来命名</p>
+<p>一级域名：www.jd.com</p>
+<p>二级域名：discount.jd.com    ——&gt;包名：com.jd.discount</p>
+<h2 id="2、Android模拟器的使用"><a href="#2、Android模拟器的使用" class="headerlink" title="2、Android模拟器的使用"></a>2、Android模拟器的使用</h2><ul>
+<li>模拟器的作用<ul>
+<li>在实际工作中，因为某些原因，没有足够的测试机的时候，可以通过模拟器来模拟部分手机进行测试。</li>
+<li>但需要注意的是，模拟器始终跟真机存在差异，如果想确保App在真机上运行没有问题，必须在真机上进行测试。</li>
+</ul>
+</li>
+<li>常用的Android模拟器有：夜神、逍遥、MUMU、雷电等</li>
+<li>iOS模拟器：因为iOS是闭源的，做iOS模拟器的技术难度较大，目前国内的iOS模拟有黑雷、水果等，但都是收费软件。</li>
+<li>演示：夜神模拟的使用。</li>
+</ul>
+<h2 id="3、常用的adb命令"><a href="#3、常用的adb命令" class="headerlink" title="3、常用的adb命令"></a>3、常用的adb命令</h2><h3 id="（1）什么是adb"><a href="#（1）什么是adb" class="headerlink" title="（1）什么是adb"></a>（1）什么是adb</h3><p>adb：Android Debug Bridge，安卓调试桥，是一种命令行工具，可实现对Android设备的操作，比如安装、卸载apk，往安卓设备上传、下载文件，打印安卓设备的日志等。</p>
+<h3 id="（2）adb环境配置"><a href="#（2）adb环境配置" class="headerlink" title="（2）adb环境配置"></a>（2）adb环境配置</h3><p>下载地址：<a href="https://android-sdk.en.softonic.com/，下载最新版本的Android">https://android-sdk.en.softonic.com/，下载最新版本的Android</a> SDK，解压。</p>
+<p>配置环境变量，把adb命令的目录配置到PATH中。<strong>记住：配置Path环境变量的时候，只能增加，不能覆盖之前的配置。</strong></p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152115823.png" alt="image-20240516152115823" style="zoom:50%;"></p>
+<p>检查是否配置成功，在dos命令中输入adb version回车，出现版本信息表示配置成功</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;adb version</span><br><span class="line">Android Debug Bridge version 1.0.41</span><br><span class="line">Version 29.0.2-5738569</span><br><span class="line">Installed as C:\android-sdk-windows\android-sdk-windows\tools\adb.exe</span><br></pre></td></tr></tbody></table></figure>
+<p>通过adb连接Android设备，有两种方法：</p>
+<p><strong>方法1</strong>：</p>
+<p>通过数据线连接，<strong>注意是数据线不是充电线</strong>，在手机上先开启开发者模式，然后再开启USB调试模式，然后在dos窗口敲adb devices命令查看是否连接成功，如果显示如下就表示连接成功</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;adb devices</span><br><span class="line">List of devices attached</span><br><span class="line">D5F0219815004432        device</span><br></pre></td></tr></tbody></table></figure>
+<p>步骤：1、打开开发者模式；2、开启USB调试。</p>
+<p><strong>方法2</strong>：</p>
+<p>通过Wi-Fi连接，首先将电脑和手机连接到同一个Wi-Fi，然后将手机通过数据线连接到电脑，执行adb tcpip 5555在手机上开启adb无线模式服务</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;adb tcpip 5555</span><br><span class="line">restarting in TCP mode port: 5555</span><br></pre></td></tr></tbody></table></figure>
+<p>最后在dos窗口执行adb connect 手机IP连接手机，如下就表示连接成功了</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;adb connect 192.168.2.101:5555</span><br><span class="line">connected to 192.168.2.101:5555</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">断开Wi-Fi连接</span></span><br><span class="line">C:\Users\lenovo&gt;adb disconnect 192.168.2.101:5555</span><br></pre></td></tr></tbody></table></figure>
+<p>扩展：IP地址、掩码地址、网关地址的关系</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152128679.png" alt="image-20240516152128679" style="zoom:50%;"></p>
+<p>192.168.7.82            11000000.10101000.00000111.01010010</p>
+<p>255.255.255.0          11111111.11111111.11111111.00000000      ——24个1，所以也叫24位掩码   192.168.7.82/24</p>
+<p>192.168.7.0               11000000.10101000.00000111.00000000     ——-网络地址    192.168.7.0/24</p>
+<p>对IP地址192.168.7.82的解释是：网络地址是192.168.7.0，主机地址是82，主机地址的范围是0~255，其中0表示网络地址，255表示广播地址，1通常用来作为网关地址，所以在这个网络中可用的主机地址有2-254，总共253个。</p>
+<p>1&amp;1=1</p>
+<p>1&amp;0=0</p>
+<p>0&amp;1=0</p>
+<p>0&amp;0=0</p>
+<h3 id="（3）-常用的adb命令"><a href="#（3）-常用的adb命令" class="headerlink" title="（3）==常用的adb命令=="></a>（3）==常用的adb命令==</h3><h4 id="1）基本指令"><a href="#1）基本指令" class="headerlink" title="1）基本指令"></a>1）基本指令</h4><ul>
+<li>查看adb 的版本号</li>
+</ul>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb version</span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb version</span><br><span class="line">Android Debug Bridge version 1.0.41</span><br><span class="line">Version 29.0.2-5738569</span><br><span class="line">Installed as C:\android-sdk-windows\android-sdk-windows\tools\adb.exe</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li><p>查看连接设备及状态</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb devices</span><br><span class="line"></span><br><span class="line">查出来的设备状态有3种</span><br><span class="line">- offline 表示离线</span><br><span class="line">- device 表示连接正常</span><br><span class="line">- unauthorized 表示未授权（如果手机上没有允许USB调试，就会显示未授权）</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>开启Android设备的adb无线模式服务：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb tcpip 端口</span><br><span class="line"></span><br><span class="line">比如adb tcpip 5555</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>通过Wi-Fi的方式连接设备</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 设备IP:端口</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>断开设备</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb disconnect 设备IP:端口</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>安装app</p>
+<ul>
+<li><code>adb install apk的路径</code>，如果是在真机上安装，需要在手机上点击弹出的允许安装才能成功</li>
+<li><code>adb install -r apk的路径</code> ，-r表示覆盖安装，如果之前已经安装了该apk，直接安装会失败，需要覆盖安装</li>
+</ul>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;adb install C:\蓉华学院\项目\占数家营销助手\安装包\PromotionAssist-debug.apk(拖动到dos里即可)</span><br><span class="line">Performing Streamed Install</span><br><span class="line">Success</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>卸载app</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">卸载apk并删除数据:</span><br><span class="line">adb uninstall 包名</span><br><span class="line">卸载apk，保留数据:</span><br><span class="line">adb uninstall -k 包名</span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb uninstall com.summer.evs</span><br><span class="line">Success</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==查看所有包名==</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm list package</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">包名是app的唯一标识，一般采用反写域名的方式命名，比如com.taobao.taobao</span></span><br><span class="line">www.ronghuanet.com           一级域名</span><br><span class="line">students.ronghuanet.com     ---&gt;com.ronghuanet.students</span><br><span class="line">teachers.ronghuanet.com      ---&gt;com.ronghuanet.teachers</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>查看系统包名</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm list package -s</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>查看第三方包名</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm list package -3</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==查看包的安装位置==</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm list package -f</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">查看指定包的安装位置(-i 包名)</span></span><br><span class="line">adb shell pm list package -f -i sidoumi</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==查找指定app的包名==</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">当只有一台设备时：</span><br><span class="line">adb shell dumpsys activity activities | findstr mResumedActivity （执行命令之前打开应用在前台运行）</span><br><span class="line"></span><br><span class="line">两台设备需要指定设备名：</span><br><span class="line">adb -s 127.0.0.1.62027  shell dumpsys activity activities | findstr mResumedActivity </span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb shell dumpsys activity activities | findstr mResumedActivity</span><br><span class="line">    mResumedActivity: ActivityRecord{84a6383 u0 com.ifeng.news2/.activity.IfengTabMainActivity t185}</span><br><span class="line">    </span><br><span class="line">注：</span><br><span class="line">com.ifeng.news2是包名</span><br><span class="line">.activity.IfengTabMainActivity t185是活动窗口</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>查看app的版本号：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">adb shell pm dump 包名 | findstr "version"</span><br><span class="line"></span><br><span class="line">举例：adb shell pm dump com.test.hm | findstr "version"</span><br><span class="line">注：命令中的参数：com.test.hm是app的包名。</span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb shell pm dump com.sidoumi.his | findstr "version"</span><br><span class="line">    versionCode=100 minSdk=19 targetSdk=28</span><br><span class="line">    versionName=1.0.0</span><br><span class="line">    signatures=PackageSignatures{a14bc9f version:2, signatures:[637809ff], past signatures:[]}</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>打开APP：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">adb shell am start 包名/活动窗口名</span><br><span class="line">需要指定包名和活动窗口</span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb shell am start com.ifeng.news2/.activity.IfengTabMainActivity t185</span><br><span class="line"></span><br><span class="line">Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] cmp=com.ifeng.news2/.activity.IfengTabMainActivity }</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>关闭打开的APP（放到后台）</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell am force-stop 包名</span><br><span class="line"></span><br><span class="line">C:\Users\lenovo&gt;adb shell am force-stop com.ifeng.news2</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>进入shell：进入shell后可以执行linux命令</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">adb shell(只有一个设备时)</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">如果电脑连接了多个设备，使用adb -s 设备名 shell来指定进入某个设备</span></span><br><span class="line"><span class="meta">#</span><span class="bash">例如：</span></span><br><span class="line">adb -s 127.0.0.1.62027</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==把Android设备上的文件下载到本地==</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb pull Android设备上文件路径 本地目的路径</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">用途：从测试设备上取文件、日志等到本地，给开发分析</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==把本地文件上传到Android设备中==</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">adb push 本地文件所在路径(拖动到dos里即可) Android设备的目的路径</span><br><span class="line"></span><br><span class="line">adb push: 把本地文件推到Android设备上，相当于上传文件</span><br><span class="line">比如adbpush C:\Users\Administrator\Desktop\123\app.log /data/anr </span><br><span class="line">表示把windows上的C:\Users\Administrator\Desktop\123\app.log上传到Android设备上的/data/anr目录（如果没有写入权限：adb remount）</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">用途：当开发修改完一个问题的时候，如果要快速验证，一般开发会提供一个补丁文件，需要把这个文件推到Android设备的某个目录下替换原有的文件，替换后重启App再次验证；</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>删除文件</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">adb shell rm 文件</span><br><span class="line"><span class="meta">#</span><span class="bash">也可以先执行adb shell进入到安卓设备上，然后通过rm命令删除</span></span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<h4 id="2）adb-logcat打印日志"><a href="#2）adb-logcat打印日志" class="headerlink" title="2）adb logcat打印日志"></a>2）adb logcat打印日志</h4><p><code>adb logcat</code>：打印日志到屏幕</p>
+<p>注：<code>adb logcat</code>   和   <code>adb shell logcat</code>   他们打印的内容是一模一样的，区别在于adb logcat中的logcat是以参数的形式存在，而adb shell logcat中的logcat是以shell 命令的形式存在</p>
+<ul>
+<li><p>-v参数：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">adb logcat -v color 做颜色区分</span><br><span class="line">adb logcat -v time 查看日志输出时间</span><br><span class="line">adb logcat -v brief 输出简要信息</span><br><span class="line">...</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>—help参数：查看帮助信息</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb logcat --help </span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>tag参数：做日志筛选（tag省略）</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152153394.png" alt="image-20240516152153394" style="zoom:50%;"></p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">日志默认级别是V，如果错误日志我们选择E就可以</span><br><span class="line">tag参数：</span><br><span class="line">V verbose级别</span><br><span class="line">D debug级别</span><br><span class="line">I info级别</span><br><span class="line">W warn级别</span><br><span class="line">E Error级别</span><br><span class="line">F Fatal致命级别</span><br><span class="line">S Slilent级别</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">adb logcat *:W 展示warn级别以上的日志信息</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>-c参数：清除缓存的日志，在打印日志前可以先清理缓存的日志再打，这样会更有针对性</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb logcat -c</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>重定向日志到本地磁盘</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb logcat&gt;D:\test\app.log</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>最常用的命令组合</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、展示时间信息，且只显示warn级别以上的日志，重定向到c盘中</span><br><span class="line">adb logcat -v time *:w&gt; c:\2111.txt</span><br><span class="line"></span><br><span class="line">2、先清空日志信息，然后设置显示日志时间，最后重定向到c盘中</span><br><span class="line">adb logcat -c &amp;&amp; adb logcat -v time&gt;C:\app.log</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>日志结果分析：</p>
+<ul>
+<li><p><strong>ANR，Exception , Null , Error, Crash</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">1、ANR(application not responding)：程序无响应问题</span><br><span class="line">注：ANR：Application Not Responding，应用无响应，当一个app出现一次ANR问题时，Android系统会自动生成一个日志文件放到/data/anr目录下，这时需要把这个文件取下来分析</span><br><span class="line"></span><br><span class="line">2、exception：</span><br><span class="line">异常，参数异常，空指针异常都会报exception；</span><br><span class="line">崩溃：</span><br><span class="line">null、NullPointerException：空指针异常</span><br><span class="line">IllegalStateException：debug异常</span><br><span class="line">OutOfMemoryError：低内存异常</span><br><span class="line">TimerOut（KeyDispatchingTimedOut提示）：操作无响应异常</span><br><span class="line">RuntimeException：操作无响应或应用的服务无法启动或连接异常</span><br><span class="line">StaleDataException/readException：android 数据库出现异常</span><br><span class="line">IllegalArgumentException：向函数传递了一个不正确或不合法的参数</span><br><span class="line"></span><br><span class="line">3、crash：闪退问题</span><br><span class="line"></span><br><span class="line">4、forceclosed：异常导致的强制退出</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3）adb-monkey压力测试（-稳定性测试-）"><a href="#3）adb-monkey压力测试（-稳定性测试-）" class="headerlink" title="3）adb monkey压力测试（==稳定性测试==）"></a>3）adb monkey压力测试（==稳定性测试==）</h4><ul>
+<li><p>什么是monkey</p>
+<ul>
+<li><p>adb monkey是一款稳定性测试工具，通过<strong>随机</strong>操作app一段时间，看app会不会出现崩溃、无响应，能够正常维持运行的测试。是由android系统自带应用，可以通过adb shell monkey直接使用。（伪随机）</p>
+</li>
+<li><p>monkey命令的路径</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127|HWCLT:/ $ ls -l /system/bin/monkey</span><br><span class="line">-rwxr-xr-x 1 root shell 268 2018-08-08 00:01 /system/bin/monkey</span><br></pre></td></tr></tbody></table></figure>
+</li>
+</ul>
+</li>
+<li><p>monkey的12种随机事件：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">0：触摸事件，参数--pct-touch，触摸事件指的是在屏幕某处按下并抬起的操作，我们可以模拟点击的操作；</span><br><span class="line">1：手势事件（滑动事件），参数--pct-motion，滑动事件指的是在屏幕某处按下、随机移动、抬起的操作，类似我们滑动手机屏幕翻页的操作。</span><br><span class="line">2：二指缩放事件，参数--pct-pinchzoom，缩放事件指的是在屏幕上的两处同时按下，又同时移动，最后同时抬起，模拟我们在手机放大缩小的操作</span><br><span class="line">3：轨迹事件，参数--pct-trackball，指的是由一个或者多个随机的移动组成，有时会伴随点击。</span><br><span class="line">4：屏幕旋转事件，参数--pct-rotation，模拟手机的横竖屏切换，degree指的是旋转方向，顺时针旋转，0表示旋转90°，1表示旋转180°，2表示旋转270°，3表示旋转360°</span><br><span class="line">5：permission事件</span><br><span class="line">6：基本导航事件，参数--pct-nav，指的是点击方向输入设备的上下左右按键的操作，现在的手机很少有这样的方向键了，所以应用较少</span><br><span class="line">7：主要导航事件，参数--pct-majornav，指的是点击“主要导航”按键的操作，例如app的中间键，返回键，菜单按键等</span><br><span class="line">8：系统按键事件，参数--pct-syskeys，指的是系统保留的按键事件，比如Home键、返回键、音量调节按键等</span><br><span class="line">9：启动activity事件，参数--pct-appswitch，指的是在手机上启动一个Activity的操作，在随机的时间间隔内，Monkey 将执行一个 startActivity() 方法， 作为最大程度上覆盖被测包中全部 Activity 的一种方法</span><br><span class="line">10：键盘事件，参数--pct-flip，键盘事件指的是一些与键盘相关的操作，比如点击输入框、键盘弹起等</span><br><span class="line">11：其他类事件，参数--pct-anyevent，指的是除了上述事件之外的其他事件，比如其它不常用的设备按钮等</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>举例：adb shell monkey 1000  表示对手机整机进行1000次随机操作</p>
+</li>
+<li><p>部分参数：</p>
+<ul>
+<li><font color="red">==-p==：指定有效的package（如不指定，则对系统中所有package有效）</font>
+
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">一个-p对应一个有效:</span><br><span class="line">package-p com.ckt -p com.ckt.asura</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><font color="red">==-v==：指定打印信息的详细级别，一个 -v增加一个级别 ， 默认级别为 0，三个-v表示最详细的级别</font>
+
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">对安装的app进行稳定性测试，分别测试1000次，把最详细的测试记录保存在PC的目录bili_test_log下</span><br><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v &gt;d:\bili_test_log 2&gt;&amp;1  1000</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><font color="red">==-s==：指定产生随机事件种子值（seed），相同的种子值产生相同的事件序列</font>
+
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v -s 1637762067514 1000</span><br></pre></td></tr></tbody></table></figure>
+<ul>
+<li>一个种子值对应一个操作序列（操作事件比例、顺序）</li>
+<li>通常用来重现问题、回归测试</li>
+</ul>
+</li>
+<li><p><strong>—throttle</strong>：每个事件结束后的间隔时间——降低系统的压力（如不指定，系统会尽快的发送事件序列）</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v --throttle 100 1000</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>指定各种事件百分比的参数：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">--pct-touch：指定触摸事件的百分比</span><br><span class="line">如：--pct-touch 5 表示触摸事件占5%的比例</span><br><span class="line">--pct-motion 百分比 （滑动事件）</span><br><span class="line">--pct-pinchzoom 百分比（二指缩放事件）</span><br><span class="line">--pct-trackball 百分比 （轨迹球事件）</span><br><span class="line">--pct-rotation 百分比 （屏幕旋转事件）</span><br><span class="line">--pct-nav 百分比 （导航事件 up/down/left/right）</span><br><span class="line">--pct-majornav 百分比 (主要导航事件 back key 、 menu key)</span><br><span class="line">--pct-syskeys 百分比 (系统按键事件 Home 、Back 、startCall 、 endCall 、 volumeControl)</span><br><span class="line">--pct-appswitch 百分比 （activity之间的切换）</span><br><span class="line">--pct-appswitch 百分比（启动activity事件）</span><br><span class="line">--pct-flip 百分比（键盘时间）</span><br><span class="line">--pct-anyevent 百分比（任意事件）</span><br><span class="line"></span><br><span class="line">例如：指定触摸事件20%，轨迹球事件10%</span><br><span class="line">abd shell monkey -p com.tencent.qqlive -v -v -v --pct-touch 20 --pct-trackball 10 200</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>调试选项：</p>
+<ul>
+<li><p>—dbg-no-events：初始化启动的activity，但是不产生任何事件。</p>
+</li>
+<li><p>—hprof：指定该项后在事件序列发送前后会立即生成分析报告  —— 一般建议指定该项。</p>
+</li>
+<li><font color="red">--**ignore-crashes**：当应用程序崩溃或发生任何失控异常时，monkey将停止运行。如果设置此选项，monkey将继续向系统发送事件，直到计数完成</font>
+
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p com.tencent.qqlive -v -v -v -s 1715886061484 --ignore-crashes --ignore-native-crashes --ignore-timouts --ignore-security-exceptions 10000</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><font color="red">--**ignore-native-crashes**：忽略本地代码导致的崩溃。设置忽略后，Monkey将执行完所有的事件，不会因此停止</font>
+</li>
+<li><font color="red">--**ignore-timeouts**：通常，当应用程序发生任何超时错误（如‘Application Not Responding’对话框）时，monkey将停止运行。如果设置了此选项，monkey将继续向系统发送事件，直到计数完成</font>
+</li>
+<li><font color="red">--**ignore-security-exceptions**：忽略安全异常</font>
+</li>
+<li><p>—kill-process-after-error：发生错误后直接杀掉进程</p>
+</li>
+<li><p>—<strong>monitor-native-crashes</strong>：跟踪本地方法的崩溃问题</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">      </span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>—wait-dbg：知道连接了调试器才执行monkey测试。</p>
+</li>
+<li><p>一个比较完整的monkey命令</p>
+<ul>
+<li><p>一个简单的monkey命令</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p com.xy.android.junit  -s 1635966164169 -v -v -v 10000</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>但是，工作中为了保证测试数量的完整进行，我们一般不会在发生错误时立刻退出压力测试。monkey测试命令如下：</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p com.xy.android.junit -s 1635966164169 --ignore-crashes --ignore-native-crashes --ignore-timeouts --monitor-native-crashes -v -v -v 10000 &gt;E:\monkey_log\java_monkey_log.txt 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure>
+<p>其中，2&gt;&amp;1表示将输出和错误都重定向到文件中</p>
+</li>
+</ul>
+</li>
+<li><p>—pkg-blacklist-file：黑名单，排除某些包不执行，如—pkg-blacklist-file /data/blacklist.txt</p>
+</li>
+<li><p>—pkg-whitelist-file：白名单，指定执行哪些包，如—pkg-whitelist-file /data/whitelist.txt</p>
+<ul>
+<li><p>如图</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152209385.png" alt="image-20240516152209385"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>使用举例：</p>
+<ul>
+<li><p>命令一：用monkey去跑指定的app跑1万次，忽略异常和超时，把输出和错误都重定向到文件中</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v --ignore-crashes --ignore-native-crashes --ignore-timeouts --ignore-security-exceptions 10000&gt;C:\Users\lenovo\Desktop\37期\monkey7.txt 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>命令二：==指定seed值==用monkey去跑指定的app跑1万次，忽略异常和超时，把输出和错误都重定向到文件中，这个用来复现或回归问题</p>
+<figure class="highlight shell"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb shell monkey -p tv.danmaku.bili -v -v -v --ignore-crashes --ignore-native-crashes --ignore-timeouts --ignore-security-exceptions -s 1637762067514 10000 &gt; C:\Users\lenovo\Desktop\37期\monkey7.txt 2&gt;&amp;1</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>如果你想跑到出问题就停止，那就不需要忽略异常，把跑的次数设置足够大</p>
+</li>
+<li><font color="red">在重定向的日志中搜索**crash、anr、error、exception**等关键字看有没有出现过类似错误</font>
+
+<ul>
+<li>常见报错：部分小米手机在执行adb shell monkey命令时报java.lang.SecurityException: Injecting to another application requires INJECT_EVENTS permission，解决方法是在开发者选项页面，打开USB调试（安全设置），允许通过USB调试修改权限或模拟点击。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152225828.png" alt="image-20240516152225828" style="zoom:50%;"></p>
+<h2 id="5、-助手工具的使用"><a href="#5、-助手工具的使用" class="headerlink" title="5、 助手工具的使用"></a>5、 助手工具的使用</h2><ul>
+<li><p>91助手、豌豆荚、爱思助手（iOS）、PP助手、360手机助手等等；</p>
+</li>
+<li><p>在测试中，可以借助这些助手工具完成测试App的安装、卸载，升级测试等，包括iOSApp和Android App；</p>
+</li>
+<li><p>以91助手为例，要通过助手管理手机，需要：</p>
+<ul>
+<li><p>1）开启手机的开发者模式，再打开USB调试；</p>
+<ul>
+<li>android手机需要做这个操作，步骤：打开设置—&gt;打开关于手机—&gt;找到版本号连续点击3次以上，直到看到进入开发者模式—&gt;找到开发者模式并进入—-&gt;打卡usb调试—&gt;然后用数据线连接电脑，在配对信息中点允许配对</li>
+</ul>
+</li>
+<li><p>2）用数据线连接PC与手机，按提示点击确定，91助手会在手机上安装一个91助手App，允许其安装即可；</p>
+</li>
+<li><p>3）正常情况下就可以连接PC与手机了，把测试App拖到应用一栏里，就可以安装App；</p>
+</li>
+<li><p>注意：</p>
+</li>
+<li><p>1）测试的iOS App安装，需要提前获取到测试设备UDID，把UDID写到测试App中一起打包，这样才能在测试设备上安装这个App；并且信任</p>
+</li>
+<li><p>2）测试App中使用的是测试证书，在安装完成测试iOSApp后，还需要在设置下面信任测试证书，才能使用这个测试App；</p>
+</li>
+<li><p>3）91助手可以通过iOS设备日志查看苹果设备的日志信息。</p>
+</li>
+<li><p>安装卸载升级操作：</p>
+<ul>
+<li><p>如图</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152241066.png" alt="image-20240516152241066" style="zoom:50%;"></p>
+</li>
+</ul>
+</li>
+<li><p>截图，日志，崩溃分析</p>
+<ul>
+<li><p>如图</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152258122.png" alt="image-20240516152258122" style="zoom:50%;"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>使用助手工具的主要场景：安装、卸载app，打印iOS的日志等。</p>
+<h2 id="6、-弱网测试工具"><a href="#6、-弱网测试工具" class="headerlink" title="6、 弱网测试工具"></a>6、 弱网测试工具</h2><h3 id="（1）弱网测试基本概念"><a href="#（1）弱网测试基本概念" class="headerlink" title="（1）弱网测试基本概念"></a>（1）弱网测试基本概念</h3><p>什么是弱网：延迟、丢包、抖动（接收顺序与发送顺序不一样）、带宽小</p>
+<p>生活中的典型弱网场景：电梯、地下室、地铁（高峰、错峰）、公交（高峰、错峰）、高铁、山里</p>
+<p>为什么只有app要做弱网测试：app安装在移动终端，它的网络场景是变化的</p>
+<p>弱网测试的基本标准：app在弱网情况下不出现<strong>闪退、崩溃、ANR</strong>等问题（一直处在加载中，不算bug）</p>
+<h3 id="（2）弱网测试工具（模拟弱网）"><a href="#（2）弱网测试工具（模拟弱网）" class="headerlink" title="（2）弱网测试工具（模拟弱网）"></a>（2）弱网测试工具（模拟弱网）</h3><h4 id="1）QNET-1"><a href="#1）QNET-1" class="headerlink" title="1）QNET"></a>1）QNET</h4><ul>
+<li><p>QNET是当前最好用的弱网测试工具，能够模拟延迟、丢包、抖动等弱网场景，它以独立的app方式运行，操作简单，它里面内置了国内所有省份和海外部分国家的网络数据以及常见的弱网场景（公交高晚高峰、地铁早晚高峰、停车场、电梯等），在使用的时候直接选择内置的场景就可以了。</p>
+</li>
+<li><p>安装后默认有连续丢包、正常网络、100%丢包、极差网络四个模板。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152319218.png" alt="image-20240516152319218" style="zoom:50%;"></p>
+</li>
+<li><p>除此之外，还可以新增模板，新增模板时可以选择类型为场景模板，就可以直接选择QNET中预置的场景。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152331991.png" alt="image-20240516152331991" style="zoom:50%;"></p>
+</li>
+</ul>
+<h4 id="2）fiddler-1"><a href="#2）fiddler-1" class="headerlink" title="2）fiddler"></a>2）fiddler</h4><p>通过fiddler限速</p>
+<p>fiddler的原理：在主机和网络之间增加了一个代理，主机所有的报文都要经过该代理，fiddler因此可以抓取主机的所有包，修改fidder配置文件后就可以进行限速</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152345245.png" alt="image-20240516152345245" style="zoom:50%;"></p>
+<p>通过fiddler来实现限速步骤：</p>
+<p>（1）在Rules-》CustomizeRules下面，首先要保证m_SimulateModem值为true，表示开启限速</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152358900.png" alt="image-20240516152358900"></p>
+<p>（2）如下两行代码分别表示对上传和下载的限速，第一行表示上传1KB的延时是300ms，相当于上传速度是1KB/300ms=3.33333KB/s，第二行表示下载1KB延时150ms，通过设置这两个延时来控制网速，延时越大网速越慢</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152409115.png" alt="image-20240516152409115" style="zoom:80%;"></p>
+<h4 id="3）360-WiFi限速"><a href="#3）360-WiFi限速" class="headerlink" title="3）360 WiFi限速"></a>3）360 WiFi限速</h4><p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152420174.png" alt="image-20240516152420174" style="zoom:50%;"></p>
+<h4 id="4）修改网络制式"><a href="#4）修改网络制式" class="headerlink" title="4）修改网络制式"></a>4）修改网络制式</h4><p>如果使用移动网络，通过在手机上选择不同的网络制式：选择更低的网络制式</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152440671.png" alt="image-20240516152440671" style="zoom:33%;"></p>
+<h2 id="7、-App的性能测试性能狗"><a href="#7、-App的性能测试性能狗" class="headerlink" title="7、 App的性能测试性能狗"></a>7、 App的性能测试性能狗</h2><h3 id="（1）什么是性能狗PerfDog"><a href="#（1）什么是性能狗PerfDog" class="headerlink" title="（1）什么是性能狗PerfDog"></a>（1）什么是性能狗PerfDog</h3><p>performance</p>
+<p>charles_shenxxxx@foxmail.com/perdog2020</p>
+<p>PerfDog是腾讯WeTest团队研发的一款性能测试工具，是移动全平台iOS/Android性能测试、分析工具平台。快速定位分析性能问题，提升APP应用及游戏性能和品质。手机无需ROOT/越狱，手机硬件、游戏及应用APP也无需做任何修改，极简化即插即用。</p>
+<p>PerfDog支持移动平台所有应用程序（游戏、APP应用、浏览器、小程序、小游戏、H5、后台系统进程等）、Android模拟器、云真机等性能测试。支持APP多进程测试(如Android多子进程及iOS扩展进程APP Extension)。</p>
+<h3 id="（2）性能狗的使用演示"><a href="#（2）性能狗的使用演示" class="headerlink" title="（2）性能狗的使用演示"></a>（2）性能狗的使用演示</h3><p>参考：<a href="https://perfdog.qq.com/article_detail?id=10089&amp;issue_id=0&amp;plat_id=1">https://perfdog.qq.com/article_detail?id=10089&amp;issue_id=0&amp;plat_id=1</a></p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152500994.png" alt="image-20240516152500994"></p>
+<h3 id="（3）关注的指标"><a href="#（3）关注的指标" class="headerlink" title="（3）关注的指标"></a>（3）关注的指标</h3><ul>
+<li>CPU占用率，行业平均指标：9.71%（仅供参考）</li>
+<li>内存占用（MB）：行业优秀0.03MB，行业平均值：124.88MB（仅供参考）</li>
+<li>流量（Mb），行业平均指标7.22Mb（仅供参考），这个值一般用流量总和来衡量的，流量总量=上行流量+下行流量</li>
+<li>CPU温度(°C)：行业最优指标0.38（仅供参考）， 行业平均指标41.7（仅供参考），关注在运行程序期间温度的平均值即可</li>
+<li>帧速率（流畅度）（fps）：帧速率也称为FPS，Frames PerSecond的缩写，也就是俗称的刷新率(帧率)是指每秒钟刷新的图片的帧数，也可以理解为图形处理器每秒钟能够刷新几次。每秒钟帧数(FPS)越多，所显示的动作就会越流畅。捕捉动态视频内容时，此数字愈高愈好</li>
+<li>GPU占用率(%)：行业最优指标0.12，行业平均指标11.25</li>
+<li>耗电量(mAh)：行业最优指标1.01（仅供参考），行业平均指标：270.19（仅供参考），耗电量关注的是耗电量的平均值</li>
+</ul>
+<h2 id="8、-App抓包"><a href="#8、-App抓包" class="headerlink" title="8、 App抓包"></a>8、 App抓包</h2><p>主流的抓包工具：开发者工具F12、Charles、Fiddler、Wireshark等</p>
+<p>Charles抓包工具的使用</p>
+<p>Charles/Fiddler抓包的原理：启动后会监听在8888端口，同时它会修改电脑的代理为http=127.0.0.1:8888;https=127.0.0.1:8888，表示Charles/Fiddler是作为电脑的代理工作。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152758822.png" alt="image-20240516152758822" style="zoom:50%;"></p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152813949.png" alt="image-20240516152813949" style="zoom:50%;"></p>
+<p>https是加密的，http是不加密的，https=http+ssl</p>
+<p>抓https的包，需要安装证书：Help-&gt;SSL Proxying-&gt;Install Charles Root Certificate，安装之后通过抓一个https的包来验证是否安装成功。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152830079.png" alt="image-20240516152830079" style="zoom:50%;"></p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210826144949060.png" alt="image-20210826144949060" style="zoom:50%;"></p>
+<p>抓App的包的步骤：</p>
+<p>1、把手机和PC连接到同一个Wi-Fi；</p>
+<p>2、修改手机的代理，配置成PC的IP（Wi-Fi分配的IP）和端口（Charles的端口），保存；</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516152956985.png" alt="image-20240516152956985" style="zoom:50%;"></p>
+<p>3、在Charles上会弹出如下窗口，点击Allow运行手机连接Charles，到这一步，在Charles上就可以抓到手机的http包了，如果要抓https的包，继续第4步操作；</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210730142504027.png" alt="image-20210730142504027" style="zoom:50%;"></p>
+<p>4、在Charles上开启SSL代理</p>
+<p>Proxy -&gt; SSL Proxying Settings—&gt;勾选Enable SSL Proxying</p>
+<p>点击Add,点击Add，Host设置要抓取的https接口地址和端口</p>
+<p>Host : <em> (使用通配符表示检测所有网络请求；建议还是设置单个需要抓取的https host，尽量避免使用 </em> 通配符)</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153010295.png" alt="image-20240516153010295" style="zoom:50%;"></p>
+<p>5、在手机端安装Charles证书</p>
+<p>在Charles上点击Help-&gt;SSL Proxying —&gt; Install Charles Root Certificate on a Mobile Device or Remote Browser,会提示你如何在手机端配置代理以及安装证书：</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153021804.png" alt="image-20240516153021804" style="zoom:67%;"></p>
+<p>点击后提示如下：</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153031116.png" alt="image-20240516153031116" style="zoom:50%;"></p>
+<p>然后在手机浏览器上打开<a href="http://chls.pro/ssl下载证书，下载到一个你能找到的目录，别下载完就找不到了。">http://chls.pro/ssl下载证书，下载到一个你能找到的目录，别下载完就找不到了。</a></p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20240516153058833.png" alt="image-20240516153058833" style="zoom:50%;"></p>
+<p>下载后在手机的系统设置-》更多设置-》系统安全-》加密与凭据-》从存储设备安装，安装刚刚下载的证书。</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210802085220421.png" alt="image-20210802085220421"></p>
+<p>安装证书后，就可以抓到https的包了。</p>
+<p><a href="https://blog.csdn.net/bsmmaoshenbo/article/details/85252716">https://blog.csdn.net/bsmmaoshenbo/article/details/85252716</a></p>
+<p>HTTP请求的常用方法：</p>
+<ul>
+<li>GET：表示从服务器获取资源</li>
+<li>POST：表示向服务器提交资源</li>
+<li>PUT：表示修改资源</li>
+<li>DELETE：表示删除资源</li>
+</ul>
+<p>用Fiddler抓取手机App的包的步骤：</p>
+<p>1、安装Fiddler，配置Fiddler，勾选允许远程电脑连接</p>
+<p><img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210914114038393.png" alt="image-20210914114038393"></p>
+<p>2、把手机和电脑连接到同一个Wi-Fi里；</p>
+<p>3、查到电脑的Wi-Fi的IP地址<img src="/2024/05/16/APP%E6%B5%8B%E8%AF%95/APP%E6%B5%8B%E8%AF%95/image-20210914114436140.png" alt="image-20210914114436140"></p>
+<p>4、连接Fiddler下载证书并安装</p>
+<p>​    在手机浏览器中打开 <a href="http://电脑IP:8888">http://电脑IP:8888</a></p>
+<p>5、修改手机的代理，IP为电脑的Wi-Fi IP，端口为8888</p>
+<p>6、在手机上打开浏览器，输入<a href="https://m.baidu.com，正常在Fiddler就可以抓到手机浏览器的包">https://m.baidu.com，正常在Fiddler就可以抓到手机浏览器的包</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/16/APP%E6%B5%8B%E8%AF%95/" title="APP测试">https://laylaycjl.github.io/2024/05/16/APP测试/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/APP%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> APP测试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/" rel="prev" title="测试环境的部署与维护">
+                  <i class="fa fa-chevron-left"></i> 测试环境的部署与维护
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/16/%E6%B5%8B%E8%AF%95%E8%AE%A1%E5%88%92/" rel="next" title="测试计划">
+                  测试计划 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">204k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:05</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

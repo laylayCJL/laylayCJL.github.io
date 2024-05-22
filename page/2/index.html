@@ -202,7 +202,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -215,7 +215,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -258,6 +258,785 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/" class="post-title-link" itemprop="url">进程与定时任务</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 15:22:29" itemprop="dateCreated datePublished" datetime="2024-04-29T15:22:29+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 16:42:36" itemprop="dateModified" datetime="2024-05-05T16:42:36+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h1><h2 id="1、进程的基本概念"><a href="#1、进程的基本概念" class="headerlink" title="1、进程的基本概念"></a>1、进程的基本概念</h2><p><strong>程序</strong>：程序（软件）用代码决定程序的行为，存在存储介质里，比如硬盘</p>
+<p><strong>进程</strong>：程序运行起来，就是操作系统把存储介质上的可执行文件加载到内存里面运行，这个运行的程序叫做进程</p>
+<ul>
+<li>程序是<strong>静态的文件</strong>，进程是程序的<strong>一次执行过程</strong>，进程是动态的。</li>
+</ul>
+<h2 id="2、查看进程的命令ps"><a href="#2、查看进程的命令ps" class="headerlink" title="2、查看进程的命令ps"></a>2、查看进程的命令ps</h2><h3 id="（1）查看当前终端的当前用户的所有进程"><a href="#（1）查看当前终端的当前用户的所有进程" class="headerlink" title="（1）查看当前终端的当前用户的所有进程"></a>（1）查看当前终端的当前用户的所有进程</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps</span><br><span class="line">不带参数</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153931760.png" alt="image-20240429153931760" style="zoom:50%;"></p>
+<h3 id="（2）查看所有进程-ef"><a href="#（2）查看所有进程-ef" class="headerlink" title="（2）查看所有进程==-ef=="></a>（2）查看所有进程==-ef==</h3><figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br><span class="line">e表示所有，f表示full-format，尤其是PPID和command内容</span><br><span class="line"></span><br><span class="line">经常和管道符连用</span><br><span class="line">ps -ef | grep java</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 参数最常用的操作是查看某个服务的进程：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep 服务名</span><br><span class="line">服务名: tomcat、nginx、redis、java、mysal</span><br></pre></td></tr></tbody></table></figure>
+<p><code>-ef</code> 查询结果含义：</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153313142.png" alt="image-20240429153313142" style="zoom:50%;"></p>
+<ul>
+<li><p>子进程和父进程：</p>
+<ul>
+<li><p>在root下切换为jack用户，然后再jack进程下执行bash，那么root用户su切换为jack用户这个进程是jack的bash进程的父进程</p>
+<p><img src="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/image-20240429153547534.png" alt="image-20240429153547534" style="zoom:50%;"></p>
+<p><strong>当父进程结束时，子进程也会结束</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/29/%E8%BF%9B%E7%A8%8B%E4%B8%8E%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">压缩、打包与软件安装</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-29 10:02:45" itemprop="dateCreated datePublished" datetime="2024-04-29T10:02:45+08:00">2024-04-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-05 16:29:59" itemprop="dateModified" datetime="2024-05-05T16:29:59+08:00">2024-05-05</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、压缩与打包"><a href="#一、压缩与打包" class="headerlink" title="一、压缩与打包"></a>一、压缩与打包</h1><h2 id="0、打包和压缩的区别："><a href="#0、打包和压缩的区别：" class="headerlink" title="0、打包和压缩的区别："></a>0、打包和压缩的区别：</h2><ul>
+<li>打包是指把文件和目录的结构和内容==拷贝==到一个文件里</li>
+<li>压缩是把文件经过一些算法变成体积上更小的文件</li>
+</ul>
+<p>以WinRAR为例，一般是既打包也压缩，也可以不压缩，只打包</p>
+<h2 id="1、压缩命令-gzip-、查看压缩内容-zcat"><a href="#1、压缩命令-gzip-、查看压缩内容-zcat" class="headerlink" title="1、压缩命令==gzip==、查看压缩内容==zcat=="></a>1、压缩命令==gzip==、查看压缩内容==zcat==</h2><h3 id="（1）gzip压缩"><a href="#（1）gzip压缩" class="headerlink" title="（1）gzip压缩"></a>（1）gzip压缩</h3><p>1）gzip命令，压缩一个或多个文件，==压缩成分别的压缩文件，不能对整个目录压缩，但可以通过-r参数分别压缩目录下的文件==</p>
+<p>2）压缩完原文件不在，变为.gz文件</p>
+<p>3）格式</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">压缩格式：</span><br><span class="line">gzip 文件名；(压缩完成后，原来的文件会被替换成&lt;name&gt;.gz，原文件消失)</span><br></pre></td></tr></tbody></table></figure>
+<p>例如：</p>
+<ul>
+<li><p>压缩scp.log文件</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gzip scp.out</span><br></pre></td></tr></tbody></table></figure>
+<p>原始文件大小为129</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190259032.png" alt="image-20240429190259032" style="zoom:50%;"></p>
+<p>对其进行压缩，压缩后变为 <code>.gz</code> 文件，大小变为112：</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429190414673.png" alt="image-20240429190414673" style="zoom:50%;"></p>
+</li>
+<li><p>压缩test目录</p>
+<p><strong>无法压缩目录本身，但是可以-r压缩子文件</strong></p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gzip -r /home/test</span><br><span class="line">-r：递归压缩，压缩其子文件</span><br></pre></td></tr></tbody></table></figure>
+<p>执行命令后，会将test目录下的每个文件进行分别压缩，如图压缩前是<code>catalina.out</code>和<code>locahost.2024-04-29.log</code>文件，压缩后分别变成压缩包</p>
+<p><img src="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/image-20240429101324023.png" alt="image-20240429101324023" style="zoom:50%;"></p></li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/29/%E5%8E%8B%E7%BC%A9%E3%80%81%E6%89%93%E5%8C%85%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">Linux文件权限管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-28 15:42:50 / 修改时间：19:55:40" itemprop="dateCreated datePublished" datetime="2024-04-28T15:42:50+08:00">2024-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、文件访问权限和用户种类"><a href="#一、文件访问权限和用户种类" class="headerlink" title="一、文件访问权限和用户种类"></a>一、文件访问权限和用户种类</h1><h2 id="1、文件访问权限"><a href="#1、文件访问权限" class="headerlink" title="1、文件访问权限"></a>1、文件访问权限</h2><h3 id="（1）用ls查看时，显示内容说明："><a href="#（1）用ls查看时，显示内容说明：" class="headerlink" title="（1）用ls查看时，显示内容说明："></a>（1）用ls查看时，显示内容说明：</h3><p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428154306993.png" style="zoom: 67%;"></p>
+<p>文件类型说明：</p>
+<ul>
+<li>“-”表示普通文件；</li>
+<li>“d”表示目录；</li>
+<li>“l”表示链接文件；</li>
+<li>“p”表示管理文件；</li>
+<li>“b”表示块设备文件；</li>
+<li>“c”表示字符设备文件；</li>
+<li>“s”表示套接字文件；</li>
+</ul>
+<p>权限说明：</p>
+<p><img src="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/image-20240428155458149.png" alt="image-20240428155458149" style="zoom:50%;"></p>
+<h3 id="（2）文件权限分类"><a href="#（2）文件权限分类" class="headerlink" title="（2）文件权限分类"></a>（2）文件权限分类</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>权限</strong></th>
+<th><strong>文件的存取权限</strong></th>
+<th><strong>目录的存取权限</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>r</td>
+<td>具有<strong>读</strong>文件的权限</td>
+<td>对文件：能查看文件内容（cat、less、head、tail、ls、more命令可以执行）  对目录：可以查看目录内容</td>
+</tr>
+<tr>
+<td>w</td>
+<td>具有<strong>写</strong>文件的权限</td>
+<td>能创建和删除文件（比如：在文件夹下面，使用touch命令创建文件）</td>
+</tr>
+<tr>
+<td>x</td>
+<td>具有<strong>执行</strong>文件的权限</td>
+<td>能使用该目录下的文件（如cd命令），能进入该目录</td>
+</tr>
+</tbody>
+</table>
+</div>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/28/Linux%E6%96%87%E4%BB%B6%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/28/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/28/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/" class="post-title-link" itemprop="url">用户管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2024-04-28 14:01:09 / 修改时间：16:36:45" itemprop="dateCreated datePublished" datetime="2024-04-28T14:01:09+08:00">2024-04-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、用户和用户组"><a href="#一、用户和用户组" class="headerlink" title="一、用户和用户组"></a>一、用户和用户组</h1><h3 id="1、用户、用户组概念"><a href="#1、用户、用户组概念" class="headerlink" title="1、用户、用户组概念"></a>1、用户、用户组概念</h3><p><img src="/2024/04/28/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/image-20240428141914666.png" alt="image-20240428141914666" style="zoom:50%;"></p>
+<ul>
+<li><p>Linux是一个多用户的操作系统</p>
+</li>
+<li><p>任何一个要使用系统资源的用户，必须登录进入系统</p>
+</li>
+<li><p>Linux用户属于一个或多个特定的组，称为用户组，即group</p>
+</li>
+</ul>
+<h3 id="2、为什么分组"><a href="#2、为什么分组" class="headerlink" title="2、为什么分组"></a>2、为什么分组</h3><ul>
+<li><p>资源访问控制：文件（泛义上的文件）</p>
+</li>
+<li><p>所有文件都属于一个特定的用户，和一个特定的用户组</p>
+</li>
+<li><p>每个文件都有一定的访问权限，用户限制不同用户和用户组的访问行为</p>
+</li>
+</ul>
+<h3 id="3、用户和用户组的关系"><a href="#3、用户和用户组的关系" class="headerlink" title="3、用户和用户组的关系"></a>3、用户和用户组的关系</h3><ul>
+<li><p><strong>多对多</strong>的关系</p>
+<p>Linux系统以组Group方式管理用户，用户和组的对应关系为多对多，即某个用户可属于一个或多个组，某个组可以有0个、1个或多个用户。</p>
+</li>
+<li><p>组的分类</p>
+<p>从用户的角度，分为主组和附属组：</p>
+<ul>
+<li><strong>主组</strong>：也被称为primary group、first group或initial login group，用户的默认组，用户的gid所标识的组</li>
+<li><strong>附属组</strong>：也被称为Secondary group或supplementary group，用户的附加组</li>
+<li><strong>用户必须有且只能有一个主组，就可以有0个、1个或多个附属组</strong>，如我们一定会有一个用来安家的房子（类同主组），还可以有n个用于投资或其他打算的房子（附属组）</li>
+</ul>
+</li>
+</ul>
+<h3 id="4、用户分类"><a href="#4、用户分类" class="headerlink" title="4、用户分类"></a>4、用户分类</h3><p>（1）root用户：超级管理员用户，具有操作系统的最大权限</p>
+<p>（2）普通用户：由超级用户创建及授权，并且可以登录到Linux系统执行某些任务</p>
+<p>（3）系统用户：系统内创建了若干用户，如mail、ftp、bin等，默认情况下，系统用户都是无法登录的</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/28/%E7%94%A8%E6%88%B7%E7%AE%A1%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/26/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/26/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/" class="post-title-link" itemprop="url">重定向、管道与环境变量</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-26 16:42:46" itemprop="dateCreated datePublished" datetime="2024-04-26T16:42:46+08:00">2024-04-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-04-28 14:02:57" itemprop="dateModified" datetime="2024-04-28T14:02:57+08:00">2024-04-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、重定向"><a href="#一、重定向" class="headerlink" title="一、重定向"></a>一、重定向</h1><h2 id="1、标准输入、标准输出、标准错误"><a href="#1、标准输入、标准输出、标准错误" class="headerlink" title="1、标准输入、标准输出、标准错误"></a>1、标准输入、标准输出、标准错误</h2><p>执行一个shell命令行时通常会自动打开三个标准文件，即：</p>
+<p><img src="/2024/04/26/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/image-20240426164557090.png" alt="image-20240426164557090" style="zoom:50%;"></p>
+<ul>
+<li><p>标准输入文件（stdin），通常对应终端的键盘，stdin的文件描述符为==0==，Unix程序默认从stdin读取数据</p>
+</li>
+<li><p>标准输出文件（stdout），对应终端的屏幕，stdout 的文件描述符为==1==，Unix程序默认向stdout输出数据</p>
+</li>
+<li>标准错误输出文件（stderr），对应终端的屏幕，stderr的文件描述符为==2==，Unix程序会向stderr流中写入错误信息</li>
+</ul>
+<p>进程将从标准输入文件中得到输入数据，将<strong>正常输出数据</strong>输出到<u>标准输出文件</u>，而将<strong>错误信息</strong>送到<u>标准错误文件</u>中</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/26/%E9%87%8D%E5%AE%9A%E5%90%91%E3%80%81%E7%AE%A1%E9%81%93%E4%B8%8E%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">软件测试基础</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-04-25 15:04:06" itemprop="dateCreated datePublished" datetime="2024-04-25T15:04:06+08:00">2024-04-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-15 22:53:24" itemprop="dateModified" datetime="2024-05-15T22:53:24+08:00">2024-05-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>9 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="一、目的、原则、流程、职责"><a href="#一、目的、原则、流程、职责" class="headerlink" title="一、目的、原则、流程、职责"></a>一、目的、原则、流程、职责</h1><h2 id="1、软件测试目的、概念"><a href="#1、软件测试目的、概念" class="headerlink" title="1、软件测试目的、概念"></a>1、软件测试目的、概念</h2><h3 id="（1）测试目的"><a href="#（1）测试目的" class="headerlink" title="（1）测试目的"></a>（1）测试目的</h3><ul>
+<li>软件测试是程序的执行过程，目的在于<strong>发现错误</strong>,尽可能多的找出缺陷</li>
+<li>软件测试的目的是确保交给用户的软件产品<strong>符合用户的需求</strong></li>
+<li>软件测试的目的是检验软件产品是否满足用户的<strong>显性和隐性需求</strong><ul>
+<li>显性需求:产品经理(跟客户对接、整理需求)—-》需求文档</li>
+<li>隐形需求:按照约定俗成，应该要实现的需求（删除弹出确认对话框、金额小数点2位、密码*显示)</li>
+</ul>
+</li>
+</ul>
+<h3 id="（2）测试的概念"><a href="#（2）测试的概念" class="headerlink" title="（2）测试的概念"></a>（2）测试的概念</h3><ul>
+<li>60-70年代梅耶执行程序，发现错误</li>
+<li>80-90年代特定条件下操作软件，发现错误，评估质量（是否达到质量标准)</li>
+<li>2000 IEEE 使用人工或自动化手段，来<strong>运行</strong>或<strong>测试</strong>某个系统的过程，其目的在于检验它<strong>是否满足规定的需求</strong>或<strong>弄清预期结果与实际结果之间的差别</strong>。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/04/25/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%A1%80/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+</div>
+
+
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -539,101 +1318,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2024/03/27/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">测试用例设计</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2024-03-27 15:33:18 / 修改时间：15:35:56" itemprop="dateCreated datePublished" datetime="2024-03-27T15:33:18+08:00">2024-03-27</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <span id="more"></span>
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/03/27/%E6%B5%8B%E8%AF%95%E9%9C%80%E6%B1%82/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -665,7 +1349,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2024-03-30 09:52:58" itemprop="dateModified" datetime="2024-03-30T09:52:58+08:00">2024-03-30</time>
+        <time title="修改时间：2024-05-17 10:37:23" itemprop="dateModified" datetime="2024-05-17T10:37:23+08:00">2024-05-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -855,554 +1539,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2022/06/25/%E7%BB%8F%E5%85%B8%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/06/25/%E7%BB%8F%E5%85%B8%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">经典同步问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-06-25 20:23:39 / 修改时间：20:52:03" itemprop="dateCreated datePublished" datetime="2022-06-25T20:23:39+08:00">2022-06-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>3.3k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="经典同步问题"><a href="#经典同步问题" class="headerlink" title="经典同步问题"></a>经典同步问题</h1><h2 id="一、生产者消费者问题（最常见的同步互斥问题）"><a href="#一、生产者消费者问题（最常见的同步互斥问题）" class="headerlink" title="一、生产者消费者问题（最常见的同步互斥问题）"></a>一、生产者消费者问题（最常见的同步互斥问题）</h2><h3 id="1、思路"><a href="#1、思路" class="headerlink" title="1、思路"></a>1、思路</h3><p>主要难点是：互斥和同步关系同时存在的问题，主要是分析同步问题<br>（1）同步操作<br>    生产者要生产数据，也就是把数据写入缓冲区，需要使用的是空缓冲区资源，用empty这个信号量来记录空缓冲区资源。（生产者写的前提是有空缓冲区资源）</p>
-<ul>
-<li>初始时，缓冲区全部为空，也就是空缓冲区的数目为n个</li>
-<li>生产者在写入缓冲区之前，要申请空缓冲区资源，即P（empty）</li>
-<li>生产者在写完之后，要让满缓冲区资源加1，因为写完了一个，满缓冲区资源多了一个</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/06/25/%E7%BB%8F%E5%85%B8%E5%90%8C%E6%AD%A5%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">有关全排列问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-03-14 08:20:59 / 修改时间：11:16:05" itemprop="dateCreated datePublished" datetime="2022-03-14T08:20:59+08:00">2022-03-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JavaA%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">JavaA组</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>516</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="1、递归分治法"><a href="#1、递归分治法" class="headerlink" title="1、递归分治法"></a>1、递归分治法</h1>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/14/%E6%9C%89%E5%85%B3%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2022/02/26/%E8%93%9D%E6%A1%A5%E6%9D%AF2013A/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/26/%E8%93%9D%E6%A1%A5%E6%9D%AF2013A/" class="post-title-link" itemprop="url">蓝桥杯2013</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-02-26 16:28:48" itemprop="dateCreated datePublished" datetime="2022-02-26T16:28:48+08:00">2022-02-26</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-03-13 22:28:01" itemprop="dateModified" datetime="2022-03-13T22:28:01+08:00">2022-03-13</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/JavaA%E7%BB%84/" itemprop="url" rel="index"><span itemprop="name">JavaA组</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="1、世纪末问题（calendar-API）"><a href="#1、世纪末问题（calendar-API）" class="headerlink" title="1、世纪末问题（calendar API）"></a>1、世纪末问题（calendar API）</h2><blockquote>
-<p>1999年的12月31日是星期五，请问:未来哪一个离我们最近的一个世纪末年〈即xx99年）的12月31日正好是星期天（即星期日)?<br>请回答该年份(只写这个4位整数，不要写12月31等多余信息)</p>
-</blockquote>
-<p>思路：</p>
-<p>关键在于是否知道calendar类的存在，直接调用这个类，设定好年份月份日期再获取这一天是星期几就可以了</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/26/%E8%93%9D%E6%A1%A5%E6%9D%AF2013A/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/10/19/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/19/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">系统架构师案例分析</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-19 21:38:52" itemprop="dateCreated datePublished" datetime="2021-10-19T21:38:52+08:00">2021-10-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-07-01 18:24:02" itemprop="dateModified" datetime="2022-07-01T18:24:02+08:00">2022-07-01</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%BD%AF%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">软考</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>6.1k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>6 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="第一题、软件架构评估"><a href="#第一题、软件架构评估" class="headerlink" title="第一题、软件架构评估"></a>第一题、软件架构评估</h1><h2 id="2015"><a href="#2015" class="headerlink" title="2015"></a>2015</h2><h3 id="1、软件质量属性"><a href="#1、软件质量属性" class="headerlink" title="1、软件质量属性"></a>1、软件质量属性</h3><p>1、性能</p>
-<p>性能(performance)是指系统的响应能力，即要经过多长时间才能对某个事件做出响应，或者在某段时间内系统所能处理的事件的个数。<br>代表参数:响应时间、吞吐量设计策略:优先级队列、资源调度</p>
-<p>2、可用性</p>
-<p>可用性(availability)是系统能够正常运行的时间比例。经常用两次故障之间的时间长度或在出现故障时系统能够恢复正常的速度来表示。<br>代表参数:故障间隔时间设计策略:冗余、心跳线</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/10/19/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E6%A1%88%E4%BE%8B%E5%88%86%E6%9E%90/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="laylayCJL">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="laylayCJL's Blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/" class="post-title-link" itemprop="url">系统架构师上午真题知识点</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-29 15:12:13" itemprop="dateCreated datePublished" datetime="2021-09-29T15:12:13+08:00">2021-09-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-18 13:28:02" itemprop="dateModified" datetime="2021-10-18T13:28:02+08:00">2021-10-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%BD%AF%E8%80%83/" itemprop="url" rel="index"><span itemprop="name">软考</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="本文字数">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">本文字数：</span>
-      <span>18k</span>
-    </span>
-    <span class="post-meta-item" title="阅读时长">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>17 分钟</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="系统架构设计师上午题"><a href="#系统架构设计师上午题" class="headerlink" title="系统架构设计师上午题"></a>系统架构设计师上午题</h1><h1 id="真题知识点"><a href="#真题知识点" class="headerlink" title="真题知识点"></a>真题知识点</h1><p>转载自www.educity.cn</p>
-<h1 id="2015年"><a href="#2015年" class="headerlink" title="2015年"></a>2015年</h1><h2 id="1、分片式数据库"><a href="#1、分片式数据库" class="headerlink" title="1、分片式数据库"></a>1、分片式数据库</h2><p>6题</p>
-<p><img src="/images/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/image-20210929164652309.png" alt="image-20210929164652309" style="zoom:50%;"></p>
-<p>C</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/09/29/%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%B8%88%E4%B8%8A%E5%8D%88%E7%9C%9F%E9%A2%98%E7%9F%A5%E8%AF%86%E7%82%B9/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <div>
-  
-</div>
-
-
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
@@ -1485,14 +1621,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">162k</span>
+    <span title="站点总字数">204k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:27</span>
+    <span title="站点阅读时长">3:05</span>
   </span>
 </div>
 <div class="busuanzi-count">

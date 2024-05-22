@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、环境搭建1、环境搭建概念 环境 &#x3D; 硬件服务器（或者云服务器）+ 操作系统（Linux）+ 数据库（MySQL、Oracle、Redis）+ 软件服务器（Apache HTTP Server、Nginx、Tomcat）+ 要测试的项目包； 环境搭建，意思就是把要测试的系统运行起来，属于执行测试之前的准备工作   2、开发环境、测试环境、UAT环境、生产环境（1）概念在大多数公司，一般会存在以下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="测试环境的部署与维护">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、环境搭建1、环境搭建概念 环境 &#x3D; 硬件服务器（或者云服务器）+ 操作系统（Linux）+ 数据库（MySQL、Oracle、Redis）+ 软件服务器（Apache HTTP Server、Nginx、Tomcat）+ 要测试的项目包； 环境搭建，意思就是把要测试的系统运行起来，属于执行测试之前的准备工作   2、开发环境、测试环境、UAT环境、生产环境（1）概念在大多数公司，一般会存在以下">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511140839274.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511141810466.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511142656466.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511143008637.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511143020817.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511144645270.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511145152797.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160255214.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160316812.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160504736.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160703987.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513155026409.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513154706899.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513154844073.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513162644358.png">
+<meta property="article:published_time" content="2024-05-11T06:02:57.000Z">
+<meta property="article:modified_time" content="2024-05-13T08:33:43.293Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="测试环境">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511140839274.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>测试环境的部署与维护 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="nav-number">1.</span> <span class="nav-text">一、环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">1、环境搭建概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E3%80%81%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E3%80%81UAT%E7%8E%AF%E5%A2%83%E3%80%81%E7%94%9F%E4%BA%A7%E7%8E%AF%E5%A2%83"><span class="nav-number">1.2.</span> <span class="nav-text">2、开发环境、测试环境、UAT环境、生产环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E6%A6%82%E5%BF%B5"><span class="nav-number">1.2.1.</span> <span class="nav-text">（1）概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%8E%AF%E5%A2%83%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.2.</span> <span class="nav-text">（2）环境之间的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E5%B7%A5%E4%BD%9C%E4%B8%AD%E4%BD%BF%E7%94%A8Linux%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.</span> <span class="nav-text">3、工作中使用Linux的场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%AD%A6%E4%B9%A0%E4%B8%AD%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">1.3.1.</span> <span class="nav-text">（1）学习中的场景：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%B7%A5%E4%BD%9C%E4%B8%AD%E7%9A%84%E5%9C%BA%E6%99%AF%EF%BC%9A"><span class="nav-number">1.3.2.</span> <span class="nav-text">（2）工作中的场景：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">2.</span> <span class="nav-text">二、服务器软件的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%A1%AC%E4%BB%B6%E5%92%8C%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、服务器硬件和服务器软件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6%E7%9A%84%E5%87%A0%E4%B8%AA%E6%A6%82%E5%BF%B5"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、服务器软件的几个概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%BB%E6%B5%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、主流服务器软件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89Nginx%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88web-%E9%9D%99%E6%80%81%EF%BC%89"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">（1）Nginx服务器（web&#x2F;静态）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Tomcat%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88%E5%BA%94%E7%94%A8-%E5%8A%A8%E6%80%81%EF%BC%89"><span class="nav-number">2.0.3.2.</span> <span class="nav-text">（2）Tomcat服务器（应用&#x2F;动态）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89Nginx-Tomcat%E4%B9%8B%E9%97%B4%E7%9A%84%E9%85%8D%E5%90%88"><span class="nav-number">2.0.3.3.</span> <span class="nav-text">（3）Nginx+Tomcat之间的配合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%EF%BC%89%E5%AE%9E%E7%8E%B0%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="nav-number">2.0.3.3.1.</span> <span class="nav-text">1）实现动静分离</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%EF%BC%89%E5%AE%9E%E7%8E%B0%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="nav-number">2.0.3.3.2.</span> <span class="nav-text">2）实现负载均衡</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89Tengine%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88%E5%9F%BA%E4%BA%8ENginx%EF%BC%89"><span class="nav-number">2.0.3.4.</span> <span class="nav-text">（4）Tengine服务器（基于Nginx）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%885%EF%BC%89Apache%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%88%E4%B8%8D%E5%A6%82Nginx%EF%BC%89"><span class="nav-number">2.0.3.5.</span> <span class="nav-text">（5）Apache服务器（不如Nginx）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%886%EF%BC%89IIS%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.0.3.6.</span> <span class="nav-text">（6）IIS服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%887%EF%BC%89Jetty%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.0.3.7.</span> <span class="nav-text">（7）Jetty服务器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%888%EF%BC%89%E5%87%A0%E7%A7%8D%E5%95%86%E7%94%A8%E7%9A%84%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BD%AF%E4%BB%B6"><span class="nav-number">2.0.3.8.</span> <span class="nav-text">（8）几种商用的服务器软件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81LAMP%E4%B8%8ELNMP%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84"><span class="nav-number">2.0.4.</span> <span class="nav-text">4、LAMP与LNMP网站架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81Jar%E5%8C%85%E5%92%8CWar%E5%8C%85"><span class="nav-number">2.0.5.</span> <span class="nav-text">5、Jar包和War包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89JAR%EF%BC%88Java-Archive-File%EF%BC%89"><span class="nav-number">2.0.5.1.</span> <span class="nav-text">（1）JAR（Java Archive File）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89WAR%EF%BC%88Web-Application-Archive%EF%BC%89"><span class="nav-number">2.0.5.2.</span> <span class="nav-text">（2）WAR（Web Application Archive）</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81Tomcat%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2"><span class="nav-number">3.</span> <span class="nav-text">三、Tomcat的安装与项目部署</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Tomcat%E7%9A%84%E7%9B%AE%E5%BD%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.0.1.</span> <span class="nav-text">1、Tomcat的目录介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Tomcat%E7%9A%84%E5%90%AF%E5%81%9C%E8%84%9A%E6%9C%AC"><span class="nav-number">3.0.2.</span> <span class="nav-text">2、Tomcat的启停脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81Tomcat%E7%9A%84%E6%97%A5%E5%BF%97"><span class="nav-number">3.0.3.</span> <span class="nav-text">3、Tomcat的日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E4%BF%AE%E6%94%B9Tomcat%E7%9A%84%E7%9B%91%E5%90%AC%E7%AB%AF%E5%8F%A3"><span class="nav-number">3.0.4.</span> <span class="nav-text">4、修改Tomcat的监听端口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4"><span class="nav-number">4.</span> <span class="nav-text">四、升级与维护</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E5%8D%87%E7%BA%A7"><span class="nav-number">4.1.</span> <span class="nav-text">1、测试环境的升级</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">5.</span> <span class="nav-text">四、测试环境问题排查</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%89%8D%E5%8F%B0%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%EF%BC%8C%E6%8A%A5500%E9%94%99%E8%AF%AF"><span class="nav-number">5.1.</span> <span class="nav-text">（1）前台启动失败，报500错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%89%8D%E5%8F%B0%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F%EF%BC%8C%E5%90%8E%E5%8F%B0%E6%8A%A5502%E9%94%99%E8%AF%AF"><span class="nav-number">5.2.</span> <span class="nav-text">2、前台运行成功，后台报502错误</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          测试环境的部署与维护
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-11 14:02:57" itemprop="dateCreated datePublished" datetime="2024-05-11T14:02:57+08:00">2024-05-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-13 16:33:43" itemprop="dateModified" datetime="2024-05-13T16:33:43+08:00">2024-05-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、环境搭建"><a href="#一、环境搭建" class="headerlink" title="一、环境搭建"></a>一、环境搭建</h1><h2 id="1、环境搭建概念"><a href="#1、环境搭建概念" class="headerlink" title="1、环境搭建概念"></a>1、环境搭建概念</h2><ul>
+<li>环境 = 硬件服务器（或者云服务器）+ 操作系统（Linux）+ 数据库（MySQL、Oracle、Redis）+ 软件服务器（Apache HTTP Server、Nginx、Tomcat）+ 要测试的项目包；</li>
+<li>环境搭建，意思就是把要测试的系统运行起来，属于执行测试之前的准备工作</li>
+</ul>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511140839274.png" alt="image-20240511140839274" style="zoom: 67%;"></p>
+<h2 id="2、开发环境、测试环境、UAT环境、生产环境"><a href="#2、开发环境、测试环境、UAT环境、生产环境" class="headerlink" title="2、开发环境、测试环境、UAT环境、生产环境"></a>2、开发环境、测试环境、UAT环境、生产环境</h2><h3 id="（1）概念"><a href="#（1）概念" class="headerlink" title="（1）概念"></a>（1）概念</h3><p>在大多数公司，一般会存在以下几套环境：</p>
+<ul>
+<li><p>开发环境（development）：</p>
+<ul>
+<li>开发人员专门用于开发、调试的环境，一般配置可以比较随意，为了开发调试方便，一般会把<u>日志级别调到最低</u></li>
+<li>开发人员的<strong>调试</strong>、Bug修改后的<strong>自测</strong>等工作都是在开发环境上完成</li>
+<li>开发环境由开发人员负责部署与维护。</li>
+</ul>
+</li>
+<li><p>测试环境（testing）：</p>
+<ul>
+<li>测试人员用于测试系统的环境，一般是尽量按照生产环境的配置来部署测试环境，系统只有在测试环境上经过充分验证后才会被部署到生产环境上</li>
+<li>测试环境一般由测试人员负责部署与维护，也有的公司由运维来负责维护。</li>
+</ul>
+</li>
+<li><p>UAT环境（User Acceptance Test）：主要是用来作为客户体验和验收的环境</p>
+</li>
+<li><p>生产环境（production）：</p>
+<ul>
+<li><p>也叫商用环境或客户现网环境，是指正式提供对外服务的，一般会把<u>日志级别调到最高</u>，一般生产环境都在客户现场</p>
+</li>
+<li><p>日志级别过低时，日志文件内容过多，不仅占用磁盘空间，且频繁打印日志会占用服务器的I/O</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>注意：</p>
+<p>1、开发环境、测试环境、UAT环境、生产环境一般是分开的，避免相互干扰</p>
+<p>2、对测试而言，若同时有多个项目进行测试，可能会同时维护多套测试环境，避免不同系统之间的干扰</p>
+<span id="more"></span>
+<h3 id="（2）环境之间的关系"><a href="#（2）环境之间的关系" class="headerlink" title="（2）环境之间的关系"></a>（2）环境之间的关系</h3><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511141810466.png" alt="image-20240511141810466" style="zoom:67%;"></p>
+<p>软件产品的开发、测试、上线过程：</p>
+<p>1、开发人员先在开发环境上调试好了就会发版（程序+数据+文档）</p>
+<p>2、测试人员拿到版本后在测试环境上验证</p>
+<p>3、只有在测试环境上经过充分验证的版本才会上线到生成环境上</p>
+<h2 id="3、工作中使用Linux的场景"><a href="#3、工作中使用Linux的场景" class="headerlink" title="3、工作中使用Linux的场景"></a>3、工作中使用Linux的场景</h2><h3 id="（1）学习中的场景："><a href="#（1）学习中的场景：" class="headerlink" title="（1）学习中的场景："></a>（1）学习中的场景：</h3><p>在个人电脑上划虚拟机安装Linux系统。</p>
+<h3 id="（2）工作中的场景："><a href="#（2）工作中的场景：" class="headerlink" title="（2）工作中的场景："></a>（2）工作中的场景：</h3><ul>
+<li><p>使用云服务器</p>
+<ul>
+<li><p>公有云</p>
+<ul>
+<li><p>阿里云、腾讯云、华为云、百度云、亚马逊云</p>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511142656466.png" alt="image-20240511142656466" style="zoom:50%;"></p>
+</li>
+<li><p>优势是灵活、可扩展、低成本等</p>
+</li>
+</ul>
+</li>
+<li><p>私有云：</p>
+<ul>
+<li>私有云是一个公司使用的特定云环境</li>
+<li>不同于公有云模式中共享的设施使用，私有云模式中每个公司使用的服务器或存储应用都是单独的</li>
+<li>优势是安全、灵活、可扩展等</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>传统方式：</p>
+<ul>
+<li>公司购买物理服务器，在服务器上划虚拟机安装Linux，然后再安装业务软件</li>
+<li>常用的Linux操作系统发行版：CentOS、Redhat、Ubuntu等</li>
+</ul>
+</li>
+</ul>
+<h1 id="二、服务器软件的概念"><a href="#二、服务器软件的概念" class="headerlink" title="二、服务器软件的概念"></a>二、服务器软件的概念</h1><h3 id="1、服务器硬件和服务器软件"><a href="#1、服务器硬件和服务器软件" class="headerlink" title="1、服务器硬件和服务器软件"></a>1、服务器硬件和服务器软件</h3><ul>
+<li><p>服务器硬件</p>
+<ul>
+<li><p>一台性能、稳定性、扩展性比我们个人普通PC更强的一台计算机</p>
+</li>
+<li><p>服务器也需要安装操作系统才能使用它，现在很多企业也都在使用云服务器</p>
+</li>
+</ul>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511143008637.png" alt="image-20240511143008637" style="zoom:50%;"></p>
+</li>
+<li><p>服务器软件</p>
+<ul>
+<li>广义上讲，运行在服务器操作系统之上，绑定了服务器特定的IP地址，并且在某一个<strong>端口</strong>监听用户的请求</li>
+<li>提供服务的软件都可以叫做服务器软件</li>
+</ul>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511143020817.png" alt="image-20240511143020817" style="zoom:50%;"></p>
+</li>
+</ul>
+<h3 id="2、服务器软件的几个概念"><a href="#2、服务器软件的几个概念" class="headerlink" title="2、服务器软件的几个概念"></a>2、服务器软件的几个概念</h3><ul>
+<li><p>服务器软件提供的服务又可以分为<u>静态服务</u>和<u>动态服务</u>两类：</p>
+<ul>
+<li><strong>静态</strong>服务：主要提供静态资源，不同用户访问到的资源相同；</li>
+<li><strong>动态</strong>服务：提供动态服务，不同用户访问到的资源不同；</li>
+</ul>
+</li>
+<li><p>服务器软件分为<u>Web服务器</u>和<u>应用服务器</u>两类：</p>
+<ul>
+<li>Web服务器：提供Web服务的服务器，因为Web服务器主要支持的协议就是HTTP协议，所以通常Web服务器和HTTP服务器是同一个概念，<strong>Web服务器提供静态服务</strong>；</li>
+<li>应用服务器：应用服务器是指通过各种协议把商业逻辑曝露给客户端的程序。它提供了访问商业逻辑的途径以供客户端应用程序使用，<strong>应用服务器提供动态服务</strong>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、主流服务器软件"><a href="#3、主流服务器软件" class="headerlink" title="3、主流服务器软件"></a>3、主流服务器软件</h3><ul>
+<li>主流的Web服务器：Apache HTTP Server、==Nginx==、lighttpd、IIS</li>
+<li>主流的应用服务器：==Tomcat==、Weblogic、Jetty、JBoss</li>
+</ul>
+<blockquote>
+<p>1、Tomcat、Apache HTTP Server、Nginx、Jetty、JBoss是开源免费的</p>
+<p>2、Apache Tomcat（简称Tomcat）、Apache HTTP Server（简称Apache）都是属于Apache软件基金会的产品</p>
+</blockquote>
+<h4 id="（1）Nginx服务器（web-静态）"><a href="#（1）Nginx服务器（web-静态）" class="headerlink" title="（1）Nginx服务器（web/静态）"></a>（1）Nginx服务器（web/静态）</h4><ul>
+<li>典型的<strong>静态服务器</strong>，除了作为Web服务器作用外，也可做反向代理、负载均衡<ul>
+<li>反向代理：Nginx就像是服务器端的代理人，对用户来说，只能感知到Nginx，不知道内部请求是如何处理的，是交给具体哪个Tomcat服务器处理的</li>
+<li>负载均衡：当负载过重时，Nginx可以调用多个服务器来分担负载</li>
+</ul>
+</li>
+<li>一般<strong>放在最前面直面用户</strong>，和后端Tomcat打配合</li>
+<li>纯C写的，<strong>性能很好、内存消耗极少、稳定性也相当好</strong>，<strong>能够支持高达50,000个并发</strong>连接数的响应，互联网公司重度使用</li>
+</ul>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">查看Nginx日志：</span><br><span class="line">cd /usr/local/nginx/logs</span><br><span class="line">tail -f erro.log</span><br><span class="line"></span><br><span class="line">编辑Nginx配置：</span><br><span class="line">cd /usr/local/nginx/conf</span><br><span class="line">vim nginx.conf</span><br><span class="line"></span><br><span class="line">重启Nginx：</span><br><span class="line">cd /usr/local/nginx/sbin</span><br><span class="line">./nginx -s reload</span><br></pre></td></tr></tbody></table></figure>
+<h4 id="（2）Tomcat服务器（应用-动态）"><a href="#（2）Tomcat服务器（应用-动态）" class="headerlink" title="（2）Tomcat服务器（应用/动态）"></a>（2）Tomcat服务器（应用/动态）</h4><ul>
+<li>由Apache基金会出品，典型的<strong>应用服务器</strong>软件，是符合Servlet标准的应用容器</li>
+<li>也可以提供http服务，但一般不会作为http服务器</li>
+<li>是Spring Boot框架默认的内置服务器</li>
+</ul>
+<h4 id="（3）Nginx-Tomcat之间的配合"><a href="#（3）Nginx-Tomcat之间的配合" class="headerlink" title="（3）Nginx+Tomcat之间的配合"></a>（3）Nginx+Tomcat之间的配合</h4><h5 id="1）实现动静分离"><a href="#1）实现动静分离" class="headerlink" title="1）实现动静分离"></a>1）实现动静分离</h5><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511144645270.png" alt="image-20240511144645270" style="zoom: 33%;"></p>
+<p>Nginx：绑定服务器ip，并监听一个端口（默认80）</p>
+<p>当客户端用户请求静态资源时，Nginx可以转发请求静态资源</p>
+<p>当客户端用户请求动态资源时，Nginx可以转发请求给Tomcat调取动态资源</p>
+<h5 id="2）实现负载均衡"><a href="#2）实现负载均衡" class="headerlink" title="2）实现负载均衡"></a>2）实现负载均衡</h5><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511145152797.png" alt="image-20240511145152797" style="zoom: 33%;"></p>
+<p>Nginx负载均衡的策略</p>
+<ul>
+<li><p>轮询、权重</p>
+<p>轮询：一个请求一个请求轮流分配，各个服务器分配到的请求数量差不多</p>
+<p>权重：某个服务器配置更好，权重更高，给它分配的请求就更多</p>
+</li>
+<li><p>可在Nginx.conf的配置文件里配置负载均衡的策略</p>
+</li>
+</ul>
+<h4 id="（4）Tengine服务器（基于Nginx）"><a href="#（4）Tengine服务器（基于Nginx）" class="headerlink" title="（4）Tengine服务器（基于Nginx）"></a>（4）Tengine服务器（基于Nginx）</h4><p>阿里出品，基于Nginx服务器做的改造(加强和封装)，对大流量场景做了很多高级功能，性能、稳定性优秀；</p>
+<h4 id="（5）Apache服务器（不如Nginx）"><a href="#（5）Apache服务器（不如Nginx）" class="headerlink" title="（5）Apache服务器（不如Nginx）"></a>（5）Apache服务器（不如Nginx）</h4><p>指Apache HTTP Server，也是静态服务器，但是不如Nginx</p>
+<h4 id="（6）IIS服务器"><a href="#（6）IIS服务器" class="headerlink" title="（6）IIS服务器"></a>（6）IIS服务器</h4><p>只能用在Windows下运行，是具有应用服务器能力的http服务器</p>
+<h4 id="（7）Jetty服务器"><a href="#（7）Jetty服务器" class="headerlink" title="（7）Jetty服务器"></a>（7）Jetty服务器</h4><p>跟Tomcat是一个性质的东西，符合Servlet标准的应用容器，也是Spring Boot框架支持的服务器，但不是默认的</p>
+<h4 id="（8）几种商用的服务器软件"><a href="#（8）几种商用的服务器软件" class="headerlink" title="（8）几种商用的服务器软件"></a>（8）几种商用的服务器软件</h4><ul>
+<li>JBoss(从8版开始更名为WildFly)：不仅是Servlet应用容器，更是EJB的应用容器，整套JavaEE框架部署的解决方案；</li>
+<li>WebLogic：Oracle公司出品，用于部署企业级JavaEE应用，全能型，几乎支持JavaEE所有的应用规范；</li>
+<li>WebSphere：IBM公司出品，支持更多JavaEE的应用规范的综合应用服务器；</li>
+</ul>
+<h3 id="4、LAMP与LNMP网站架构"><a href="#4、LAMP与LNMP网站架构" class="headerlink" title="4、LAMP与LNMP网站架构"></a>4、LAMP与LNMP网站架构</h3><p>LAMP：Linux+Apache HTTP Server+MySQL+PHP</p>
+<p>LNMP：Linux+Nginx+MySQL+PHP</p>
+<h3 id="5、Jar包和War包"><a href="#5、Jar包和War包" class="headerlink" title="5、Jar包和War包"></a>5、Jar包和War包</h3><h4 id="（1）JAR（Java-Archive-File）"><a href="#（1）JAR（Java-Archive-File）" class="headerlink" title="（1）JAR（Java Archive File）"></a>（1）JAR（Java Archive File）</h4><ul>
+<li>Java Archive File（ Java归档文件），是<strong>与平台无关的文件格式</strong>，它允许将许多文件组合成一个压缩文件</li>
+<li>Maven（项目包的管理工具）项目的默认打包格式就是Jar包</li>
+<li>Jar包可以通过<code>java -jar xx.jar</code>命令来运行。</li>
+</ul>
+<h4 id="（2）WAR（Web-Application-Archive）"><a href="#（2）WAR（Web-Application-Archive）" class="headerlink" title="（2）WAR（Web Application Archive）"></a>（2）WAR（Web Application Archive）</h4><ul>
+<li><p>Web Application Archive（Web应用归档），表示这是一个Java的Web应用程序的包</p>
+</li>
+<li><p>WAR包是一个可以直接运行的web模块，通常用于网站，打成包部署到容器（Tomcat可以理解为一个容器）中</p>
+<p>以Tomcat来说，将war包放置在其webapps目录下，然后启动Tomcat，这个包就会自动解压，就相当于发布了</p>
+</li>
+</ul>
+<h1 id="三、Tomcat的安装与项目部署"><a href="#三、Tomcat的安装与项目部署" class="headerlink" title="三、Tomcat的安装与项目部署"></a>三、Tomcat的安装与项目部署</h1><h3 id="1、Tomcat的目录介绍"><a href="#1、Tomcat的目录介绍" class="headerlink" title="1、Tomcat的目录介绍"></a>1、Tomcat的目录介绍</h3><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160255214.png" alt="image-20240511160255214" style="zoom: 50%;"></p>
+<h3 id="2、Tomcat的启停脚本"><a href="#2、Tomcat的启停脚本" class="headerlink" title="2、Tomcat的启停脚本"></a>2、Tomcat的启停脚本</h3><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160316812.png" alt="image-20240511160316812" style="zoom:50%;"></p>
+<h3 id="3、Tomcat的日志"><a href="#3、Tomcat的日志" class="headerlink" title="3、Tomcat的日志"></a>3、Tomcat的日志</h3><ul>
+<li><p>日志目录</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/tomcat/logs</span><br></pre></td></tr></tbody></table></figure>
+</li>
+<li><p>==catalina.out==：Linux下所有的错误日志和打印语句，都放在此文件中，如果Tomcat启动有问题，要看这个日志来分析</p>
+</li>
+<li><p>==localhost_access_log.日期.txt==：存放tomcat请求的所有路径、时间、请求方式、返回码等；</p>
+</li>
+<li><p>日志级别</p>
+<p>DEBUG（调试）&lt;INFO（信息）&lt;WARN（警告）&lt;ERROR（错误）&lt;FATAL（致命）</p>
+<p>日志级别开关：比如设置开关的级别是ERROR，那么只会输出ERROR及以上级别的日志到日志文件</p>
+</li>
+</ul>
+<h3 id="4、修改Tomcat的监听端口"><a href="#4、修改Tomcat的监听端口" class="headerlink" title="4、修改Tomcat的监听端口"></a>4、修改Tomcat的监听端口</h3><p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160504736.png" alt="image-20240511160504736" style="zoom:50%;"></p>
+<ul>
+<li>配置文件：server.xml</li>
+<li>修改如上的port，改成任意一个没有没占用的端口，改了之后要重启tomcat才生效</li>
+<li>在生产环境上，通常会修改软件的默认监听端口</li>
+</ul>
+<h1 id="四、升级与维护"><a href="#四、升级与维护" class="headerlink" title="四、升级与维护"></a>四、升级与维护</h1><h2 id="1、测试环境的升级"><a href="#1、测试环境的升级" class="headerlink" title="1、测试环境的升级"></a>1、测试环境的升级</h2><ul>
+<li><p>当测试人员提交Bug后，开发就需要修复，修复完之后开发会提供更新后的包或者补丁，测试人员在测试环境上安装新提供的包进行回归测试</p>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240511160703987.png" alt="image-20240511160703987" style="zoom:50%;"></p>
+<p>项目测试三轮迭代，每一轮迭代测试环境怎么维护?<br>1）第一轮迭代怎么搭建环境?<br>从0开始搭建:<br>1、准备服务器，2、安装操作系统，3、安装基础软件（服务器软件、JDKmysql、 redis、mysql、redis)4、部署项目包，运行<br>2）第二轮、第三轮迭代有什么不同?<br>主要是在前面迭代的测试环境上，更新要测试的项目包</p>
+</li>
+<li><p>补丁：开发为修复发现的Bug而发布的包/程序就是补丁</p>
+<p>在大型系统开发中，开发人员为解决每一轮测试中发现的Bug，往往通过发布补丁而不是全量的版本包来实现，用补丁的方式更灵活而且更方便安装</p>
+</li>
+</ul>
+<h1 id="四、测试环境问题排查"><a href="#四、测试环境问题排查" class="headerlink" title="四、测试环境问题排查"></a>四、测试环境问题排查</h1><p>各部分之间的关系：</p>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513155026409.png" alt="image-20240513155026409" style="zoom:50%;"></p>
+<h2 id="（1）前台启动失败，报500错误"><a href="#（1）前台启动失败，报500错误" class="headerlink" title="（1）前台启动失败，报500错误"></a>（1）前台启动失败，报500错误</h2><p>1、检查IP地址是否正确、可达</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping ip地址</span><br></pre></td></tr></tbody></table></figure>
+<p>2、检查端口通不通（dos）</p>
+<p>前提是开通 tell net</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet ip端口</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513154706899.png" alt="image-20240513154706899" style="zoom:50%;"></p>
+<p>3、端口不通，怎么排查</p>
+<p>1）lsof-i:8099，有没有对应的进程，服务是否运行正常</p>
+<p>2）虚拟机:检查防火墙是否关闭</p>
+<p>3）云服务器:检查安全规则，是否允许了对应的端口</p>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513154844073.png" alt="image-20240513154844073" style="zoom:50%;"></p>
+<h2 id="2、前台运行成功，后台报502错误"><a href="#2、前台运行成功，后台报502错误" class="headerlink" title="2、前台运行成功，后台报502错误"></a>2、前台运行成功，后台报502错误</h2><p>后端配置文件：</p>
+<p>application-druid.yml、application.yml</p>
+<p>（配置完之后需要删掉原包，并重新打包运行）</p>
+<p>（1）检查后台端口是否正在被Java程序使用</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:18080</span><br></pre></td></tr></tbody></table></figure>
+<p>*如何设置后端程序后台运行？</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup java -jar ruoyi-admin.jar &amp;</span><br><span class="line">nohup:表示记录日志</span><br><span class="line">最后&amp;符号：表示后台运行</span><br></pre></td></tr></tbody></table></figure>
+<p>（2）看日志</p>
+<p>tomcat日志</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/tomcat/logs/catalina.out</span><br></pre></td></tr></tbody></table></figure>
+<p>nginx日志</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/nginx/logs/error.log</span><br></pre></td></tr></tbody></table></figure>
+<p>后端日志</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">执行jar包指令：</span><br><span class="line">nohup java -jar xxx.jar &amp;</span><br><span class="line">产生的日志文件</span><br><span class="line">nohup.out</span><br></pre></td></tr></tbody></table></figure>
+<p>*修改后台日志级别</p>
+<p>application.yml中</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logging:</span><br><span class="line"> level：</span><br><span class="line">	xxx: debug(最低级，记录所有信息)</span><br><span class="line">	     error(只记录错误信息)</span><br></pre></td></tr></tbody></table></figure>
+<p><img src="/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/image-20240513162644358.png" alt="image-20240513162644358" style="zoom: 80%;"></p>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/11/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E7%9A%84%E9%83%A8%E7%BD%B2%E4%B8%8E%E7%BB%B4%E6%8A%A4/" title="测试环境的部署与维护">https://laylaycjl.github.io/2024/05/11/测试环境的部署与维护/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83/" rel="tag"><i class="fa fa-tag"></i> 测试环境</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/09/MySQL%E6%9F%A5%E8%AF%A2%E5%8F%8A%E5%85%B6%E4%BB%96/" rel="prev" title="MySQL查询及其他">
+                  <i class="fa fa-chevron-left"></i> MySQL查询及其他
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2024/05/16/APP%E6%B5%8B%E8%AF%95/" rel="next" title="APP测试">
+                  APP测试 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">204k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:05</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>

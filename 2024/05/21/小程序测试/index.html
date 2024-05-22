@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/128x128.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/16x16.png">
+  <link rel="mask-icon" href="/images/logo2.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"laylaycjl.github.io","root":"/","images":"/images","scheme":"Pisces","version":"8.2.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+<meta name="description" content="一、微信小程序介绍1、&#x3D;&#x3D;*web、app和小程序的区别：&#x3D;&#x3D; 2、微信小程序的定义依附于微信，而且无需再次下载安装的移动端应用程序-CS架构 1.2微信小程序的特点  无需下载，即用即走，方便快捷 功能丰富，清爽体验、优雅的体验性 流量大，用户群易变大  3、微信小程序的应用领域衣、食、住、行、用 4、微信小程序的局限性 数量：每个应用最大支持页面层级为10层 大小：小程序支持不超过8M的源码文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小程序测试">
+<meta property="og:url" content="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="laylayCJL&#39;s Blog">
+<meta property="og:description" content="一、微信小程序介绍1、&#x3D;&#x3D;*web、app和小程序的区别：&#x3D;&#x3D; 2、微信小程序的定义依附于微信，而且无需再次下载安装的移动端应用程序-CS架构 1.2微信小程序的特点  无需下载，即用即走，方便快捷 功能丰富，清爽体验、优雅的体验性 流量大，用户群易变大  3、微信小程序的应用领域衣、食、住、行、用 4、微信小程序的局限性 数量：每个应用最大支持页面层级为10层 大小：小程序支持不超过8M的源码文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521105540085.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521095412088.png">
+<meta property="og:image" content="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521105815100.png">
+<meta property="article:published_time" content="2024-05-21T01:46:53.000Z">
+<meta property="article:modified_time" content="2024-05-22T15:03:53.153Z">
+<meta property="article:author" content="laylayCJL">
+<meta property="article:tag" content="小程序测试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521105540085.png">
+
+
+<link rel="canonical" href="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>小程序测试 | laylayCJL's Blog</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="laylayCJL's Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+
+  <div class="headband"></div>
+  <a href="https://github.com/laylayCJL" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">laylayCJL's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">一、微信小程序介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81-web%E3%80%81app%E5%92%8C%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9A"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、&#x3D;&#x3D;*web、app和小程序的区别：&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、微信小程序的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%BA%94%E7%94%A8%E9%A2%86%E5%9F%9F"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、微信小程序的应用领域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、微信小程序的局限性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81%E5%A6%82%E4%BD%95%E5%BC%80%E5%8F%91%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.0.5.</span> <span class="nav-text">5、如何开发小程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%B5%8B%E8%AF%95%E7%89%88%E4%B8%8E%E6%AD%A3%E5%BC%8F%E7%89%88"><span class="nav-number">1.0.6.</span> <span class="nav-text">6、 小程序的测试版与正式版</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%B5%8B%E8%AF%95%E7%89%88"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">2.1 &#x3D;&#x3D;如何获取小程序的测试版&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-%E6%AD%A3%E5%BC%8F%E7%89%88%E4%B8%8E%E6%B5%8B%E8%AF%95%E7%89%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">2.2 正式版与测试版的区别</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二、小程序测试点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81-%E5%8A%9F%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、&#x3D;&#x3D;功能测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81-UI%E7%95%8C%E9%9D%A2%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、&#x3D;&#x3D;UI界面测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81-%E6%98%93%E7%94%A8%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、&#x3D;&#x3D;易用性测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%E3%80%81-%E5%85%BC%E5%AE%B9%E6%80%A7%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.4.</span> <span class="nav-text">4、&#x3D;&#x3D;兼容性测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%E3%80%81-%E6%9D%83%E9%99%90%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.5.</span> <span class="nav-text">5、&#x3D;&#x3D;权限测试&#x3D;&#x3D;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6%E3%80%81%E5%85%A5%E5%8F%A3%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.6.</span> <span class="nav-text">6、入口测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7%E3%80%81%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.7.</span> <span class="nav-text">7、性能测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8%E3%80%81%E5%AE%89%E5%85%A8%E6%B5%8B%E8%AF%95"><span class="nav-number">2.0.8.</span> <span class="nav-text">8、安全测试</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="laylayCJL"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">laylayCJL</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/laylayCJL" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:laibatian@gmail.com" title="E-Mail → mailto:laibatian@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/laylayCJL" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://instagram.com/laylayCJL" title="Instagram → https:&#x2F;&#x2F;instagram.com&#x2F;laylayCJL" rel="noopener" target="_blank"><i class="fab fa-instagram fa-fw"></i></a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="laylayCJL">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="laylayCJL's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          小程序测试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-21 09:46:53" itemprop="dateCreated datePublished" datetime="2024-05-21T09:46:53+08:00">2024-05-21</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2024-05-22 23:03:53" itemprop="dateModified" datetime="2024-05-22T23:03:53+08:00">2024-05-22</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、微信小程序介绍"><a href="#一、微信小程序介绍" class="headerlink" title="一、微信小程序介绍"></a>一、微信小程序介绍</h1><h3 id="1、-web、app和小程序的区别："><a href="#1、-web、app和小程序的区别：" class="headerlink" title="1、==*web、app和小程序的区别：=="></a>1、==*web、app和小程序的区别：==</h3><p><img src="/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521105540085.png" alt="image-20240521105540085"></p>
+<h3 id="2、微信小程序的定义"><a href="#2、微信小程序的定义" class="headerlink" title="2、微信小程序的定义"></a>2、微信小程序的定义</h3><p>依附于微信，而且无需再次下载安装的移动端应用程序-CS架构</p>
+<p>1.2微信小程序的特点</p>
+<ul>
+<li>无需下载，即用即走，方便快捷</li>
+<li>功能丰富，清爽体验、优雅的体验性</li>
+<li>流量大，用户群易变大</li>
+</ul>
+<h3 id="3、微信小程序的应用领域"><a href="#3、微信小程序的应用领域" class="headerlink" title="3、微信小程序的应用领域"></a>3、微信小程序的应用领域</h3><p>衣、食、住、行、用</p>
+<h3 id="4、微信小程序的局限性"><a href="#4、微信小程序的局限性" class="headerlink" title="4、微信小程序的局限性"></a>4、微信小程序的局限性</h3><ul>
+<li>数量：每个应用最大支持页面层级为10层</li>
+<li>大小：小程序支持不超过8M的源码文件(如果分包加载，那么单个分包不超过2M)（针对开发来说的）</li>
+<li>逻辑︰如果逻辑过于复杂,可能出现不可控的异常问题</li>
+</ul>
+<h3 id="5、如何开发小程序"><a href="#5、如何开发小程序" class="headerlink" title="5、如何开发小程序"></a>5、如何开发小程序</h3><p>1、注册小程序账号</p>
+<ul>
+<li>在微信公众平台上注册一个小程序账号，并完成相关认证和设置。</li>
+<li><a href="https://mp.weixin.qq.com/">https://mp.weixin.qq.com/</a></li>
+</ul>
+<p>2、下载开发者工具</p>
+<ul>
+<li>下载微信官方提供的小程序开发者工具，安装并登录你的小程序账号</li>
+<li><a href="https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html">https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html</a></li>
+</ul>
+<p>3、创建新项目</p>
+<ul>
+<li><p>在开发者工具中选择“新建小程序”，填写小程序名称、AppID等基本信息，并选择合适的框架类型。</p>
+<p><img src="/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521095412088.png" alt="image-20240521095412088" style="zoom:33%;"></p>
+</li>
+</ul>
+<p>4、编写代码</p>
+<ul>
+<li>使用开发者工具提供的代码编辑器编写小程序代码</li>
+</ul>
+<p>5、调试和测试</p>
+<ul>
+<li>在开发者工具中进行模拟器调试或手机真机调试，确保小程序正常运行</li>
+</ul>
+<p>6、提交审核</p>
+<ul>
+<li>完成开发后，在微信公众平台中提交小程序审核申请，并等待审核通过后发布上线</li>
+</ul>
+<p>7、更新迭代</p>
+<ul>
+<li>根据用户反馈和需求，不断完善小程序功能和体验，进行版本更新迭代</li>
+</ul>
+<span id="more"></span>
+<h3 id="6、-小程序的测试版与正式版"><a href="#6、-小程序的测试版与正式版" class="headerlink" title="6、 小程序的测试版与正式版"></a>6、 小程序的测试版与正式版</h3><h4 id="2-1-如何获取小程序的测试版"><a href="#2-1-如何获取小程序的测试版" class="headerlink" title="2.1 ==如何获取小程序的测试版=="></a>2.1 ==如何获取小程序的测试版==</h4><p><img src="/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/image-20240521105815100.png" alt="image-20240521105815100" style="zoom:50%;"></p>
+<h4 id="2-2-正式版与测试版的区别"><a href="#2-2-正式版与测试版的区别" class="headerlink" title="2.2 正式版与测试版的区别"></a>2.2 正式版与测试版的区别</h4><p>1、权限不同</p>
+<ul>
+<li>体验版：被开发者添加为体验者，才能获得体验版的权限</li>
+<li>正式版：没有这个限制，所有用户都可以搜索、下载、使用小程序</li>
+</ul>
+<p>2、功能不同</p>
+<ul>
+<li>体验版：有限制，某些高级接口、支付功能或与第三方平台的对接等，这是为了保护开发者的利益和小程序的安全性</li>
+<li>正式版：完整的所有功能</li>
+</ul>
+<p>3、更新频率</p>
+<ul>
+<li>体验版：开发者进行修改或更新后，可以随时向体验者推送新版本</li>
+<li>正式版：正式版的更新则需要经过开发者审核，通常会有一定的时间延迟</li>
+</ul>
+<p>4、操作流程</p>
+<ul>
+<li>体验版：在开发工具中直接生成体验版二维码，通过扫描二维码即可进入体验版</li>
+<li>正式版：通过微信或其他平台的搜索、下载、安装等操作流程才能使用</li>
+</ul>
+<p>5、用户体验</p>
+<ul>
+<li>体验版：面向开发者和特定的测试用户，目的是为了收集用户的反馈和优化小程序的体验</li>
+<li>正式版：所有用户使用的，需要更加稳定、流畅和易用</li>
+</ul>
+<h1 id="二、小程序测试点"><a href="#二、小程序测试点" class="headerlink" title="二、小程序测试点"></a>二、小程序测试点</h1><h3 id="1、-功能测试"><a href="#1、-功能测试" class="headerlink" title="1、==功能测试=="></a>1、==功能测试==</h3><ul>
+<li>正常的功能测试，按照需求文档来测试就OK了，类似于类似web、app的功能测试</li>
+<li>功能测试都一样，测试用户的显性需求及隐形需求即可</li>
+<li>功能交互<ul>
+<li>因为小程序是在微信里面，所以还需要验证一些跟微信的交互</li>
+<li>a) 比如转发给朋友，微信群</li>
+<li>b) 比如是否不能分享到朋友圈</li>
+<li>c）分享到其他应用是否支持等</li>
+</ul>
+</li>
+</ul>
+<h3 id="2、-UI界面测试"><a href="#2、-UI界面测试" class="headerlink" title="2、==UI界面测试=="></a>2、==UI界面测试==</h3><ul>
+<li>是否易于导航，导航是否直观、导航与页面结构、菜单、连接页面的风格是否一致</li>
+<li>横向比较，各控件操作方式统一、页面际签风格是否统</li>
+<li>自适应界面设计，内容根据窗口大小自适应，文字推荐sp比例像素单位</li>
+<li>文案字体、字号、格式、规范一致</li>
+<li>页面的图片清晰、尺寸一致、配色合理、风格一致</li>
+<li>输入框说明文字的内容与系统功能是否一致</li>
+<li>小程序界面上文字长度是否加以限制、文字内容是否表意不明</li>
+<li>是否有错别字、信息是否为中文显示</li>
+<li>是否有敏感性词汇、关健词、敏感性图片，如：涉及版权、专利、隐私等图片</li>
+</ul>
+<h3 id="3、-易用性测试"><a href="#3、-易用性测试" class="headerlink" title="3、==易用性测试=="></a>3、==易用性测试==</h3><ul>
+<li>本地化界面应支持<strong>中文用户界面</strong>，中文界面的关键信息不应存在非中文字符，如选单项、标签和提示信息等。</li>
+<li><strong>可辨识性</strong><ul>
+<li>a)单一界面一次不宜载入和展示太多的信息，界面不宜出现模糊、拉伸变形Q等问题；</li>
+<li>b)界而中按钮可点击范围应适中，按钮不宜出现点击无反应或报错等问题；</li>
+<li>c)标签应与内容相关联，当切换标签的时候，界而內容应跟着切换；</li>
+<li>d)不宜有空白或无任何信息内容的界面。</li>
+</ul>
+</li>
+<li><strong>易学性软件界面设计</strong>，宜有引导用户去执行合适的操作，但不宜滥用用户引导功能或误导用户操作</li>
+<li><strong>用户差错防御性</strong><ul>
+<li>用户界面按钮处于不可用状虑时，应将接钮设置为灰色，避免误导用户</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>易操作性</strong></p>
+<ul>
+<li>a)菜单层次不宜超过三层；</li>
+<li>b)交互流程分支不宜超过四个分支；</li>
+<li>c)功能相关的选项不宜离得太远；</li>
+<li>d)界面功能操作应有主次从属关系；</li>
+<li>e)界面宜支持多点触控功能；</li>
+<li>f)界面应有退出、返回按键或选单。</li>
+</ul>
+</li>
+<li><p><strong>用户界面舒适性</strong></p>
+<ul>
+<li>a)宜支持横、竖屏模式自动切换，且能根据终端位置自适应展示竖屏或横屏；</li>
+<li>b)推送的广告占屏不宜超过1/3,不应无法关闭或强制用户观不能超过10 S；</li>
+<li>c)应支持字形大小可调整，界面和字型颜色应协调统一</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>帮助系统</strong><ul>
+<li>a)用户首次使用应有授权说明；</li>
+<li>b)功能使用说明或用户操作手册；</li>
+<li>c)外部消息提醒和消息查看和删除等功能；</li>
+<li>d)当内存或存储空间不⾜时，提示用户及时清理内存或存储。</li>
+</ul>
+</li>
+</ul>
+<h3 id="4、-兼容性测试"><a href="#4、-兼容性测试" class="headerlink" title="4、==兼容性测试=="></a>4、==兼容性测试==</h3><ul>
+<li>不同的操作系统<ul>
+<li>测兼容性的原因<ul>
+<li>小程序低层调用依赖于具体的操作系统，按照官方文档描述，小程序在IOS上是运行在JavaScriptCore中，但Android上是通过X5JSCore来解析的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>兼容屏幕尺寸<ul>
+<li>不同的屏幕，如直面屏、全面屏、曲面屏、折叠屏等</li>
+</ul>
+</li>
+<li>微信兼容性<ul>
+<li>比如支持哪些微信版本号</li>
+</ul>
+</li>
+<li>工具<ul>
+<li>Wetest平台</li>
+<li>真机</li>
+</ul>
+</li>
+</ul>
+<h3 id="5、-权限测试"><a href="#5、-权限测试" class="headerlink" title="5、==权限测试=="></a>5、==权限测试==</h3><ul>
+<li><strong>测试授权方式</strong><ul>
+<li>未授权微信登录小程序<ul>
+<li>弹出提醒，先授权再操作</li>
+</ul>
+</li>
+<li>已授权微信登录小程序<ul>
+<li>自动以微信身份使用</li>
+</ul>
+</li>
+<li>同一微信号在不同手机端登录授权查看数据权限<ul>
+<li>数据和操作权限一致</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>同一微信号在不同的手机的微信端授权访问后，数据是否保持一致</strong></li>
+</ul>
+<h3 id="6、入口测试"><a href="#6、入口测试" class="headerlink" title="6、入口测试"></a>6、入口测试</h3><ul>
+<li>从不同的入口进入小程序，对应功能是否正常</li>
+<li>例如：微信主入口、二维码分享、链接分享等</li>
+</ul>
+<h3 id="7、性能测试"><a href="#7、性能测试" class="headerlink" title="7、性能测试"></a>7、性能测试</h3><ul>
+<li>跟app的性能测试类似</li>
+<li>主要考虑是否白屏、首屏加载时间、资源占用、页面渲染时间、帧率等<ul>
+<li>小程序的冷启动响应时间不宜超过3s。<ul>
+<li>小程序的冷启动是指用户首次打开小程序，或者小程序在被销毁后再次被用户打开时，需要重新加载和启动的过程</li>
+</ul>
+</li>
+<li>小程序的热启动响应时间不宜超过1s。<ul>
+<li>用户已经打开过某个小程序，然后在一定时间内（如30分钟或5分钟）再次打开该小程序，此时小程序并未被销毁，只是从后台状态进入前台状态。这个过程不需要重新加载启动，因此通常耗时非常低</li>
+</ul>
+</li>
+<li>小程序在界面切换的过程中，如无特殊要求，帧率应不低于20FPS</li>
+<li>小程序功能性操作的响应时间，如无特殊要求，应小于5s<ul>
+<li>2-5-10</li>
+</ul>
+</li>
+<li>注：用户有明确指标要求的，以用户要求为准。</li>
+</ul>
+</li>
+<li>工具：PerfDog</li>
+</ul>
+<h3 id="8、安全测试"><a href="#8、安全测试" class="headerlink" title="8、安全测试"></a>8、安全测试</h3><ul>
+<li>因为是内嵌到微信的，这个一般考虑比较少</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>laylayCJL
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://laylaycjl.github.io/2024/05/21/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/" title="小程序测试">https://laylaycjl.github.io/2024/05/21/小程序测试/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E6%B5%8B%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 小程序测试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2024/05/17/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1/" rel="prev" title="测试用例设计">
+                  <i class="fa fa-chevron-left"></i> 测试用例设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+<span id="sitetime"></span>
+<script language=javascript>
+  function siteTime(){
+    window.setTimeout("siteTime()", 1000);
+    var seconds = 1000;
+    var minutes = seconds * 60;
+    var hours = minutes * 60;
+    var days = hours * 24;
+    var years = days * 365;
+    var today = new Date();
+    var todayYear = today.getFullYear();
+    var todayMonth = today.getMonth()+1;
+    var todayDate = today.getDate();
+    var todayHour = today.getHours();
+    var todayMinute = today.getMinutes();
+    var todaySecond = today.getSeconds();
+    /* Date.UTC() -- 返回date对象距世界标准时间(UTC)1970年1月1日午夜之间的毫秒数(时间戳)
+    year - 作为date对象的年份，为4位年份值
+    month - 0-11之间的整数，做为date对象的月份
+    day - 1-31之间的整数，做为date对象的天数
+    hours - 0(午夜24点)-23之间的整数，做为date对象的小时数
+    minutes - 0-59之间的整数，做为date对象的分钟数
+    seconds - 0-59之间的整数，做为date对象的秒数
+    microseconds - 0-999之间的整数，做为date对象的毫秒数 */
+    var t1 = Date.UTC(2021,03,06,15,00,00); //北京时间2018-2-13 00:00:00
+    var t2 = Date.UTC(todayYear,todayMonth,todayDate,todayHour,todayMinute,todaySecond);
+    var diff = t2-t1;
+    var diffYears = Math.floor(diff/years);
+    var diffDays = Math.floor((diff/days)-diffYears*365);
+    var diffHours = Math.floor((diff-(diffYears*365+diffDays)*days)/hours);
+    var diffMinutes = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours)/minutes);
+    var diffSeconds = Math.floor((diff-(diffYears*365+diffDays)*days-diffHours*hours-diffMinutes*minutes)/seconds);
+    document.getElementById("sitetime").innerHTML=" 本站建立于 2021/03/06 已安全运行 "+diffYears+" 年 "+diffDays+" 天 "+diffHours+" 小时 "+diffMinutes+" 分钟 "+diffSeconds+" 秒";
+  }/*因为建站时间还没有一年，就将之注释掉了。需要的可以取消*/
+  siteTime();
+</script>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">laylayCJL</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">204k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:05</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+<script>
+if (document.querySelectorAll('.mermaid').length) {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/npm/mermaid@8.9.1/dist/mermaid.min.js', () => {
+    mermaid.init({
+      theme    : 'forest',
+      logLevel : 3,
+      flowchart: { curve     : 'linear' },
+      gantt    : { axisFormat: '%m/%d/%Y' },
+      sequence : { actorMargin: 50 }
+    }, '.mermaid');
+  }, window.mermaid);
+}
+</script>
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
